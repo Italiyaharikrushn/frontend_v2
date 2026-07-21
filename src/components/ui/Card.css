@@ -1,0 +1,43 @@
+.card {
+  background-color: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .card {
+  background-color: rgba(30, 30, 30, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.card-header {
+  padding: 1.5rem 1.5rem 0.5rem;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--primary-dark);
+}
+
+[data-theme="dark"] .card-header {
+  color: var(--accent);
+}
+
+.card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  background-color: rgba(0, 0, 0, 0.02);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+[data-theme="dark"] .card-footer {
+  background-color: rgba(255, 255, 255, 0.02);
+}

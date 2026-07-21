@@ -1,0 +1,79 @@
+import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Package, Clock, DollarSign, RotateCcw } from 'lucide-react';
+import { useGetProductsQuery } from '../../api/productApi';
+import { useGetSellerOrdersQuery } from '../../api/orderApi';
+import './AdminStyles.css';
+
+const DashboardHome = () => {
+  const { data: products = [], isLoading: isLoadingProducts } = useGetProductsQuery();
+  const { data: orders = [], isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
+  const navigate = useNavigate();
+
+  // Calculate dynamic stats
+  const stats = useMemo(() => {
+    const activeProducts = products.length; // Assuming all returned are active for now
+    const pendingOrders = orders.filter(o => o.status === 'PENDING').length;
+    const returnedOrders = orders.filter(o => o.status === 'RETURNED').length;
+    const totalSales = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+
+    return {
+      activeProducts,
+      pendingOrders,
+      returnedOrders,
+      totalSales
+    };
+  }, [products, orders]);
+
+  if (isLoadingProducts || isLoadingOrders) {
+    return (
+      <div className="admin-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <p style={{ color: 'var(--text-muted)' }}>Loading dashboard data...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="admin-page fade-in">
+      <div className="admin-header">
+        <h1 className="admin-title">Dashboard Overview</h1>
+      </div>
+
+      <div className="summary-grid">
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/products')} style={{ cursor: 'pointer' }}>
+          <div className="summary-info">
+            <h3>Active Products</h3>
+            <div className="summary-value">{stats.activeProducts}</div>
+          </div>
+          <div className="summary-icon"><Package size={24} /></div>
+        </div>
+        
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
+          <div className="summary-info">
+            <h3>Pending Orders</h3>
+            <div className="summary-value">{stats.pendingOrders}</div>
+          </div>
+          <div className="summary-icon" style={{ background: 'rgba(245, 124, 0, 0.2)', color: 'var(--warning)' }}><Clock size={24} /></div>
+        </div>
+
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
+          <div className="summary-info">
+            <h3>Total Sales</h3>
+            <div className="summary-value">₹{stats.totalSales.toLocaleString()}</div>
+          </div>
+          <div className="summary-icon" style={{ background: 'rgba(46, 125, 50, 0.2)', color: 'var(--success)' }}><DollarSign size={24} /></div>
+        </div>
+
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
+          <div className="summary-info">
+            <h3>Returns</h3>
+            <div className="summary-value">{stats.returnedOrders}</div>
+          </div>
+          <div className="summary-icon" style={{ background: 'rgba(211, 47, 47, 0.2)', color: 'var(--error)' }}><RotateCcw size={24} /></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DashboardHome;

@@ -1,0 +1,30 @@
+.admin-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.orders-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.badge-info {
+  background-color: rgba(2, 136, 209, 0.1);
+  color: var(--info);
+}
+
+.badge-secondary {
+  background-color: rgba(102, 102, 102, 0.1);
+  color: var(--text-muted);
+}
