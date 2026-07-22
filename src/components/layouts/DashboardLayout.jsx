@@ -14,7 +14,7 @@ const DashboardLayout = () => {
       <div className="dashboard-main">
         <header className="dashboard-header">
           <div className="sidebar-header">
-            <h2 className="sidebar-brand">{storeSettings?.storeName || 'KIYA'} ADMIN</h2>
+            <h2 className="sidebar-brand">{storeSettings?.storeName} ADMIN</h2>
           </div>
 
           <div className="header-search">
