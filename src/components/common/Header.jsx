@@ -20,6 +20,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    window.location.reload();
     window.location.href = '/';
   };
 
@@ -91,9 +92,15 @@ const Header = () => {
             {cartQuantity > 0 && <span className="cart-badge">{cartQuantity}</span>}
           </Link>
 
-          <Link to="/login" className="action-btn btn-ghost" title="Login">
-            <LogIn size={20} />
-          </Link>
+          {isAuthenticated ? (
+            <button className="action-btn btn-ghost" title="Logout" onClick={handleLogout}>
+              <LogOut size={20} />
+            </button>
+          ) : (
+            <Link to="/login" className="action-btn btn-ghost" title="Login">
+              <LogIn size={20} />
+            </Link>
+          )}
         </div>
       </div>
     </header>

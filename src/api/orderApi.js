@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const orderApi = createApi({
     reducerPath: 'orderApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_BASE_URL, 
+        baseUrl: import.meta.env.VITE_BASE_URL,
         prepareHeaders: (headers, { getState }) => {
             const token = getState().auth?.token || localStorage.getItem('token');
             if (token) {
@@ -41,7 +41,7 @@ export const orderApi = createApi({
             }),
             invalidatesTags: ['Order'],
         }),
-        
+
         // Checkout flow endpoints
         addAddress: builder.mutation({
             query: (addressData) => ({
@@ -50,14 +50,21 @@ export const orderApi = createApi({
                 body: addressData
             })
         }),
-        
+
         addToBackendCart: builder.mutation({
             query: ({ productId, quantity }) => ({
                 url: `/api/cart/add?productId=${productId}&quantity=${quantity}`,
                 method: "POST"
             })
         }),
-        
+
+        clearBackendCart: builder.mutation({
+            query: () => ({
+                url: "/api/cart/clear",
+                method: "DELETE"
+            })
+        }),
+
         checkoutOrder: builder.mutation({
             query: (addressId) => ({
                 url: `/api/orders/checkout?addressId=${addressId}`,
@@ -86,6 +93,7 @@ export const {
     useReturnCustomerOrderMutation,
     useAddAddressMutation,
     useAddToBackendCartMutation,
+    useClearBackendCartMutation,
     useCheckoutOrderMutation,
     useGetCustomerOrdersQuery
 } = orderApi;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../admin/Sidebar';
-import { Bell, User, LogOut } from 'lucide-react';
+import { Bell, User } from 'lucide-react';
 import './DashboardLayout.css';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 
@@ -27,7 +27,7 @@ const DashboardLayout = () => {
             </button>
             <div className="user-profile">
               <div className="avatar"><User size={20} /></div>
-              <span className="user-name">Admin</span>
+              {/* <span className="user-name">Admin</span> */}
             </div>
 
           </div>

@@ -43,7 +43,7 @@ const Home = () => {
               <p>Loading trending products...</p>
             ) : trendingProducts.length > 0 ? (
               trendingProducts.map(product => (
-                <div key={product.id} className="placeholder-product glass-panel hover-lift" style={{ display: 'flex', flexDirection: 'column', borderRadius: 'var(--radius-lg)', overflow: 'hidden' }}>
+                <div key={product.id} className="placeholder-product glass-panel hover-lift" style={{ display: 'flex', flexDirection: 'column', borderRadius: 'var(--radius-lg)', overflow: 'hidden', height: '100%' }}>
                   <div style={{ height: '240px', width: '100%', background: 'rgba(0,0,0,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                     {product.images && product.images.length > 0 ? (
                       <img 

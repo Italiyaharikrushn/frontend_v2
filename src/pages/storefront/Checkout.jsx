@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingBag, CreditCard, Wallet, Lock, User, MapPin } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { selectCartItems, clearCart } from '../../redux/cartSlice';
-import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation } from '../../api/orderApi';
+import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation } from '../../api/orderApi';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -17,6 +17,7 @@ const Checkout = () => {
   // RTK Query Mutations
   const [addAddress] = useAddAddressMutation();
   const [addToBackendCart] = useAddToBackendCartMutation();
+  const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
 
   // If cart is empty, redirect to cart or shop
@@ -38,7 +39,7 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
-    
+
     try {
       // 1. Prepare and Save Address
       const addressPayload = {
@@ -50,13 +51,14 @@ const Checkout = () => {
         country: e.target.country.value,
         phoneNumber: e.target.phone.value
       };
-      
+
       const savedAddress = await addAddress(addressPayload).unwrap();
       if (!savedAddress || !savedAddress.id) {
-          throw new Error('Failed to save address properly.');
+        throw new Error('Failed to save address properly.');
       }
 
       // 2. Sync Local Cart Items to Backend
+      await clearBackendCart().unwrap();
       for (const item of cartItems) {
         await addToBackendCart({ productId: item.id, quantity: item.quantity }).unwrap();
       }
@@ -69,7 +71,7 @@ const Checkout = () => {
       dispatch(clearCart());
       alert('Order placed successfully! Check the Admin Dashboard to view it.');
       navigate('/');
-      
+
     } catch (error) {
       console.error('Checkout failed:', error);
       alert('Checkout failed. Please try again or check console logs.');
@@ -86,7 +88,7 @@ const Checkout = () => {
       <div className="checkout-content">
         <div className="checkout-form-section">
           <form id="checkout-form" onSubmit={handleSubmit}>
-            
+
             <div className="form-card glass-panel hover-lift" style={{ marginBottom: '2rem' }}>
               <h2 className="form-card-title"><User size={24} /> Contact Information</h2>
               <div className="form-grid full">
@@ -141,16 +143,16 @@ const Checkout = () => {
 
             <div className="form-card glass-panel hover-lift">
               <h2 className="form-card-title"><CreditCard size={24} /> Payment Method</h2>
-              
+
               <div className="payment-methods">
-                <div 
+                <div
                   className={`payment-method-card ${paymentMethod === 'cod' ? 'active' : ''}`}
                   onClick={() => setPaymentMethod('cod')}
                 >
                   <Wallet size={20} />
                   <span>Cash on Delivery</span>
                 </div>
-                <div 
+                <div
                   className={`payment-method-card ${paymentMethod === 'card' ? 'active' : ''}`}
                   onClick={() => setPaymentMethod('card')}
                 >
@@ -188,7 +190,7 @@ const Checkout = () => {
 
         <div className="checkout-summary glass-panel">
           <h2 className="form-card-title">Order Summary</h2>
-          
+
           <div className="summary-items">
             {cartItems.map((item) => (
               <div key={item.id} className="summary-item">
@@ -219,18 +221,18 @@ const Checkout = () => {
               <span>Estimated Tax (8%)</span>
               <span>₹{tax.toFixed(2)}</span>
             </div>
-            
+
             <div className="summary-row total">
               <span>Total</span>
               <span>₹{total.toFixed(2)}</span>
             </div>
 
-            <Button 
-              type="submit" 
-              form="checkout-form" 
-              variant="primary" 
-              size="lg" 
-              fullWidth 
+            <Button
+              type="submit"
+              form="checkout-form"
+              variant="primary"
+              size="lg"
+              fullWidth
               style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
               disabled={isProcessing}
             >

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { ShoppingBag } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { addItem } from '../../redux/cartSlice';
+import { selectIsAuthenticated } from '../../redux/authSlice';
 import { useGetProductsQuery } from '../../api/productApi';
+import { useAddToBackendCartMutation } from '../../api/orderApi';
 import './Products.css';
 
 const Products = () => {
@@ -13,8 +15,10 @@ const Products = () => {
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get('category');
   const searchQuery = queryParams.get('search');
+  const isAuthenticated = useSelector(selectIsAuthenticated);
   
   const { data: allProducts = [], isLoading } = useGetProductsQuery();
+  const [addToBackendCart] = useAddToBackendCartMutation();
 
   // Filter products locally if needed (assuming backend returns all products)
   const products = allProducts.filter(p => {
@@ -36,6 +40,27 @@ const Products = () => {
     title = 'Exquisite Purses';
     subtitle = 'Carry elegance with our handcrafted exquisite purses, perfect for any occasion.';
   }
+
+  const handleAddToCart = async (product) => {
+    // 1. Update local Redux state
+    dispatch(addItem({
+      id: product.id,
+      name: product.title,
+      price: parseFloat(product.price),
+      category: category || 'general',
+      image: (product.images && product.images.length > 0) ? product.images[0] : null
+    }));
+
+    // 2. If authenticated, persist to backend cart immediately
+    if (isAuthenticated) {
+      try {
+        await addToBackendCart({ productId: product.id, quantity: 1 }).unwrap();
+        console.log("Item successfully persisted to database cart");
+      } catch (error) {
+        console.error("Failed to save item to database cart:", error);
+      }
+    }
+  };
 
   return (
     <div className="products-page fade-in">
@@ -69,13 +94,7 @@ const Products = () => {
                       fullWidth 
                       variant={isActive ? "primary" : "secondary"} 
                       disabled={!isActive}
-                      onClick={() => dispatch(addItem({
-                        id: product.id,
-                        name: product.title,
-                        price: parseFloat(product.price),
-                        category: category || 'general',
-                        image: (product.images && product.images.length > 0) ? product.images[0] : null
-                      }))}
+                      onClick={() => handleAddToCart(product)}
                     >
                       {isActive ? 'Add to Cart' : 'Unavailable'}
                     </Button>

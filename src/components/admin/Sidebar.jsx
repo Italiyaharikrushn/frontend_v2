@@ -11,6 +11,8 @@ const Sidebar = () => {
   const handleLogout = () => {
     dispatch(logout());
     window.location.href = '/login';
+    // Force a full reload to clear any remaining in-memory state
+    window.location.reload();
   };
 
   return (

@@ -37,8 +37,10 @@ const AppRoutes = () => {
           <Route path="products" element={<Products />} />
           <Route path="cart" element={<Cart />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="orders" element={<OrderHistory />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="checkout" element={<Checkout />} />
+            <Route path="orders" element={<OrderHistory />} />
+          </Route>
         </Route>
 
         {/* Admin/Seller Dashboard Routes */}
