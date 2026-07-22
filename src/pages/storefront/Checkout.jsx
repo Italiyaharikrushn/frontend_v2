@@ -5,6 +5,7 @@ import { ShoppingBag, CreditCard, Wallet, Lock, User, MapPin } from 'lucide-reac
 import Button from '../../components/ui/Button';
 import { selectCartItems, clearCart } from '../../redux/cartSlice';
 import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation } from '../../api/orderApi';
+import { useToast } from '../../components/ui/ToastProvider';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -13,14 +14,13 @@ const Checkout = () => {
   const cartItems = useSelector(selectCartItems);
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [isProcessing, setIsProcessing] = useState(false);
+  const { pushToast } = useToast();
 
-  // RTK Query Mutations
   const [addAddress] = useAddAddressMutation();
   const [addToBackendCart] = useAddToBackendCartMutation();
   const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
 
-  // If cart is empty, redirect to cart or shop
   if (cartItems.length === 0) {
     return (
       <div className="checkout-page fade-in" style={{ textAlign: 'center', paddingTop: '10vh' }}>
@@ -33,7 +33,7 @@ const Checkout = () => {
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const tax = subtotal * 0.08;
-  const shipping = 15.00; // Flat rate for demo
+  const shipping = 15.00;
   const total = subtotal + tax + shipping;
 
   const handleSubmit = async (e) => {
@@ -41,7 +41,6 @@ const Checkout = () => {
     setIsProcessing(true);
 
     try {
-      // 1. Prepare and Save Address
       const addressPayload = {
         fullName: `${e.target.firstName.value} ${e.target.lastName.value}`,
         streetAddress: e.target.address.value,
@@ -49,7 +48,7 @@ const Checkout = () => {
         state: e.target.state.value,
         postalCode: e.target.zip.value,
         country: e.target.country.value,
-        phoneNumber: e.target.phone.value
+        phoneNumber: e.target.phone.value,
       };
 
       const savedAddress = await addAddress(addressPayload).unwrap();
@@ -57,24 +56,20 @@ const Checkout = () => {
         throw new Error('Failed to save address properly.');
       }
 
-      // 2. Sync Local Cart Items to Backend
       await clearBackendCart().unwrap();
       for (const item of cartItems) {
         await addToBackendCart({ productId: item.id, quantity: item.quantity }).unwrap();
       }
 
-      // 3. Perform Checkout
       await checkoutOrder(savedAddress.id).unwrap();
 
-      // 4. Success cleanup
       setIsProcessing(false);
       dispatch(clearCart());
-      alert('Order placed successfully! Check the Admin Dashboard to view it.');
+      pushToast('Order placed successfully. Thank you for shopping with us.', 'success');
       navigate('/');
-
     } catch (error) {
       console.error('Checkout failed:', error);
-      alert('Checkout failed. Please try again or check console logs.');
+      pushToast('Checkout failed. Please try again or check your connection.', 'error');
       setIsProcessing(false);
     }
   };
@@ -88,9 +83,8 @@ const Checkout = () => {
       <div className="checkout-content">
         <div className="checkout-form-section">
           <form id="checkout-form" onSubmit={handleSubmit}>
-
-            <div className="form-card glass-panel hover-lift" style={{ marginBottom: '2rem' }}>
-              <h2 className="form-card-title"><User size={24} /> Contact Information</h2>
+            <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
+              <h2 className="form-card-title"><User size={20} /> Contact Information</h2>
               <div className="form-grid full">
                 <div className="input-group">
                   <label htmlFor="email">Email address</label>
@@ -103,8 +97,8 @@ const Checkout = () => {
               </div>
             </div>
 
-            <div className="form-card glass-panel hover-lift" style={{ marginBottom: '2rem' }}>
-              <h2 className="form-card-title"><MapPin size={24} /> Shipping Address</h2>
+            <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
+              <h2 className="form-card-title"><MapPin size={20} /> Shipping Address</h2>
               <div className="form-grid">
                 <div className="input-group">
                   <label htmlFor="firstName">First name</label>
@@ -114,7 +108,7 @@ const Checkout = () => {
                   <label htmlFor="lastName">Last name</label>
                   <input type="text" id="lastName" required />
                 </div>
-                <div className="input-group full" style={{ gridColumn: '1 / -1' }}>
+                <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                   <label htmlFor="address">Street Address</label>
                   <input type="text" id="address" required placeholder="Street address or P.O. Box" />
                 </div>
@@ -142,29 +136,22 @@ const Checkout = () => {
             </div>
 
             <div className="form-card glass-panel hover-lift">
-              <h2 className="form-card-title"><CreditCard size={24} /> Payment Method</h2>
-
+              <h2 className="form-card-title"><CreditCard size={20} /> Payment Method</h2>
               <div className="payment-methods">
-                <div
-                  className={`payment-method-card ${paymentMethod === 'cod' ? 'active' : ''}`}
-                  onClick={() => setPaymentMethod('cod')}
-                >
-                  <Wallet size={20} />
+                <button type="button" className={`payment-method-card ${paymentMethod === 'cod' ? 'active' : ''}`} onClick={() => setPaymentMethod('cod')}>
+                  <Wallet size={18} />
                   <span>Cash on Delivery</span>
-                </div>
-                <div
-                  className={`payment-method-card ${paymentMethod === 'card' ? 'active' : ''}`}
-                  onClick={() => setPaymentMethod('card')}
-                >
-                  <CreditCard size={20} />
+                </button>
+                <button type="button" className={`payment-method-card ${paymentMethod === 'card' ? 'active' : ''}`} onClick={() => setPaymentMethod('card')}>
+                  <CreditCard size={18} />
                   <span>Credit Card</span>
-                </div>
+                </button>
               </div>
 
               {paymentMethod === 'card' && (
                 <div className="form-grid fade-in">
-                  <div className="input-group full" style={{ gridColumn: '1 / -1' }}>
-                    <label htmlFor="cardNumber">Card number (Demo - Leave Blank)</label>
+                  <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                    <label htmlFor="cardNumber">Card number (Demo - leave blank)</label>
                     <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" />
                   </div>
                   <div className="input-group">
@@ -184,19 +171,17 @@ const Checkout = () => {
                 </div>
               )}
             </div>
-
           </form>
         </div>
 
         <div className="checkout-summary glass-panel">
           <h2 className="form-card-title">Order Summary</h2>
-
           <div className="summary-items">
             {cartItems.map((item) => (
               <div key={item.id} className="summary-item">
                 <div className="summary-item-info">
                   <div className="summary-item-image">
-                    <ShoppingBag size={24} className="product-placeholder-icon" style={{ opacity: 0.3 }} />
+                    <ShoppingBag size={20} className="product-placeholder-icon" style={{ opacity: 0.3 }} />
                   </div>
                   <div className="summary-item-details">
                     <span className="summary-item-name">{item.name}</span>
@@ -209,41 +194,15 @@ const Checkout = () => {
           </div>
 
           <div className="summary-totals">
-            <div className="summary-row">
-              <span>Subtotal</span>
-              <span>₹{subtotal.toFixed(2)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Shipping</span>
-              <span>₹{shipping.toFixed(2)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Estimated Tax (8%)</span>
-              <span>₹{tax.toFixed(2)}</span>
-            </div>
-
-            <div className="summary-row total">
-              <span>Total</span>
-              <span>₹{total.toFixed(2)}</span>
-            </div>
-
-            <Button
-              type="submit"
-              form="checkout-form"
-              variant="primary"
-              size="lg"
-              fullWidth
-              style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
-              disabled={isProcessing}
-            >
-              {isProcessing ? 'Processing...' : (
-                <>
-                  <Lock size={18} /> Pay ₹{total.toFixed(2)}
-                </>
-              )}
+            <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
+            <div className="summary-row"><span>Shipping</span><span>₹{shipping.toFixed(2)}</span></div>
+            <div className="summary-row"><span>Estimated Tax (8%)</span><span>₹{tax.toFixed(2)}</span></div>
+            <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
+            <Button type="submit" form="checkout-form" variant="primary" size="lg" fullWidth disabled={isProcessing} style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+              {isProcessing ? 'Processing...' : (<><Lock size={18} /> Pay ₹{total.toFixed(2)}</>)}
             </Button>
-            <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '1rem' }}>
-              Your payment information is processed securely. We do not store credit card details nor have access to your credit card information.
+            <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
+              Your payment information is processed securely. We do not store credit card details.
             </p>
           </div>
         </div>

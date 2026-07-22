@@ -1,9 +1,12 @@
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
+import { ToastProvider } from './components/ui/ToastProvider';
 
 function App() {
   return (
-    <AppRoutes />
+    <ToastProvider>
+      <AppRoutes />
+    </ToastProvider>
   );
 }
 

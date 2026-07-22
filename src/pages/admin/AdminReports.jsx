@@ -28,34 +28,36 @@ const AdminReports = () => {
         </div>
       </div>
 
-      <div className="glass-panel" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', marginBottom: '2rem' }}>
-        <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)' }}>Online vs Offline Sales (Column)</h2>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={salesData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="online" name="Online Store" fill="var(--primary)" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="offline" name="Physical Store" fill="var(--secondary)" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      <div className="charts-grid">
+        <div className="glass-panel chart-card">
+          <h2 className="chart-title">Online vs Offline Sales (Column)</h2>
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={salesData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="month" tickLine={false} axisLine={false} />
+              <YAxis tickLine={false} axisLine={false} />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="online" name="Online Store" fill="var(--primary)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="offline" name="Physical Store" fill="var(--secondary)" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      <div className="glass-panel" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)' }}>
-        <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)' }}>Revenue Growth (Line)</h2>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={salesData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="online" name="Online Growth" stroke="var(--primary)" strokeWidth={3} activeDot={{ r: 8 }} />
-            <Line type="monotone" dataKey="offline" name="Offline Growth" stroke="var(--accent)" strokeWidth={3} />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="glass-panel chart-card">
+          <h2 className="chart-title">Revenue Growth (Line)</h2>
+          <ResponsiveContainer width="100%" height={280}>
+            <LineChart data={salesData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="month" tickLine={false} axisLine={false} />
+              <YAxis tickLine={false} axisLine={false} />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="online" name="Online Growth" stroke="var(--primary)" strokeWidth={3} activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="offline" name="Offline Growth" stroke="var(--accent)" strokeWidth={3} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

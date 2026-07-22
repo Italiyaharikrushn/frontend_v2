@@ -30,12 +30,11 @@ const AdminCustomers = () => {
       </div>
 
       <div className="admin-two-column">
-        {/* Main Customers List */}
-        <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)' }}>
-          <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="glass-panel admin-panel-card">
+          <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Users size={20} /> Customer Directory
           </h2>
-          
+
           <div className="admin-table-container">
             <table className="admin-table">
               <thead>
@@ -55,14 +54,12 @@ const AdminCustomers = () => {
                 ) : realCustomers.length > 0 ? (
                   realCustomers.map(customer => (
                     <tr key={customer.id}>
-                      <td style={{ fontWeight: '500' }}>{customer.name}</td>
+                      <td style={{ fontWeight: '600' }}>{customer.name}</td>
                       <td>{customer.email}</td>
                       <td>{customer.orders || 0}</td>
                       <td>{customer.spent || '₹0'}</td>
                       <td>
-                        <span className={`status-badge status-active`}>
-                          Active
-                        </span>
+                        <span className="status-badge status-active">Active</span>
                       </td>
                     </tr>
                   ))
@@ -76,33 +73,32 @@ const AdminCustomers = () => {
           </div>
         </div>
 
-        {/* Sidebar Messages Area */}
-        <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)', height: 'fit-content' }}>
-          <h2 style={{ marginBottom: '1.5rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="glass-panel admin-panel-card" style={{ height: 'fit-content' }}>
+          <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <MessageSquare size={20} /> Customer Messages
           </h2>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {isLoadingMessages ? (
               <p style={{ color: 'var(--text-muted)' }}>Loading messages...</p>
             ) : messages.length > 0 ? messages.map(msg => (
-              <div key={msg.id} style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', background: 'var(--surface)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <span style={{ fontWeight: '600', fontSize: '0.875rem' }}>{msg.name}</span>
+              <div key={msg.id} className="admin-message-card">
+                <div className="admin-message-meta">
+                  <span style={{ fontWeight: '700', fontSize: '0.9rem' }}>{msg.name}</span>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{new Date(msg.createdAt).toLocaleDateString()}</span>
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                   <strong>Subject:</strong> {msg.subject} | <strong>Email:</strong> {msg.email}
                 </div>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>"{msg.message}"</p>
-                
+                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>"{msg.message}"</p>
+
                 {msg.status === 'REPLIED' ? (
-                  <div style={{ marginTop: '0.5rem', padding: '0.5rem', background: '#f0fdf4', color: '#166534', borderRadius: '4px', fontSize: '0.8rem' }}>
+                  <div style={{ padding: '0.6rem', background: '#f0fdf4', color: '#166534', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem' }}>
                     <strong>Replied:</strong> {msg.adminReply}
                   </div>
                 ) : (
-                  <div style={{ display: 'flex', gap: '0.5rem' }}>
-                    <Button variant="primary" size="sm" onClick={() => handleReply(msg.id)} style={{ flex: 1 }}>Reply</Button>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <Button variant="primary" size="sm" onClick={() => handleReply(msg.id)} style={{ flex: '1 1 180px' }}>Reply</Button>
                     <Button variant="secondary" size="sm" style={{ padding: '0.5rem' }}><Mail size={16} /></Button>
                   </div>
                 )}

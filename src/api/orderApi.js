@@ -42,6 +42,15 @@ export const orderApi = createApi({
             invalidatesTags: ['Order'],
         }),
 
+        cancelCustomerOrder: builder.mutation({
+            query: (id) => ({
+                url: `/api/orders/customer/cancel/${id}`,
+                method: 'PUT'
+            }),
+            invalidatesTags: ['Order'],
+        }),
+
+
         // Checkout flow endpoints
         addAddress: builder.mutation({
             query: (addressData) => ({
@@ -91,6 +100,7 @@ export const {
     useGetSellerOrdersQuery,
     useUpdateOrderStatusMutation,
     useReturnCustomerOrderMutation,
+    useCancelCustomerOrderMutation,
     useAddAddressMutation,
     useAddToBackendCartMutation,
     useClearBackendCartMutation,

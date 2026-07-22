@@ -131,46 +131,46 @@ const AdminProducts = () => {
       </div>
 
       {isFormOpen && (
-        <div className="glass-panel fade-in" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', marginBottom: '2rem', borderLeft: '4px solid var(--primary)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ color: 'var(--primary-dark)' }}>{editingProduct ? 'Edit Product' : 'Create New Product'}</h2>
+        <div className="glass-panel fade-in admin-panel-card" style={{ marginBottom: '1rem', borderLeft: '4px solid var(--primary)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h2 style={{ color: 'var(--primary-dark)', margin: 0 }}>{editingProduct ? 'Edit Product' : 'Create New Product'}</h2>
             <button onClick={handleCloseForm} className="action-btn btn-ghost" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><X size={24} /></button>
           </div>
 
-          <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+          <form onSubmit={handleSubmit} className="admin-form-grid">
+            <div className="admin-form-field full">
               <label>Product Name (Title)</label>
-              <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+              <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
             </div>
-            <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+            <div className="admin-form-field full">
               <label>Description</label>
-              <textarea rows="3" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)', resize: 'vertical' }}></textarea>
+              <textarea rows="3" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })}></textarea>
             </div>
-            <div className="input-group">
+            <div className="admin-form-field">
               <label>SKU</label>
-              <input type="text" value={formData.sku} onChange={e => setFormData({ ...formData, sku: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+              <input type="text" value={formData.sku} onChange={e => setFormData({ ...formData, sku: e.target.value })} />
             </div>
-            <div className="input-group">
+            <div className="admin-form-field">
               <label>Image URL</label>
-              <input type="text" placeholder="https://example.com/image.jpg" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+              <input type="text" placeholder="https://example.com/image.jpg" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} />
               {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '0.5rem', objectFit: 'cover', borderRadius: '8px' }} />}
             </div>
-            <div className="input-group">
+            <div className="admin-form-field">
               <label>Price (₹)</label>
-              <input type="number" step="0.01" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+              <input type="number" step="0.01" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
             </div>
-            <div className="input-group">
+            <div className="admin-form-field">
               <label>Stock</label>
-              <input type="number" required value={formData.stock} onChange={e => setFormData({ ...formData, stock: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+              <input type="number" required value={formData.stock} onChange={e => setFormData({ ...formData, stock: e.target.value })} />
             </div>
-            <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+            <div className="admin-form-field full">
               <label>Status</label>
-              <select value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value })} style={{ padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }}>
+              <select value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value })}>
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>
             </div>
-            <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>
+            <div className="admin-form-actions full">
               <Button type="button" variant="secondary" onClick={handleCloseForm}>Cancel</Button>
               <Button type="submit" variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                 <Save size={18} /> {editingProduct ? 'Update Product' : 'Save Product'}
@@ -180,7 +180,7 @@ const AdminProducts = () => {
         </div>
       )}
 
-      <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)' }}>
+      <div className="glass-panel admin-panel-card">
         <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)' }}>Manage Listings</h2>
 
         {isLoading ? (
@@ -226,7 +226,7 @@ const AdminProducts = () => {
                       </span>
                     </td>
                     <td>
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <div className="admin-table-actions">
                         <button onClick={() => handleOpenForm(product)} className="action-btn btn-ghost" style={{ padding: '0.25rem', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--primary)' }} title="Edit"><Edit size={16} /></button>
                         <button onClick={() => handleDelete(product.id)} className="action-btn btn-ghost" style={{ padding: '0.25rem', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--error)' }} title="Delete"><Trash2 size={16} /></button>
                       </div>

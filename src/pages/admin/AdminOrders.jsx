@@ -66,7 +66,7 @@ const AdminOrders = () => {
         <h1 className="admin-title">Orders Management</h1>
       </div> */}
 
-      <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)' }}>
+      <div className="glass-panel admin-panel-card">
         <div className="admin-tabs">
           <button
             className={`admin-tab ${activeTab === 'PENDING' ? 'active' : ''}`}
@@ -106,10 +106,10 @@ const AdminOrders = () => {
           </button>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-          <div className="search-input-wrapper" style={{ display: 'flex', alignItems: 'center', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '0.5rem' }}>
-            <Search size={18} style={{ color: 'var(--text-muted)' }} />
-            <input type="text" placeholder="Search orders..." style={{ border: 'none', background: 'transparent', outline: 'none', marginLeft: '0.5rem', color: 'var(--text-main)' }} />
+        <div className="admin-search-toolbar">
+          <div className="admin-search-wrapper">
+            <Search size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+            <input type="text" placeholder="Search orders..." />
           </div>
           <Button variant="ghost" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Filter size={18} /> Filter
@@ -159,7 +159,7 @@ const AdminOrders = () => {
                       : `Order #${order.orderId || order.id}`}
                   </td>
                   <td>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div className="admin-table-actions">
                       {order.orderItems && order.orderItems.length > 0 ? (
                         order.orderItems.map((item, index) => {
                           const imageUrl = item.product?.images?.[0] || item.imageUrl || null;
@@ -186,8 +186,10 @@ const AdminOrders = () => {
                     </div>
                   </td>
                   <td>
-                    {order.customerName}<br />
-                    <small style={{ color: 'var(--text-muted)' }}>{order.customerEmail}</small>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                      <span style={{ fontWeight: '600' }}>{order.customerName}</span>
+                      <small style={{ color: 'var(--text-muted)' }}>{order.customerEmail}</small>
+                    </div>
                   </td>
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td>₹{order.totalAmount}</td>
@@ -196,12 +198,13 @@ const AdminOrders = () => {
                       value={order.status}
                       onChange={(e) => handleStatusChange(order.id, e.target.value)}
                       style={{
-                        padding: '0.5rem',
+                        padding: '0.55rem 0.7rem',
                         borderRadius: 'var(--radius-md)',
                         border: '1px solid var(--border)',
                         background: 'var(--surface)',
                         color: 'var(--text-main)',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        minWidth: '140px'
                       }}
                     >
                       <option value="PENDING">Pending</option>

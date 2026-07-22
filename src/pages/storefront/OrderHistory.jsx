@@ -1,11 +1,12 @@
 import React from 'react';
-import { Package, RotateCcw } from 'lucide-react';
+import { Package, RotateCcw, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { useGetCustomerOrdersQuery, useReturnCustomerOrderMutation } from '../../api/orderApi';
+import { useGetCustomerOrdersQuery, useReturnCustomerOrderMutation, useCancelCustomerOrderMutation } from '../../api/orderApi';
 
 const OrderHistory = () => {
   const { data: orders = [], isLoading } = useGetCustomerOrdersQuery();
   const [returnOrder] = useReturnCustomerOrderMutation();
+  const [cancelOrder] = useCancelCustomerOrderMutation();
 
   const handleReturn = async (orderId) => {
     if (window.confirm('Are you sure you want to return this order?')) {
@@ -15,6 +16,18 @@ const OrderHistory = () => {
       } catch (err) {
         console.error('Failed to submit return request:', err);
         alert('Error submitting return request. Please try again.');
+      }
+    }
+  };
+
+  const handleCancel = async (orderId) => {
+    if (window.confirm('Are you sure you want to cancel this order?')) {
+      try {
+        await cancelOrder(orderId).unwrap();
+        alert('Order cancelled successfully');
+      } catch (err) {
+        console.error('Failed to cancel order:', err);
+        alert('Error cancelling order. Please try again.');
       }
     }
   };
@@ -41,7 +54,7 @@ const OrderHistory = () => {
         <div style={{ display: 'grid', gap: '1.5rem' }}>
           {orders.map(order => (
             <div key={order.id} className="glass-panel hover-lift" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1rem', marginBottom: '1rem' }}>
                 <div>
                   <h3 style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>
                     {order.orderItems && order.orderItems.length > 0 
@@ -63,15 +76,27 @@ const OrderHistory = () => {
                   Items: {order.totalItems || (order.orderItems ? order.orderItems.length : 0)}
                 </p>
                 
-                {(order.status !== 'CANCELLED' && order.status !== 'RETURNED') && (
-                  <Button variant="secondary" onClick={() => handleReturn(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <RotateCcw size={16} /> Return Order
-                  </Button>
-                )}
-                
-                {order.status === 'RETURNED' && (
-                  <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Processed</p>
-                )}
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {(order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && order.status !== 'RETURNED') && (
+                    <Button variant="outline" onClick={() => handleCancel(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <X size={16} /> Cancel Order
+                    </Button>
+                  )}
+                  
+                  {order.status === 'DELIVERED' && (
+                    <Button variant="secondary" onClick={() => handleReturn(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <RotateCcw size={16} /> Return Order
+                    </Button>
+                  )}
+                  
+                  {order.status === 'RETURNED' && (
+                    <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Processed</p>
+                  )}
+
+                  {order.status === 'CANCELLED' && (
+                    <p style={{ color: 'var(--text-muted)', fontWeight: 'bold', fontSize: '0.875rem' }}>Order Cancelled</p>
+                  )}
+                </div>
               </div>
             </div>
           ))}

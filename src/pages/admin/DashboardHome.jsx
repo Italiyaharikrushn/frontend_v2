@@ -27,8 +27,8 @@ const DashboardHome = () => {
 
   if (isLoadingProducts || isLoadingOrders) {
     return (
-      <div className="admin-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-        <p style={{ color: 'var(--text-muted)' }}>Loading dashboard data...</p>
+      <div className="admin-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+        <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Loading dashboard data...</p>
       </div>
     );
   }
