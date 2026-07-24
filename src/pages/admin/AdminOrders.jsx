@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Download, Filter, Search } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetSellerOrdersQuery, useUpdateOrderStatusMutation } from '../../api/orderApi';
+import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 import './AdminStyles.css';
 
 const AdminOrders = () => {
@@ -9,6 +12,7 @@ const AdminOrders = () => {
   const [selectedOrders, setSelectedOrders] = useState([]);
   const { data: orders = [], isLoading } = useGetSellerOrdersQuery();
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const { data: storeSettings } = useGetPublicStoreSettingsQuery();
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
@@ -38,26 +42,114 @@ const AdminOrders = () => {
     }
   };
 
-  const handleDownloadLabels = () => {
-    if (selectedOrders.length === 0) return;
+  const generatePdfLabels = (orderIdsToPrint) => {
+    if (!orderIdsToPrint || orderIdsToPrint.length === 0) return;
 
-    // Generate dummy label content
-    const labelData = selectedOrders.map(id => {
+    const doc = new jsPDF();
+    
+    orderIdsToPrint.forEach((id, index) => {
       const order = orders.find(o => o.id === id);
-      const productNames = order.orderItems && order.orderItems.length > 0 ? order.orderItems.map(item => item.productName || 'Product').join(', ') : `Order #${order.orderId || order.id}`;
-      return `--- SHIPPING LABEL ---\nOrder: ${productNames}\nCustomer: ${order.customerName}\nAddress: ${order.shippingAddress?.city}, ${order.shippingAddress?.state}\n`;
-    }).join('\n\n');
+      if (!order) return;
 
-    const blob = new Blob([labelData], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `shipping_labels_${new Date().getTime()}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+      if (index > 0) doc.addPage();
+
+      // Header
+      doc.setFontSize(20);
+      doc.text('INVOICE / SHIPPING LABEL', 14, 22);
+
+      // Auto-generated Invoice ID
+      doc.setFontSize(10);
+      doc.text(`Invoice Number: INV-${order.id}-${new Date().getTime()}`, 14, 30);
+      doc.text(`Order Date: ${new Date(order.orderDate).toLocaleDateString()}`, 14, 35);
+
+      // Admin / Store Details
+      doc.setFontSize(12);
+      doc.text('FROM:', 14, 45);
+      doc.setFontSize(10);
+      doc.text(`${storeSettings?.storeName || 'Store Name'}`, 14, 50);
+      if (storeSettings?.contactEmail) doc.text(`Email: ${storeSettings.contactEmail}`, 14, 55);
+      if (storeSettings?.storeAddress) doc.text(`Address: ${storeSettings.storeAddress}`, 14, 60);
+      if (storeSettings?.contactPhone) doc.text(`Phone: ${storeSettings.contactPhone}`, 14, 65);
+
+      // Customer Details
+      doc.setFontSize(12);
+      doc.text('TO (CUSTOMER):', 120, 45);
+      doc.setFontSize(10);
+      doc.text(`${order.customerName || 'N/A'}`, 120, 50);
+      if (order.customerEmail) doc.text(`Email: ${order.customerEmail}`, 120, 55);
+      
+      const addr = order.shippingAddress;
+      let addrY = 60;
+      if (addr) {
+        if (addr.street) { doc.text(addr.street, 120, addrY); addrY += 5; }
+        if (addr.city || addr.state) { doc.text(`${addr.city || ''}, ${addr.state || ''}`, 120, addrY); addrY += 5; }
+        if (addr.zipCode) { doc.text(`Zip: ${addr.zipCode}`, 120, addrY); addrY += 5; }
+        if (addr.country) { doc.text(addr.country, 120, addrY); }
+      }
+
+      // Order Items Table
+      const tableColumn = ["Product Name", "Quantity", "Price"];
+      const tableRows = [];
+      let totalQty = 0;
+
+      if (order.orderItems && order.orderItems.length > 0) {
+        order.orderItems.forEach(item => {
+          const qty = item.quantity || 1;
+          totalQty += qty;
+          tableRows.push([
+            item.productName || 'Product',
+            qty.toString(),
+            `Rs. ${item.price || 0}`
+          ]);
+        });
+      } else {
+        tableRows.push(['Custom Order', '1', `Rs. ${order.totalAmount}`]);
+        totalQty = 1;
+      }
+
+      autoTable(doc, {
+        startY: Math.max(75, addrY + 5),
+        head: [tableColumn],
+        body: tableRows,
+        theme: 'striped',
+        headStyles: { fillColor: [41, 128, 185] },
+      });
+
+      // Total
+      const finalY = doc.lastAutoTable.finalY || 90;
+      doc.setFontSize(12);
+      doc.text(`Total Quantity: ${totalQty}`, 14, finalY + 10);
+      doc.text(`Total Amount: Rs. ${order.totalAmount}`, 14, finalY + 15);
+    });
+
+    doc.save(`shipping_labels_${new Date().getTime()}.pdf`);
     setSelectedOrders([]);
+  };
+
+  const handleDownloadLabels = () => generatePdfLabels(selectedOrders);
+  const handleDownloadSingleLabel = (order) => generatePdfLabels([order.id]);
+
+  const handleAcceptOrders = async () => {
+    if (selectedOrders.length === 0) return;
+    
+    try {
+      await Promise.all(selectedOrders.map(id => updateOrderStatus({ id, status: 'READY_TO_SHIP' }).unwrap()));
+      setSelectedOrders([]);
+      alert('Selected orders have been accepted and moved to Ready to Ship.');
+    } catch (err) {
+      console.error('Failed to accept orders: ', err);
+      alert('Error accepting some orders');
+    }
+  };
+
+  const handleAcceptSingleOrder = async (orderId) => {
+    try {
+      await updateOrderStatus({ id: orderId, status: 'READY_TO_SHIP' }).unwrap();
+      // Optional alert
+    } catch (err) {
+      console.error('Failed to accept order: ', err);
+      alert('Error accepting order');
+    }
   };
 
   return (
@@ -116,6 +208,8 @@ const AdminOrders = () => {
           </Button>
         </div>
 
+
+
         <div className="admin-table-container">
           <table className="admin-table">
             <thead>
@@ -133,7 +227,7 @@ const AdminOrders = () => {
                 <th>Customer</th>
                 <th>Date</th>
                 <th>Total</th>
-                <th>Status (Movable)</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -194,26 +288,16 @@ const AdminOrders = () => {
                   <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                   <td>₹{order.totalAmount}</td>
                   <td>
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                      style={{
-                        padding: '0.55rem 0.7rem',
-                        borderRadius: 'var(--radius-md)',
-                        border: '1px solid var(--border)',
-                        background: 'var(--surface)',
-                        color: 'var(--text-main)',
-                        cursor: 'pointer',
-                        minWidth: '140px'
-                      }}
-                    >
-                      <option value="PENDING">Pending</option>
-                      <option value="READY_TO_SHIP">Ready to Ship</option>
-                      <option value="SHIPPED">Shipped</option>
-                      <option value="DELIVERED">Delivered</option>
-                      <option value="CANCELLED">Cancelled</option>
-                      <option value="RETURNED">Returned</option>
-                    </select>
+                    {activeTab === 'PENDING' && (
+                      <Button variant="secondary" onClick={() => handleAcceptSingleOrder(order.id)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                        Accept
+                      </Button>
+                    )}
+                    {activeTab === 'READY_TO_SHIP' && (
+                      <Button variant="secondary" onClick={() => handleDownloadSingleLabel(order)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                        <Download size={14} /> Label
+                      </Button>
+                    )}
                   </td>
                 </tr>
               )) : (
@@ -226,6 +310,22 @@ const AdminOrders = () => {
             </tbody>
           </table>
         </div>
+
+        {selectedOrders.length > 0 && (
+          <div className="admin-bulk-actions" style={{ padding: '1rem', background: 'var(--surface)', borderTop: '1px solid var(--border)', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            <span style={{ fontWeight: '600', color: 'var(--text-main)' }}>{selectedOrders.length} order(s) selected</span>
+            {activeTab === 'PENDING' && (
+              <Button variant="primary" onClick={handleAcceptOrders}>
+                Accept Orders
+              </Button>
+            )}
+            {activeTab === 'READY_TO_SHIP' && (
+              <Button variant="primary" onClick={handleDownloadLabels} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <Download size={18} /> Download Labels
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -19,7 +19,8 @@
 }
 
 .sidebar-header {
-  padding: 1rem;
+  min-height: 70px;
+  padding: 0 1rem;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;

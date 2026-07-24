@@ -59,8 +59,8 @@ const Home = () => {
                     <h3>{product.title}</h3>
                     <p className="feature-meta">Premium collection • Ready to wear</p>
                     <p className="feature-price">₹{product.price}</p>
-                    <Link to="/products" style={{ marginTop: 'auto' }}>
-                      <Button variant="secondary" fullWidth>View Collection</Button>
+                    <Link to={`/product/${product.id}`} style={{ marginTop: 'auto' }}>
+                      <Button variant="secondary" fullWidth>View Details</Button>
                     </Link>
                   </div>
                 </article>

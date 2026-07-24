@@ -18,7 +18,7 @@ const DashboardLayout = () => {
           <button className="mobile-sidebar-toggle" onClick={() => setIsSidebarOpen((prev) => !prev)} aria-label="Toggle sidebar">
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <div className="sidebar-header">
+          <div className="dashboard-brand-container">
             <h2 className="sidebar-brand">{storeSettings?.storeName} ADMIN</h2>
           </div>
 

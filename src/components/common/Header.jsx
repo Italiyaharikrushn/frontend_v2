@@ -18,6 +18,7 @@ import {
   logout,
 } from "../../redux/authSlice";
 import { useGetPublicStoreSettingsQuery } from "../../api/settingsApi";
+import { useGetCategoriesQuery } from "../../api/productApi";
 import CustomerProfileMenu from "./CustomerProfileMenu";
 import "./Header.css";
 
@@ -32,6 +33,7 @@ const Header = () => {
   const userEmail = useSelector(selectUserEmail);
 
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
+  const { data: categories = [] } = useGetCategoriesQuery();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -70,13 +72,28 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(logout());
     closeMenu();
-    navigate("/");
+    navigate("/", { replace: true });
   };
 
   const getAvatarInitial = () => {
     if (userName) return userName.charAt(0).toUpperCase();
     if (userEmail) return userEmail.charAt(0).toUpperCase();
     return "U";
+  };
+
+  const isActive = (path, categoryQuery) => {
+    if (path === '/') return location.pathname === '/';
+    if (path === '/contact') return location.pathname === '/contact';
+    if (path === '/orders') return location.pathname === '/orders';
+    
+    if (path === '/products') {
+      if (categoryQuery) {
+        return location.pathname === '/products' && location.search.includes(`category=${categoryQuery}`);
+      } else {
+        return (location.pathname === '/products' && !location.search.includes('category=')) || location.pathname.startsWith('/product/');
+      }
+    }
+    return false;
   };
 
   return (
@@ -103,11 +120,14 @@ const Header = () => {
           </div>
 
           <nav className="desktop-nav desktop-only">
-            <Link to="/" className="nav-link">Home</Link>
-            <Link to="/products" className="nav-link">Shop</Link>
-            <Link to="/products?category=belts" className="nav-link">Belts</Link>
-            <Link to="/products?category=purses" className="nav-link">Purses</Link>
-            <Link to="/contact" className="nav-link">Contact</Link>
+            <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
+            <Link to="/products" className={`nav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
+            {categories.slice(0, 4).map((cat, idx) => (
+              <Link key={idx} to={`/products?category=${encodeURIComponent(cat)}`} className={`nav-link ${isActive('/products', cat) ? 'active' : ''}`}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
+              </Link>
+            ))}
+            <Link to="/contact" className={`nav-link ${isActive('/contact') ? 'active' : ''}`}>Contact</Link>
           </nav>
 
           <div className="header-right">
@@ -200,19 +220,22 @@ const Header = () => {
         </div>
 
         <nav className="mobile-nav-links">
-          <Link to="/" className="mobile-nav-link" onClick={closeMenu}>Home</Link>
-          <Link to="/products" className="mobile-nav-link" onClick={closeMenu}>Shop All</Link>
-          <Link to="/products?category=belts" className="mobile-nav-link" onClick={closeMenu}>Belts</Link>
-          <Link to="/products?category=purses" className="mobile-nav-link" onClick={closeMenu}>Purses</Link>
+          <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
+          <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop All</Link>
+          {categories.map((cat, idx) => (
+            <Link key={idx} to={`/products?category=${encodeURIComponent(cat)}`} className={`mobile-nav-link ${isActive('/products', cat) ? 'active' : ''}`} onClick={closeMenu}>
+              {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
+            </Link>
+          ))}
           
           {isAuthenticated && (
             <div className="mobile-nav-group">
               <span className="mobile-nav-group-title">My Account</span>
-              <Link to="/orders" className="mobile-nav-link" onClick={closeMenu}>Orders</Link>
+              <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>Orders</Link>
             </div>
           )}
 
-          <Link to="/contact" className="mobile-nav-link" onClick={closeMenu}>Contact Us</Link>
+          <Link to="/contact" className={`mobile-nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={closeMenu}>Contact Us</Link>
         </nav>
 
         <div className="mobile-nav-footer">

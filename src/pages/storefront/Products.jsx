@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ShoppingBag } from 'lucide-react';
 import Button from '../../components/ui/Button';
@@ -34,12 +34,9 @@ const Products = () => {
   if (searchQuery) {
     title = 'Search Results';
     subtitle = `Showing results for "${searchQuery}"`;
-  } else if (category === 'belts') {
-    title = 'Traditional Belts';
-    subtitle = 'Discover our exclusive collection of traditional belts crafted to perfect your ethnic look.';
-  } else if (category === 'purses') {
-    title = 'Exquisite Purses';
-    subtitle = 'Carry elegance with our handcrafted exquisite purses, perfect for any occasion.';
+  } else if (category) {
+    title = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+    subtitle = `Explore our exclusive collection of ${title.toLowerCase()}.`;
   }
 
   const handleAddToCart = async (product) => {
@@ -76,15 +73,17 @@ const Products = () => {
           const isActive = product.isActive ?? product.active ?? true;
           return (
             <div key={product.id} className="product-card glass-panel hover-lift">
-              <div className="product-image-container">
+              <Link to={`/product/${product.id}`} className="product-image-container" style={{ display: 'block' }}>
                 {product.images && product.images.length > 0 ? (
                   <img src={product.images[0]} alt={product.title} />
                 ) : (
                   <ShoppingBag size={48} className="product-placeholder-icon pulse-element" style={{ animationDuration: '4s' }} />
                 )}
-              </div>
+              </Link>
               <div className="product-details">
-                <h3 className="product-name">{product.title}</h3>
+                <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <h3 className="product-name">{product.title}</h3>
+                </Link>
                 <p className="product-price">₹{product.price}</p>
                 <div className="product-actions">
                   <Button

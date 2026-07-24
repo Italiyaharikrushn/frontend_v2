@@ -11,6 +11,7 @@ import Cart from '../pages/storefront/Cart';
 import Contact from '../pages/storefront/Contact';
 import Checkout from '../pages/storefront/Checkout';
 import OrderHistory from '../pages/storefront/OrderHistory';
+import ProductDetails from '../pages/storefront/ProductDetails';
 import DashboardLayout from '../components/layouts/DashboardLayout';
 import DashboardHome from '../pages/admin/DashboardHome';
 import AdminProducts from '../pages/admin/AdminProducts';
@@ -35,6 +36,7 @@ const AppRoutes = () => {
         <Route path="/" element={<StorefrontLayout />}>
           <Route index element={<Home />} />
           <Route path="products" element={<Products />} />
+          <Route path="product/:id" element={<ProductDetails />} />
           <Route path="cart" element={<Cart />} />
           <Route path="contact" element={<Contact />} />
           <Route element={<ProtectedRoute />}>

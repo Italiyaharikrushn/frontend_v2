@@ -1,10 +1,18 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUserRole } from '../../redux/authSlice';
 import Header from '../common/Header';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 
 const StorefrontLayout = () => {
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
+  const userRole = useSelector(selectUserRole);
+
+  if (userRole === 'ADMIN') {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
   return (
     <div className="storefront-layout">
       <Header />

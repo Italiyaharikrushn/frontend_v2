@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UserPlus, User, Lock, Mail, Phone, Store } from 'lucide-react';
-import { login } from '../../redux/authSlice';
+import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSlice';
 import Button from '../../components/ui/Button';
 import { useRegisterMutation } from '../../api/authApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
@@ -22,6 +22,15 @@ const Register = () => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const userRole = useSelector(selectUserRole);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate(userRole === 'ADMIN' ? '/admin/dashboard' : '/', { replace: true });
+    }
+  }, [isAuthenticated, navigate, userRole]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,9 +53,9 @@ const Register = () => {
         dispatch(login({ role: userRole, token: response.token }));
 
         if (userRole === 'ADMIN') {
-          navigate('/admin/dashboard');
+          navigate('/admin/dashboard', { replace: true });
         } else {
-          navigate('/');
+          navigate('/', { replace: true });
         }
       } else {
         setError(response.message || 'Registration failed.');

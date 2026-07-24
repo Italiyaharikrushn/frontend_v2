@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
 import { LayoutDashboard, Package, ShoppingBag, Users, Settings, LogOut, X } from 'lucide-react';
@@ -7,11 +7,11 @@ import './Sidebar.css';
 
 const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
-    window.location.href = '/login';
-    window.location.reload();
+    navigate('/login', { replace: true });
   };
 
   const handleNavClick = () => {

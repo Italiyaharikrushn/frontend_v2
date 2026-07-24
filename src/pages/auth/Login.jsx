@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Lock, User, ShieldCheck } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { login } from '../../redux/authSlice';
+import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSlice';
 import { useLoginMutation } from '../../api/authApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 import { useToast } from '../../components/ui/ToastProvider';
@@ -18,6 +18,15 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const userRole = useSelector(selectUserRole);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate(userRole === 'ADMIN' ? '/admin/dashboard' : '/', { replace: true });
+    }
+  }, [isAuthenticated, navigate, userRole]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -44,9 +53,9 @@ const Login = () => {
       pushToast('Welcome back! You are now signed in.', 'success');
 
       if (userRole === 'ADMIN') {
-        navigate('/admin/dashboard');
+        navigate('/admin/dashboard', { replace: true });
       } else {
-        navigate('/');
+        navigate('/', { replace: true });
       }
     } catch (err) {
       console.error(err);

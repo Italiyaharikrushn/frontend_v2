@@ -69,7 +69,8 @@ const AdminProducts = () => {
         videos: [],
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock, 10),
-        isActive: formData.status === 'Active'
+        isActive: formData.status === 'Active',
+        category: formData.category
       };
 
       if (editingProduct) {
@@ -151,6 +152,10 @@ const AdminProducts = () => {
               <input type="text" value={formData.sku} onChange={e => setFormData({ ...formData, sku: e.target.value })} />
             </div>
             <div className="admin-form-field">
+              <label>Category</label>
+              <input type="text" placeholder="e.g. belts, purses" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} />
+            </div>
+            <div className="admin-form-field">
               <label>Image URL</label>
               <input type="text" placeholder="https://example.com/image.jpg" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} />
               {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '0.5rem', objectFit: 'cover', borderRadius: '8px' }} />}
@@ -214,7 +219,7 @@ const AdminProducts = () => {
                     <td>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{ fontWeight: '600', color: 'var(--text-main)' }}>{product.title || 'Untitled'}</span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {product.id}</span>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {product.id} {product.category ? `• ${product.category}` : ''}</span>
                       </div>
                     </td>
                     <td>{product.sku || 'N/A'}</td>
