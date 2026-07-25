@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ShoppingBag } from 'lucide-react';
 import Button from '../../components/ui/Button';
@@ -14,6 +14,7 @@ import './Products.css';
 const Products = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get('category');
   const searchQuery = queryParams.get('search');
@@ -22,6 +23,20 @@ const Products = () => {
 
   const { data: allProducts = [], isLoading } = useGetProductsQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
+
+  const dynamicCategories = React.useMemo(() => {
+    if (!allProducts || allProducts.length === 0) return ["All"];
+
+    const catSet = new Set();
+    allProducts.forEach(p => {
+      if (p.category) {
+        const capitalized = p.category.charAt(0).toUpperCase() + p.category.slice(1).toLowerCase();
+        catSet.add(capitalized);
+      }
+    });
+
+    return ["All", ...Array.from(catSet).sort()];
+  }, [allProducts]);
 
   const products = allProducts.filter((p) => {
     if (category) return p.category?.toLowerCase() === category.toLowerCase() || p.globalCategory?.toLowerCase() === category.toLowerCase();
@@ -59,11 +74,39 @@ const Products = () => {
     }
   };
 
+  const handleCategoryChange = (cat) => {
+    const params = new URLSearchParams(location.search);
+    if (cat === "All") {
+      params.delete('category');
+    } else {
+      params.set('category', cat.toLowerCase());
+    }
+    navigate({ search: params.toString() });
+  };
+
   return (
     <div className="products-page fade-in">
       <div className="products-header">
         <h1 className="products-title">{title}</h1>
         <p className="products-subtitle">{subtitle}</p>
+      </div>
+
+      <div className="category-tabs">
+        {dynamicCategories.map((cat) => {
+          const isActive = category
+            ? category.toLowerCase() === cat.toLowerCase()
+            : cat === "All";
+
+          return (
+            <button
+              key={cat}
+              className={`category-tab ${isActive ? 'active' : ''}`}
+              onClick={() => handleCategoryChange(cat)}
+            >
+              {cat}
+            </button>
+          );
+        })}
       </div>
 
       <div className="products-grid">

@@ -105,3 +105,37 @@
 @media (min-width: 1024px) {
   .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.category-tab {
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  background-color: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.category-tab:hover {
+  border-color: #556b46;
+  color: #556b46;
+}
+
+.category-tab.active {
+  background-color: #556b46;
+  color: #ffffff;
+  border-color: #556b46;
+}
+
+[data-theme="dark"] .category-tab.active {
+  background-color: #6a8258;
+  border-color: #6a8258;
+}

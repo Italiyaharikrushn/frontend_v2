@@ -18,7 +18,6 @@ import {
   logout,
 } from "../../redux/authSlice";
 import { useGetPublicStoreSettingsQuery } from "../../api/settingsApi";
-import { useGetCategoriesQuery } from "../../api/productApi";
 import CustomerProfileMenu from "./CustomerProfileMenu";
 import "./Header.css";
 
@@ -33,7 +32,6 @@ const Header = () => {
   const userEmail = useSelector(selectUserEmail);
 
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
-  const { data: categories = [] } = useGetCategoriesQuery();
 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,17 +79,13 @@ const Header = () => {
     return "U";
   };
 
-  const isActive = (path, categoryQuery) => {
+  const isActive = (path) => {
     if (path === '/') return location.pathname === '/';
     if (path === '/contact') return location.pathname === '/contact';
     if (path === '/orders') return location.pathname === '/orders';
     
     if (path === '/products') {
-      if (categoryQuery) {
-        return location.pathname === '/products' && location.search.includes(`category=${categoryQuery}`);
-      } else {
-        return (location.pathname === '/products' && !location.search.includes('category=')) || location.pathname.startsWith('/product/');
-      }
+      return location.pathname === '/products' || location.pathname.startsWith('/product/');
     }
     return false;
   };
@@ -122,11 +116,6 @@ const Header = () => {
           <nav className="desktop-nav desktop-only">
             <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
             <Link to="/products" className={`nav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
-            {categories.slice(0, 4).map((cat, idx) => (
-              <Link key={idx} to={`/products?category=${encodeURIComponent(cat)}`} className={`nav-link ${isActive('/products', cat) ? 'active' : ''}`}>
-                {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
-              </Link>
-            ))}
             <Link to="/contact" className={`nav-link ${isActive('/contact') ? 'active' : ''}`}>Contact</Link>
           </nav>
 
@@ -222,11 +211,6 @@ const Header = () => {
         <nav className="mobile-nav-links">
           <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
           <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop All</Link>
-          {categories.map((cat, idx) => (
-            <Link key={idx} to={`/products?category=${encodeURIComponent(cat)}`} className={`mobile-nav-link ${isActive('/products', cat) ? 'active' : ''}`} onClick={closeMenu}>
-              {cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
-            </Link>
-          ))}
           
           {isAuthenticated && (
             <div className="mobile-nav-group">
