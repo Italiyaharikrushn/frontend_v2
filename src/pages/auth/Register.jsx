@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserPlus, User, Lock, Mail, Phone, Store } from 'lucide-react';
+import { UserPlus, User, Lock, Mail, Phone, Store, Eye, EyeOff } from 'lucide-react';
 import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSlice';
 import Button from '../../components/ui/Button';
 import { useRegisterMutation } from '../../api/authApi';
@@ -20,6 +20,7 @@ const Register = () => {
     password: '',
     phone: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -95,7 +96,12 @@ const Register = () => {
 
           <div className="input-group">
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Lock size={16} /> Password</label>
-            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required style={{ width: '100%', padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required style={{ width: '100%', padding: '0.875rem', paddingRight: '2.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '0.75rem', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', padding: 0 }}>
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           <div className="input-group">

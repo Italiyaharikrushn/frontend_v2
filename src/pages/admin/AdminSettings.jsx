@@ -3,9 +3,11 @@ import { Save, Store, Bell, Shield, Phone, MapPin } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetStoreSettingsQuery, useUpdateStoreSettingsMutation } from '../../api/settingsApi';
 import { useChangePasswordMutation } from '../../api/authApi';
+import { useToast } from '../../components/ui/ToastProvider';
 import './AdminStyles.css';
 
 const AdminSettings = () => {
+  const { pushToast } = useToast();
   const { data: settingsData, isLoading } = useGetStoreSettingsQuery();
   const [updateSettings, { isLoading: isUpdating }] = useUpdateStoreSettingsMutation();
   
@@ -44,17 +46,17 @@ const AdminSettings = () => {
   const handleSave = async () => {
     try {
       await updateSettings(formData).unwrap();
-      alert('Store settings updated successfully!');
+      pushToast('Store settings updated successfully!', 'success');
     } catch (err) {
       console.error('Failed to update settings:', err);
-      alert('Failed to update store settings.');
+      pushToast('Failed to update store settings.', 'error');
     }
   };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      alert("New passwords don't match!");
+      pushToast("New passwords don't match!", 'error');
       return;
     }
     
@@ -65,17 +67,17 @@ const AdminSettings = () => {
       }).unwrap();
       
       if (response.success) {
-        alert('Password updated successfully!');
+        pushToast('Password updated successfully!', 'success');
         setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
       } else {
-        alert(response.message || 'Failed to update password.');
+        pushToast(response.message || 'Failed to update password.', 'error');
       }
     } catch (err) {
       console.error(err);
       if (err.data && err.data.message) {
-        alert(err.data.message);
+        pushToast(err.data.message, 'error');
       } else {
-        alert('An error occurred while updating password.');
+        pushToast('An error occurred while updating password.', 'error');
       }
     }
   };
@@ -111,7 +113,7 @@ const AdminSettings = () => {
                 <label>Contact Number</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }}>
                   <Phone size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-                  <input type="text" value={formData.contactNo} onChange={(e) => setFormData({...formData, contactNo: e.target.value})} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
+                  <input type="text" placeholder="000000000" value={formData.contactNo} onChange={(e) => setFormData({...formData, contactNo: e.target.value})} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
                 </div>
               </div>
             </div>

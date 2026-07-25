@@ -3,9 +3,11 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useSubmitMessageMutation } from '../../api/contactApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
+import { useToast } from '../../components/ui/ToastProvider';
 import './Contact.css';
 
 const Contact = () => {
+  const { pushToast } = useToast();
   const { data: storeSettings, isLoading: isSettingsLoading } = useGetPublicStoreSettingsQuery();
   const [submitMessage, { isLoading }] = useSubmitMessageMutation();
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -18,11 +20,11 @@ const Contact = () => {
     e.preventDefault();
     try {
       await submitMessage(formData).unwrap();
-      alert('Thank you for contacting us. We will get back to you shortly.');
+      pushToast('Thank you for contacting us. We will get back to you shortly.', 'success');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
       console.error('Failed to submit message:', err);
-      alert('Failed to send message. Please try again.');
+      pushToast('Failed to send message. Please try again.', 'error');
     }
   };
 

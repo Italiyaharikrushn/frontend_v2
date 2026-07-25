@@ -8,9 +8,11 @@ import {
   useDeleteProductMutation,
   useBulkUploadProductsMutation
 } from '../../api/productApi';
+import { useToast } from '../../components/ui/ToastProvider';
 import './AdminStyles.css';
 
 const AdminProducts = () => {
+  const { pushToast } = useToast();
   const { data: products = [], isLoading } = useGetProductsQuery();
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
@@ -75,15 +77,15 @@ const AdminProducts = () => {
 
       if (editingProduct) {
         await updateProduct({ id: editingProduct.id, data: payload }).unwrap();
-        alert('Product updated successfully!');
+        pushToast('Product updated successfully!', 'success');
       } else {
         await createProduct(payload).unwrap();
-        alert('Product created successfully!');
+        pushToast('Product created successfully!', 'success');
       }
       handleCloseForm();
     } catch (err) {
       console.error('Failed to save product: ', err);
-      alert('Error saving product. Check console.');
+      pushToast('Error saving product. Check console.', 'error');
     }
   };
 
@@ -91,10 +93,10 @@ const AdminProducts = () => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
         await deleteProduct(id).unwrap();
-        alert('Product deleted successfully!');
+        pushToast('Product deleted successfully!', 'success');
       } catch (err) {
         console.error('Failed to delete: ', err);
-        alert('Failed to delete product.');
+        pushToast('Failed to delete product.', 'error');
       }
     }
   };
@@ -107,10 +109,10 @@ const AdminProducts = () => {
     if (file) {
       try {
         await bulkUpload(file).unwrap();
-        alert('Bulk upload successful!');
+        pushToast('Bulk upload successful!', 'success');
       } catch (err) {
         console.error('Bulk upload failed', err);
-        alert('Bulk upload failed. Check console.');
+        pushToast('Bulk upload failed. Check console.', 'error');
       }
       e.target.value = null; // reset input
     }

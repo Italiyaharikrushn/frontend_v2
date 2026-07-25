@@ -2,8 +2,10 @@ import React from 'react';
 import { Package, RotateCcw, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetCustomerOrdersQuery, useReturnCustomerOrderMutation, useCancelCustomerOrderMutation } from '../../api/orderApi';
+import { useToast } from '../../components/ui/ToastProvider';
 
 const OrderHistory = () => {
+  const { pushToast } = useToast();
   const { data: orders = [], isLoading } = useGetCustomerOrdersQuery();
   const [returnOrder] = useReturnCustomerOrderMutation();
   const [cancelOrder] = useCancelCustomerOrderMutation();
@@ -12,10 +14,10 @@ const OrderHistory = () => {
     if (window.confirm('Are you sure you want to return this order?')) {
       try {
         await returnOrder(orderId).unwrap();
-        alert('Return request submitted successfully');
+        pushToast('Return request submitted successfully', 'success');
       } catch (err) {
         console.error('Failed to submit return request:', err);
-        alert('Error submitting return request. Please try again.');
+        pushToast('Error submitting return request. Please try again.', 'error');
       }
     }
   };
@@ -24,10 +26,10 @@ const OrderHistory = () => {
     if (window.confirm('Are you sure you want to cancel this order?')) {
       try {
         await cancelOrder(orderId).unwrap();
-        alert('Order cancelled successfully');
+        pushToast('Order cancelled successfully', 'success');
       } catch (err) {
         console.error('Failed to cancel order:', err);
-        alert('Error cancelling order. Please try again.');
+        pushToast('Error cancelling order. Please try again.', 'error');
       }
     }
   };

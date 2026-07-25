@@ -3,9 +3,11 @@ import { MessageSquare, Users, Mail } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetAllMessagesQuery, useReplyToMessageMutation } from '../../api/contactApi';
 import { useGetCustomersQuery } from '../../api/authApi';
+import { useToast } from '../../components/ui/ToastProvider';
 import './AdminStyles.css';
 
 const AdminCustomers = () => {
+  const { pushToast } = useToast();
   const { data: messages = [], isLoading: isLoadingMessages, refetch } = useGetAllMessagesQuery();
   const { data: realCustomers = [], isLoading: isLoadingCustomers } = useGetCustomersQuery();
   const [replyToMessage] = useReplyToMessageMutation();
@@ -15,10 +17,10 @@ const AdminCustomers = () => {
     if (replyText) {
       try {
         await replyToMessage({ id, replyText }).unwrap();
-        alert('Reply sent successfully!');
+        pushToast('Reply sent successfully!', 'success');
       } catch (err) {
         console.error('Failed to send reply:', err);
-        alert('Failed to send reply.');
+        pushToast('Failed to send reply.', 'error');
       }
     }
   };

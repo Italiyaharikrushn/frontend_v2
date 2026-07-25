@@ -3,13 +3,19 @@ import { Download, Filter, Search } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetSellerOrdersQuery, useUpdateOrderStatusMutation } from '../../api/orderApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
+import { useToast } from '../../components/ui/ToastProvider';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import './AdminStyles.css';
 
 const AdminOrders = () => {
+  const { pushToast } = useToast();
   const [activeTab, setActiveTab] = useState('PENDING');
   const [selectedOrders, setSelectedOrders] = useState([]);
+  const [downloadedLabels, setDownloadedLabels] = useState(() => {
+    const saved = localStorage.getItem('downloadedLabels');
+    return saved ? JSON.parse(saved) : [];
+  });
   const { data: orders = [], isLoading } = useGetSellerOrdersQuery();
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
@@ -20,7 +26,7 @@ const AdminOrders = () => {
       // The RTK Query optimistic update handles UI state immediately
     } catch (err) {
       console.error('Failed to update status: ', err);
-      alert('Error updating order status');
+      pushToast('Error updating order status', 'error');
     }
   };
 
@@ -55,9 +61,8 @@ const AdminOrders = () => {
 
       // Header
       doc.setFontSize(20);
-      doc.text('INVOICE / SHIPPING LABEL', 14, 22);
+      doc.text('INVOICE', 14, 22);
 
-      // Auto-generated Invoice ID
       doc.setFontSize(10);
       doc.text(`Invoice Number: INV-${order.id}-${new Date().getTime()}`, 14, 30);
       doc.text(`Order Date: ${new Date(order.orderDate).toLocaleDateString()}`, 14, 35);
@@ -67,9 +72,15 @@ const AdminOrders = () => {
       doc.text('FROM:', 14, 45);
       doc.setFontSize(10);
       doc.text(`${storeSettings?.storeName || 'Store Name'}`, 14, 50);
-      if (storeSettings?.contactEmail) doc.text(`Email: ${storeSettings.contactEmail}`, 14, 55);
-      if (storeSettings?.storeAddress) doc.text(`Address: ${storeSettings.storeAddress}`, 14, 60);
-      if (storeSettings?.contactPhone) doc.text(`Phone: ${storeSettings.contactPhone}`, 14, 65);
+
+      let adminY = 55;
+      if (storeSettings?.supportEmail) { doc.text(`Email: ${storeSettings.supportEmail}`, 14, adminY); adminY += 5; }
+      if (storeSettings?.address) { doc.text(`Address: ${storeSettings.address}`, 14, adminY); adminY += 5; }
+      if (storeSettings?.city || storeSettings?.state) {
+        const cityState = `${storeSettings?.city || ''} ${storeSettings?.state || ''} ${storeSettings?.pincode || ''}`.trim();
+        if (cityState) { doc.text(cityState, 14, adminY); adminY += 5; }
+      }
+      if (storeSettings?.contactNo) { doc.text(`Phone: ${storeSettings.contactNo}`, 14, adminY); adminY += 5; }
 
       // Customer Details
       doc.setFontSize(12);
@@ -77,7 +88,7 @@ const AdminOrders = () => {
       doc.setFontSize(10);
       doc.text(`${order.customerName || 'N/A'}`, 120, 50);
       if (order.customerEmail) doc.text(`Email: ${order.customerEmail}`, 120, 55);
-      
+
       const addr = order.shippingAddress;
       let addrY = 60;
       if (addr) {
@@ -123,6 +134,11 @@ const AdminOrders = () => {
     });
 
     doc.save(`shipping_labels_${new Date().getTime()}.pdf`);
+
+    const updatedDownloaded = [...new Set([...downloadedLabels, ...orderIdsToPrint])];
+    setDownloadedLabels(updatedDownloaded);
+    localStorage.setItem('downloadedLabels', JSON.stringify(updatedDownloaded));
+
     setSelectedOrders([]);
   };
 
@@ -131,24 +147,24 @@ const AdminOrders = () => {
 
   const handleAcceptOrders = async () => {
     if (selectedOrders.length === 0) return;
-    
+
     try {
       await Promise.all(selectedOrders.map(id => updateOrderStatus({ id, status: 'READY_TO_SHIP' }).unwrap()));
       setSelectedOrders([]);
-      alert('Selected orders have been accepted and moved to Ready to Ship.');
+      pushToast('Selected orders have been accepted and moved to Ready to Ship.', 'success');
     } catch (err) {
       console.error('Failed to accept orders: ', err);
-      alert('Error accepting some orders');
+      pushToast('Error accepting some orders', 'error');
     }
   };
 
   const handleAcceptSingleOrder = async (orderId) => {
     try {
       await updateOrderStatus({ id: orderId, status: 'READY_TO_SHIP' }).unwrap();
-      // Optional alert
+      pushToast('Order accepted and moved to Ready to Ship.', 'success');
     } catch (err) {
       console.error('Failed to accept order: ', err);
-      alert('Error accepting order');
+      pushToast('Error accepting order', 'error');
     }
   };
 
@@ -225,6 +241,7 @@ const AdminOrders = () => {
                 <th>Order Name</th>
                 <th>Image</th>
                 <th>Customer</th>
+                <th>Quantity</th>
                 <th>Date</th>
                 <th>Total</th>
                 <th>Actions</th>
@@ -233,76 +250,106 @@ const AdminOrders = () => {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
                     Loading orders...
                   </td>
                 </tr>
               ) : filteredOrders.length > 0 ? filteredOrders.map(order => (
-                <tr key={order.id}>
-                  <td>
-                    <input
-                      type="checkbox"
-                      checked={selectedOrders.includes(order.id)}
-                      onChange={() => handleSelectOrder(order.id)}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  </td>
-                  <td style={{ fontWeight: '500' }}>
-                    {order.orderItems && order.orderItems.length > 0
-                      ? order.orderItems.map(item => item.productName || 'Product').join(', ')
-                      : `Order #${order.orderId || order.id}`}
-                  </td>
-                  <td>
-                    <div className="admin-table-actions">
+                <React.Fragment key={order.id}>
+                  <tr>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedOrders.includes(order.id)}
+                        onChange={() => handleSelectOrder(order.id)}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </td>
+                    <td style={{ fontWeight: '500' }}>
                       {order.orderItems && order.orderItems.length > 0 ? (
-                        order.orderItems.map((item, index) => {
-                          const imageUrl = item.product?.images?.[0] || item.imageUrl || null;
-                          return imageUrl ? (
-                            <img
-                              key={index}
-                              src={imageUrl}
-                              alt={item.productName || 'Product'}
-                              style={{
-                                width: '50px',
-                                height: '50px',
-                                objectFit: 'cover',
-                                borderRadius: 'var(--radius-sm)',
-                                border: '1px solid var(--border)'
-                              }}
-                            />
-                          ) : (
-                            <span key={index} style={{ color: 'var(--text-muted)' }}>No Image</span>
-                          );
-                        })
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          {order.orderItems.map((item, index) => (
+                            <div key={index} style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
+                              {item.productName || 'Product'}
+                            </div>
+                          ))}
+                        </div>
                       ) : (
-                        <span style={{ color: 'var(--text-muted)' }}>No Image</span>
+                        `Order_id No. ${order.orderId || order.id}`
                       )}
-                    </div>
-                  </td>
-                  <td>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-                      <span style={{ fontWeight: '600' }}>{order.customerName}</span>
-                      <small style={{ color: 'var(--text-muted)' }}>{order.customerEmail}</small>
-                    </div>
-                  </td>
-                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
-                  <td>₹{order.totalAmount}</td>
-                  <td>
-                    {activeTab === 'PENDING' && (
-                      <Button variant="secondary" onClick={() => handleAcceptSingleOrder(order.id)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
-                        Accept
-                      </Button>
-                    )}
-                    {activeTab === 'READY_TO_SHIP' && (
-                      <Button variant="secondary" onClick={() => handleDownloadSingleLabel(order)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-                        <Download size={14} /> Label
-                      </Button>
-                    )}
-                  </td>
-                </tr>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {order.orderItems && order.orderItems.length > 0 ? (
+                          order.orderItems.map((item, index) => {
+                            const imageUrl = item.product?.images?.[0] || item.imageUrl || null;
+                            return imageUrl ? (
+                              <img
+                                key={index}
+                                src={imageUrl}
+                                alt={item.productName || 'Product'}
+                                style={{
+                                  width: '50px',
+                                  height: '50px',
+                                  objectFit: 'cover',
+                                  borderRadius: 'var(--radius-sm)',
+                                  border: '1px solid var(--border)'
+                                }}
+                              />
+                            ) : (
+                              <div key={index} style={{ height: '50px', display: 'flex', alignItems: 'center', color: 'var(--text-muted)' }}>No Image</div>
+                            );
+                          })
+                        ) : (
+                          <span style={{ color: 'var(--text-muted)' }}>No Image</span>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                        <span style={{ fontWeight: '600' }}>{order.customerName}</span>
+                        <small style={{ color: 'var(--text-muted)' }}>{order.customerEmail}</small>
+                      </div>
+                    </td>
+                    <td style={{ fontWeight: '500' }}>
+                      {order.orderItems && order.orderItems.length > 0 ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                          {order.orderItems.map((item, index) => (
+                            <div key={index} style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
+                              {item.quantity || 1}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        1
+                      )}
+                    </td>
+                    <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td>₹{order.totalAmount}</td>
+                    <td>
+                      {activeTab === 'PENDING' && (
+                        <Button variant="secondary" onClick={() => handleAcceptSingleOrder(order.id)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
+                          Accept
+                        </Button>
+                      )}
+                      {activeTab === 'READY_TO_SHIP' && (
+                        <Button variant="secondary" onClick={() => handleDownloadSingleLabel(order)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+                          <Download size={14} /> Label
+                        </Button>
+                      )}
+                    </td>
+                  </tr>
+                  {activeTab === 'READY_TO_SHIP' && downloadedLabels.includes(order.id) && (
+                    <tr>
+                      <td colSpan="8" style={{ padding: '0.75rem 1rem', background: 'var(--surface)', color: '#10b981', fontSize: '0.85rem', fontWeight: '500', textAlign: 'center' }}>
+                        downloaded
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               )) : (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
                     No {activeTab} orders found.
                   </td>
                 </tr>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Lock, User, ShieldCheck } from 'lucide-react';
+import { Lock, User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSlice';
 import { useLoginMutation } from '../../api/authApi';
@@ -17,6 +17,7 @@ const Login = () => {
   const { pushToast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -84,7 +85,12 @@ const Login = () => {
 
           <div className="input-group">
             <label htmlFor="password"><Lock size={16} /> Password</label>
-            <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
+            <div className="password-input-wrapper">
+              <input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required style={{ width: '100%' }} />
+              <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)} aria-label="Toggle password visibility">
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
 
           <Button type="submit" variant="primary" size="lg" fullWidth disabled={isLoading}>
