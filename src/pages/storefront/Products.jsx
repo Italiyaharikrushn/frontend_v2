@@ -24,7 +24,7 @@ const Products = () => {
   const { data: allProducts = [], isLoading } = useGetProductsQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
 
-  const dynamicCategories = React.useMemo(() => {
+  const dynamicCategories = useMemo(() => {
     if (!allProducts || allProducts.length === 0) return ["All"];
 
     const catSet = new Set();

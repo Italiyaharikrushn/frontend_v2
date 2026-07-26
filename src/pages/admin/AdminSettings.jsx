@@ -113,7 +113,7 @@ const AdminSettings = () => {
                 <label>Contact Number</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }}>
                   <Phone size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-                  <input type="text" placeholder="000000000" value={formData.contactNo} onChange={(e) => setFormData({...formData, contactNo: e.target.value})} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
+                  <input type="text" placeholder="98765 43211" value={formData.contactNo} onChange={(e) => setFormData({...formData, contactNo: e.target.value})} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
                 </div>
               </div>
             </div>

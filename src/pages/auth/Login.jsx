@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Lock, User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
@@ -23,7 +23,7 @@ const Login = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const userRole = useSelector(selectUserRole);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       navigate(userRole === 'ADMIN' ? '/admin/dashboard' : '/', { replace: true });
     }

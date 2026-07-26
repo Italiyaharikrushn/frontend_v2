@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserPlus, User, Lock, Mail, Phone, Store, Eye, EyeOff } from 'lucide-react';
@@ -27,7 +27,7 @@ const Register = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const userRole = useSelector(selectUserRole);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isAuthenticated) {
       navigate(userRole === 'ADMIN' ? '/admin/dashboard' : '/', { replace: true });
     }
@@ -106,7 +106,7 @@ const Register = () => {
 
           <div className="input-group">
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={16} /> Phone Number</label>
-            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+1 234 567 8900" required style={{ width: '100%', padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+91 98765 43211" required style={{ width: '100%', padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
           </div>
 
 
