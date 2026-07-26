@@ -45,11 +45,11 @@ const Login = () => {
         userRole = 'ADMIN';
       }
 
-      dispatch(login({ 
-        role: userRole, 
+      dispatch(login({
+        role: userRole,
         token: response.token,
         name: response.name || response.customerName || null,
-        email: response.email || email 
+        email: response.email || email
       }));
       pushToast('Welcome back! You are now signed in.', 'success');
 

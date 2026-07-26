@@ -14,7 +14,7 @@ const AdminSettings = () => {
   const [formData, setFormData] = useState({
     storeName: 'KIYA Accessories',
     supportEmail: 'support@kiyaaccessories.com',
-    contactNo: '+91 0000000000',
+    contactNo: '+91 9876543210',
     address: '',
     city: '',
     state: '',
@@ -59,13 +59,13 @@ const AdminSettings = () => {
       pushToast("New passwords don't match!", 'error');
       return;
     }
-    
+
     try {
       const response = await changePassword({
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword
       }).unwrap();
-      
+
       if (response.success) {
         pushToast('Password updated successfully!', 'success');
         setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
@@ -103,17 +103,17 @@ const AdminSettings = () => {
             <div className="admin-form-grid">
               <div className="admin-form-field full">
                 <label>Store Name</label>
-                <input type="text" value={formData.storeName} onChange={(e) => setFormData({...formData, storeName: e.target.value})} />
+                <input type="text" value={formData.storeName} onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>Support Email</label>
-                <input type="email" value={formData.supportEmail} onChange={(e) => setFormData({...formData, supportEmail: e.target.value})} />
+                <input type="email" value={formData.supportEmail} onChange={(e) => setFormData({ ...formData, supportEmail: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>Contact Number</label>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }}>
                   <Phone size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-                  <input type="text" placeholder="98765 43211" value={formData.contactNo} onChange={(e) => setFormData({...formData, contactNo: e.target.value})} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
+                  <input type="text" placeholder="9876543210" value={formData.contactNo} onChange={(e) => setFormData({ ...formData, contactNo: e.target.value })} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
                 </div>
               </div>
             </div>
@@ -124,19 +124,19 @@ const AdminSettings = () => {
             <div className="admin-form-grid">
               <div className="admin-form-field full">
                 <label>Street Address</label>
-                <textarea rows="3" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} />
+                <textarea rows="3" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>City</label>
-                <input type="text" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} />
+                <input type="text" value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>State</label>
-                <input type="text" value={formData.state} onChange={(e) => setFormData({...formData, state: e.target.value})} />
+                <input type="text" value={formData.state} onChange={(e) => setFormData({ ...formData, state: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>Pincode</label>
-                <input type="text" value={formData.pincode} onChange={(e) => setFormData({...formData, pincode: e.target.value})} />
+                <input type="text" value={formData.pincode} onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} />
               </div>
             </div>
           </div>
@@ -173,15 +173,15 @@ const AdminSettings = () => {
             <form onSubmit={handlePasswordChange} style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
               <div className="admin-form-field">
                 <label>Current Password</label>
-                <input type="password" required value={passwordData.currentPassword} onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})} />
+                <input type="password" required value={passwordData.currentPassword} onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>New Password</label>
-                <input type="password" required value={passwordData.newPassword} onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})} />
+                <input type="password" required value={passwordData.newPassword} onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })} />
               </div>
               <div className="admin-form-field">
                 <label>Confirm New Password</label>
-                <input type="password" required value={passwordData.confirmPassword} onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})} />
+                <input type="password" required value={passwordData.confirmPassword} onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} />
               </div>
 
               <Button type="submit" variant="secondary" fullWidth disabled={isChangingPassword} style={{ marginTop: '0.25rem' }}>
