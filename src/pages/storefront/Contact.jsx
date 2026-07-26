@@ -4,7 +4,7 @@ import Button from '../../components/ui/Button';
 import { useSubmitMessageMutation } from '../../api/contactApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './Contact.css';
+import '@/styles/css/pages/storefront/Contact.css';
 
 const Contact = () => {
   const { pushToast } = useToast();

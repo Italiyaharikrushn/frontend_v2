@@ -1,18 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { customFetchBaseQuery } from '../utils/apiHelpers';
 
 export const productApi = createApi({
     reducerPath: "productApi",
     tagTypes: ['Product'],
-    baseQuery: fetchBaseQuery({
-        baseUrl: import.meta.env.VITE_BASE_URL,
-        prepareHeaders: (headers, { getState }) => {
-            const token = getState().auth?.token || localStorage.getItem('token');
-            if (token) {
-                headers.set("Authorization", `Bearer ${token}`);
-            }
-            return headers;
-        },
-    }),
+    baseQuery: customFetchBaseQuery,
 
     endpoints: (builder) => ({
         createProduct: builder.mutation({

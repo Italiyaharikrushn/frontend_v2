@@ -4,7 +4,7 @@ import Button from '../../components/ui/Button';
 import { useGetStoreSettingsQuery, useUpdateStoreSettingsMutation } from '../../api/settingsApi';
 import { useChangePasswordMutation } from '../../api/authApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './AdminStyles.css';
+import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminSettings = () => {
   const { pushToast } = useToast();

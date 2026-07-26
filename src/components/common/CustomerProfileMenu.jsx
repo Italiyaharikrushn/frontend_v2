@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { logout, selectUserName, selectUserEmail } from '../../redux/authSlice';
-import './CustomerProfileMenu.css';
+import '@/styles/css/components/CustomerProfileMenu.css';
 
 const CustomerProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,7 @@ const CustomerProfileMenu = () => {
         setIsOpen(false);
       }
     };
-    
+
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
         setIsOpen(false);
@@ -56,8 +56,8 @@ const CustomerProfileMenu = () => {
 
   return (
     <div className="customer-profile-container" ref={menuRef}>
-      <button 
-        className="profile-avatar-btn" 
+      <button
+        className="profile-avatar-btn"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="User Profile"
         aria-expanded={isOpen}

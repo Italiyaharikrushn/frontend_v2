@@ -1,11 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getStoredItem, setStoredItem, removeStoredItem } from '../utils/storage';
 
 const initialState = {
-  isAuthenticated: localStorage.getItem('isAuthenticated') === 'true',
-  role: localStorage.getItem('userRole') || null,
-  token: localStorage.getItem('token') || null,
-  name: localStorage.getItem('userName') || null,
-  email: localStorage.getItem('userEmail') || null,
+  isAuthenticated: getStoredItem('isAuthenticated') === 'true',
+  role: getStoredItem('userRole'),
+  token: getStoredItem('token'),
+  name: getStoredItem('userName'),
+  email: getStoredItem('userEmail'),
 };
 
 const authSlice = createSlice({
@@ -18,16 +19,16 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.name = action.payload.name || null;
       state.email = action.payload.email || null;
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userRole', action.payload.role);
+      setStoredItem('isAuthenticated', 'true');
+      setStoredItem('userRole', action.payload.role);
       if (action.payload.token) {
-        localStorage.setItem('token', action.payload.token);
+        setStoredItem('token', action.payload.token);
       }
       if (action.payload.name) {
-        localStorage.setItem('userName', action.payload.name);
+        setStoredItem('userName', action.payload.name);
       }
       if (action.payload.email) {
-        localStorage.setItem('userEmail', action.payload.email);
+        setStoredItem('userEmail', action.payload.email);
       }
     },
     logout: (state) => {
@@ -36,12 +37,12 @@ const authSlice = createSlice({
       state.token = null;
       state.name = null;
       state.email = null;
-      localStorage.removeItem('isAuthenticated');
-      localStorage.removeItem('userRole');
-      localStorage.removeItem('token');
-      localStorage.removeItem('userName');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('cartState');
+      removeStoredItem('isAuthenticated');
+      removeStoredItem('userRole');
+      removeStoredItem('token');
+      removeStoredItem('userName');
+      removeStoredItem('userEmail');
+      removeStoredItem('cartState');
     }
   }
 });

@@ -1,25 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-const loadCartState = () => {
-  try {
-    const serializedState = localStorage.getItem('cartState');
-    if (serializedState === null) {
-      return { items: [] };
-    }
-    return JSON.parse(serializedState);
-  } catch (err) {
-    return { items: [] };
-  }
-};
-
-const saveCartState = (state) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem('cartState', serializedState);
-  } catch (err) {
-    // Ignore write errors
-  }
-};
+import { loadCartState, saveCartState } from '../utils/storage';
 
 const initialState = loadCartState();
 

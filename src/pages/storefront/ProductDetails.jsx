@@ -7,7 +7,7 @@ import { useAddToBackendCartMutation } from '../../api/orderApi';
 import { selectIsAuthenticated } from '../../redux/authSlice';
 import { addItem } from '../../redux/cartSlice';
 import { useToast } from '../../components/ui/ToastProvider';
-import './ProductDetails.css';
+import '@/styles/css/pages/storefront/ProductDetails.css';
 
 const ProductDetails = () => {
   const { id } = useParams();

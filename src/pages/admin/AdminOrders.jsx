@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Download, Filter, Search } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetSellerOrdersQuery, useUpdateOrderStatusMutation } from '../../api/orderApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
-import { useToast } from '../../components/ui/ToastProvider';
+import { useToast } from '../../hooks/useToast';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import './AdminStyles.css';
+import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminOrders = () => {
   const { pushToast } = useToast();
@@ -20,15 +20,6 @@ const AdminOrders = () => {
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
 
-  const handleStatusChange = async (orderId, newStatus) => {
-    try {
-      await updateOrderStatus({ id: orderId, status: newStatus }).unwrap();
-      // The RTK Query optimistic update handles UI state immediately
-    } catch (err) {
-      console.error('Failed to update status: ', err);
-      pushToast('Error updating order status', 'error');
-    }
-  };
 
   const filteredOrders = orders.filter(order => order.status === activeTab);
 
@@ -52,7 +43,7 @@ const AdminOrders = () => {
     if (!orderIdsToPrint || orderIdsToPrint.length === 0) return;
 
     const doc = new jsPDF();
-    
+
     orderIdsToPrint.forEach((id, index) => {
       const order = orders.find(o => o.id === id);
       if (!order) return;
@@ -80,7 +71,7 @@ const AdminOrders = () => {
         const cityState = `${storeSettings?.city || ''} ${storeSettings?.state || ''} ${storeSettings?.pincode || ''}`.trim();
         if (cityState) { doc.text(cityState, 14, adminY); adminY += 5; }
       }
-      if (storeSettings?.contactNo) { doc.text(`Phone: ${storeSettings.contactNo}`, 14, adminY); adminY += 5; }
+      if (storeSettings?.contactNo) { doc.text(`Phone: ${storeSettings.contactNo}`, 14, adminY); }
 
       // Customer Details
       doc.setFontSize(12);
@@ -255,7 +246,7 @@ const AdminOrders = () => {
                   </td>
                 </tr>
               ) : filteredOrders.length > 0 ? filteredOrders.map(order => (
-                <React.Fragment key={order.id}>
+                <Fragment key={order.id}>
                   <tr>
                     <td>
                       <input
@@ -346,7 +337,7 @@ const AdminOrders = () => {
                       </td>
                     </tr>
                   )}
-                </React.Fragment>
+                </Fragment>
               )) : (
                 <tr>
                   <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>

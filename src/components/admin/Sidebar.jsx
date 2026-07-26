@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
 import { LayoutDashboard, Package, ShoppingBag, Users, Settings, LogOut, X } from 'lucide-react';
-import './Sidebar.css';
+import '@/styles/css/components/Sidebar.css';
 
 const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
   const dispatch = useDispatch();

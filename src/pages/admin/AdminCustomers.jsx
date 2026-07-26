@@ -4,7 +4,7 @@ import Button from '../../components/ui/Button';
 import { useGetAllMessagesQuery, useReplyToMessageMutation } from '../../api/contactApi';
 import { useGetCustomersQuery } from '../../api/authApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './AdminStyles.css';
+import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminCustomers = () => {
   const { pushToast } = useToast();

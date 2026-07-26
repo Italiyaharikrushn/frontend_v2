@@ -1,16 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { prepareAuthHeaders } from '../utils/apiHelpers';
 
 export const profileApi = createApi({
     reducerPath: 'profileApi',
     baseQuery: fetchBaseQuery({
         baseUrl: `${import.meta.env.VITE_BASE_URL}/api/seller`, 
-        prepareHeaders: (headers, { getState }) => {
-            const token = getState().auth?.token || localStorage.getItem('token');
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
-            }
-            return headers;
-        },
+        prepareHeaders: prepareAuthHeaders,
     }),
     tagTypes: ['Profile'],
     endpoints: (builder) => ({

@@ -1,25 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  ShoppingCart,
-  Menu,
-  Search,
-  X,
-  Package,
-  LogIn,
-} from "lucide-react";
+import { ShoppingCart, Menu, Search, X, Package, LogIn, } from "lucide-react";
 
 import { selectCartTotalQuantity } from "../../redux/cartSlice";
-import {
-  selectIsAuthenticated,
-  selectUserName,
-  selectUserEmail,
-  logout,
-} from "../../redux/authSlice";
+import { selectIsAuthenticated, selectUserName, selectUserEmail, logout, } from "../../redux/authSlice";
 import { useGetPublicStoreSettingsQuery } from "../../api/settingsApi";
 import CustomerProfileMenu from "./CustomerProfileMenu";
-import "./Header.css";
+import "@/styles/css/components/Header.css";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -83,7 +71,7 @@ const Header = () => {
     if (path === '/') return location.pathname === '/';
     if (path === '/contact') return location.pathname === '/contact';
     if (path === '/orders') return location.pathname === '/orders';
-    
+
     if (path === '/products') {
       return location.pathname === '/products' || location.pathname.startsWith('/product/');
     }
@@ -94,7 +82,7 @@ const Header = () => {
     <>
       <header className="header glass-panel">
         <div className="header-container">
-          
+
           <div className="header-left">
             <button
               className="mobile-menu-btn mobile-only"
@@ -211,7 +199,7 @@ const Header = () => {
         <nav className="mobile-nav-links">
           <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
           <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop All</Link>
-          
+
           {isAuthenticated && (
             <div className="mobile-nav-group">
               <span className="mobile-nav-group-title">My Account</span>

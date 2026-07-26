@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { selectCartItems, updateQuantity, removeItem } from '../../redux/cartSlice';
-import './Cart.css';
+import '@/styles/css/pages/storefront/Cart.css';
 
 const Cart = () => {
   const dispatch = useDispatch();

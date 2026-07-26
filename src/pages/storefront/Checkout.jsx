@@ -6,7 +6,7 @@ import Button from '../../components/ui/Button';
 import { selectCartItems, clearCart } from '../../redux/cartSlice';
 import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation } from '../../api/orderApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './Checkout.css';
+import '@/styles/css/pages/storefront/Checkout.css';
 
 const Checkout = () => {
   const navigate = useNavigate();

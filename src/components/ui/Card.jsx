@@ -1,5 +1,5 @@
 import React from 'react';
-import './Card.css';
+import '@/styles/css/components/Card.css';
 
 const Card = ({ children, className = '', hoverable = false, ...props }) => {
   return (

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Package, Clock, DollarSign, RotateCcw } from 'lucide-react';
 import { useGetProductsQuery } from '../../api/productApi';
 import { useGetSellerOrdersQuery } from '../../api/orderApi';
-import './AdminStyles.css';
+import '@/styles/css/pages/admin/AdminStyles.css';
 
 const DashboardHome = () => {
   const { data: products = [], isLoading: isLoadingProducts } = useGetProductsQuery();

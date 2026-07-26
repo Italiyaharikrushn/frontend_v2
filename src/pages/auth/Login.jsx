@@ -7,7 +7,7 @@ import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSl
 import { useLoginMutation } from '../../api/authApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './Login.css';
+import '@/styles/css/pages/auth/Login.css';
 
 const Login = () => {
   const navigate = useNavigate();

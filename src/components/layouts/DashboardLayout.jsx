@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../admin/Sidebar';
 import { Bell, Menu, User, X } from 'lucide-react';
-import './DashboardLayout.css';
+import '@/styles/css/components/DashboardLayout.css';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 
 const DashboardLayout = () => {

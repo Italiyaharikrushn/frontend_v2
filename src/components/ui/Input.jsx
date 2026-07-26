@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import './Input.css';
+import '@/styles/css/components/Input.css';
 
 const Input = forwardRef(({ 
   label, 

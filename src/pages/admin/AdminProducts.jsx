@@ -1,15 +1,9 @@
 import React, { useState, useRef } from 'react';
 import { Plus, Upload, Edit, Trash2, X, Save, Image as ImageIcon } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import {
-  useGetProductsQuery,
-  useCreateProductMutation,
-  useUpdateProductMutation,
-  useDeleteProductMutation,
-  useBulkUploadProductsMutation
-} from '../../api/productApi';
+import { useGetProductsQuery, useCreateProductMutation, useUpdateProductMutation, useDeleteProductMutation, useBulkUploadProductsMutation } from '../../api/productApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './AdminStyles.css';
+import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminProducts = () => {
   const { pushToast } = useToast();

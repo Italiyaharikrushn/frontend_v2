@@ -9,7 +9,7 @@ import { selectIsAuthenticated } from '../../redux/authSlice';
 import { useGetProductsQuery } from '../../api/productApi';
 import { useAddToBackendCartMutation } from '../../api/orderApi';
 import { useToast } from '../../components/ui/ToastProvider';
-import './Products.css';
+import '@/styles/css/pages/storefront/Products.css';
 
 const Products = () => {
   const dispatch = useDispatch();

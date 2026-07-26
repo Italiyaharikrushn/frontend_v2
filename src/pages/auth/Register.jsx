@@ -6,7 +6,7 @@ import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSl
 import Button from '../../components/ui/Button';
 import { useRegisterMutation } from '../../api/authApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
-import './Login.css';
+import '@/styles/css/pages/auth/Login.css';
 
 const Register = () => {
   const navigate = useNavigate();

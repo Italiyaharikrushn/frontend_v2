@@ -5,7 +5,7 @@ import Button from '../../components/ui/Button';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import heroImage from '../../assets/hero-banner.png';
 import { useGetProductsQuery } from '../../api/productApi';
-import './Home.css';
+import '@/styles/css/pages/storefront/Home.css';
 
 const Home = () => {
   const { data: products = [], isLoading } = useGetProductsQuery();

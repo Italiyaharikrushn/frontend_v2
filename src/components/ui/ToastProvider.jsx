@@ -1,6 +1,5 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
-
-const ToastContext = createContext(null);
+import React, { useCallback, useMemo, useState } from 'react';
+import { ToastContext, useToast } from '../../hooks/useToast';
 
 export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
@@ -32,10 +31,5 @@ export const ToastProvider = ({ children }) => {
   );
 };
 
-export const useToast = () => {
-  const context = useContext(ToastContext);
-  if (!context) {
-    throw new Error('useToast must be used within a ToastProvider');
-  }
-  return context;
-};
+export { useToast };
+
