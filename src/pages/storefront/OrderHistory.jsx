@@ -35,7 +35,7 @@ const OrderHistory = () => {
   };
 
   return (
-    <div className="fade-in" style={{ padding: '2rem 5%', minHeight: '80vh' }}>
+    <div className="fade-in" style={{ padding: '2rem 5%' }}>
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: 'var(--text-main)' }}>My Orders</h1>
         <p style={{ color: 'var(--text-muted)' }}>View your past orders and manage returns.</p>

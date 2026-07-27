@@ -160,12 +160,12 @@ const AdminOrders = () => {
   };
 
   return (
-    <div className="admin-page fade-in">
+    <div className="admin-page fade-in admin-full-height-page">
       {/* <div className="admin-header">
         <h1 className="admin-title">Orders Management</h1>
       </div> */}
 
-      <div className="glass-panel admin-panel-card">
+      <div className="glass-panel admin-panel-card admin-full-height-card">
         <div className="admin-tabs">
           <button
             className={`admin-tab ${activeTab === 'PENDING' ? 'active' : ''}`}
@@ -331,8 +331,6 @@ const AdminOrders = () => {
                           {downloadedLabels.includes(order.id) ? (
                             <>
                               <span style={{ color: '#10b981', fontSize: '0.8rem', fontWeight: '500' }}>Downloaded</span>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', background: '#f1f5f9', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '600', color: '#0f172a' }}>
-                              </div>
                             </>
                           ) : (
                             <span style={{ color: '#ef4444', fontSize: '0.8rem', fontWeight: '500', opacity: 0.8 }}>Not Downloaded</span>

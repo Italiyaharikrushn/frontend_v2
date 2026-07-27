@@ -1,6 +1,7 @@
 .dashboard-layout {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   background-color: var(--background);
 }
 
@@ -12,6 +13,8 @@
 }
 
 .dashboard-header {
+  flex-shrink: 0;
+  z-index: 50;
   min-height: 70px;
   background-color: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -79,6 +82,8 @@
   padding: 1rem;
   overflow-y: auto;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .dashboard-sidebar-overlay {

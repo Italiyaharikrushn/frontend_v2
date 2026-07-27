@@ -14,9 +14,9 @@ const StorefrontLayout = () => {
   }
 
   return (
-    <div className="storefront-layout">
+    <div className="storefront-layout" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Header />
-      <main className="main-content">
+      <main className="main-content" style={{ flexGrow: 1 }}>
         <Outlet />
       </main>
       <footer style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)', marginTop: '4rem', borderTop: '1px solid var(--border)' }}>

@@ -113,7 +113,7 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="admin-page fade-in">
+    <div className="admin-page fade-in admin-full-height-page">
       <div className="admin-header">
         <h1 className="admin-title">Products Management</h1>
         <div className="admin-actions">
@@ -181,8 +181,8 @@ const AdminProducts = () => {
         </div>
       )}
 
-      <div className="glass-panel admin-panel-card">
-        <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)' }}>Manage Listings</h2>
+      <div className="glass-panel admin-panel-card admin-full-height-card">
+        <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', flexShrink: 0 }}>Manage Listings</h2>
 
         {isLoading ? (
           <p style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>Loading products...</p>
