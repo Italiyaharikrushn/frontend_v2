@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import heroImage from '../../assets/hero-banner.png';
 import { useGetProductsQuery } from '../../api/productApi';
+import ProductDetails from './ProductDetails';
 import '@/styles/css/pages/storefront/Home.css';
 
 const Home = () => {
   const { data: products = [], isLoading } = useGetProductsQuery();
   const trendingProducts = [...products].slice(0, 4);
+  const [quickViewProductId, setQuickViewProductId] = useState(null);
 
   return (
     <div className="home-page">
@@ -59,9 +61,9 @@ const Home = () => {
                     <h3>{product.title}</h3>
                     <p className="feature-meta">Premium collection • Ready to wear</p>
                     <p className="feature-price">₹{product.price}</p>
-                    <Link to={`/product/${product.id}`} style={{ marginTop: 'auto' }}>
+                    <div onClick={() => setQuickViewProductId(product.id)} style={{ marginTop: 'auto' }}>
                       <Button variant="secondary" fullWidth>View Details</Button>
-                    </Link>
+                    </div>
                   </div>
                 </article>
               ))
@@ -73,6 +75,13 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {quickViewProductId && (
+        <ProductDetails 
+          productId={quickViewProductId} 
+          onClose={() => setQuickViewProductId(null)} 
+        />
+      )}
     </div>
   );
 };

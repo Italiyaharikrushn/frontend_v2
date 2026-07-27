@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ShoppingBag } from 'lucide-react';
 import Button from '../../components/ui/Button';
@@ -10,6 +10,7 @@ import { useGetProductsQuery } from '../../api/productApi';
 import { useAddToBackendCartMutation } from '../../api/orderApi';
 import { useToast } from '../../components/ui/ToastProvider';
 import '@/styles/css/pages/storefront/Products.css';
+import ProductDetails from './ProductDetails';
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const Products = () => {
   const searchQuery = queryParams.get('search');
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { pushToast } = useToast();
+  const [quickViewProductId, setQuickViewProductId] = useState(null);
 
   const { data: allProducts = [], isLoading } = useGetProductsQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
@@ -116,17 +118,17 @@ const Products = () => {
           const isActive = product.isActive ?? product.active ?? true;
           return (
             <div key={product.id} className="product-card glass-panel hover-lift">
-              <Link to={`/product/${product.id}`} className="product-image-container" style={{ display: 'block' }}>
+              <div onClick={() => setQuickViewProductId(product.id)} className="product-image-container" style={{ display: 'block', cursor: 'pointer' }}>
                 {product.images && product.images.length > 0 ? (
                   <img src={product.images[0]} alt={product.title} />
                 ) : (
                   <ShoppingBag size={48} className="product-placeholder-icon pulse-element" style={{ animationDuration: '4s' }} />
                 )}
-              </Link>
+              </div>
               <div className="product-details">
-                <Link to={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div onClick={() => setQuickViewProductId(product.id)} style={{ cursor: 'pointer', color: 'inherit' }}>
                   <h3 className="product-name">{product.title}</h3>
-                </Link>
+                </div>
                 <p className="product-price">₹{product.price}</p>
                 <div className="product-actions">
                   <Button
@@ -147,6 +149,13 @@ const Products = () => {
           </div>
         )}
       </div>
+
+      {quickViewProductId && (
+        <ProductDetails 
+          productId={quickViewProductId} 
+          onClose={() => setQuickViewProductId(null)} 
+        />
+      )}
     </div>
   );
 };

@@ -5,6 +5,59 @@
   background-color: var(--bg-main, #ffffff);
 }
 
+/* Modal specific styles */
+.product-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.product-modal-content {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  position: relative;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.product-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  z-index: 10;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.product-modal-close:hover {
+  background: var(--surface-hover);
+  color: var(--error);
+}
+
+.product-details-container.modal-mode {
+  padding: 20px;
+  margin: 0;
+  border-radius: var(--radius-lg);
+}
+
+
 .product-details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

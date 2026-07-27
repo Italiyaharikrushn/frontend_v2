@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChevronDown, Shield, Clock, Activity, Droplets, ShoppingBag } from 'lucide-react';
+import { ChevronDown, Shield, Clock, Activity, Droplets, ShoppingBag, X } from 'lucide-react';
 import { useGetProductByIdQuery } from '../../api/productApi';
 import { useAddToBackendCartMutation } from '../../api/orderApi';
 import { selectIsAuthenticated } from '../../redux/authSlice';
@@ -9,8 +10,10 @@ import { addItem } from '../../redux/cartSlice';
 import { useToast } from '../../components/ui/ToastProvider';
 import '@/styles/css/pages/storefront/ProductDetails.css';
 
-const ProductDetails = () => {
-  const { id } = useParams();
+const ProductDetails = ({ productId: propId, onClose }) => {
+  const { id: paramId } = useParams();
+  const id = propId || paramId;
+  const isModal = !!onClose;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pushToast } = useToast();
@@ -21,11 +24,22 @@ const ProductDetails = () => {
   
   const [pincode, setPincode] = useState('');
 
+  useEffect(() => {
+    if (isModal) {
+      // Prevent background scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [isModal]);
+
   if (isLoading) {
     return <div className="product-details-container loading"><div className="spinner"></div></div>;
   }
 
   if (isError || !product) {
+    if (isModal) return null;
     return (
       <div className="product-details-container error">
         <h2>Product not found</h2>
@@ -63,8 +77,8 @@ const ProductDetails = () => {
   const price = parseFloat(product.price) || 0;
   const mrp = Math.round(price * 1.55); // 55% higher to look like a discount
 
-  return (
-    <div className="product-details-container fade-in">
+  const content = (
+    <div className={`product-details-container fade-in ${isModal ? 'modal-mode' : ''}`}>
       <div className="product-details-grid">
         
         {/* Left Column - Image */}
@@ -83,9 +97,9 @@ const ProductDetails = () => {
         {/* Right Column - Details */}
         <div className="product-info-section">
           <p className="product-brand">
-            {product.brand || 'SYLVI'}
+            {product.brand}
             {product.category && (
-              <span style={{ marginLeft: '8px', paddingLeft: '8px', borderLeft: '1px solid #ccc', textTransform: 'capitalize' }}>
+              <span>
                 Category: {product.category}
               </span>
             )}
@@ -97,35 +111,9 @@ const ProductDetails = () => {
           </div>
 
           <div className="product-pricing">
-            <span className="mrp">MRP <s>Rs. {mrp.toFixed(2)}</s></span>
             <span className="current-price">Rs. {price.toFixed(2)}</span>
           </div>
-          <p className="tax-info">MRP (Inclusive of all taxes) Shipping calculated at checkout.</p>
-
-          {/* Static Colors Section */}
-          <div className="available-colors">
-            <p className="section-label">AVAILABLE COLORS</p>
-            <div className="color-options">
-              <div className="color-option active">
-                <div className="color-thumbnail black-watch-thumb">
-                    {product.images && product.images.length > 0 ? <img src={product.images[0]} alt="Black" /> : <div className="thumb-placeholder bg-black"></div>}
-                </div>
-                <span>Black</span>
-              </div>
-              <div className="color-option">
-                <div className="color-thumbnail rosegold-watch-thumb">
-                    {product.images && product.images.length > 0 ? <img src={product.images[0]} alt="Rosegold" style={{filter: 'sepia(1) hue-rotate(330deg) saturate(1.5)'}} /> : <div className="thumb-placeholder bg-rosegold"></div>}
-                </div>
-                <span>Rosegold</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="action-links-container">
-            <div className="right-links">
-                <span className="action-link">OFFERS</span>
-            </div>
-          </div>
+          <div className="action-links-container"></div>
 
           <div className="product-action-buttons">
             <button 
@@ -142,19 +130,6 @@ const ProductDetails = () => {
             >
                 BUY NOW
             </button>
-          </div>
-
-          <div className="delivery-section">
-            <p className="section-label">DELIVERY</p>
-            <div className="delivery-input-group">
-              <input 
-                type="text" 
-                placeholder="Enter Pincode" 
-                value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
-              />
-              <button className="btn-check-pincode">CHECK</button>
-            </div>
           </div>
 
           <div className="features-section">
@@ -187,6 +162,20 @@ const ProductDetails = () => {
       </div>
     </div>
   );
+
+  if (isModal) {
+    return createPortal(
+      <div className="product-modal-backdrop fade-in" onClick={onClose}>
+        <div className="product-modal-content" onClick={e => e.stopPropagation()}>
+           <button className="product-modal-close" onClick={onClose}><X size={24} /></button>
+           {content}
+        </div>
+      </div>,
+      document.body
+    );
+  }
+
+  return content;
 };
 
 export default ProductDetails;
