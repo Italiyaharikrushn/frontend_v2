@@ -6,12 +6,12 @@ import DashboardLayout from '@/components/layouts/DashboardLayout';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 
 // Admin Pages
-import DashboardHome from './DashboardHome';
-import AdminProducts from './AdminProducts';
-import AdminOrders from './AdminOrders';
-import AdminCustomers from './AdminCustomers';
-import AdminReports from './AdminReports';
-import AdminSettings from './AdminSettings';
+import DashboardHome from '../pages/admin/DashboardHome';
+import AdminProducts from '../pages/admin/AdminProducts';
+import AdminOrders from '../pages/admin/AdminOrders';
+import AdminCustomers from '../pages/admin/AdminCustomers';
+import AdminReports from '../pages/admin/AdminReports';
+import AdminSettings from '../pages/admin/AdminSettings';
 
 const AdminRoutes = () => {
   return (

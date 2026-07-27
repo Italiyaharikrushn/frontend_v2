@@ -1,12 +1,15 @@
 import React from 'react';
-import AppRoutes from './pages/AppRoutes';
+import AppRoutes from './routes/AppRoutes';
 import { ToastProvider } from './components/ui/ToastProvider';
+import ErrorBoundary from './components/common/ErrorBoundary';
 
 function App() {
   return (
-    <ToastProvider>
-      <AppRoutes />
-    </ToastProvider>
+    <ErrorBoundary>
+      <ToastProvider>
+        <AppRoutes />
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }
 

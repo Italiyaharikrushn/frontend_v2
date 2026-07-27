@@ -6,13 +6,13 @@ import StorefrontLayout from '@/components/layouts/StorefrontLayout';
 import ProtectedRoute from '@/components/common/ProtectedRoute';
 
 // Storefront Pages
-import Home from './Home';
-import Products from './Products';
-import ProductDetails from './ProductDetails';
-import Cart from './Cart';
-import Contact from './Contact';
-import Checkout from './Checkout';
-import OrderHistory from './OrderHistory';
+import Home from '../pages/storefront/Home';
+import Products from '../pages/storefront/Products';
+import ProductDetails from '../pages/storefront/ProductDetails';
+import Cart from '../pages/storefront/Cart';
+import Contact from '../pages/storefront/Contact';
+import Checkout from '../pages/storefront/Checkout';
+import OrderHistory from '../pages/storefront/OrderHistory';
 
 const CustomerRoutes = () => {
   return (
