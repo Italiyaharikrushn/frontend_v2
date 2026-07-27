@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from 'react';
-import { Download, Filter, Search } from 'lucide-react';
+import { Download, Filter, Search, Truck } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetSellerOrdersQuery, useUpdateOrderStatusMutation } from '../../api/orderApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
@@ -324,19 +324,23 @@ const AdminOrders = () => {
                         </Button>
                       )}
                       {activeTab === 'READY_TO_SHIP' && (
-                        <Button variant="secondary" onClick={() => handleDownloadSingleLabel(order)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
-                          <Download size={14} /> Label
-                        </Button>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
+                          <Button variant="primary" onClick={() => handleDownloadSingleLabel(order)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', display: 'flex', gap: '0.4rem', alignItems: 'center', width: '100%', justifyContent: 'center' }}>
+                            <Download size={14} /> Label
+                          </Button>
+                          {downloadedLabels.includes(order.id) ? (
+                            <>
+                              <span style={{ color: '#10b981', fontSize: '0.8rem', fontWeight: '500' }}>Downloaded</span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', background: '#f1f5f9', padding: '0.25rem 0.75rem', borderRadius: '999px', fontSize: '0.75rem', fontWeight: '600', color: '#0f172a' }}>
+                              </div>
+                            </>
+                          ) : (
+                            <span style={{ color: '#ef4444', fontSize: '0.8rem', fontWeight: '500', opacity: 0.8 }}>Not Downloaded</span>
+                          )}
+                        </div>
                       )}
                     </td>
                   </tr>
-                  {activeTab === 'READY_TO_SHIP' && downloadedLabels.includes(order.id) && (
-                    <tr>
-                      <td colSpan="8" style={{ padding: '0.75rem 1rem', background: 'var(--surface)', color: '#10b981', fontSize: '0.85rem', fontWeight: '500', textAlign: 'center' }}>
-                        downloaded
-                      </td>
-                    </tr>
-                  )}
                 </Fragment>
               )) : (
                 <tr>
