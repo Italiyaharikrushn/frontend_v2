@@ -116,6 +116,7 @@ const Products = () => {
           Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)
         ) : products.length > 0 ? products.map((product) => {
           const isActive = product.isActive ?? product.active ?? true;
+          const isPhoneCover = product.category?.toLowerCase().includes('cover') || product.title?.toLowerCase().includes('cover');
           return (
             <div key={product.id} className="product-card glass-panel hover-lift">
               <div onClick={() => setQuickViewProductId(product.id)} className="product-image-container" style={{ display: 'block', cursor: 'pointer' }}>
@@ -131,14 +132,25 @@ const Products = () => {
                 </div>
                 <p className="product-price">₹{product.price}</p>
                 <div className="product-actions">
-                  <Button
-                    fullWidth
-                    variant={isActive ? 'primary' : 'secondary'}
-                    disabled={!isActive}
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    {isActive ? 'Add to Cart' : 'Unavailable'}
-                  </Button>
+                  {isPhoneCover ? (
+                    <Button
+                      fullWidth
+                      variant={isActive ? 'primary' : 'secondary'}
+                      disabled={!isActive}
+                      onClick={() => setQuickViewProductId(product.id)}
+                    >
+                      {isActive ? 'Select Model' : 'Unavailable'}
+                    </Button>
+                  ) : (
+                    <Button
+                      fullWidth
+                      variant={isActive ? 'primary' : 'secondary'}
+                      disabled={!isActive}
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      {isActive ? 'Add to Cart' : 'Unavailable'}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

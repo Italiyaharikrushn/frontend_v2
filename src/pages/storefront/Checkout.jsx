@@ -3,6 +3,7 @@ import { ShoppingBag, CreditCard, Wallet, Lock, User, MapPin } from 'lucide-reac
 import Button from '../../components/ui/Button';
 import PhoneInput from '../../components/ui/PhoneInput';
 import { useCheckoutLogic } from '../../hooks/useCheckoutLogic';
+import { useGetUserAddressesQuery } from '../../api/orderApi';
 import '@/styles/css/pages/storefront/Checkout.css';
 
 const Checkout = () => {
@@ -11,6 +12,8 @@ const Checkout = () => {
     cartItems,
     paymentMethod,
     setPaymentMethod,
+    selectedAddressId,
+    setSelectedAddressId,
     isProcessing,
     subtotal,
     tax,
@@ -19,6 +22,14 @@ const Checkout = () => {
     handleSubmit,
     navigate
   } = useCheckoutLogic();
+
+  const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
+
+  React.useEffect(() => {
+    if (addresses.length >= 5 && selectedAddressId === 'new') {
+      setSelectedAddressId(addresses[0]?.id || 'new');
+    }
+  }, [addresses, selectedAddressId, setSelectedAddressId]);
 
   if (cartItems.length === 0) {
     return (
@@ -61,40 +72,86 @@ const Checkout = () => {
 
             <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
               <h2 className="form-card-title"><MapPin size={20} /> Shipping Address</h2>
-              <div className="form-grid">
-                <div className="input-group">
-                  <label htmlFor="firstName">First name</label>
-                  <input type="text" id="firstName" required />
+              
+              {!isLoadingAddresses && addresses.length > 0 && (
+                <div className="address-selector" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {addresses.map(addr => (
+                    <label key={addr.id} className={`payment-method-card ${selectedAddressId === addr.id ? 'active' : ''}`} style={{ justifyContent: 'flex-start', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }}>
+                      <input 
+                        type="radio" 
+                        name="addressSelection" 
+                        value={addr.id} 
+                        checked={selectedAddressId === addr.id}
+                        onChange={() => setSelectedAddressId(addr.id)}
+                        style={{ marginRight: '1rem', marginTop: '0.25rem' }}
+                      />
+                      <div style={{ lineHeight: '1.4' }}>
+                        <strong>{addr.fullName}</strong><br />
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                          {addr.streetAddress}, {addr.city}, {addr.state} {addr.postalCode}<br />
+                          {addr.country} • {addr.phoneNumber}
+                        </span>
+                      </div>
+                    </label>
+                  ))}
+                  
+                  {addresses.length < 5 && (
+                    <label className={`payment-method-card ${selectedAddressId === 'new' ? 'active' : ''}`} style={{ justifyContent: 'flex-start', cursor: 'pointer', padding: '1rem' }}>
+                      <input 
+                        type="radio" 
+                        name="addressSelection" 
+                        value="new"
+                        checked={selectedAddressId === 'new'}
+                        onChange={() => setSelectedAddressId('new')}
+                        style={{ marginRight: '1rem' }}
+                      />
+                      <strong>Add a New Address</strong>
+                    </label>
+                  )}
+                  {addresses.length >= 5 && (
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+                      You have reached the maximum limit of 5 saved addresses. Please select one of the existing addresses.
+                    </p>
+                  )}
                 </div>
-                <div className="input-group">
-                  <label htmlFor="lastName">Last name</label>
-                  <input type="text" id="lastName" required />
+              )}
+
+              {selectedAddressId === 'new' && (
+                <div className="form-grid fade-in">
+                  <div className="input-group">
+                    <label htmlFor="firstName">First name</label>
+                    <input type="text" id="firstName" required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="lastName">Last name</label>
+                    <input type="text" id="lastName" required />
+                  </div>
+                  <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                    <label htmlFor="address">Street Address</label>
+                    <input type="text" id="address" required placeholder="Street address or P.O. Box" />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="city">City</label>
+                    <input type="text" id="city" required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="state">State / Province</label>
+                    <input type="text" id="state" required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="zip">ZIP / Postal code</label>
+                    <input type="text" id="zip" required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="country">Country</label>
+                    <select id="country" required defaultValue="India">
+                      <option value="India">India</option>
+                      <option value="United States">United States</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                  <label htmlFor="address">Street Address</label>
-                  <input type="text" id="address" required placeholder="Street address or P.O. Box" />
-                </div>
-                <div className="input-group">
-                  <label htmlFor="city">City</label>
-                  <input type="text" id="city" required />
-                </div>
-                <div className="input-group">
-                  <label htmlFor="state">State / Province</label>
-                  <input type="text" id="state" required />
-                </div>
-                <div className="input-group">
-                  <label htmlFor="zip">ZIP / Postal code</label>
-                  <input type="text" id="zip" required />
-                </div>
-                <div className="input-group">
-                  <label htmlFor="country">Country</label>
-                  <select id="country" required defaultValue="India">
-                    <option value="India">India</option>
-                    <option value="United States">United States</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                  </select>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="form-card glass-panel hover-lift">
@@ -146,7 +203,10 @@ const Checkout = () => {
                     <ShoppingBag size={20} className="product-placeholder-icon" style={{ opacity: 0.3 }} />
                   </div>
                   <div className="summary-item-details">
-                    <span className="summary-item-name">{item.name}</span>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <span className="summary-item-name">{item.name}</span>
+                      {item.phoneModel && <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Model: {item.phoneModel}</span>}
+                    </div>
                     <span className="summary-item-qty">Qty: {item.quantity}</span>
                   </div>
                 </div>

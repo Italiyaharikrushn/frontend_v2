@@ -10,12 +10,12 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
-  const handleQuantity = (id, change) => {
-    dispatch(updateQuantity({ id, change }));
+  const handleQuantity = (id, cartItemId, change) => {
+    dispatch(updateQuantity({ id, cartItemId, change }));
   };
 
-  const handleRemove = (id) => {
-    dispatch(removeItem(id));
+  const handleRemove = async (id, cartItemId) => {
+    dispatch(removeItem({ id, cartItemId }));
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -32,7 +32,7 @@ const Cart = () => {
         <div className="cart-content">
           <div className="cart-items-container">
             {cartItems.map((item) => (
-              <div key={item.id} className="cart-item glass-panel hover-lift">
+              <div key={item.cartItemId || item.id} className="cart-item glass-panel hover-lift">
                 <div className="cart-item-image">
                   {item.image || (item.images && item.images.length > 0) ? (
                     <img
@@ -49,18 +49,19 @@ const Cart = () => {
                 </div>
                 <div className="cart-item-details">
                   <h3 className="cart-item-title">{item.name || item.title}</h3>
+                  {item.phoneModel && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Model: {item.phoneModel}</span>}
                   <p className="cart-item-price">₹{(item.price || 0).toFixed(2)}</p>
                   <div className="cart-item-quantity">
-                    <button className="quantity-btn" onClick={() => handleQuantity(item.id, -1)} aria-label={`Decrease quantity for ${item.name || item.title}`}>
+                    <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, -1)} aria-label={`Decrease quantity for ${item.name || item.title}`}>
                       <Minus size={16} />
                     </button>
                     <span className="quantity-value">{item.quantity}</span>
-                    <button className="quantity-btn" onClick={() => handleQuantity(item.id, 1)} aria-label={`Increase quantity for ${item.name || item.title}`}>
+                    <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, 1)} aria-label={`Increase quantity for ${item.name || item.title}`}>
                       <Plus size={16} />
                     </button>
                   </div>
                 </div>
-                <button className="remove-btn btn-ghost" onClick={() => handleRemove(item.id)} title="Remove item" aria-label={`Remove ${item.name || item.title}`}>
+                <button className="remove-btn btn-ghost" onClick={() => handleRemove(item.id, item.cartItemId)} title="Remove item" aria-label={`Remove ${item.name || item.title}`}>
                   <Trash2 size={20} />
                 </button>
               </div>

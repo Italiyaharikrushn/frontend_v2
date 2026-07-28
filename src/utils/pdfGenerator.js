@@ -63,7 +63,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
           const qty = item.quantity || 1;
           totalQty += qty;
           tableRows.push([
-            item.productName || 'Product',
+            item.productName ? (item.phoneModel ? `${item.productName}\n(Model: ${item.phoneModel})` : item.productName) : 'Product',
             qty.toString(),
             `Rs. ${item.price || 0}`
           ]);

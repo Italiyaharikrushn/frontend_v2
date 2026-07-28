@@ -49,12 +49,18 @@ export const orderApi = createApi({
                 url: "/api/address/add",
                 method: "POST",
                 body: addressData
-            })
+            }),
+            invalidatesTags: ['Order']
+        }),
+
+        getUserAddresses: builder.query({
+            query: () => "/api/address/user",
+            providesTags: ['Order'],
         }),
 
         addToBackendCart: builder.mutation({
-            query: ({ productId, quantity }) => ({
-                url: `/api/cart/add?productId=${productId}&quantity=${quantity}`,
+            query: ({ productId, quantity, phoneModel }) => ({
+                url: `/api/cart/add?productId=${productId}&quantity=${quantity}${phoneModel ? `&phoneModel=${encodeURIComponent(phoneModel)}` : ''}`,
                 method: "POST"
             })
         }),
@@ -94,6 +100,7 @@ export const {
     useReturnCustomerOrderMutation,
     useCancelCustomerOrderMutation,
     useAddAddressMutation,
+    useGetUserAddressesQuery,
     useAddToBackendCartMutation,
     useClearBackendCartMutation,
     useCheckoutOrderMutation,

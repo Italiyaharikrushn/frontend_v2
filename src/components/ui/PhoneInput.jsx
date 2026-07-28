@@ -30,7 +30,7 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
     const newNumber = e.target.value;
     setPhoneNumber(newNumber);
     if (onChange) {
-      onChange(`${country.code}${newNumber}`);
+      onChange(`${country.code}${newNumber.replace(/\s+/g, '')}`);
     }
   };
 
@@ -39,7 +39,7 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
     setIsOpen(false);
     setSearch('');
     if (onChange) {
-      onChange(`${c.code}${phoneNumber}`);
+      onChange(`${c.code}${phoneNumber.replace(/\s+/g, '')}`);
     }
   };
 
@@ -101,7 +101,7 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
           className="phone-number-field"
         />
         {/* Hidden input for native form submission */}
-        <input type="hidden" id={id} name={name} value={`${country.code}${phoneNumber}`} />
+        <input type="hidden" id={id} name={name} value={`${country.code}${phoneNumber.replace(/\s+/g, '')}`} />
       </div>
       {/[+\-]/.test(phoneNumber) && (
         <span className="phone-error">Contact number should not contain + or - signs.</span>

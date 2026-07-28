@@ -8,24 +8,33 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     updateQuantity: (state, action) => {
-      const { id, change } = action.payload;
-      const item = state.items.find(item => item.id === id);
+      const { id, cartItemId, change } = action.payload;
+      const item = state.items.find(item => (cartItemId ? item.cartItemId === cartItemId : item.id === id));
       if (item) {
         item.quantity = Math.max(1, item.quantity + change);
       }
       saveCartState(state);
     },
     removeItem: (state, action) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
+      const { id, cartItemId } = action.payload;
+      state.items = state.items.filter(item => (cartItemId ? item.cartItemId !== cartItemId : item.id !== id));
       saveCartState(state);
     },
     addItem: (state, action) => {
-      const existingItem = state.items.find(item => item.id === action.payload.id);
+      const existingItem = state.items.find(item => 
+        item.id === action.payload.id && 
+        (item.phoneModel || '') === (action.payload.phoneModel || '')
+      );
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.items.push({ ...action.payload, quantity: 1 });
+        state.items.push({ 
+          ...action.payload, 
+          quantity: 1, 
+          cartItemId: `${action.payload.id}-${action.payload.phoneModel || 'default'}-${Date.now()}`
+        });
       }
+      saveCartState(state);
       saveCartState(state);
     },
     clearCart: (state) => {

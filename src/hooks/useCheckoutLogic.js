@@ -10,6 +10,7 @@ export const useCheckoutLogic = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [selectedAddressId, setSelectedAddressId] = useState('new');
   const [isProcessing, setIsProcessing] = useState(false);
   const { pushToast } = useToast();
 
@@ -28,27 +29,34 @@ export const useCheckoutLogic = () => {
     setIsProcessing(true);
 
     try {
-      const addressPayload = {
-        fullName: `${e.target.firstName.value} ${e.target.lastName.value}`,
-        streetAddress: e.target.address.value,
-        city: e.target.city.value,
-        state: e.target.state.value,
-        postalCode: e.target.zip.value,
-        country: e.target.country.value,
-        phoneNumber: e.target.phone.value,
-      };
+      let finalAddressId;
 
-      const savedAddress = await addAddress(addressPayload).unwrap();
-      if (!savedAddress || !savedAddress.id) {
-        throw new Error('Failed to save address properly.');
+      if (selectedAddressId === 'new') {
+        const addressPayload = {
+          fullName: `${e.target.firstName.value} ${e.target.lastName.value}`,
+          streetAddress: e.target.address.value,
+          city: e.target.city.value,
+          state: e.target.state.value,
+          postalCode: e.target.zip.value,
+          country: e.target.country.value,
+          phoneNumber: e.target.phone.value,
+        };
+
+        const savedAddress = await addAddress(addressPayload).unwrap();
+        if (!savedAddress || !savedAddress.id) {
+          throw new Error('Failed to save address properly.');
+        }
+        finalAddressId = savedAddress.id;
+      } else {
+        finalAddressId = selectedAddressId;
       }
 
       await clearBackendCart().unwrap();
       for (const item of cartItems) {
-        await addToBackendCart({ productId: item.id, quantity: item.quantity }).unwrap();
+        await addToBackendCart({ productId: item.id, quantity: item.quantity, phoneModel: item.phoneModel }).unwrap();
       }
 
-      await checkoutOrder(savedAddress.id).unwrap();
+      await checkoutOrder(finalAddressId).unwrap();
 
       setIsProcessing(false);
       dispatch(clearCart());
@@ -65,6 +73,8 @@ export const useCheckoutLogic = () => {
     cartItems,
     paymentMethod,
     setPaymentMethod,
+    selectedAddressId,
+    setSelectedAddressId,
     isProcessing,
     subtotal,
     tax,

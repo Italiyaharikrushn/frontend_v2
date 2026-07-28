@@ -180,8 +180,9 @@ const AdminOrders = () => {
                       {order.orderItems && order.orderItems.length > 0 ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                           {order.orderItems.map((item, index) => (
-                            <div key={index} style={{ height: '50px', display: 'flex', alignItems: 'center' }}>
-                              {item.productName || 'Product'}
+                            <div key={index} style={{ height: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                              <span>{item.productName || 'Product'}</span>
+                              {item.phoneModel && <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Model: {item.phoneModel}</span>}
                             </div>
                           ))}
                         </div>

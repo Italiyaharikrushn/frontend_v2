@@ -46,7 +46,11 @@ const AdminSettings = () => {
 
   const handleSave = async () => {
     try {
-      await updateSettings(formData).unwrap();
+      const payload = {
+        ...formData,
+        contactNo: formData.contactNo.replace(/\s+/g, '')
+      };
+      await updateSettings(payload).unwrap();
       pushToast('Store settings updated successfully!', 'success');
     } catch (err) {
       console.error('Failed to update settings:', err);

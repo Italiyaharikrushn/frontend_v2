@@ -23,6 +23,9 @@ const ProductDetails = ({ productId: propId, onClose }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   
   const [pincode, setPincode] = useState('');
+  const [phoneModel, setPhoneModel] = useState('');
+  
+  const isPhoneCover = product ? (product.category?.toLowerCase().includes('cover') || product.title?.toLowerCase().includes('cover')) : false;
 
   useEffect(() => {
     if (isModal) {
@@ -55,13 +58,18 @@ const ProductDetails = ({ productId: propId, onClose }) => {
       price: parseFloat(product.price),
       category: product.category || product.globalCategory || 'general',
       image: (product.images && product.images.length > 0) ? product.images[0] : null,
+      phoneModel: isPhoneCover ? phoneModel : undefined,
     }));
 
     pushToast(`${product.title} added to your cart.`, 'success');
 
     if (isAuthenticated) {
       try {
-        await addToBackendCart({ productId: product.id, quantity: 1 }).unwrap();
+        await addToBackendCart({ 
+            productId: product.id, 
+            quantity: 1, 
+            phoneModel: isPhoneCover ? phoneModel : undefined 
+        }).unwrap();
       } catch (error) {
         console.error('Failed to save item to database cart:', error);
       }
@@ -114,19 +122,33 @@ const ProductDetails = ({ productId: propId, onClose }) => {
             <span className="current-price">Rs. {price.toFixed(2)}</span>
           </div>
           <div className="action-links-container"></div>
+          
+          {isPhoneCover && (
+            <div className="phone-model-input" style={{ marginBottom: '1.5rem' }}>
+              <label htmlFor="phoneModel" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', color: 'var(--text-main)' }}>Phone Model <span style={{color: 'red'}}>*</span></label>
+              <input 
+                type="text" 
+                id="phoneModel" 
+                value={phoneModel} 
+                onChange={(e) => setPhoneModel(e.target.value)} 
+                placeholder="e.g. iPhone 17 Pro Max, v25 pro" 
+                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)' }}
+              />
+            </div>
+          )}
 
           <div className="product-action-buttons">
             <button 
                 className="btn-add-to-cart" 
                 onClick={handleAddToCart}
-                disabled={!product.active || isAdding}
+                disabled={!product.active || isAdding || (isPhoneCover && !phoneModel.trim())}
             >
                 ADD TO CART
             </button>
             <button 
                 className="btn-buy-now" 
                 onClick={handleBuyNow}
-                disabled={!product.active || isAdding}
+                disabled={!product.active || isAdding || (isPhoneCover && !phoneModel.trim())}
             >
                 BUY NOW
             </button>
