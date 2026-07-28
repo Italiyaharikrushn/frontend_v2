@@ -20,7 +20,7 @@ const AdminProducts = () => {
     sku: '',
     image: '',
     imagePreview: '',
-    category: '', // Treat as global category for simple dummy backend mapping
+    category: '',
     subCategory: '',
     price: '',
     stock: '',
@@ -215,7 +215,6 @@ const AdminProducts = () => {
                     <td>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{ fontWeight: '600', color: 'var(--text-main)' }}>{product.title || 'Untitled'}</span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>ID: {product.id} {product.category ? `• ${product.category}` : ''}</span>
                       </div>
                     </td>
                     <td>{product.sku || 'N/A'}</td>
