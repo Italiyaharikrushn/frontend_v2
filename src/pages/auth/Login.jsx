@@ -1,68 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Lock, User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSlice';
-import { useLoginMutation } from '../../api/authApi';
-import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
-import { useToast } from '../../components/ui/ToastProvider';
+import { useLogin } from '../../hooks/useLogin';
 import '@/styles/css/pages/auth/Login.css';
 
 const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [loginApi, { isLoading }] = useLoginMutation();
-  const { data: storeSettings } = useGetPublicStoreSettingsQuery();
-  const { pushToast } = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const userRole = useSelector(selectUserRole);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(userRole === 'ADMIN' ? '/admin/dashboard' : '/', { replace: true });
-    }
-  }, [isAuthenticated, navigate, userRole]);
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-
-    if (!email || !password) {
-      setError('Please enter both email and password.');
-      return;
-    }
-
-    try {
-      const response = await loginApi({ email, password }).unwrap();
-      let userRole = 'CUSTOMER';
-      if (response.role === 'ROLE_ADMIN' || response.role === 'ADMIN') {
-        userRole = 'ADMIN';
-      }
-
-      dispatch(login({
-        role: userRole,
-        token: response.token,
-        name: response.name || response.customerName || null,
-        email: response.email || email
-      }));
-      pushToast('Welcome back! You are now signed in.', 'success');
-
-      if (userRole === 'ADMIN') {
-        navigate('/admin/dashboard', { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }
-    } catch (err) {
-      console.error(err);
-      setError('Invalid email or password.');
-    }
-  };
+  const { email, setEmail, password, setPassword, showPassword, setShowPassword, error, isLoading, storeSettings, handleLogin } = useLogin();
 
   return (
     <div className="login-page fade-in">

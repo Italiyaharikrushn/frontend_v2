@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MessageSquare, Users, Mail } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { useGetAllMessagesQuery, useReplyToMessageMutation } from '../../api/contactApi';
-import { useGetCustomersQuery } from '../../api/authApi';
-import { useToast } from '../../components/ui/ToastProvider';
+import AdminCustomerTable from '../../components/admin/AdminCustomerTable';
+import { useAdminCustomers } from '../../hooks/useAdminCustomers';
 import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminCustomers = () => {
-  const { pushToast } = useToast();
-  const { data: messages = [], isLoading: isLoadingMessages, refetch } = useGetAllMessagesQuery();
-  const { data: realCustomers = [], isLoading: isLoadingCustomers } = useGetCustomersQuery();
-  const [replyToMessage] = useReplyToMessageMutation();
-
-  const handleReply = async (id) => {
-    const replyText = window.prompt("Enter your reply message:");
-    if (replyText) {
-      try {
-        await replyToMessage({ id, replyText }).unwrap();
-        pushToast('Reply sent successfully!', 'success');
-      } catch (err) {
-        console.error('Failed to send reply:', err);
-        pushToast('Failed to send reply.', 'error');
-      }
-    }
-  };
+  const {
+    messages,
+    isLoadingMessages,
+    realCustomers,
+    isLoadingCustomers,
+    handleReply
+  } = useAdminCustomers();
 
   return (
     <div className="admin-page fade-in">
@@ -37,42 +26,7 @@ const AdminCustomers = () => {
             <Users size={20} /> Customer Directory
           </h2>
 
-          <div className="admin-table-container">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Total Orders</th>
-                  <th>Total Spent</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoadingCustomers ? (
-                  <tr>
-                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>Loading customers...</td>
-                  </tr>
-                ) : realCustomers.length > 0 ? (
-                  realCustomers.map(customer => (
-                    <tr key={customer.id}>
-                      <td style={{ fontWeight: '600' }}>{customer.name}</td>
-                      <td>{customer.email}</td>
-                      <td>{customer.orders || 0}</td>
-                      <td>{customer.spent || '₹0'}</td>
-                      <td>
-                        <span className="status-badge status-active">Active</span>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No customers found</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+          <AdminCustomerTable realCustomers={realCustomers} isLoadingCustomers={isLoadingCustomers} />
         </div>
 
         <div className="glass-panel admin-panel-card" style={{ height: 'fit-content' }}>
