@@ -4,6 +4,7 @@ import Button from '../../components/ui/Button';
 import { useSubmitMessageMutation } from '../../api/contactApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 import { useToast } from '../../components/ui/ToastProvider';
+import { formatPhoneNumber } from '../../utils/formatters';
 import '@/styles/css/pages/storefront/Contact.css';
 
 const Contact = () => {
@@ -64,7 +65,7 @@ const Contact = () => {
                 </div>
                 <div className="info-details">
                   <h3>Call Us</h3>
-                  <p>{storeSettings?.contactNo}<br />Mon-Fri, 9:00 AM - 6:00 PM (IST)</p>
+                  <p>{formatPhoneNumber(storeSettings?.contactNo)}<br />Mon-Fri, 9:00 AM - 6:00 PM (IST)</p>
                 </div>
               </div>
 

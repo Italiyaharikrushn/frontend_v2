@@ -1,5 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { formatPhoneNumber } from './formatters';
 
 export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
     if (!orderIdsToPrint || orderIdsToPrint.length === 0) return;
@@ -33,7 +34,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
         const cityState = `${storeSettings?.city || ''} ${storeSettings?.state || ''} ${storeSettings?.pincode || ''}`.trim();
         if (cityState) { doc.text(cityState, 14, adminY); adminY += 5; }
       }
-      if (storeSettings?.contactNo) { doc.text(`Phone: ${storeSettings.contactNo}`, 14, adminY); }
+      if (storeSettings?.contactNo) { doc.text(`Phone: ${formatPhoneNumber(storeSettings.contactNo)}`, 14, adminY); }
 
       // Customer Details
       doc.setFontSize(12);
@@ -45,6 +46,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
       const addr = order.shippingAddress;
       let addrY = 60;
       if (addr) {
+        if (addr.phoneNumber) { doc.text(`Phone: ${formatPhoneNumber(addr.phoneNumber)}`, 120, addrY); addrY += 5; }
         if (addr.street) { doc.text(addr.street, 120, addrY); addrY += 5; }
         if (addr.city || addr.state) { doc.text(`${addr.city || ''}, ${addr.state || ''}`, 120, addrY); addrY += 5; }
         if (addr.zipCode) { doc.text(`Zip: ${addr.zipCode}`, 120, addrY); addrY += 5; }

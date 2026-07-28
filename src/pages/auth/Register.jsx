@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { UserPlus, User, Lock, Mail, Phone, Store, Eye, EyeOff } from 'lucide-react';
 import { login, selectIsAuthenticated, selectUserRole } from '../../redux/authSlice';
 import Button from '../../components/ui/Button';
+import PhoneInput from '../../components/ui/PhoneInput';
 import { useRegisterMutation } from '../../api/authApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 import '@/styles/css/pages/auth/Login.css';
@@ -106,7 +107,13 @@ const Register = () => {
 
           <div className="input-group">
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={16} /> Phone Number</label>
-            <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+91 98765 43211" required style={{ width: '100%', padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+            <PhoneInput 
+              name="phone"
+              id="phone"
+              value={formData.phone}
+              onChange={(val) => setFormData({ ...formData, phone: val })}
+              required
+            />
           </div>
 
 

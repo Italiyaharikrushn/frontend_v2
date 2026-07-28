@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Store, Bell, Shield, Phone, MapPin } from 'lucide-react';
 import Button from '../../components/ui/Button';
+import PhoneInput from '../../components/ui/PhoneInput';
 import { useGetStoreSettingsQuery, useUpdateStoreSettingsMutation } from '../../api/settingsApi';
 import { useChangePasswordMutation } from '../../api/authApi';
 import { useToast } from '../../components/ui/ToastProvider';
@@ -111,10 +112,13 @@ const AdminSettings = () => {
               </div>
               <div className="admin-form-field">
                 <label>Contact Number</label>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.8rem 0.9rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }}>
-                  <Phone size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-                  <input type="text" placeholder="9876543210" value={formData.contactNo} onChange={(e) => setFormData({ ...formData, contactNo: e.target.value })} style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', color: 'inherit', fontFamily: 'inherit', fontSize: '1rem' }} />
-                </div>
+                <PhoneInput 
+                  id="contactNo"
+                  name="contactNo"
+                  value={formData.contactNo} 
+                  onChange={(val) => setFormData({ ...formData, contactNo: val })} 
+                  required 
+                />
               </div>
             </div>
 

@@ -1,10 +1,12 @@
 import React from 'react';
 import { ShoppingBag, CreditCard, Wallet, Lock, User, MapPin } from 'lucide-react';
 import Button from '../../components/ui/Button';
+import PhoneInput from '../../components/ui/PhoneInput';
 import { useCheckoutLogic } from '../../hooks/useCheckoutLogic';
 import '@/styles/css/pages/storefront/Checkout.css';
 
 const Checkout = () => {
+  const [phone, setPhone] = React.useState('');
   const {
     cartItems,
     paymentMethod,
@@ -46,7 +48,13 @@ const Checkout = () => {
                 </div>
                 <div className="input-group">
                   <label htmlFor="phone">Phone Number</label>
-                  <input type="tel" id="phone" required placeholder="e.g. +1 123 456 7890" />
+                  <PhoneInput 
+                    id="phone" 
+                    name="phone"
+                    value={phone} 
+                    onChange={setPhone} 
+                    required 
+                  />
                 </div>
               </div>
             </div>
