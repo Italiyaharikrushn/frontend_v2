@@ -103,17 +103,8 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
         {/* Hidden input for native form submission */}
         <input type="hidden" id={id} name={name} value={`${country.code}${phoneNumber.replace(/\s+/g, '')}`} />
       </div>
-      {/[+\-]/.test(phoneNumber) && (
-        <span className="phone-error">Contact number should not contain + or - signs.</span>
-      )}
-      {phoneNumber.length > 0 && !/[+\-]/.test(phoneNumber) && (
-        Array.isArray(country.length) 
-          ? (phoneNumber.length < country.length[0] || phoneNumber.length > country.length[1]) && (
-              <span className="phone-error">Please enter between {country.length[0]} and {country.length[1]} digits for {country.name}.</span>
-            )
-          : phoneNumber.length !== country.length && (
-              <span className="phone-error">Please enter exactly {country.length} digits for {country.name}.</span>
-            )
+      {/[^\d]/.test(phoneNumber) && (
+        <span className="phone-error">Please enter digits only.</span>
       )}
     </div>
   );
