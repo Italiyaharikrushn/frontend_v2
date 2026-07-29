@@ -12,6 +12,7 @@ import AdminOrders from '../pages/admin/AdminOrders';
 import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminReports from '../pages/admin/AdminReports';
 import AdminSettings from '../pages/admin/AdminSettings';
+import AdminChangePassword from '../pages/admin/AdminChangePassword';
 
 const AdminRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const AdminRoutes = () => {
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="reports" element={<AdminReports />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="change-password" element={<AdminChangePassword />} />
         </Route>
       </Route>
     </Routes>

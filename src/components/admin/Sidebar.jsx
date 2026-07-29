@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
-import { LayoutDashboard, Package, ShoppingBag, Users, Settings, LogOut, X } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Users, LogOut, X } from 'lucide-react';
 import '@/styles/css/components/Sidebar.css';
 
 const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
@@ -48,10 +48,7 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
       </nav>
       
       <div className="sidebar-footer">
-        <NavLink to="/admin/settings" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
-          <Settings size={20} />
-          <span>Settings</span>
-        </NavLink>
+
         <button className="sidebar-link text-error" onClick={() => { handleLogout(); handleNavClick(); }}>
           <LogOut size={20} />
           <span>Logout</span>

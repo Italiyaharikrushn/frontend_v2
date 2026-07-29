@@ -2,12 +2,11 @@ import React from 'react';
 import { Save, Bell } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import StoreProfileForm from '../../components/admin/StoreProfileForm';
-import SecuritySettingsForm from '../../components/admin/SecuritySettingsForm';
 import { useAdminSettings } from '../../hooks/useAdminSettings';
 import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminSettings = () => {
-  const { formData, setFormData, passwordData, setPasswordData, handleSave, handlePasswordChange, isLoading, isUpdating, isChangingPassword } = useAdminSettings();
+  const { formData, setFormData, handleSave, isLoading, isUpdating } = useAdminSettings();
 
   return (
     <div className="admin-page fade-in">
@@ -23,7 +22,9 @@ const AdminSettings = () => {
       <div className="admin-two-column">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <StoreProfileForm formData={formData} setFormData={setFormData} />
+        </div>
 
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div className="glass-panel admin-panel-card">
             <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Bell size={20} /> Notifications
@@ -46,14 +47,6 @@ const AdminSettings = () => {
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <SecuritySettingsForm
-            passwordData={passwordData}
-            setPasswordData={setPasswordData}
-            handlePasswordChange={handlePasswordChange}
-            isChangingPassword={isChangingPassword}
-          />
-        </div>
       </div>
     </div>
   );
