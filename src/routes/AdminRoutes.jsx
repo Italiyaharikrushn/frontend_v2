@@ -8,6 +8,7 @@ import ProtectedRoute from '@/components/common/ProtectedRoute';
 // Admin Pages
 import DashboardHome from '../pages/admin/DashboardHome';
 import AdminProducts from '../pages/admin/AdminProducts';
+import AdminDiscount from '../pages/admin/AdminDiscount';
 import AdminOrders from '../pages/admin/AdminOrders';
 import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminReports from '../pages/admin/AdminReports';
@@ -22,6 +23,7 @@ const AdminRoutes = () => {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<DashboardHome />} />
           <Route path="products" element={<AdminProducts />} />
+          <Route path="discount" element={<AdminDiscount />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="reports" element={<AdminReports />} />

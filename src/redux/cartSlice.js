@@ -40,11 +40,22 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
       saveCartState(state);
+    },
+    updateItemPrices: (state, action) => {
+      const updatedItems = action.payload;
+      state.items = state.items.map(item => {
+        const updatedItem = updatedItems.find(u => u.cartItemId === item.cartItemId);
+        if (updatedItem) {
+          return { ...item, price: updatedItem.price };
+        }
+        return item;
+      });
+      saveCartState(state);
     }
   },
 });
 
-export const { updateQuantity, removeItem, addItem, clearCart } = cartSlice.actions;
+export const { updateQuantity, removeItem, addItem, clearCart, updateItemPrices } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;
 export const selectCartTotalQuantity = (state) => 

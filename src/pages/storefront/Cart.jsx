@@ -1,14 +1,44 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { selectCartItems, updateQuantity, removeItem } from '../../redux/cartSlice';
+import { selectCartItems, updateQuantity, removeItem, updateItemPrices } from '../../redux/cartSlice';
+import { useGetProductsQuery } from '../../api/productApi';
 import '@/styles/css/pages/storefront/Cart.css';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
+  const rawCartItems = useSelector(selectCartItems);
+  const { data: allProducts = [], isLoading } = useGetProductsQuery();
+
+  const cartItems = useMemo(() => {
+    return rawCartItems.map(item => {
+      const product = allProducts.find(p => p.id === item.id);
+      if (product) {
+        const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+        return { ...item, price: latestPrice };
+      }
+      return item;
+    });
+  }, [rawCartItems, allProducts]);
+
+  // Optionally sync back to redux so checkout gets it easily, but we can also just compute on the fly
+  useEffect(() => {
+    if (allProducts.length > 0 && rawCartItems.length > 0) {
+      const needsUpdate = rawCartItems.some(item => {
+        const product = allProducts.find(p => p.id === item.id);
+        if (product) {
+          const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+          return item.price !== latestPrice;
+        }
+        return false;
+      });
+      if (needsUpdate) {
+        dispatch(updateItemPrices(cartItems));
+      }
+    }
+  }, [allProducts, rawCartItems, cartItems, dispatch]);
 
   const handleQuantity = (id, cartItemId, change) => {
     dispatch(updateQuantity({ id, cartItemId, change }));

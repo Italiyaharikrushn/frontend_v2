@@ -71,6 +71,24 @@ export const productApi = createApi({
             }),
             invalidatesTags: ['Product'],
         }),
+
+        applyDiscount: builder.mutation({
+            query: (data) => ({
+                url: '/product/apply-discount',
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['Product'],
+        }),
+
+        applyCategoryDiscount: builder.mutation({
+            query: (discountData) => ({
+                url: '/product/apply-category-discount',
+                method: 'POST',
+                body: discountData,
+            }),
+            invalidatesTags: ['Product'],
+        }),
     }),
 });
 
@@ -82,4 +100,6 @@ export const {
     useUpdateProductMutation,
     useDeleteProductMutation,
     useBulkUploadProductsMutation,
+    useApplyDiscountMutation,
+    useApplyCategoryDiscountMutation,
 } = productApi;

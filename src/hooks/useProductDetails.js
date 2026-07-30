@@ -13,14 +13,14 @@ export const useProductDetails = ({ propId, isModal }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pushToast } = useToast();
-  
+
   const { data: product, isLoading, isError } = useGetProductByIdQuery(id);
   const [addToBackendCart, { isLoading: isAdding }] = useAddToBackendCartMutation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  
+
   const [pincode, setPincode] = useState('');
   const [phoneModel, setPhoneModel] = useState('');
-  
+
   const isPhoneCover = product ? (product.category?.toLowerCase().includes('cover') || product.title?.toLowerCase().includes('cover')) : false;
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const useProductDetails = ({ propId, isModal }) => {
     dispatch(addItem({
       id: product.id,
       name: product.title,
-      price: parseFloat(product.price),
+      price: product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price),
       category: product.category || product.globalCategory || 'general',
       image: (product.images && product.images.length > 0) ? product.images[0] : null,
       phoneModel: isPhoneCover ? phoneModel : undefined,
@@ -46,10 +46,10 @@ export const useProductDetails = ({ propId, isModal }) => {
 
     if (isAuthenticated) {
       try {
-        await addToBackendCart({ 
-            productId: product.id, 
-            quantity: 1, 
-            phoneModel: isPhoneCover ? phoneModel : undefined 
+        await addToBackendCart({
+          productId: product.id,
+          quantity: 1,
+          phoneModel: isPhoneCover ? phoneModel : undefined
         }).unwrap();
       } catch (error) {
         console.error('Failed to save item to database cart:', error);
@@ -62,23 +62,8 @@ export const useProductDetails = ({ propId, isModal }) => {
     navigate('/cart');
   };
 
-  const price = product ? parseFloat(product.price) || 0 : 0;
-  const mrp = Math.round(price * 1.55);
+  const currentPrice = product ? (product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price)) : 0;
+  const originalPrice = product ? parseFloat(product.price) || 0 : 0;
 
-  return {
-    product,
-    isLoading,
-    isError,
-    isAdding,
-    pincode,
-    setPincode,
-    phoneModel,
-    setPhoneModel,
-    isPhoneCover,
-    price,
-    mrp,
-    handleAddToCart,
-    handleBuyNow,
-    navigate
-  };
+  return { product, isLoading, isError, isAdding, pincode, setPincode, phoneModel, setPhoneModel, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate };
 };

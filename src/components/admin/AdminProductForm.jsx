@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save } from 'lucide-react';
 import Button from '../ui/Button';
-import { useCreateProductMutation, useUpdateProductMutation } from '../../api/productApi';
+import { useCreateProductMutation, useUpdateProductMutation, useGetCategoriesQuery } from '../../api/productApi';
 import { useToast } from '../ui/ToastProvider';
 import '@/styles/css/pages/admin/AdminStyles.css';
 
@@ -9,6 +9,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
   const { pushToast } = useToast();
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
+  const { data: categories = [] } = useGetCategoriesQuery();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -23,24 +24,32 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
     status: 'Active'
   });
 
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+
   useEffect(() => {
     if (editingProduct) {
+      const editCategory = editingProduct.category || editingProduct.globalCategory || '';
       setFormData({
         name: editingProduct.title || '',
         description: editingProduct.description || '',
         sku: editingProduct.sku || '',
         image: (editingProduct.images && editingProduct.images.length > 0) ? editingProduct.images[0] : '',
         imagePreview: (editingProduct.images && editingProduct.images.length > 0) ? editingProduct.images[0] : '',
-        category: editingProduct.category || editingProduct.globalCategory || '',
+        category: editCategory,
         subCategory: editingProduct.subCategory || '',
         price: editingProduct.price || '',
         stock: editingProduct.stock || '',
         status: (editingProduct.isActive ?? editingProduct.active ?? true) ? 'Active' : 'Inactive'
       });
+      if (editCategory && categories.length > 0 && !categories.includes(editCategory)) {
+         // The category exists on the product but is not in the list of available categories
+         // We'll just let the dropdown handle it by dynamically adding the current category to the options below
+      }
     } else {
       setFormData({ name: '', description: '', sku: '', image: '', imagePreview: '', category: '', subCategory: '', price: '', stock: '', status: 'Active' });
+      setIsAddingNewCategory(false);
     }
-  }, [editingProduct]);
+  }, [editingProduct, categories]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,7 +119,46 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
           </div>
           <div className="admin-form-field">
             <label>Category</label>
-            <input type="text" placeholder="e.g. belts, purses" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} />
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+              {!isAddingNewCategory ? (
+                <select 
+                  value={formData.category} 
+                  onChange={e => {
+                    if (e.target.value === '___NEW___') {
+                      setIsAddingNewCategory(true);
+                      setFormData({ ...formData, category: '' });
+                    } else {
+                      setFormData({ ...formData, category: e.target.value });
+                    }
+                  }}
+                  style={{ flex: 1 }}
+                >
+                  <option value="">-- Select Category --</option>
+                  {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                  {editingProduct && formData.category && !categories.includes(formData.category) && (
+                    <option value={formData.category}>{formData.category}</option>
+                  )}
+                  <option value="___NEW___">+ Add New Category</option>
+                </select>
+              ) : (
+                <>
+                  <input 
+                    type="text" 
+                    placeholder="Enter new category name" 
+                    value={formData.category} 
+                    onChange={e => setFormData({ ...formData, category: e.target.value })} 
+                    style={{ flex: 1 }}
+                    autoFocus
+                  />
+                  <Button type="button" variant="secondary" onClick={() => {
+                    setIsAddingNewCategory(false);
+                    setFormData({ ...formData, category: '' });
+                  }} style={{ padding: '0 1rem' }}>
+                    Cancel
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
           <div className="admin-form-field">
             <label>Image URL</label>

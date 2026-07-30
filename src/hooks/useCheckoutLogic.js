@@ -1,18 +1,32 @@
-import { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
 import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
+import { useGetProductsQuery } from '../api/productApi';
 
 export const useCheckoutLogic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
+  const rawCartItems = useSelector(selectCartItems);
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [selectedAddressId, setSelectedAddressId] = useState('new');
   const [isProcessing, setIsProcessing] = useState(false);
   const { pushToast } = useToast();
+
+  const { data: allProducts = [] } = useGetProductsQuery();
+
+  const cartItems = useMemo(() => {
+    return rawCartItems.map(item => {
+      const product = allProducts.find(p => p.id === item.id);
+      if (product) {
+        const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+        return { ...item, price: latestPrice };
+      }
+      return item;
+    });
+  }, [rawCartItems, allProducts]);
 
   const [addAddress] = useAddAddressMutation();
   const [addToBackendCart] = useAddToBackendCartMutation();
@@ -69,18 +83,5 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return {
-    cartItems,
-    paymentMethod,
-    setPaymentMethod,
-    selectedAddressId,
-    setSelectedAddressId,
-    isProcessing,
-    subtotal,
-    tax,
-    shipping,
-    total,
-    handleSubmit,
-    navigate
-  };
+  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, tax, shipping, total, handleSubmit, navigate };
 };

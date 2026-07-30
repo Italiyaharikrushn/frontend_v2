@@ -1,0 +1,125 @@
+import { useState, useMemo } from 'react';
+import { useApplyDiscountMutation, useApplyCategoryDiscountMutation } from '../api/productApi';
+import { useToast } from '../components/ui/ToastProvider';
+
+export const useAdminDiscount = (products) => {
+  const { pushToast } = useToast();
+  
+  const [applyDiscount, { isLoading: isApplying }] = useApplyDiscountMutation();
+  const [applyCategoryDiscount, { isLoading: isApplyingCategory }] = useApplyCategoryDiscountMutation();
+
+  const [selectedProductIds, setSelectedProductIds] = useState(new Set());
+  const [discountPercentage, setDiscountPercentage] = useState('');
+  const [validForDays, setValidForDays] = useState('');
+  const [categoryInputs, setCategoryInputs] = useState({});
+
+  const categoryStats = useMemo(() => {
+    const stats = {};
+    if (products && products.length > 0) {
+      products.forEach(p => {
+        if (p.category) {
+          if (!stats[p.category]) stats[p.category] = 0;
+          stats[p.category]++;
+        }
+      });
+    }
+    return Object.entries(stats).map(([category, count]) => ({ category, count }));
+  }, [products]);
+
+  const handleCategoryInputChange = (category, field, value) => {
+    setCategoryInputs(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedProductIds(new Set(products.map(p => p.id)));
+    } else {
+      setSelectedProductIds(new Set());
+    }
+  };
+
+  const handleSelectProduct = (id) => {
+    const newSelected = new Set(selectedProductIds);
+    if (newSelected.has(id)) {
+      newSelected.delete(id);
+    } else {
+      newSelected.add(id);
+    }
+    setSelectedProductIds(newSelected);
+  };
+
+  const handleApplyDiscount = async () => {
+    if (selectedProductIds.size === 0) {
+      pushToast('Please select at least one product.', 'error');
+      return;
+    }
+    const percentage = parseFloat(discountPercentage);
+    if (isNaN(percentage) || percentage <= 0 || percentage > 100) {
+      pushToast('Please enter a valid discount percentage (1-100).', 'error');
+      return;
+    }
+
+    try {
+      await applyDiscount({
+        productIds: Array.from(selectedProductIds),
+        discountPercentage: percentage,
+        validForDays: validForDays ? parseInt(validForDays) : null
+      }).unwrap();
+      pushToast('Discount applied successfully!', 'success');
+      setSelectedProductIds(new Set());
+      setDiscountPercentage('');
+      setValidForDays('');
+    } catch (err) {
+      console.error('Failed to apply discount:', err);
+      pushToast('Failed to apply discount.', 'error');
+    }
+  };
+
+  const handleApplyCategoryDiscount = async (category) => {
+    const inputs = categoryInputs[category] || {};
+    const percentage = parseFloat(inputs.discountPercentage);
+    if (isNaN(percentage) || percentage <= 0 || percentage > 100) {
+      pushToast(`Please enter a valid discount percentage for ${category} (1-100).`, 'error');
+      return;
+    }
+
+    try {
+      await applyCategoryDiscount({
+        category: category,
+        discountPercentage: percentage,
+        validForDays: inputs.validForDays ? parseInt(inputs.validForDays) : null
+      }).unwrap();
+      pushToast(`Discount applied successfully to category: ${category}`, 'success');
+      setCategoryInputs(prev => ({
+        ...prev,
+        [category]: { discountPercentage: '', validForDays: '' }
+      }));
+    } catch (err) {
+      console.error('Failed to apply category discount:', err);
+      pushToast('Failed to apply category discount.', 'error');
+    }
+  };
+
+  return {
+    selectedProductIds,
+    discountPercentage,
+    setDiscountPercentage,
+    validForDays,
+    setValidForDays,
+    categoryInputs,
+    categoryStats,
+    isApplying,
+    isApplyingCategory,
+    handleCategoryInputChange,
+    handleSelectAll,
+    handleSelectProduct,
+    handleApplyDiscount,
+    handleApplyCategoryDiscount
+  };
+};

@@ -60,7 +60,7 @@ const Products = () => {
     dispatch(addItem({
       id: product.id,
       name: product.title,
-      price: parseFloat(product.price),
+      price: product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price),
       category: category || 'general',
       image: (product.images && product.images.length > 0) ? product.images[0] : null,
     }));
@@ -130,7 +130,17 @@ const Products = () => {
                 <div onClick={() => setQuickViewProductId(product.id)} style={{ cursor: 'pointer', color: 'inherit' }}>
                   <h3 className="product-name">{product.title}</h3>
                 </div>
-                <p className="product-price">₹{product.price}</p>
+                {product.discountPrice ? (
+                  <p className="product-price" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>₹{product.discountPrice}</span>
+                    <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.85em' }}>₹{product.price}</span>
+                    <span style={{ fontSize: '0.75em', padding: '0.15rem 0.4rem', background: 'var(--success)', color: 'white', borderRadius: '4px', fontWeight: 'bold' }}>
+                      {Math.round(((parseFloat(product.price) - parseFloat(product.discountPrice)) / parseFloat(product.price)) * 100)}% OFF
+                    </span>
+                  </p>
+                ) : (
+                  <p className="product-price">₹{product.price}</p>
+                )}
                 <div className="product-actions">
                   {isPhoneCover ? (
                     <Button

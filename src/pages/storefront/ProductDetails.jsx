@@ -7,7 +7,7 @@ import '@/styles/css/pages/storefront/ProductDetails.css';
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;
-  const { product, isLoading, isError, isAdding, phoneModel, setPhoneModel, isPhoneCover, price, mrp, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
+  const { product, isLoading, isError, isAdding, phoneModel, setPhoneModel, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
 
   if (isLoading) {
     return <div className="product-details-container loading"><div className="spinner"></div></div>;
@@ -46,8 +46,17 @@ const ProductDetails = ({ productId: propId, onClose }) => {
           </div>
 
           <div className="product-pricing">
-            <span className="mrp">MRP Rs. {mrp}</span>
-            <span className="current-price">Rs. {price.toFixed(2)}</span>
+            {product.discountPrice ? (
+              <span className="current-price" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                Rs. {currentPrice.toFixed(2)}
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.75em' }}>Rs. {originalPrice.toFixed(2)}</span>
+                <span style={{ fontSize: '0.75em', padding: '0.25rem 0.5rem', background: 'var(--success)', color: 'white', borderRadius: '4px' }}>
+                  {Math.round(((originalPrice - currentPrice) / originalPrice) * 100)}% OFF
+                </span>
+              </span>
+            ) : (
+              <span className="current-price">Rs. {currentPrice.toFixed(2)}</span>
+            )}
           </div>
           <div className="action-links-container"></div>
 
