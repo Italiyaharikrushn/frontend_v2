@@ -13,6 +13,8 @@ const CustomerProfileMenu = () => {
   const userName = useSelector(selectUserName);
   const userEmail = useSelector(selectUserEmail);
 
+  console.log("username", userName);
+
   // Determine avatar initial
   let avatarInitial = '';
   if (userName && userName.length > 0) {

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUserName, selectUserEmail, logout } from '../../redux/authSlice';
+import { Outlet, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUserName, selectUserEmail } from '../../redux/authSlice';
 import Sidebar from '../admin/Sidebar';
-import { Bell, Menu, User, X, Settings, Lock, LogOut } from 'lucide-react';
+import { Bell, Menu, X, Settings, Lock } from 'lucide-react';
 import '@/styles/css/components/DashboardLayout.css';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 
@@ -26,6 +26,15 @@ const DashboardLayout = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  let avatarInitial = '';
+  if (userName) {
+    avatarInitial = userName.charAt(0).toUpperCase();
+  } else if (userEmail) {
+    avatarInitial = userEmail.charAt(0).toUpperCase();
+  } else {
+    avatarInitial = 'A';
+  }
+
   return (
     <div className="dashboard-layout">
       <div className={`dashboard-sidebar-overlay ${isSidebarOpen ? 'open' : ''}`} onClick={() => setIsSidebarOpen(false)} />
@@ -45,12 +54,18 @@ const DashboardLayout = () => {
               <span className="notification-badge" />
             </button>
             <div className="user-profile" ref={profileRef} style={{ position: 'relative' }}>
-              <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)}>
-                <User size={20} />
+              <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--primary-color, #4f46e5)', color: 'white', fontWeight: 'bold' }}>
+                {avatarInitial}
               </div>
 
               {isProfileOpen && (
-                <div className="profile-dropdown" style={{ width: "200px" }}>
+                <div className="profile-dropdown">
+                  <div className="profile-dropdown-header">
+                    {userName && <div className="profile-name">{userName}</div>}
+                    {userEmail && <div className="profile-email" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail}</div>}
+                    {!userName && !userEmail && <div className="profile-name">Admin</div>}
+                  </div>
+
                   <Link to="/admin/settings" className="dropdown-item" onClick={() => setIsProfileOpen(false)}>
                     <Settings size={16} />
                     <span>Settings</span>

@@ -72,56 +72,74 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
   };
 
   return (
-    <div className="glass-panel fade-in admin-panel-card" style={{ marginBottom: '1rem', borderLeft: '4px solid var(--primary)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-        <h2 style={{ color: 'var(--primary-dark)', margin: 0 }}>{editingProduct ? 'Edit Product' : 'Create New Product'}</h2>
-        <button onClick={onClose} className="action-btn btn-ghost" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><X size={24} /></button>
-      </div>
+    <div 
+      onClick={onClose}
+      style={{
+      position: 'fixed',
+      top: 0, left: 0, right: 0, bottom: 0,
+      backgroundColor: 'rgba(31, 26, 23, 0.6)',
+      backdropFilter: 'blur(4px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+      padding: '1rem'
+    }}>
+      <div 
+        onClick={(e) => e.stopPropagation()}
+        className="glass-panel fade-in admin-panel-card" 
+        style={{ marginBottom: 0, width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h2 style={{ color: 'var(--primary-dark)', margin: 0 }}>{editingProduct ? 'Edit Product' : 'Create New Product'}</h2>
+          <button onClick={onClose} className="action-btn btn-ghost" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><X size={24} /></button>
+        </div>
 
-      <form onSubmit={handleSubmit} className="admin-form-grid">
-        <div className="admin-form-field full">
-          <label>Product Name (Title)</label>
-          <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-        </div>
-        <div className="admin-form-field full">
-          <label>Description</label>
-          <textarea rows="3" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })}></textarea>
-        </div>
-        <div className="admin-form-field">
-          <label>SKU</label>
-          <input type="text" value={formData.sku} onChange={e => setFormData({ ...formData, sku: e.target.value })} />
-        </div>
-        <div className="admin-form-field">
-          <label>Category</label>
-          <input type="text" placeholder="e.g. belts, purses" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} />
-        </div>
-        <div className="admin-form-field">
-          <label>Image URL</label>
-          <input type="text" placeholder="https://example.com/image.jpg" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} />
-          {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '0.5rem', objectFit: 'cover', borderRadius: '8px' }} />}
-        </div>
-        <div className="admin-form-field">
-          <label>Price (₹)</label>
-          <input type="number" step="0.01" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
-        </div>
-        <div className="admin-form-field">
-          <label>Stock</label>
-          <input type="number" required value={formData.stock} onChange={e => setFormData({ ...formData, stock: e.target.value })} />
-        </div>
-        <div className="admin-form-field full">
-          <label>Status</label>
-          <select value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value })}>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
-        <div className="admin-form-actions full">
-          <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <Save size={18} /> {editingProduct ? 'Update Product' : 'Save Product'}
-          </Button>
-        </div>
-      </form>
+        <form onSubmit={handleSubmit} className="admin-form-grid">
+          <div className="admin-form-field full">
+            <label>Product Name (Title)</label>
+            <input type="text" placeholder='Product Name (Title)' required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+          </div>
+          <div className="admin-form-field full">
+            <label>Description</label>
+            <textarea rows="3" placeholder='Description' value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })}></textarea>
+          </div>
+          <div className="admin-form-field">
+            <label>SKU</label>
+            <input type="text" placeholder='SKU' value={formData.sku} onChange={e => setFormData({ ...formData, sku: e.target.value })} />
+          </div>
+          <div className="admin-form-field">
+            <label>Category</label>
+            <input type="text" placeholder="e.g. belts, purses" value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} />
+          </div>
+          <div className="admin-form-field">
+            <label>Image URL</label>
+            <input type="text" placeholder="https://example.com/image.jpg" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} />
+            {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '0.5rem', objectFit: 'cover', borderRadius: '8px' }} />}
+          </div>
+          <div className="admin-form-field">
+            <label>Price (₹)</label>
+            <input type="number" placeholder='Price (₹)' step="0.01" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
+          </div>
+          <div className="admin-form-field">
+            <label>Stock</label>
+            <input type="number" placeholder='Stock' required value={formData.stock} onChange={e => setFormData({ ...formData, stock: e.target.value })} />
+          </div>
+          <div className="admin-form-field full">
+            <label>Status</label>
+            <select value={formData.status} onChange={e => setFormData({ ...formData, status: e.target.value })}>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+          <div className="admin-form-actions full">
+            <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
+            <Button type="submit" variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <Save size={18} /> {editingProduct ? 'Update Product' : 'Save Product'}
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

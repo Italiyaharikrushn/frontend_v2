@@ -26,6 +26,15 @@ export const orderApi = createApi({
             invalidatesTags: ['Order'],
         }),
 
+        markLabelsDownloaded: builder.mutation({
+            query: (orderIds) => ({
+                url: `/api/orders/seller/mark-labels-downloaded`,
+                method: 'PUT',
+                body: orderIds
+            }),
+            invalidatesTags: ['Order'],
+        }),
+
         returnCustomerOrder: builder.mutation({
             query: (id) => ({
                 url: `/api/orders/customer/return/${id}`,
@@ -97,6 +106,7 @@ export const orderApi = createApi({
 export const {
     useGetSellerOrdersQuery,
     useUpdateOrderStatusMutation,
+    useMarkLabelsDownloadedMutation,
     useReturnCustomerOrderMutation,
     useCancelCustomerOrderMutation,
     useAddAddressMutation,

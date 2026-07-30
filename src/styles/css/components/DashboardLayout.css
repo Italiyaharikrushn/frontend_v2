@@ -174,4 +174,5 @@
   .mobile-sidebar-toggle { display: none; }
   .dashboard-content { padding: 1.5rem; }
   .dashboard-sidebar-overlay { display: none; }
+  .desktop-only-profile-info { display: flex !important; }
 }

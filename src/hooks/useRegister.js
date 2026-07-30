@@ -48,7 +48,12 @@ export const useRegister = () => {
           role = 'ADMIN';
         }
 
-        dispatch(login({ role: role, token: response.token }));
+        dispatch(login({ 
+          role: role, 
+          token: response.token,
+          name: response.name || formData.name,
+          email: response.email || formData.email
+        }));
 
         if (role === 'ADMIN') {
           navigate('/admin/dashboard', { replace: true });

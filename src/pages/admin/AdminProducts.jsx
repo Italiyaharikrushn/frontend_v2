@@ -4,10 +4,12 @@ import Button from '../../components/ui/Button';
 import { useGetProductsQuery, useDeleteProductMutation, useBulkUploadProductsMutation } from '../../api/productApi';
 import AdminProductForm from '../../components/admin/AdminProductForm';
 import { useToast } from '../../components/ui/ToastProvider';
+import { useAlert } from '../../components/ui/AlertProvider';
 import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminProducts = () => {
   const { pushToast } = useToast();
+  const { confirm } = useAlert();
   const { data: products = [], isLoading } = useGetProductsQuery();
   const [deleteProduct] = useDeleteProductMutation();
 
@@ -25,7 +27,7 @@ const AdminProducts = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (await confirm('Are you sure you want to delete this product?')) {
       try {
         await deleteProduct(id).unwrap();
         pushToast('Product deleted successfully!', 'success');
@@ -39,29 +41,29 @@ const AdminProducts = () => {
   const fileInputRef = useRef(null);
   const [bulkUpload] = useBulkUploadProductsMutation();
 
-  const handleBulkUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        await bulkUpload(file).unwrap();
-        pushToast('Bulk upload successful!', 'success');
-      } catch (err) {
-        console.error('Bulk upload failed', err);
-        pushToast('Bulk upload failed. Check console.', 'error');
-      }
-      e.target.value = null; // reset input
-    }
-  };
+  // const handleBulkUpload = async (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     try {
+  //       await bulkUpload(file).unwrap();
+  //       pushToast('Bulk upload successful!', 'success');
+  //     } catch (err) {
+  //       console.error('Bulk upload failed', err);
+  //       pushToast('Bulk upload failed. Check console.', 'error');
+  //     }
+  //     e.target.value = null; // reset input
+  //   }
+  // };
 
   return (
     <div className="admin-page fade-in admin-full-height-page">
       <div className="admin-header">
         <h1 className="admin-title">Products Management</h1>
         <div className="admin-actions">
-          <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".xlsx, .xls, .csv" onChange={handleBulkUpload} />
+          {/* <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".xlsx, .xls, .csv" onChange={handleBulkUpload} />
           <Button variant="secondary" onClick={() => fileInputRef.current?.click()} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Upload size={18} /> Bulk Upload
-          </Button>
+          </Button> */}
           <Button onClick={() => handleOpenForm()} variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Plus size={18} /> Add Product
           </Button>

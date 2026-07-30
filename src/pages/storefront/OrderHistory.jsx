@@ -3,15 +3,17 @@ import { Package, RotateCcw, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useGetCustomerOrdersQuery, useReturnCustomerOrderMutation, useCancelCustomerOrderMutation } from '../../api/orderApi';
 import { useToast } from '../../components/ui/ToastProvider';
+import { useAlert } from '../../components/ui/AlertProvider';
 
 const OrderHistory = () => {
   const { pushToast } = useToast();
+  const { confirm } = useAlert();
   const { data: orders = [], isLoading } = useGetCustomerOrdersQuery();
   const [returnOrder] = useReturnCustomerOrderMutation();
   const [cancelOrder] = useCancelCustomerOrderMutation();
 
   const handleReturn = async (orderId) => {
-    if (window.confirm('Are you sure you want to return this order?')) {
+    if (await confirm('Are you sure you want to return this order?')) {
       try {
         await returnOrder(orderId).unwrap();
         pushToast('Return request submitted successfully', 'success');
@@ -23,7 +25,7 @@ const OrderHistory = () => {
   };
 
   const handleCancel = async (orderId) => {
-    if (window.confirm('Are you sure you want to cancel this order?')) {
+    if (await confirm('Are you sure you want to cancel this order?')) {
       try {
         await cancelOrder(orderId).unwrap();
         pushToast('Order cancelled successfully', 'success');
