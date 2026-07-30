@@ -62,10 +62,10 @@ const DashboardLayout = () => {
                 <div className="profile-dropdown">
                   <div className="profile-dropdown-header">
                     {userName && <div className="profile-name">{userName}</div>}
-                    {userEmail && <div className="profile-email" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{userEmail}</div>}
+                    {userEmail && <div className="profile-email">{userEmail}</div>}
                     {!userName && !userEmail && <div className="profile-name">Admin</div>}
                   </div>
-
+                  <div className="profile-dropdown-divider" />
                   <Link to="/admin/settings" className="dropdown-item" onClick={() => setIsProfileOpen(false)}>
                     <Settings size={16} />
                     <span>Settings</span>

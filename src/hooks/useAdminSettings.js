@@ -9,7 +9,7 @@ export const useAdminSettings = () => {
   const [updateSettings, { isLoading: isUpdating }] = useUpdateStoreSettingsMutation();
   
   const [formData, setFormData] = useState({
-    storeName: 'KIYA Accessories',
+    storeName: 'crafty_kiya',
     supportEmail: 'support@kiyaaccessories.com',
     contactNo: '+91 9876543210',
     address: '',
