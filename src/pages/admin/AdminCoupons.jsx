@@ -34,10 +34,18 @@ const AdminCoupons = () => {
         e.preventDefault();
         try {
             if (isEditing && formData.id) {
-                await updateCoupon(formData).unwrap();
+                const payload = {
+                    ...formData,
+                    expiryDate: formData.expiryDate.includes('T') ? formData.expiryDate : formData.expiryDate + 'T23:59:59'
+                };
+                await updateCoupon(payload).unwrap();
                 pushToast('Coupon updated', 'success');
             } else {
-                await createCoupon(formData).unwrap();
+                const payload = {
+                    ...formData,
+                    expiryDate: formData.expiryDate.includes('T') ? formData.expiryDate : formData.expiryDate + 'T23:59:59'
+                };
+                await createCoupon(payload).unwrap();
                 pushToast('Coupon created', 'success');
             }
             resetForm();
@@ -161,8 +169,8 @@ const AdminCoupons = () => {
                                         <input required type="number" min="0" step="0.01" value={formData.discountValue} onChange={e => setFormData({...formData, discountValue: e.target.value})} />
                                     </div>
                                     <div className="admin-form-field">
-                                        <label>Expiry Date & Time</label>
-                                        <input required type="datetime-local" value={formData.expiryDate} onChange={e => setFormData({...formData, expiryDate: e.target.value})} />
+                                        <label>Expiry Date</label>
+                                        <input required type="date" value={formData.expiryDate ? formData.expiryDate.split('T')[0] : ''} onChange={e => setFormData({...formData, expiryDate: e.target.value})} />
                                     </div>
                                     <div className="admin-form-field full" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius-md)' }}>
                                         <input type="checkbox" id="isActive" checked={formData.isActive} onChange={e => setFormData({...formData, isActive: e.target.checked})} style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }} />
