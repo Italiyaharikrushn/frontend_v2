@@ -44,6 +44,36 @@
 .payment-method-card:hover, .payment-method-card.active { border-color: var(--primary); background: rgba(122, 16, 56, 0.05); }
 [data-theme="dark"] .payment-method-card:hover, [data-theme="dark"] .payment-method-card.active { border-color: var(--accent); background: rgba(212, 175, 55, 0.1); }
 
+.coupon-section { padding: 1.15rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 1rem 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.coupon-input-group { display: flex; gap: 0.5rem; position: relative; }
+.coupon-input-group .coupon-icon { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+.coupon-input-group input { flex: 1; padding: 0.8rem 0.9rem 0.8rem 2.5rem; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-main); font-family: inherit; font-size: 0.95rem; transition: all var(--transition-fast); }
+.coupon-input-group input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(122, 16, 56, 0.12); }
+[data-theme="dark"] .coupon-input-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16); }
+.coupon-input-group input:disabled { background: rgba(0, 0, 0, 0.03); color: var(--text-muted); cursor: not-allowed; }
+[data-theme="dark"] .coupon-input-group input:disabled { background: rgba(255, 255, 255, 0.03); }
+
+.coupon-btn { padding: 0 1.25rem; font-weight: 600; font-size: 0.9rem; border-radius: var(--radius-md); transition: all var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: 0.4rem; cursor: pointer; white-space: nowrap; border: none; }
+.coupon-btn:not(:disabled):hover { transform: translateY(-1px); }
+.coupon-btn:not(:disabled):active { transform: translateY(1px); }
+.coupon-btn-apply { background: var(--primary); color: white; }
+.coupon-btn-apply:hover { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(122, 16, 56, 0.2); }
+[data-theme="dark"] .coupon-btn-apply { background: var(--accent); color: var(--primary-dark); }
+[data-theme="dark"] .coupon-btn-apply:hover { background: var(--accent-hover); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25); }
+.coupon-btn-applied { background: rgba(46, 125, 50, 0.1); color: var(--success); border: 1px solid rgba(46, 125, 50, 0.2); cursor: default; }
+[data-theme="dark"] .coupon-btn-applied { background: rgba(129, 199, 132, 0.1); color: #81c784; border-color: rgba(129, 199, 132, 0.2); }
+
+.coupon-message { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; animation: fadeIn var(--transition-fast); }
+.coupon-message.error { color: var(--error); }
+.coupon-message.success { color: var(--success); }
+[data-theme="dark"] .coupon-message.success { color: #81c784; }
+
+.discount-row { display: flex; justify-content: space-between; align-items: center; color: var(--success); font-size: 0.9rem; font-weight: 600; padding: 0.4rem 0; animation: slideDown var(--transition-fast); }
+[data-theme="dark"] .discount-row { color: #81c784; }
+.discount-row-label { display: flex; align-items: center; gap: 0.4rem; }
+.discount-tag { display: inline-flex; align-items: center; padding: 0.15rem 0.5rem; background: rgba(46, 125, 50, 0.1); border-radius: 4px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; border: 1px dashed rgba(46, 125, 50, 0.3); }
+[data-theme="dark"] .discount-tag { background: rgba(129, 199, 132, 0.1); border-color: rgba(129, 199, 132, 0.3); }
+
 @media (min-width: 768px) {
   .checkout-page { padding: 2.5rem 2rem 4rem; }
   .checkout-content { grid-template-columns: 1.17fr 0.83fr; gap: 1.5rem; }

@@ -82,9 +82,54 @@ export const orderApi = createApi({
         }),
 
         checkoutOrder: builder.mutation({
-            query: (addressId) => ({
-                url: `/api/orders/checkout?addressId=${addressId}`,
-                method: "POST"
+            query: ({addressId, couponCode}) => {
+                let url = `/api/orders/checkout?addressId=${addressId}`;
+                if (couponCode) {
+                    url += `&couponCode=${encodeURIComponent(couponCode)}`;
+                }
+                return {
+                    url: url,
+                    method: "POST"
+                };
+            },
+            invalidatesTags: ['Order']
+        }),
+
+        validateCoupon: builder.mutation({
+            query: ({code, cartTotal}) => ({
+                url: `/api/coupons/validate`,
+                method: 'POST',
+                body: {code, cartTotal}
+            })
+        }),
+        
+        getCoupons: builder.query({
+            query: () => `/api/coupons`,
+            providesTags: ['Order']
+        }),
+
+        createCoupon: builder.mutation({
+            query: (coupon) => ({
+                url: `/api/coupons`,
+                method: 'POST',
+                body: coupon
+            }),
+            invalidatesTags: ['Order']
+        }),
+
+        updateCoupon: builder.mutation({
+            query: ({ id, ...coupon }) => ({
+                url: `/api/coupons/${id}`,
+                method: 'PUT',
+                body: coupon
+            }),
+            invalidatesTags: ['Order']
+        }),
+
+        deleteCoupon: builder.mutation({
+            query: (id) => ({
+                url: `/api/coupons/${id}`,
+                method: 'DELETE'
             }),
             invalidatesTags: ['Order']
         }),
@@ -114,6 +159,11 @@ export const {
     useAddToBackendCartMutation,
     useClearBackendCartMutation,
     useCheckoutOrderMutation,
-    useGetCustomerOrdersQuery
+    useGetCustomerOrdersQuery,
+    useValidateCouponMutation,
+    useGetCouponsQuery,
+    useCreateCouponMutation,
+    useUpdateCouponMutation,
+    useDeleteCouponMutation
 } = orderApi;
 

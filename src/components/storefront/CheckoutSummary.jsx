@@ -1,8 +1,8 @@
 import React from 'react';
-import { ShoppingBag, Lock } from 'lucide-react';
+import { ShoppingBag, Lock, Tag, Ticket, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from '../ui/Button';
 
-const CheckoutSummary = ({ cartItems, subtotal, shipping, tax, total, isProcessing }) => {
+const CheckoutSummary = ({ cartItems, subtotal, shipping, tax, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon }) => {
   return (
     <div className="checkout-summary glass-panel">
       <h2 className="form-card-title">Order Summary</h2>
@@ -30,6 +30,59 @@ const CheckoutSummary = ({ cartItems, subtotal, shipping, tax, total, isProcessi
         <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
         <div className="summary-row"><span>Shipping</span><span>₹{shipping.toFixed(2)}</span></div>
         <div className="summary-row"><span>Estimated Tax (8%)</span><span>₹{tax.toFixed(2)}</span></div>
+        
+        <div className="coupon-section">
+            <div className="coupon-input-group">
+                <Ticket size={18} className="coupon-icon" />
+                <input
+                    type="text"
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder="Enter discount code"
+                    disabled={appliedCouponCode !== null}
+                />
+                <button 
+                    type="button"
+                    onClick={validateCoupon} 
+                    className={`coupon-btn ${appliedCouponCode ? 'coupon-btn-applied' : 'coupon-btn-apply'}`}
+                    disabled={appliedCouponCode !== null || !couponCode.trim()}
+                >
+                    {appliedCouponCode ? (
+                        <><CheckCircle2 size={16} /> Applied</>
+                    ) : (
+                        'Apply'
+                    )}
+                </button>
+            </div>
+            
+            {couponError && (
+                <div className="coupon-message error">
+                    <AlertCircle size={14} />
+                    <span>{couponError}</span>
+                </div>
+            )}
+            
+            {appliedCouponCode && !couponError && (
+                <div className="coupon-message success">
+                    <CheckCircle2 size={14} />
+                    <span>Discount code applied successfully!</span>
+                </div>
+            )}
+        </div>
+
+        {discountAmount > 0 && (
+            <div className="discount-row">
+                <div className="discount-row-label">
+                    <span>Discount</span>
+                    <span className="discount-tag">
+                        <Tag size={12} style={{ marginRight: '4px' }} />
+                        {appliedCouponCode}
+                    </span>
+                </div>
+                <span>-₹{discountAmount.toFixed(2)}</span>
+            </div>
+        )}
+
         <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
         <Button type="submit" form="checkout-form" variant="primary" size="lg" fullWidth disabled={isProcessing} style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
           {isProcessing ? 'Processing...' : (<><Lock size={18} /> Pay ₹{total.toFixed(2)}</>)}

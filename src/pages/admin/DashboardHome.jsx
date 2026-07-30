@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, Clock, DollarSign, RotateCcw } from 'lucide-react';
+import { Package, Clock, IndianRupee, RotateCcw } from 'lucide-react';
 import { useGetProductsQuery } from '../../api/productApi';
 import { useGetSellerOrdersQuery } from '../../api/orderApi';
 import '@/styles/css/pages/admin/AdminStyles.css';
@@ -61,7 +61,7 @@ const DashboardHome = () => {
             <h3>Total Sales</h3>
             <div className="summary-value">₹{stats.totalSales.toLocaleString()}</div>
           </div>
-          <div className="summary-icon" style={{ background: 'rgba(46, 125, 50, 0.2)', color: 'var(--success)' }}><DollarSign size={24} /></div>
+          <div className="summary-icon" style={{ background: 'rgba(46, 125, 50, 0.2)', color: 'var(--success)' }}><IndianRupee size={24} /></div>
         </div>
 
         <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>

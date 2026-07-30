@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
-import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation } from '../api/orderApi';
+import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useValidateCouponMutation } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useGetProductsQuery } from '../api/productApi';
 
@@ -13,6 +13,11 @@ export const useCheckoutLogic = () => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [selectedAddressId, setSelectedAddressId] = useState('new');
   const [isProcessing, setIsProcessing] = useState(false);
+  
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCouponCode, setAppliedCouponCode] = useState(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [couponError, setCouponError] = useState('');
   const { pushToast } = useToast();
 
   const { data: allProducts = [] } = useGetProductsQuery();
@@ -32,11 +37,30 @@ export const useCheckoutLogic = () => {
   const [addToBackendCart] = useAddToBackendCartMutation();
   const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
+  const [validateCouponApi] = useValidateCouponMutation();
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const tax = subtotal * 0.08;
   const shipping = 15.00;
-  const total = subtotal + tax + shipping;
+  const total = subtotal + tax + shipping - discountAmount;
+
+  const validateCoupon = async () => {
+    setCouponError('');
+    if (!couponCode.trim()) {
+       setCouponError('Please enter a coupon code.');
+       return;
+    }
+    try {
+       const res = await validateCouponApi({ code: couponCode, cartTotal: subtotal }).unwrap();
+       setDiscountAmount(res.discountAmount);
+       setAppliedCouponCode(couponCode);
+       pushToast('Coupon applied successfully!', 'success');
+    } catch (err) {
+       setDiscountAmount(0);
+       setAppliedCouponCode(null);
+       setCouponError(err?.data?.error || 'Failed to apply coupon.');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +94,7 @@ export const useCheckoutLogic = () => {
         await addToBackendCart({ productId: item.id, quantity: item.quantity, phoneModel: item.phoneModel }).unwrap();
       }
 
-      await checkoutOrder(finalAddressId).unwrap();
+      await checkoutOrder({addressId: finalAddressId, couponCode: appliedCouponCode}).unwrap();
 
       setIsProcessing(false);
       dispatch(clearCart());
@@ -83,5 +107,5 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, tax, shipping, total, handleSubmit, navigate };
+  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, tax, shipping, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon };
 };
