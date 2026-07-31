@@ -83,27 +83,23 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
   return (
     <div 
       onClick={onClose}
-      style={{
-      position: 'fixed',
-      top: 0, left: 0, right: 0, bottom: 0,
-      backgroundColor: 'rgba(31, 26, 23, 0.6)',
-      backdropFilter: 'blur(4px)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 1000,
-      padding: '1rem'
-    }}>
+      className="admin-modal-backdrop"
+    >
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="glass-panel fade-in admin-panel-card" 
-        style={{ marginBottom: 0, width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto' }}
+        className="admin-modal-content admin-product-form-modal" 
+        style={{ maxWidth: '800px' }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h2 style={{ color: 'var(--primary-dark)', margin: 0 }}>{editingProduct ? 'Edit Product' : 'Create New Product'}</h2>
-          <button onClick={onClose} className="action-btn btn-ghost" style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}><X size={24} /></button>
+        <div className="admin-modal-header">
+          <h2 style={{ color: 'var(--text-main)', margin: 0, fontSize: '1.4rem', fontWeight: '800' }}>
+            {editingProduct ? 'Edit Product' : 'Create New Product'}
+          </h2>
+          <button onClick={onClose} className="admin-modal-close" aria-label="Close modal">
+            <X size={20} />
+          </button>
         </div>
 
+        <div className="admin-modal-body">
         <form onSubmit={handleSubmit} className="admin-form-grid">
           <div className="admin-form-field full">
             <label>Product Name (Title)</label>
@@ -187,6 +183,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
             </Button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

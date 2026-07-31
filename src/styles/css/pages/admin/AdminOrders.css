@@ -12,19 +12,26 @@
 }
 
 .font-semibold {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .text-primary {
   color: var(--primary);
 }
 
+[data-theme="dark"] .text-primary {
+  color: var(--accent);
+}
+
 .badge-info {
-  background-color: rgba(2, 136, 209, 0.1);
+  background-color: rgba(2, 132, 199, 0.12);
   color: var(--info);
+  border: 1px solid rgba(2, 132, 199, 0.25);
 }
 
 .badge-secondary {
-  background-color: rgba(102, 102, 102, 0.1);
+  background-color: var(--surface-alt);
   color: var(--text-muted);
+  border: 1px solid var(--border);
 }
+

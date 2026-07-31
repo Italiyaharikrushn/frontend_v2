@@ -45,7 +45,7 @@ const DashboardHome = () => {
             <h3>Active Products</h3>
             <div className="summary-value">{stats.activeProducts}</div>
           </div>
-          <div className="summary-icon"><Package size={24} /></div>
+          <div className="summary-icon summary-icon-primary"><Package size={24} /></div>
         </div>
         
         <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
@@ -53,7 +53,7 @@ const DashboardHome = () => {
             <h3>Pending Orders</h3>
             <div className="summary-value">{stats.pendingOrders}</div>
           </div>
-          <div className="summary-icon" style={{ background: 'rgba(245, 124, 0, 0.2)', color: 'var(--warning)' }}><Clock size={24} /></div>
+          <div className="summary-icon summary-icon-warning"><Clock size={24} /></div>
         </div>
 
         <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
@@ -61,7 +61,7 @@ const DashboardHome = () => {
             <h3>Total Sales</h3>
             <div className="summary-value">₹{stats.totalSales.toLocaleString()}</div>
           </div>
-          <div className="summary-icon" style={{ background: 'rgba(46, 125, 50, 0.2)', color: 'var(--success)' }}><IndianRupee size={24} /></div>
+          <div className="summary-icon summary-icon-success"><IndianRupee size={24} /></div>
         </div>
 
         <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
@@ -69,7 +69,7 @@ const DashboardHome = () => {
             <h3>Returns</h3>
             <div className="summary-value">{stats.returnedOrders}</div>
           </div>
-          <div className="summary-icon" style={{ background: 'rgba(211, 47, 47, 0.2)', color: 'var(--error)' }}><RotateCcw size={24} /></div>
+          <div className="summary-icon summary-icon-error"><RotateCcw size={24} /></div>
         </div>
       </div>
     </div>

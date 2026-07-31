@@ -12,31 +12,31 @@ const CategoryDiscountPanel = ({
   return (
     <div className="glass-panel admin-panel-card admin-discount-panel with-gap">
       <h2 className="admin-discount-panel-title">
-        <Tag size={20} /> Apply Category Discount
+        <span className="admin-section-icon"><Tag size={18} /></span> Apply Category Discount
       </h2>
       <div className="admin-table-container admin-discount-scrollable">
-        <table className="admin-table">
+        <table className="admin-table admin-category-discount-table">
           <thead>
             <tr>
               <th>Category Name</th>
               <th>Total Products</th>
-              <th>% Discount</th>
-              <th>Valid for (Days)</th>
-              <th>Action</th>
+              <th style={{ minWidth: '100px' }}>% Discount</th>
+              <th style={{ minWidth: '120px' }}>Valid for (Days)</th>
+              <th style={{ minWidth: '100px' }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {categoryStats.length > 0 ? categoryStats.map((stat) => (
               <tr key={stat.category}>
                 <td style={{ fontWeight: '600' }}>{stat.category}</td>
-                <td>{stat.count} {stat.count === 1 ? 'Product' : 'Products'}</td>
+                <td style={{ whiteSpace: 'nowrap' }}>{stat.count} {stat.count === 1 ? 'Product' : 'Products'}</td>
                 <td>
                   <input 
                     type="number" 
                     placeholder="%" 
                     value={categoryInputs[stat.category]?.discountPercentage || ''} 
                     onChange={(e) => handleCategoryInputChange(stat.category, 'discountPercentage', e.target.value)}
-                    style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', width: '80px' }}
+                    className="admin-category-input"
                     min="1" max="100"
                   />
                 </td>
@@ -46,7 +46,7 @@ const CategoryDiscountPanel = ({
                     placeholder="Days" 
                     value={categoryInputs[stat.category]?.validForDays || ''} 
                     onChange={(e) => handleCategoryInputChange(stat.category, 'validForDays', e.target.value)}
-                    style={{ padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border)', width: '100px' }}
+                    className="admin-category-input"
                     min="1"
                   />
                 </td>
@@ -54,10 +54,10 @@ const CategoryDiscountPanel = ({
                   <Button 
                     onClick={() => handleApplyCategoryDiscount(stat.category)} 
                     variant="primary" 
-                    style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', padding: '0.5rem 1rem' }} 
+                    style={{ display: 'inline-flex', gap: '0.4rem', alignItems: 'center', padding: '0.45rem 0.9rem', whiteSpace: 'nowrap' }} 
                     disabled={isApplyingCategory}
                   >
-                    <Tag size={16} /> Apply
+                    <Tag size={15} /> Apply
                   </Button>
                 </td>
               </tr>

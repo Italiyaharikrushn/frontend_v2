@@ -71,8 +71,8 @@ const AdminCoupons = () => {
     return (
         <div className="admin-page admin-full-height-page fade-in">
             <div className="admin-header">
-                <h1 className="admin-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <Ticket size={28} color="var(--primary)" /> Manage Coupons
+                <h1 className="admin-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span className="admin-section-icon"><Ticket size={20} /></span> Manage Coupons
                 </h1>
                 {!isEditing && (
                     <div className="admin-actions">
@@ -110,18 +110,18 @@ const AdminCoupons = () => {
                                         </div>
                                     </td>
                                     <td>
-                                        <span className={`status-badge ${coupon.isActive ? 'status-active' : 'status-inactive'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                                        <span className={`status-badge ${coupon.isActive ? 'status-active' : 'status-inactive'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
                                             {coupon.isActive ? <><CheckCircle size={14} /> Active</> : <><XCircle size={14} /> Inactive</>}
                                         </span>
                                     </td>
                                     <td>
                                         <div className="admin-table-actions">
-                                            <Button size="sm" variant="secondary" onClick={() => handleEdit(coupon)} aria-label="Edit">
+                                            <button className="admin-icon-btn" onClick={() => handleEdit(coupon)} aria-label="Edit" title="Edit">
                                                 <Edit size={16} />
-                                            </Button>
-                                            <Button size="sm" variant="primary" style={{ backgroundColor: 'var(--accent-red)' }} onClick={() => handleDelete(coupon.id)} aria-label="Delete">
+                                            </button>
+                                            <button className="admin-icon-btn admin-icon-btn-danger" onClick={() => handleDelete(coupon.id)} aria-label="Delete" title="Delete">
                                                 <Trash2 size={16} />
-                                            </Button>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -129,7 +129,7 @@ const AdminCoupons = () => {
                             {coupons.length === 0 && (
                                 <tr>
                                     <td colSpan="5" style={{ textAlign: 'center', padding: '3rem' }}>
-                                        <Ticket size={48} color="var(--border-strong)" style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
+                                        <Ticket size={44} style={{ margin: '0 auto 1rem', color: 'var(--text-muted)', opacity: 0.4 }} />
                                         <p style={{ color: 'var(--text-muted)' }}>No coupons found. Create one to get started!</p>
                                     </td>
                                 </tr>

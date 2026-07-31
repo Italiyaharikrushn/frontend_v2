@@ -123,8 +123,8 @@ const AdminProducts = () => {
                     </td>
                     <td>
                       <div className="admin-table-actions">
-                        <button onClick={() => handleOpenForm(product)} className="action-btn btn-ghost" style={{ padding: '0.25rem', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--primary)' }} title="Edit"><Edit size={16} /></button>
-                        <button onClick={() => handleDelete(product.id)} className="action-btn btn-ghost" style={{ padding: '0.25rem', background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--error)' }} title="Delete"><Trash2 size={16} /></button>
+                        <button onClick={() => handleOpenForm(product)} className="admin-icon-btn" title="Edit"><Edit size={16} /></button>
+                        <button onClick={() => handleDelete(product.id)} className="admin-icon-btn admin-icon-btn-danger" title="Delete"><Trash2 size={16} /></button>
                       </div>
                     </td>
                   </tr>

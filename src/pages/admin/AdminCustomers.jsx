@@ -22,16 +22,16 @@ const AdminCustomers = () => {
 
       <div className="admin-two-column">
         <div className="glass-panel admin-panel-card">
-          <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Users size={20} /> Customer Directory
+          <h2 style={{ marginBottom: '1.25rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.65rem', fontWait: '700' }}>
+            <span className="admin-section-icon"><Users size={18} /></span> Customer Directory
           </h2>
 
           <AdminCustomerTable realCustomers={realCustomers} isLoadingCustomers={isLoadingCustomers} />
         </div>
 
         <div className="glass-panel admin-panel-card" style={{ height: 'fit-content' }}>
-          <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <MessageSquare size={20} /> Customer Messages
+          <h2 style={{ marginBottom: '1.25rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.65rem', fontWeight: '700' }}>
+            <span className="admin-section-icon"><MessageSquare size={18} /></span> Customer Messages
           </h2>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -49,13 +49,13 @@ const AdminCustomers = () => {
                 <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', margin: 0 }}>"{msg.message}"</p>
 
                 {msg.status === 'REPLIED' ? (
-                  <div style={{ padding: '0.6rem', background: '#f0fdf4', color: '#166534', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem' }}>
+                  <div style={{ padding: '0.6rem', background: 'rgba(16, 185, 129, 0.12)', color: 'var(--success)', borderRadius: 'var(--radius-sm)', fontSize: '0.8rem', fontWeight: '600' }}>
                     <strong>Replied:</strong> {msg.adminReply}
                   </div>
                 ) : (
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <Button variant="primary" size="sm" onClick={() => handleReply(msg.id)} style={{ flex: '1 1 180px' }}>Reply</Button>
-                    <Button variant="secondary" size="sm" style={{ padding: '0.5rem' }}><Mail size={16} /></Button>
+                    <button className="admin-icon-btn" title="Send Email"><Mail size={16} /></button>
                   </div>
                 )}
               </div>

@@ -6,8 +6,10 @@
 
 .page-title {
   font-size: 1.75rem;
+  font-weight: 800;
   margin: 0;
-  color: var(--primary-dark);
+  color: var(--text-main);
+  letter-spacing: -0.02em;
 }
 
 .stats-grid {
@@ -25,35 +27,42 @@
 
 .stat-title {
   color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.08em;
 }
 
 .stat-icon {
-  color: var(--primary);
-  background-color: var(--primary-light);
-  padding: 0.5rem;
-  border-radius: 50%;
   color: white;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 0.6rem;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+[data-theme="dark"] .stat-icon {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #1a1715;
+  box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
 }
 
 .stat-value {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.1rem;
+  font-weight: 800;
   color: var(--text-main);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.02em;
 }
 
 .stat-trend {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .text-sm {
-  font-size: 0.75rem;
-  font-weight: 400;
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .dashboard-charts {
@@ -73,9 +82,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0,0,0,0.02);
+  background-color: var(--surface-alt);
   border-radius: var(--radius-md);
   border: 1px dashed var(--border);
+  color: var(--text-muted);
 }
 
 .data-table {
@@ -90,26 +100,30 @@
 }
 
 .data-table th {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.5px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  background: var(--surface-alt);
 }
 
 .badge {
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.8rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .badge-success {
-  background-color: rgba(46, 125, 50, 0.1);
+  background-color: rgba(16, 185, 129, 0.12);
   color: var(--success);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .badge-warning {
-  background-color: rgba(245, 124, 0, 0.1);
+  background-color: rgba(245, 158, 11, 0.12);
   color: var(--warning);
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
+

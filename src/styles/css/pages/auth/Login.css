@@ -3,36 +3,54 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
-  background: radial-gradient(circle at top left, rgba(122, 16, 56, 0.16), transparent 28%), var(--background);
+  padding: 1.5rem 1.25rem;
+  background: radial-gradient(circle at 10% 10%, rgba(var(--primary-rgb), 0.18), transparent 35%),
+              radial-gradient(circle at 90% 90%, rgba(var(--accent-rgb), 0.12), transparent 35%),
+              var(--background);
 }
 
 .auth-card {
-  width: min(100%, 420px);
-  padding: 1.5rem;
+  width: min(100%, 440px);
+  padding: 2rem 1.75rem;
   border-radius: var(--radius-xl);
   background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .auth-card {
+  border-color: rgba(var(--accent-rgb), 0.15);
 }
 
 .auth-card-header {
   text-align: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .auth-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: white;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.35);
+}
+
+[data-theme="dark"] .auth-icon {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color: #1a1715;
+  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.35);
 }
 
 .auth-card-header h1 {
-  font-size: 1.6rem;
+  font-size: 1.75rem;
+  font-weight: 800;
   margin-bottom: 0.35rem;
 }
 
@@ -44,7 +62,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1.1rem;
 }
 
 .input-group {
@@ -63,53 +81,58 @@
 }
 
 .input-group input {
-  padding: 0.8rem 0.9rem;
+  padding: 0.8rem 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-main);
   font-family: inherit;
-  font-size: 1rem;
-  transition: all var(--transition-fast);
-  min-height: 44px;
+  font-size: 0.95rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  min-height: 46px;
 }
 
 .input-group input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(122, 16, 56, 0.12);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15);
 }
 
 [data-theme="dark"] .input-group input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.16);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.2);
 }
 
 .auth-error {
-  background: rgba(211, 47, 47, 0.1);
+  background: rgba(225, 29, 72, 0.1);
   color: var(--error);
-  border: 1px solid rgba(211, 47, 47, 0.15);
+  border: 1px solid rgba(225, 29, 72, 0.2);
   border-radius: var(--radius-md);
-  padding: 0.75rem 0.9rem;
+  padding: 0.85rem 1rem;
   margin-bottom: 1rem;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .auth-footer {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   color: var(--text-muted);
   font-size: 0.9rem;
 }
 
 .auth-footer a {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .auth-footer a {
+  color: var(--accent);
 }
 
 @media (min-width: 768px) {
-  .auth-card { padding: 2rem; }
-  .auth-card-header h1 { font-size: 1.8rem; }
+  .auth-card { padding: 2.25rem 2rem; }
+  .auth-card-header h1 { font-size: 1.9rem; }
 }
 
 .password-input-wrapper {
@@ -119,12 +142,13 @@
 }
 
 .password-input-wrapper input {
-  padding-right: 2.5rem;
+  padding-right: 2.75rem;
+  width: 100%;
 }
 
 .password-toggle-btn {
   position: absolute;
-  right: 0.75rem;
+  right: 0.85rem;
   background: none;
   border: none;
   color: var(--text-muted);
@@ -132,9 +156,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: color var(--transition-fast);
 }
 
 .password-toggle-btn:hover {
   color: var(--text-main);
 }
+
