@@ -7,7 +7,7 @@ import CheckoutSummary from '../../components/storefront/CheckoutSummary';
 import '@/styles/css/pages/storefront/Checkout.css';
 const Checkout = () => {
   const [phone, setPhone] = useState('');
-  const { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, tax, shipping, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon } = useCheckoutLogic();
+  const { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon } = useCheckoutLogic();
   const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
 
   useEffect(() => {
@@ -48,8 +48,6 @@ const Checkout = () => {
         <CheckoutSummary
           cartItems={cartItems}
           subtotal={subtotal}
-          shipping={shipping}
-          tax={tax}
           total={total}
           isProcessing={isProcessing}
           couponCode={couponCode}

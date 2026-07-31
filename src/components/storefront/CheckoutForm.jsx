@@ -16,25 +16,27 @@ const CheckoutForm = ({
   return (
     <div className="checkout-form-section">
       <form id="checkout-form" onSubmit={handleSubmit}>
-        <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
-          <h2 className="form-card-title"><User size={20} /> Contact Information</h2>
-          <div className="form-grid full">
-            <div className="input-group">
-              <label htmlFor="email">Email address</label>
-              <input type="email" id="email" required placeholder="Enter your email" />
-            </div>
-            <div className="input-group">
-              <label htmlFor="phone">Phone Number</label>
-              <PhoneInput 
-                id="phone" 
-                name="phone"
-                value={phone} 
-                onChange={setPhone} 
-                required 
-              />
+        {selectedAddressId === 'new' && (
+          <div className="form-card glass-panel hover-lift fade-in" style={{ marginBottom: '1rem' }}>
+            <h2 className="form-card-title"><User size={20} /> Contact Information</h2>
+            <div className="form-grid full">
+              <div className="input-group">
+                <label htmlFor="email">Email address</label>
+                <input type="email" id="email" required placeholder="Enter your email" />
+              </div>
+              <div className="input-group">
+                <label htmlFor="phone">Phone Number</label>
+                <PhoneInput 
+                  id="phone" 
+                  name="phone"
+                  value={phone} 
+                  onChange={setPhone} 
+                  required 
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
           <h2 className="form-card-title"><MapPin size={20} /> Shipping Address</h2>

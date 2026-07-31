@@ -2,7 +2,7 @@ import React from 'react';
 import { ShoppingBag, Lock, Tag, Ticket, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from '../ui/Button';
 
-const CheckoutSummary = ({ cartItems, subtotal, shipping, tax, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon }) => {
+const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon }) => {
   return (
     <div className="checkout-summary glass-panel">
       <h2 className="form-card-title">Order Summary</h2>
@@ -28,8 +28,6 @@ const CheckoutSummary = ({ cartItems, subtotal, shipping, tax, total, isProcessi
 
       <div className="summary-totals">
         <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
-        <div className="summary-row"><span>Shipping</span><span>₹{shipping.toFixed(2)}</span></div>
-        <div className="summary-row"><span>Estimated Tax (8%)</span><span>₹{tax.toFixed(2)}</span></div>
         
         <div className="coupon-section">
             <div className="coupon-input-group">

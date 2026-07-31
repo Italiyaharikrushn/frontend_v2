@@ -40,9 +40,7 @@ export const useCheckoutLogic = () => {
   const [validateCouponApi] = useValidateCouponMutation();
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.08;
-  const shipping = 15.00;
-  const total = subtotal + tax + shipping - discountAmount;
+  const total = subtotal - discountAmount;
 
   const validateCoupon = async () => {
     setCouponError('');
@@ -107,5 +105,5 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, tax, shipping, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon };
+  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon };
 };

@@ -83,7 +83,37 @@
   grid-template-columns: 1fr;
 }
 
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  padding: 1rem 0;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .feature-card {
+  width: 280px;
+  flex-shrink: 0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--surface);

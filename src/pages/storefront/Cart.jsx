@@ -49,8 +49,7 @@ const Cart = () => {
   };
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.08;
-  const total = subtotal + tax;
+  const total = subtotal;
 
   return (
     <div className="cart-page fade-in">
@@ -101,8 +100,6 @@ const Cart = () => {
           <div className="cart-summary glass-panel">
             <h3 className="summary-title">Order Summary</h3>
             <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
-            <div className="summary-row"><span>Estimated Tax (8%)</span><span>₹{tax.toFixed(2)}</span></div>
-            <div className="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div>
             <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
 
             <div className="summary-actions">
