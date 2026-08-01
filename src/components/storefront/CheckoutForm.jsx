@@ -21,7 +21,7 @@ const CheckoutForm = ({
             <h2 className="form-card-title"><User size={20} /> Contact Information</h2>
             <div className="form-grid full">
               <div className="input-group">
-                <label htmlFor="email">Email address</label>
+                <label htmlFor="email">Email Address</label>
                 <input type="email" id="email" required placeholder="Enter your email" />
               </div>
               <div className="input-group">
@@ -87,11 +87,11 @@ const CheckoutForm = ({
           {selectedAddressId === 'new' && (
             <div className="form-grid fade-in">
               <div className="input-group">
-                <label htmlFor="firstName">First name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input type="text" id="firstName" required />
               </div>
               <div className="input-group">
-                <label htmlFor="lastName">Last name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input type="text" id="lastName" required />
               </div>
               <div className="input-group" style={{ gridColumn: '1 / -1' }}>
@@ -107,7 +107,7 @@ const CheckoutForm = ({
                 <input type="text" id="state" required />
               </div>
               <div className="input-group">
-                <label htmlFor="zip">ZIP / Postal code</label>
+                <label htmlFor="zip">ZIP / Postal Code</label>
                 <input type="text" id="zip" required />
               </div>
               <div className="input-group">
@@ -138,11 +138,11 @@ const CheckoutForm = ({
           {paymentMethod === 'card' && (
             <div className="form-grid fade-in">
               <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                <label htmlFor="cardNumber">Card number (Demo - leave blank)</label>
+                <label htmlFor="cardNumber">Card Number (Demo - Leave Blank)</label>
                 <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" />
               </div>
               <div className="input-group">
-                <label htmlFor="expDate">Expiration date</label>
+                <label htmlFor="expDate">Expiration Date</label>
                 <input type="text" id="expDate" placeholder="MM/YY" />
               </div>
               <div className="input-group">

@@ -47,7 +47,7 @@ const StoreProfileForm = ({ formData, setFormData }) => {
           <input type="text" value={formData.state} onChange={(e) => setFormData({ ...formData, state: e.target.value })} />
         </div>
         <div className="admin-form-field">
-          <label>Pincode</label>
+          <label>PIN Code</label>
           <input type="text" value={formData.pincode} onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} />
         </div>
       </div>

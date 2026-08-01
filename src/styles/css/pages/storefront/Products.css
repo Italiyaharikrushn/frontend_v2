@@ -159,10 +159,12 @@
 
 @media (max-width: 640px) {
   .category-tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .category-tab {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
   }
 }
 
