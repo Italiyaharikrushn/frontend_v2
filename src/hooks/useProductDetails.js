@@ -20,6 +20,7 @@ export const useProductDetails = ({ propId, isModal }) => {
 
   const [pincode, setPincode] = useState('');
   const [phoneModel, setPhoneModel] = useState('');
+  const [quantity, setQuantity] = useState(1);
 
   const isPhoneCover = product ? (product.category?.toLowerCase().includes('cover') || product.title?.toLowerCase().includes('cover')) : false;
 
@@ -40,15 +41,16 @@ export const useProductDetails = ({ propId, isModal }) => {
       category: product.category || product.globalCategory || 'general',
       image: (product.images && product.images.length > 0) ? product.images[0] : null,
       phoneModel: isPhoneCover ? phoneModel : undefined,
+      quantity,
     }));
 
-    pushToast(`${product.title} added to your cart.`, 'success');
+    pushToast(`${quantity} ${product.title} added to your cart.`, 'success');
 
     if (isAuthenticated) {
       try {
         await addToBackendCart({
           productId: product.id,
-          quantity: 1,
+          quantity: quantity,
           phoneModel: isPhoneCover ? phoneModel : undefined
         }).unwrap();
       } catch (error) {
@@ -65,5 +67,5 @@ export const useProductDetails = ({ propId, isModal }) => {
   const currentPrice = product ? (product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price)) : 0;
   const originalPrice = product ? parseFloat(product.price) || 0 : 0;
 
-  return { product, isLoading, isError, isAdding, pincode, setPincode, phoneModel, setPhoneModel, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate };
+  return { product, isLoading, isError, isAdding, pincode, setPincode, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate };
 };

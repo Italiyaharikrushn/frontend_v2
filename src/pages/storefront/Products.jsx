@@ -22,6 +22,34 @@ const Products = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { pushToast } = useToast();
   const [quickViewProductId, setQuickViewProductId] = useState(null);
+  const [quantities, setQuantities] = useState({});
+
+  const handleQuantityChange = (id, delta) => {
+    setQuantities(prev => {
+      const current = prev[id] || 1;
+      const next = Math.max(1, (current === '' ? 1 : current) + delta);
+      return { ...prev, [id]: next };
+    });
+  };
+
+  const handleQuantityInputChange = (id, value) => {
+    const cleanValue = value.replace(/-/g, '');
+    const val = parseInt(cleanValue, 10);
+    setQuantities(prev => ({
+      ...prev,
+      [id]: isNaN(val) ? '' : (val === 0 ? 1 : val)
+    }));
+  };
+
+  const handleQuantityBlur = (id) => {
+    setQuantities(prev => {
+      const current = prev[id];
+      if (current === '' || current < 1) {
+        return { ...prev, [id]: 1 };
+      }
+      return prev;
+    });
+  };
 
   const { data: allProducts = [], isLoading } = useGetProductsQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
@@ -57,23 +85,27 @@ const Products = () => {
   }
 
   const handleAddToCart = async (product) => {
+    const qty = quantities[product.id] || 1;
     dispatch(addItem({
       id: product.id,
       name: product.title,
       price: product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price),
       category: category || 'general',
       image: (product.images && product.images.length > 0) ? product.images[0] : null,
+      quantity: qty,
     }));
 
-    pushToast(`${product.title} added to your cart.`, 'success');
+    pushToast(`${qty} ${product.title} added to your cart.`, 'success');
 
     if (isAuthenticated) {
       try {
-        await addToBackendCart({ productId: product.id, quantity: 1 }).unwrap();
+        await addToBackendCart({ productId: product.id, quantity: qty }).unwrap();
       } catch (error) {
         console.error('Failed to save item to database cart:', error);
       }
     }
+    
+    setQuantities(prev => ({ ...prev, [product.id]: 1 }));
   };
 
   const handleCategoryChange = (cat) => {
@@ -152,14 +184,37 @@ const Products = () => {
                       {isActive ? 'Select Model' : 'Unavailable'}
                     </Button>
                   ) : (
-                    <Button
-                      fullWidth
-                      variant={isActive ? 'primary' : 'secondary'}
-                      disabled={!isActive}
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      {isActive ? 'Add to Cart' : 'Unavailable'}
-                    </Button>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '0.5rem', width: '100%' }}>
+                      {isActive && (
+                        <div style={{ flex: '1 1 80px', display: 'flex', alignItems: 'center', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', background: 'var(--surface)', overflow: 'hidden' }}>
+                          <button 
+                            onClick={() => handleQuantityChange(product.id, -1)}
+                            disabled={(quantities[product.id] || 1) <= 1}
+                            style={{ flex: 1, minHeight: '32px', minWidth: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', cursor: (quantities[product.id] || 1) <= 1 ? 'not-allowed' : 'pointer', opacity: (quantities[product.id] || 1) <= 1 ? 0.5 : 1 }}
+                          >-</button>
+                          <input 
+                            type="number"
+                            value={quantities[product.id] === undefined ? 1 : quantities[product.id]}
+                            onChange={(e) => handleQuantityInputChange(product.id, e.target.value)}
+                            onBlur={() => handleQuantityBlur(product.id)}
+                            style={{ fontWeight: 'bold', fontSize: '0.9rem', width: '2.5rem', height: '100%', textAlign: 'center', border: 'none', padding: '0', background: 'transparent', color: 'var(--text-main)' }}
+                            className="no-spin-button"
+                          />
+                          <button 
+                            onClick={() => handleQuantityChange(product.id, 1)}
+                            style={{ flex: 1, minHeight: '32px', minWidth: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', cursor: 'pointer' }}
+                          >+</button>
+                        </div>
+                      )}
+                      <Button
+                        style={{ flex: '2 1 120px', padding: '0.4rem 0.5rem', fontSize: '0.9rem' }}
+                        variant={isActive ? 'primary' : 'secondary'}
+                        disabled={!isActive}
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        {isActive ? 'Add to Cart' : 'Unavailable'}
+                      </Button>
+                    </div>
                   )}
                 </div>
               </div>

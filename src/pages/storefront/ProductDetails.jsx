@@ -7,7 +7,7 @@ import '@/styles/css/pages/storefront/ProductDetails.css';
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;
-  const { product, isLoading, isError, isAdding, phoneModel, setPhoneModel, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
+  const { product, isLoading, isError, isAdding, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
 
   if (isLoading) {
     return <div className="product-details-container loading"><div className="spinner"></div></div>;
@@ -66,6 +66,32 @@ const ProductDetails = ({ productId: propId, onClose }) => {
               />
             </div>
           )}
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+            <label style={{ fontWeight: '500', color: 'var(--text-main)' }}>Quantity</label>
+            <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
+              <button 
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                disabled={quantity <= 1}
+                style={{ width: '40px', height: '40px', background: 'var(--surface)', border: 'none', cursor: quantity <= 1 ? 'not-allowed' : 'pointer', fontSize: '1.2rem', opacity: quantity <= 1 ? 0.5 : 1 }}
+              >-</button>
+              <input 
+                type="number"
+                value={quantity === '' ? '' : quantity}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  setQuantity(isNaN(val) ? '' : val);
+                }}
+                onBlur={() => setQuantity(Math.max(1, quantity === '' ? 1 : quantity))}
+                style={{ width: '50px', textAlign: 'center', fontWeight: 'bold', border: 'none', background: 'transparent', color: 'var(--text-main)' }}
+                className="no-spin-button"
+              />
+              <button 
+                onClick={() => setQuantity(quantity + 1)}
+                style={{ width: '40px', height: '40px', background: 'var(--surface)', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+              >+</button>
+            </div>
+          </div>
 
           <div className="product-action-buttons">
             <button

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { selectCartItems, updateQuantity, removeItem, updateItemPrices } from '../../redux/cartSlice';
+import { selectCartItems, updateQuantity, setQuantity, removeItem, updateItemPrices } from '../../redux/cartSlice';
 import { useGetProductsQuery } from '../../api/productApi';
 import '@/styles/css/pages/storefront/Cart.css';
 
@@ -44,6 +44,10 @@ const Cart = () => {
     dispatch(updateQuantity({ id, cartItemId, change }));
   };
 
+  const handleSetQuantity = (id, cartItemId, quantity) => {
+    dispatch(setQuantity({ id, cartItemId, quantity }));
+  };
+
   const handleRemove = async (id, cartItemId) => {
     dispatch(removeItem({ id, cartItemId }));
   };
@@ -80,19 +84,35 @@ const Cart = () => {
                   <h3 className="cart-item-title">{item.name || item.title}</h3>
                   {item.phoneModel && <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Model: {item.phoneModel}</span>}
                   <p className="cart-item-price">₹{(item.price || 0).toFixed(2)}</p>
-                  <div className="cart-item-quantity">
-                    <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, -1)} aria-label={`Decrease quantity for ${item.name || item.title}`}>
-                      <Minus size={16} />
-                    </button>
-                    <span className="quantity-value">{item.quantity}</span>
-                    <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, 1)} aria-label={`Increase quantity for ${item.name || item.title}`}>
-                      <Plus size={16} />
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.5rem' }}>
+                    <div className="cart-item-quantity" style={{ marginTop: 0 }}>
+                      <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, -1)} aria-label={`Decrease quantity for ${item.name || item.title}`}>
+                        <Minus size={16} />
+                      </button>
+                      <input 
+                        type="number"
+                        className="quantity-value no-spin-button"
+                        value={item.quantity === '' ? '' : item.quantity}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value, 10);
+                          handleSetQuantity(item.id, item.cartItemId, isNaN(val) ? '' : val);
+                        }}
+                        onBlur={() => {
+                          if (item.quantity === '' || item.quantity < 1) {
+                            handleSetQuantity(item.id, item.cartItemId, 1);
+                          }
+                        }}
+                        style={{ width: '40px', height: '36px', textAlign: 'center', fontWeight: 'bold', border: 'none', background: 'transparent', color: 'var(--text-main)', outline: 'none', padding: '0', margin: '0' }}
+                      />
+                      <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, 1)} aria-label={`Increase quantity for ${item.name || item.title}`}>
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                    <button className="remove-btn btn-ghost" onClick={() => handleRemove(item.id, item.cartItemId)} title="Remove item" aria-label={`Remove ${item.name || item.title}`} style={{ alignSelf: 'center' }}>
+                      <Trash2 size={20} />
                     </button>
                   </div>
                 </div>
-                <button className="remove-btn btn-ghost" onClick={() => handleRemove(item.id, item.cartItemId)} title="Remove item" aria-label={`Remove ${item.name || item.title}`}>
-                  <Trash2 size={20} />
-                </button>
               </div>
             ))}
           </div>

@@ -15,6 +15,14 @@ const cartSlice = createSlice({
       }
       saveCartState(state);
     },
+    setQuantity: (state, action) => {
+      const { id, cartItemId, quantity } = action.payload;
+      const item = state.items.find(item => (cartItemId ? item.cartItemId === cartItemId : item.id === id));
+      if (item) {
+        item.quantity = Math.max(1, quantity);
+      }
+      saveCartState(state);
+    },
     removeItem: (state, action) => {
       const { id, cartItemId } = action.payload;
       state.items = state.items.filter(item => (cartItemId ? item.cartItemId !== cartItemId : item.id !== id));
@@ -25,16 +33,16 @@ const cartSlice = createSlice({
         item.id === action.payload.id && 
         (item.phoneModel || '') === (action.payload.phoneModel || '')
       );
+      const qtyToAdd = action.payload.quantity || 1;
       if (existingItem) {
-        existingItem.quantity += 1;
+        existingItem.quantity += qtyToAdd;
       } else {
         state.items.push({ 
           ...action.payload, 
-          quantity: 1, 
+          quantity: qtyToAdd, 
           cartItemId: `${action.payload.id}-${action.payload.phoneModel || 'default'}-${Date.now()}`
         });
       }
-      saveCartState(state);
       saveCartState(state);
     },
     clearCart: (state) => {
@@ -55,9 +63,9 @@ const cartSlice = createSlice({
   },
 });
 
-export const { updateQuantity, removeItem, addItem, clearCart, updateItemPrices } = cartSlice.actions;
+export const { updateQuantity, setQuantity, removeItem, addItem, clearCart, updateItemPrices } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.items;
-export const selectCartTotalQuantity = (state) => state.cart.items.length;
+export const selectCartTotalQuantity = (state) => state.cart.items.reduce((total, item) => total + item.quantity, 0);
 
 export default cartSlice.reducer;
