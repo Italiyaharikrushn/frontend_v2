@@ -9,7 +9,7 @@ import '@/styles/css/pages/admin/AdminStyles.css';
 
 const AdminProducts = () => {
   const { pushToast } = useToast();
-  const { confirm } = useAlert();
+  const { confirm, bulkUploadPrompt } = useAlert();
   const { data: products = [], isLoading } = useGetProductsQuery();
   const [deleteProduct] = useDeleteProductMutation();
 
@@ -41,29 +41,27 @@ const AdminProducts = () => {
   const fileInputRef = useRef(null);
   const [bulkUpload] = useBulkUploadProductsMutation();
 
-  // const handleBulkUpload = async (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     try {
-  //       await bulkUpload(file).unwrap();
-  //       pushToast('Bulk upload successful!', 'success');
-  //     } catch (err) {
-  //       console.error('Bulk upload failed', err);
-  //       pushToast('Bulk upload failed. Check console.', 'error');
-  //     }
-  //     e.target.value = null; // reset input
-  //   }
-  // };
+  const handleBulkUploadClick = async () => {
+    const file = await bulkUploadPrompt('Upload your product CSV/Excel file.');
+    if (file) {
+      try {
+        await bulkUpload(file).unwrap();
+        pushToast('Bulk upload successful!', 'success');
+      } catch (err) {
+        console.error('Bulk upload failed', err);
+        pushToast(err.data?.message || 'Bulk upload failed.', 'error');
+      }
+    }
+  };
 
   return (
     <div className="admin-page fade-in admin-full-height-page">
       <div className="admin-header">
         <h1 className="admin-title">Products Management</h1>
         <div className="admin-actions">
-          {/* <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".xlsx, .xls, .csv" onChange={handleBulkUpload} />
-          <Button variant="secondary" onClick={() => fileInputRef.current?.click()} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <Button variant="secondary" onClick={handleBulkUploadClick} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Upload size={18} /> Bulk Upload
-          </Button> */}
+          </Button>
           <Button onClick={() => handleOpenForm()} variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Plus size={18} /> Add Product
           </Button>
