@@ -89,6 +89,13 @@ export const productApi = createApi({
             }),
             invalidatesTags: ['Product'],
         }),
+
+        decodeUrl: builder.mutation({
+            query: (url) => ({
+                url: `/api/utils/decode-url?url=${encodeURIComponent(url)}`,
+                method: 'GET',
+            }),
+        }),
     }),
 });
 
@@ -102,4 +109,5 @@ export const {
     useBulkUploadProductsMutation,
     useApplyDiscountMutation,
     useApplyCategoryDiscountMutation,
+    useDecodeUrlMutation,
 } = productApi;

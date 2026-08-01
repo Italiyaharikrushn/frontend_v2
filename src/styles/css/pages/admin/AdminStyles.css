@@ -255,6 +255,12 @@
   margin-top: 1rem;
   border: 1px solid var(--border);
   -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.admin-table-container::-webkit-scrollbar {
+  display: none;
 }
 
 .admin-full-height-card .admin-table-container {

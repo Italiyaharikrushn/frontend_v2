@@ -366,6 +366,7 @@
 }
 
 .mobile-nav-link {
+  display: block;
   padding: 1rem 1.5rem;
   color: var(--text-main);
   font-weight: 600;

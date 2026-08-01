@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Save } from 'lucide-react';
 import Button from '../ui/Button';
-import { useCreateProductMutation, useUpdateProductMutation, useGetCategoriesQuery } from '../../api/productApi';
+import { useCreateProductMutation, useUpdateProductMutation, useGetCategoriesQuery, useDecodeUrlMutation } from '../../api/productApi';
 import { useToast } from '../ui/ToastProvider';
 import '@/styles/css/pages/admin/AdminStyles.css';
 
@@ -10,6 +10,8 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
   const [createProduct] = useCreateProductMutation();
   const [updateProduct] = useUpdateProductMutation();
   const { data: categories = [] } = useGetCategoriesQuery();
+  const [decodeUrl, { isLoading: isDecoding }] = useDecodeUrlMutation();
+  const lastDecodedUrl = useRef('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -48,18 +50,43 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
     } else {
       setFormData({ name: '', description: '', sku: '', image: '', imagePreview: '', category: '', subCategory: '', price: '', stock: '', status: 'Active' });
       setIsAddingNewCategory(false);
+      lastDecodedUrl.current = '';
     }
   }, [editingProduct, categories]);
+
+  useEffect(() => {
+    const handler = setTimeout(async () => {
+      const currentUrl = formData.image;
+      if (!currentUrl || currentUrl === lastDecodedUrl.current) return;
+      if (!currentUrl.startsWith('http')) return;
+
+      try {
+        const res = await decodeUrl(currentUrl).unwrap();
+        if (res.image || res.video) {
+          const finalUrl = res.image || res.video;
+          lastDecodedUrl.current = finalUrl;
+          setFormData(prev => ({ ...prev, image: finalUrl, imagePreview: finalUrl }));
+        } else {
+          lastDecodedUrl.current = currentUrl;
+        }
+      } catch (e) {
+        lastDecodedUrl.current = currentUrl;
+      }
+    }, 800);
+
+    return () => clearTimeout(handler);
+  }, [formData.image, decodeUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const isVideo = formData.image && (formData.image.includes('.mp4') || formData.image.includes('video'));
       const payload = {
         title: formData.name,
         description: formData.description,
         sku: formData.sku,
-        images: formData.image ? [formData.image] : [],
-        videos: [],
+        images: (formData.image && !isVideo) ? [formData.image] : [],
+        videos: (formData.image && isVideo) ? [formData.image] : [],
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock, 10),
         isActive: formData.status === 'Active',
@@ -156,10 +183,21 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
               )}
             </div>
           </div>
-          <div className="admin-form-field">
-            <label>Image URL</label>
-            <input type="text" placeholder="https://example.com/image.jpg" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} />
-            {formData.imagePreview && <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', marginTop: '0.5rem', objectFit: 'cover', borderRadius: '8px' }} />}
+          <div className="admin-form-field full">
+            <label>Image URL (or Google Photos Link)</label>
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+              <input type="text" placeholder="https://example.com/image.jpg or Google Photos link" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} style={{ flex: 1 }} />
+            </div>
+            {isDecoding && <span style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block'}}>Loading preview...</span>}
+            {formData.imagePreview && !isDecoding && (
+               <div style={{ marginTop: '0.5rem' }}>
+                 {formData.imagePreview.includes('.mp4') || formData.imagePreview.includes('video') ? (
+                   <video src={formData.imagePreview} controls style={{ width: '200px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
+                 ) : (
+                   <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} />
+                 )}
+               </div>
+            )}
           </div>
           <div className="admin-form-field">
             <label>Price (₹)</label>
