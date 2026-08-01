@@ -36,7 +36,21 @@ export const AlertProvider = ({ children }) => {
         isOpen: true,
         message,
         resolve,
-        isConfirm: false
+        isConfirm: false,
+        isPrompt: false
+      });
+    });
+  }, []);
+
+  const prompt = useCallback((message, defaultValue = '') => {
+    return new Promise((resolve) => {
+      setAlertState({
+        isOpen: true,
+        message,
+        resolve,
+        isConfirm: false,
+        isPrompt: true,
+        promptValue: defaultValue
       });
     });
   }, []);
@@ -49,7 +63,7 @@ export const AlertProvider = ({ children }) => {
   };
 
   return (
-    <AlertContext.Provider value={{ confirm, alert }}>
+    <AlertContext.Provider value={{ confirm, alert, prompt }}>
       {children}
       {alertState.isOpen && (
         <div style={{
@@ -61,14 +75,23 @@ export const AlertProvider = ({ children }) => {
         }}>
           <div className="glass-panel fade-in" style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', maxWidth: '400px', width: '100%', textAlign: 'center' }}>
             <h3 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', fontSize: '1.25rem', fontWeight: '600' }}>
-              {alertState.isConfirm ? 'Confirm Action' : 'Alert'}
+              {alertState.isPrompt ? 'Input Required' : alertState.isConfirm ? 'Confirm Action' : 'Alert'}
             </h3>
             <p style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>{alertState.message}</p>
+            {alertState.isPrompt && (
+              <input 
+                type="text" 
+                value={alertState.promptValue} 
+                onChange={(e) => setAlertState(prev => ({ ...prev, promptValue: e.target.value }))}
+                style={{ width: '100%', marginBottom: '1.5rem', padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--bg-input)' }}
+                autoFocus
+              />
+            )}
             <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-              {alertState.isConfirm && (
-                <Button variant="secondary" onClick={() => handleClose(false)}>Cancel</Button>
+              {(alertState.isConfirm || alertState.isPrompt) && (
+                <Button variant="secondary" onClick={() => handleClose(null)}>Cancel</Button>
               )}
-              <Button variant="primary" onClick={() => handleClose(true)}>OK</Button>
+              <Button variant="primary" onClick={() => handleClose(alertState.isPrompt ? alertState.promptValue : true)}>OK</Button>
             </div>
           </div>
         </div>

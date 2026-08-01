@@ -264,7 +264,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
               <input type="text" placeholder="https://example.com/image.jpg or Google Photos link" value={draftImage} onChange={e => { setDraftImage(e.target.value); setDraftImagePreview(e.target.value); }} style={{ flex: 1 }} />
               <Button type="button" variant="primary" onClick={handleAddImageToGallery} disabled={!draftImage && !draftImagePreview} style={{ padding: '0 1rem', whiteSpace: 'nowrap' }}>
-                Add to Gallery
+                Add
               </Button>
             </div>
             {isDecoding && draftImage !== lastDecodedUrl.current && <span style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block'}}>Loading preview...</span>}

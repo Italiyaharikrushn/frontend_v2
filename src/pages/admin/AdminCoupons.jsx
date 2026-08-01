@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation } from '../../api/orderApi';
 import { useToast } from '../../components/ui/ToastProvider';
 import Button from '../../components/ui/Button';
+import { useAlert } from '../../components/ui/AlertProvider';
 import { Ticket, PlusCircle, Edit, Trash2, CheckCircle, XCircle, X } from 'lucide-react';
 
 const AdminCoupons = () => {
@@ -10,6 +11,7 @@ const AdminCoupons = () => {
     const [updateCoupon] = useUpdateCouponMutation();
     const [deleteCoupon] = useDeleteCouponMutation();
     const { pushToast } = useToast();
+    const { confirm } = useAlert();
 
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
@@ -56,7 +58,7 @@ const AdminCoupons = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm("Delete this coupon?")) {
+        if (await confirm("Delete this coupon?")) {
             try {
                 await deleteCoupon(id).unwrap();
                 pushToast('Coupon deleted', 'success');

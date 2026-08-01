@@ -53,7 +53,7 @@ const CustomerProfileMenu = () => {
   const handleLogout = () => {
     dispatch(logout());
     setIsOpen(false);
-    navigate('/', { replace: true });
+    window.location.reload();
   };
 
   return (

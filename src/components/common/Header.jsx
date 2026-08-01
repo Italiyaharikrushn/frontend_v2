@@ -58,7 +58,7 @@ const Header = () => {
   const handleLogout = () => {
     dispatch(logout());
     closeMenu();
-    navigate("/", { replace: true });
+    window.location.reload();
   };
 
   const getAvatarInitial = () => {

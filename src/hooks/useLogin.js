@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, selectIsAuthenticated, selectUserRole } from '../redux/authSlice';
 import { useLoginMutation } from '../api/authApi';
@@ -8,6 +8,7 @@ import { useToast } from '../components/ui/ToastProvider';
 
 export const useLogin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [loginApi, { isLoading }] = useLoginMutation();
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
@@ -23,9 +24,11 @@ export const useLogin = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(userRole === 'ADMIN' ? '/admin/dashboard' : '/', { replace: true });
+      const defaultPath = userRole === 'ADMIN' ? '/admin/dashboard' : '/';
+      const from = location.state?.from || defaultPath;
+      navigate(from, { replace: true });
     }
-  }, [isAuthenticated, navigate, userRole]);
+  }, [isAuthenticated, navigate, userRole, location]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,9 +55,13 @@ export const useLogin = () => {
       pushToast('Welcome back! You are now signed in.', 'success');
 
       if (role === 'ADMIN') {
-        navigate('/admin/dashboard', { replace: true });
+        const defaultPath = '/admin/dashboard';
+        const from = location.state?.from || defaultPath;
+        navigate(from, { replace: true });
       } else {
-        navigate('/', { replace: true });
+        const defaultPath = '/';
+        const from = location.state?.from || defaultPath;
+        navigate(from, { replace: true });
       }
     } catch (err) {
       console.error(err);

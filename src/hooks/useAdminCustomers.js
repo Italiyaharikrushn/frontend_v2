@@ -2,6 +2,7 @@ import { useGetAllMessagesQuery, useReplyToMessageMutation } from '../api/contac
 import { useGetCustomersQuery } from '../api/authApi';
 import { useGetSellerOrdersQuery } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
+import { useAlert } from '../components/ui/AlertProvider';
 
 export const useAdminCustomers = () => {
   const { pushToast } = useToast();
@@ -9,9 +10,10 @@ export const useAdminCustomers = () => {
   const { data: rawCustomers = [], isLoading: isLoadingCustomers } = useGetCustomersQuery();
   const { data: orders = [], isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
   const [replyToMessage] = useReplyToMessageMutation();
+  const { prompt } = useAlert();
 
   const handleReply = async (id) => {
-    const replyText = window.prompt("Enter your reply message:");
+    const replyText = await prompt("Enter your reply message:");
     if (replyText) {
       try {
         await replyToMessage({ id, replyText }).unwrap();

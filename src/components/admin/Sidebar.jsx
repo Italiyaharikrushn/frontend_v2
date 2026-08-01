@@ -11,7 +11,7 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/login', { replace: true });
+    window.location.reload();
   };
 
   const handleNavClick = () => {
