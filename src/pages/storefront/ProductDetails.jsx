@@ -32,13 +32,6 @@ const ProductDetails = ({ productId: propId, onClose }) => {
 
         {/* Right Column - Details */}
         <div className="product-info-section">
-          <p className="product-brand">
-            {product.category && (
-              <span>
-                Category: {product.category}
-              </span>
-            )}
-          </p>
           <h1 className="product-title">{product.title?.toUpperCase()}</h1>
 
           <div className="product-description-container">

@@ -12,13 +12,15 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
   const { data: categories = [] } = useGetCategoriesQuery();
   const [decodeUrl, { isLoading: isDecoding }] = useDecodeUrlMutation();
   const lastDecodedUrl = useRef('');
+  const lastDecodedVideoUrl = useRef('');
 
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     sku: '',
-    image: '',
-    imagePreview: '',
+    images: [],
+    video: '',
+    videoPreview: '',
     category: '',
     subCategory: '',
     price: '',
@@ -26,7 +28,10 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
     status: 'Active'
   });
 
+  const [videoError, setVideoError] = useState('');
   const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+  const [draftImage, setDraftImage] = useState('');
+  const [draftImagePreview, setDraftImagePreview] = useState('');
 
   useEffect(() => {
     if (editingProduct) {
@@ -35,8 +40,9 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
         name: editingProduct.title || '',
         description: editingProduct.description || '',
         sku: editingProduct.sku || '',
-        image: (editingProduct.images && editingProduct.images.length > 0) ? editingProduct.images[0] : '',
-        imagePreview: (editingProduct.images && editingProduct.images.length > 0) ? editingProduct.images[0] : '',
+        images: editingProduct.images || [],
+        video: (editingProduct.videos && editingProduct.videos.length > 0) ? editingProduct.videos[0] : '',
+        videoPreview: (editingProduct.videos && editingProduct.videos.length > 0) ? editingProduct.videos[0] : '',
         category: editCategory,
         subCategory: editingProduct.subCategory || '',
         price: editingProduct.price || '',
@@ -48,15 +54,19 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
          // We'll just let the dropdown handle it by dynamically adding the current category to the options below
       }
     } else {
-      setFormData({ name: '', description: '', sku: '', image: '', imagePreview: '', category: '', subCategory: '', price: '', stock: '', status: 'Active' });
+      setFormData({ name: '', description: '', sku: '', images: [], video: '', videoPreview: '', category: '', subCategory: '', price: '', stock: '', status: 'Active' });
       setIsAddingNewCategory(false);
+      setVideoError('');
+      setDraftImage('');
+      setDraftImagePreview('');
       lastDecodedUrl.current = '';
+      lastDecodedVideoUrl.current = '';
     }
   }, [editingProduct, categories]);
 
   useEffect(() => {
     const handler = setTimeout(async () => {
-      const currentUrl = formData.image;
+      const currentUrl = draftImage;
       if (!currentUrl || currentUrl === lastDecodedUrl.current) return;
       if (!currentUrl.startsWith('http')) return;
 
@@ -65,7 +75,8 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
         if (res.image || res.video) {
           const finalUrl = res.image || res.video;
           lastDecodedUrl.current = finalUrl;
-          setFormData(prev => ({ ...prev, image: finalUrl, imagePreview: finalUrl }));
+          setDraftImage(finalUrl);
+          setDraftImagePreview(finalUrl);
         } else {
           lastDecodedUrl.current = currentUrl;
         }
@@ -75,18 +86,62 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
     }, 800);
 
     return () => clearTimeout(handler);
-  }, [formData.image, decodeUrl]);
+  }, [draftImage, decodeUrl]);
+
+  const handleAddImageToGallery = () => {
+    const finalImageUrl = draftImagePreview || draftImage;
+    if (finalImageUrl) {
+      setFormData(prev => ({ ...prev, images: [...prev.images, finalImageUrl] }));
+      setDraftImage('');
+      setDraftImagePreview('');
+      lastDecodedUrl.current = '';
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    setFormData(prev => ({ ...prev, images: prev.images.filter((_, idx) => idx !== indexToRemove) }));
+  };
+
+  useEffect(() => {
+    const handler = setTimeout(async () => {
+      const currentUrl = formData.video;
+      if (!currentUrl) {
+         setVideoError('');
+         return;
+      }
+      if (currentUrl === lastDecodedVideoUrl.current) return;
+      if (!currentUrl.startsWith('http')) return;
+
+      setVideoError('');
+      try {
+        const res = await decodeUrl(currentUrl).unwrap();
+        if (res.video) {
+          const finalUrl = res.video;
+          lastDecodedVideoUrl.current = finalUrl;
+          setFormData(prev => ({ ...prev, video: finalUrl, videoPreview: finalUrl }));
+        } else {
+          lastDecodedVideoUrl.current = currentUrl;
+          if (!currentUrl.includes('.mp4') && !currentUrl.includes('.webm') && !currentUrl.includes('.ogg')) {
+             setVideoError('This URL does not point to a direct video file. The video may not play. Please use a direct link ending in .mp4 or a supported Google Photos link.');
+          }
+        }
+      } catch (e) {
+        lastDecodedVideoUrl.current = currentUrl;
+      }
+    }, 800);
+
+    return () => clearTimeout(handler);
+  }, [formData.video, decodeUrl]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const isVideo = formData.image && (formData.image.includes('.mp4') || formData.image.includes('video'));
       const payload = {
         title: formData.name,
         description: formData.description,
         sku: formData.sku,
-        images: (formData.image && !isVideo) ? [formData.image] : [],
-        videos: (formData.image && isVideo) ? [formData.image] : [],
+        images: [...formData.images, ...(draftImagePreview ? [draftImagePreview] : (!isDecoding && draftImage ? [draftImage] : []))],
+        videos: formData.video ? [formData.video] : [],
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock, 10),
         isActive: formData.status === 'Active',
@@ -184,18 +239,52 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
             </div>
           </div>
           <div className="admin-form-field full">
-            <label>Image URL (or Google Photos Link)</label>
+            <label>Product Images</label>
+            
+            {/* Gallery Grid */}
+            {formData.images.length > 0 && (
+              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem', padding: '1rem', background: 'var(--surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                {formData.images.map((imgUrl, index) => (
+                  <div key={index} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)' }}>
+                    <img src={imgUrl} alt={`Product ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <button 
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      style={{ position: 'absolute', top: '4px', right: '4px', background: 'rgba(0,0,0,0.6)', color: 'white', border: 'none', borderRadius: '50%', padding: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      aria-label="Remove image"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Add Image Input */}
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-              <input type="text" placeholder="https://example.com/image.jpg or Google Photos link" value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value, imagePreview: e.target.value })} style={{ flex: 1 }} />
+              <input type="text" placeholder="https://example.com/image.jpg or Google Photos link" value={draftImage} onChange={e => { setDraftImage(e.target.value); setDraftImagePreview(e.target.value); }} style={{ flex: 1 }} />
+              <Button type="button" variant="primary" onClick={handleAddImageToGallery} disabled={!draftImage && !draftImagePreview} style={{ padding: '0 1rem', whiteSpace: 'nowrap' }}>
+                Add to Gallery
+              </Button>
             </div>
-            {isDecoding && <span style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block'}}>Loading preview...</span>}
-            {formData.imagePreview && !isDecoding && (
+            {isDecoding && draftImage !== lastDecodedUrl.current && <span style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block'}}>Loading preview...</span>}
+            {draftImagePreview && !isDecoding && (
+               <div style={{ marginTop: '0.5rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                 <img src={draftImagePreview} alt="Draft Preview" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} />
+                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Preview loaded. Click "Add to Gallery" to save.</span>
+               </div>
+            )}
+          </div>
+          <div className="admin-form-field full">
+            <label>Video URL</label>
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
+              <input type="text" placeholder="https://example.com/video.mp4 or Google Photos link" value={formData.video} onChange={e => setFormData({ ...formData, video: e.target.value, videoPreview: e.target.value })} style={{ flex: 1 }} />
+            </div>
+            {isDecoding && formData.video !== lastDecodedVideoUrl.current && <span style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block'}}>Loading preview...</span>}
+            {videoError && <span style={{fontSize: '0.85rem', color: 'var(--error)', marginTop: '0.2rem', display: 'block', fontWeight: '500'}}>{videoError}</span>}
+            {formData.videoPreview && !isDecoding && (
                <div style={{ marginTop: '0.5rem' }}>
-                 {formData.imagePreview.includes('.mp4') || formData.imagePreview.includes('video') ? (
-                   <video src={formData.imagePreview} controls style={{ width: '200px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
-                 ) : (
-                   <img src={formData.imagePreview} alt="Preview" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} />
-                 )}
+                 <video src={formData.videoPreview} controls style={{ width: '200px', height: '150px', objectFit: 'cover', borderRadius: '8px' }} />
                </div>
             )}
           </div>
