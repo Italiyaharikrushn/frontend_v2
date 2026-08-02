@@ -4,7 +4,7 @@ import Button from '../../components/ui/Button';
 import AdminOrderTable from '../../components/admin/AdminOrderTable';
 import AdminOrderTabs from '../../components/admin/AdminOrderTabs';
 import { useAdminOrders } from '../../hooks/useAdminOrders';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminOrders = () => {
   const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);

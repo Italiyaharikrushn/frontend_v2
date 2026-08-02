@@ -2,7 +2,7 @@
   display: flex;
   height: 100vh;
   height: 100dvh;
-  background-color: var(--background);
+  background-color: var(--background, #fdfbf7);
 }
 
 .dashboard-main {
@@ -15,9 +15,9 @@
 .dashboard-header {
   flex-shrink: 0;
   z-index: 50;
-  min-height: 74px;
-  background-color: var(--surface);
-  border-bottom: 1px solid var(--border);
+  min-height: 70px;
+  background-color: #0d0c0a;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,12 +32,15 @@
   min-width: 44px;
   min-height: 44px;
   border-radius: 999px;
-  color: var(--text-main);
+  color: #d4af37;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   transition: background-color var(--transition-fast);
 }
 
 .mobile-sidebar-toggle:hover {
-  background-color: var(--surface-hover);
+  background-color: rgba(212, 175, 55, 0.15);
 }
 
 .header-actions {

@@ -1,45 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import { ShoppingBag, Truck, ShieldCheck, Award, Headphones, ShoppingCart, Eye } from 'lucide-react';
 import SkeletonCard from '../../components/ui/SkeletonCard';
-import heroImage from '../../assets/hero-banner.png';
-import { useGetProductsQuery } from '../../api/productApi';
-import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
+import { CraftyLogoEmblem } from '../../components/common/CraftyLogo';
+import { useHome } from '../../hooks/useHome';
 import ProductDetails from './ProductDetails';
-import '@/styles/css/pages/storefront/Home.css';
+import '@/styles/pages/storefront/Home.css';
 
 const Home = () => {
-  const { data: products = [], isLoading } = useGetProductsQuery();
-  const { data: settings } = useGetPublicStoreSettingsQuery();
-  
-  let trendingProducts = [];
-  if (settings?.isFestivalActive && settings?.festivalName) {
-    const festivalKeyword = settings.festivalName.split(/\s+/)[0].toLowerCase();
-    const relatedProducts = products.filter(p => {
-      const text = `${p.title || ''} ${p.description || ''} ${p.category || ''}`.toLowerCase();
-      return text.includes(festivalKeyword);
-    });
-    trendingProducts = relatedProducts.slice(0, 8);
-  }
-  
-  if (trendingProducts.length === 0) {
-    trendingProducts = [...products].slice(0, 8);
-  }
-  const [quickViewProductId, setQuickViewProductId] = useState(null);
-
-  const renderFestivalBanner = () => {
-    if (!settings?.isFestivalActive || !settings?.festivalName) return null;
-    if (settings.festivalEndDate && new Date(settings.festivalEndDate) < new Date()) return null;
-
-    return (
-      <div className="festival-banner" style={{ background: 'linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%)', color: 'white', padding: '0.75rem', textAlign: 'center', fontWeight: 'bold', letterSpacing: '0.5px' }}>
-        🎉 {settings.festivalName} 
-        {settings.festivalDiscountPercentage && ` - GET ${settings.festivalDiscountPercentage}% OFF STOREWIDE! `} 🎉
-        {settings.festivalEndDate && <span style={{ marginLeft: '1rem', fontWeight: 'normal', fontSize: '0.9em', opacity: 0.9 }}>Ends on {new Date(settings.festivalEndDate).toLocaleDateString()}</span>}
-      </div>
-    );
-  };
+  const {
+    isLoading,
+    trendingProducts,
+    quickViewProductId,
+    setQuickViewProductId,
+    handleAddToCart,
+  } = useHome();
 
   const renderProductCard = (product, isDup = false) => (
     <article key={isDup ? `${product.id}-dup` : product.id} className="feature-card glass-panel hover-lift">
@@ -59,20 +34,36 @@ const Home = () => {
       </div>
       <div className="feature-body">
         <h3>{product.title}</h3>
-        <p className="feature-meta">Premium collection • Ready to wear</p>
+        <p className="feature-meta">Crafted for You • Premium Quality</p>
         {product.discountPrice ? (
           <p className="feature-price" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ color: 'var(--success)', fontWeight: 'bold' }}>₹{product.discountPrice}</span>
+            <span style={{ color: '#D4AF37', fontWeight: 'bold' }}>₹{product.discountPrice}</span>
             <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.85em' }}>₹{product.price}</span>
-            <span style={{ fontSize: '0.75em', padding: '0.15rem 0.4rem', background: 'var(--success)', color: 'white', borderRadius: '4px', fontWeight: 'bold' }}>
+            <span style={{ fontSize: '0.75em', padding: '0.15rem 0.4rem', background: '#c5a059', color: '#0d0c0a', borderRadius: '4px', fontWeight: 'bold' }}>
               {Math.round(((parseFloat(product.price) - parseFloat(product.discountPrice)) / parseFloat(product.price)) * 100)}% OFF
             </span>
           </p>
         ) : (
-          <p className="feature-price">₹{product.price}</p>
+          <p className="feature-price" style={{ color: '#D4AF37' }}>₹{product.price}</p>
         )}
-        <div onClick={() => setQuickViewProductId(product.id)} style={{ marginTop: 'auto' }}>
-          <Button variant="secondary" fullWidth>View Details</Button>
+        
+        <div className="card-actions-row">
+          <button 
+            type="button" 
+            className="card-add-cart-btn"
+            onClick={(e) => handleAddToCart(e, product)}
+          >
+            <ShoppingCart size={16} />
+            <span>Add to Cart</span>
+          </button>
+          <button 
+            type="button" 
+            className="card-quick-view-btn"
+            title="Quick View"
+            onClick={() => setQuickViewProductId(product.id)}
+          >
+            <Eye size={16} />
+          </button>
         </div>
       </div>
     </article>
@@ -80,34 +71,119 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      {renderFestivalBanner()}
-      <section className="hero-section">
-        <div className="hero-image-wrapper">
-          <img src={heroImage} alt="Traditional Indian Accessories" className="hero-image" />
-          <div className="hero-overlay" />
-        </div>
-        <div className="hero-content">
-          <h1 className="hero-title pulse-element">Elegance in Every Detail</h1>
-          <p className="hero-subtitle">Discover refined belts and purses crafted to elevate your wardrobe with premium style and comfort.</p>
+      {/* 1. HERO SECTION */}
+      <section className="crafty-hero-section">
+        <div className="crafty-hero-bg-waves" />
+        <div className="crafty-hero-container">
+          {/* Left Hero Column */}
+          <div className="hero-text-col">
+            <span className="hero-welcome-badge">WELCOME TO</span>
+            <h1 className="hero-brand-title">crafty_kiya</h1>
+
+            {/* Floral Emblem Divider */}
+            <div className="hero-ornament-divider">
+              <span className="divider-line" />
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#d4af37">
+                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+              </svg>
+              <span className="divider-line" />
+            </div>
+
+            <p className="hero-tagline">
+              Handpicked. Premium. Timeless.<br />Crafted for You.
+            </p>
+
+            <Link to="/products" className="hero-shop-btn">
+              SHOP NOW
+            </Link>
+          </div>
+
+          {/* Right Hero Column: Large Emblem Frame */}
+          <div className="hero-emblem-col">
+            <div className="emblem-gold-frame">
+              <CraftyLogoEmblem size={240} />
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* 2. TRUST BADGES BAR */}
+      <section className="trust-badges-bar">
+        <div className="trust-badges-container">
+          <div className="trust-badge-item">
+            <div className="trust-icon-box">
+              <Truck size={28} />
+            </div>
+            <div className="trust-badge-text">
+              <h4>Free Shipping</h4>
+              <p>On orders above ₹999</p>
+            </div>
+          </div>
+
+          <span className="trust-divider" />
+
+          <div className="trust-badge-item">
+            <div className="trust-icon-box">
+              <ShieldCheck size={28} />
+            </div>
+            <div className="trust-badge-text">
+              <h4>Secure Payment</h4>
+              <p>100% secure payments</p>
+            </div>
+          </div>
+
+          <span className="trust-divider" />
+
+          <div className="trust-badge-item">
+            <div className="trust-icon-box">
+              <Award size={28} />
+            </div>
+            <div className="trust-badge-text">
+              <h4>Premium Quality</h4>
+              <p>Handpicked with care</p>
+            </div>
+          </div>
+
+          <span className="trust-divider" />
+
+          <div className="trust-badge-item">
+            <div className="trust-icon-box">
+              <Headphones size={28} />
+            </div>
+            <div className="trust-badge-text">
+              <h4>24/7 Support</h4>
+              <p>We're here to help</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. TRENDING PRODUCTS */}
       <section className="featured-section">
         <div className="container">
-          <h2 className="section-title">Trending Now</h2>
-          <div className="marquee-container">
+          <h2 className="section-title">Trending Collection</h2>
+          
+          <div className="trending-row-wrapper">
             {isLoading ? (
               <div className="product-grid">
                 {Array.from({ length: 4 }).map((_, index) => <SkeletonCard key={index} />)}
               </div>
-            ) : trendingProducts.length > 0 ? (
-              <div className="marquee-track">
-                <div className="marquee-content">
-                  {trendingProducts.map((product) => renderProductCard(product, false))}
+            ) : trendingProducts.length > 1 ? (
+              /* Multi-card row: Smooth autoplay marquee */
+              <div className="marquee-container">
+                <div className="marquee-track">
+                  <div className="marquee-content">
+                    {trendingProducts.map((product) => renderProductCard(product, false))}
+                  </div>
+                  <div className="marquee-content" aria-hidden="true">
+                    {trendingProducts.map((product) => renderProductCard(product, true))}
+                  </div>
                 </div>
-                <div className="marquee-content" aria-hidden="true">
-                  {trendingProducts.map((product) => renderProductCard(product, true))}
-                </div>
+              </div>
+            ) : trendingProducts.length === 1 ? (
+              /* Single card row: Centered without autoplay */
+              <div className="single-card-row">
+                {renderProductCard(trendingProducts[0], false)}
               </div>
             ) : (
               <div className="products-empty" style={{ gridColumn: '1 / -1' }}>
@@ -129,4 +205,5 @@ const Home = () => {
 };
 
 export default Home;
+
 

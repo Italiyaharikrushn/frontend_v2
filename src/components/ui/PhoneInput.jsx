@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
 import { COUNTRIES } from '../../utils/countries';
-import '@/styles/css/components/PhoneInput.css';
+import '@/styles/components/PhoneInput.css';
 
 export default function PhoneInput({ value, onChange, required, id, name, style }) {
   // Parse initial value if it contains a country code, prioritize longer codes first to avoid partial matches

@@ -2,7 +2,7 @@ import React from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Download, Calendar } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const salesData = [
   { month: 'Jan', offline: 4000, online: 2400 },

@@ -1,65 +1,32 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { ShoppingCart, Menu, Search, X, Package, LogIn, } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
+import { ShoppingCart, Menu, Search, X, LogIn, User } from "lucide-react";
 
-import { selectCartTotalQuantity } from "../../redux/cartSlice";
-import { selectIsAuthenticated, selectUserName, selectUserEmail, logout, } from "../../redux/authSlice";
-import { useGetPublicStoreSettingsQuery } from "../../api/settingsApi";
+import CraftyLogo from "./CraftyLogo";
 import CustomerProfileMenu from "./CustomerProfileMenu";
-import "@/styles/css/components/Header.css";
+import { useHeader } from "../../hooks/useHeader";
+import "@/styles/components/Header.css";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const cartQuantity = useSelector(selectCartTotalQuantity);
-  const isAuthenticated = useSelector(selectIsAuthenticated);
-  const userName = useSelector(selectUserName);
-  const userEmail = useSelector(selectUserEmail);
-
-  const { data: storeSettings } = useGetPublicStoreSettingsQuery();
-
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const searchInputRef = useRef(null);
-
-  const urlSearch = new URLSearchParams(location.search).get("search") || "";
-
-  useEffect(() => {
-    if (location.pathname === "/products" && urlSearch) {
-      setSearchQuery(urlSearch);
-    } else if (location.pathname !== "/products") {
-      setSearchQuery("");
-      setIsSearchOpen(false); // Close mobile search if navigating away
-    }
-  }, [location.pathname, urlSearch]);
-
-  const closeMenu = () => setIsMenuOpen(false);
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-    navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-    setIsSearchOpen(false);
-  };
-
-  const clearSearch = () => {
-    setSearchQuery("");
-    if (location.pathname === "/products") {
-      navigate("/products");
-    }
-    searchInputRef.current?.focus();
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-    closeMenu();
-    window.location.reload();
-  };
+  const {
+    cartQuantity,
+    isAuthenticated,
+    userName,
+    userEmail,
+    isSearchOpen,
+    setIsSearchOpen,
+    searchQuery,
+    setSearchQuery,
+    isMenuOpen,
+    setIsMenuOpen,
+    searchInputRef,
+    closeMenu,
+    handleSearchSubmit,
+    handleSearchChange,
+    handleClearSearch,
+    handleLogout,
+    isActive,
+  } = useHeader();
 
   const getAvatarInitial = () => {
     if (userName) return userName.charAt(0).toUpperCase();
@@ -67,114 +34,125 @@ const Header = () => {
     return "U";
   };
 
-  const isActive = (path) => {
-    if (path === '/') return location.pathname === '/';
-    if (path === '/contact') return location.pathname === '/contact';
-    if (path === '/orders') return location.pathname === '/orders';
-
-    if (path === '/products') {
-      return location.pathname === '/products' || location.pathname.startsWith('/product/');
-    }
-    return false;
-  };
-
   return (
-    <>
-      <header className="header glass-panel">
-        <div className="header-container">
-
+    <div className="crafty-header-wrapper">
+      {/* 1. Main Black Header Bar */}
+      <header className="main-header">
+        <div className="main-header-container">
           <div className="header-left">
             <button
-              className="mobile-menu-btn mobile-only"
+              className="mobile-menu-btn"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle Menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            <Link to="/" className="brand-logo" onClick={closeMenu}>
-              {storeSettings?.storeName || (
-                <>
-                  KIYA <span className="brand-subtitle">Accessories</span>
-                </>
-              )}
+            <Link to="/" className="brand-logo-link" onClick={closeMenu}>
+              <CraftyLogo size={40} />
             </Link>
           </div>
 
-          <nav className="desktop-nav desktop-only">
-            <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
-            <Link to="/products" className={`nav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
-            <Link to="/contact" className={`nav-link ${isActive('/contact') ? 'active' : ''}`}>Contact</Link>
-          </nav>
+          {/* Search Bar Container (Clean input box without Category Dropdown) */}
+          <div className="header-center desktop-only">
+            <form className="crafty-search-form" onSubmit={handleSearchSubmit}>
+              <input
+                ref={searchInputRef}
+                type="text"
+                className="crafty-search-input"
+                placeholder="Search for products, brands and more..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
 
-          <div className="header-right">
-            <div className={`search-container ${isSearchOpen ? "mobile-active" : ""}`}>
-              <form
-                className={`search-form ${!isSearchOpen ? "mobile-hidden" : ""}`}
-                onSubmit={handleSearchSubmit}
-              >
-                <Search size={18} className="search-icon-static" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  className="search-input"
-                  placeholder="Search for products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    className="clear-search-btn"
-                    onClick={clearSearch}
-                    aria-label="Clear Search"
-                  >
-                    <X size={16} />
-                  </button>
-                )}
-              </form>
-
-              {!isSearchOpen && (
+              {searchQuery && (
                 <button
-                  className="action-btn mobile-only search-trigger"
-                  onClick={() => {
-                    setIsSearchOpen(true);
-                    setTimeout(() => searchInputRef.current?.focus(), 100);
-                  }}
-                  aria-label="Open Search"
+                  type="button"
+                  className="clear-search-btn"
+                  onClick={handleClearSearch}
+                  aria-label="Clear Search"
                 >
-                  <Search size={22} />
+                  <X size={16} />
                 </button>
               )}
-            </div>
 
-            {isAuthenticated && (
-              <Link className="action-btn desktop-only" to="/orders" aria-label="My Orders">
-                <Package size={22} />
-              </Link>
-            )}
+              <button type="submit" className="crafty-search-btn" aria-label="Search">
+                <Search size={18} />
+              </button>
+            </form>
+          </div>
 
-            <Link className="action-btn cart-btn" to="/cart" aria-label="Shopping Cart">
-              <ShoppingCart size={22} />
-              {cartQuantity > 0 && (
-                <span className="cart-badge fade-in">{cartQuantity}</span>
-              )}
-            </Link>
+          {/* Right Action Icons: Account & Cart */}
+          <div className="header-right">
+            <button
+              className="action-btn mobile-only search-trigger"
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              aria-label="Open Search"
+            >
+              <Search size={22} />
+            </button>
 
+            {/* Account / User Menu */}
             <div className="profile-container desktop-only">
               {isAuthenticated ? (
                 <CustomerProfileMenu />
               ) : (
-                <Link className="action-btn login-btn" to="/login" aria-label="Login">
-                  <LogIn size={22} />
+                <Link to="/login" className="crafty-action-item" aria-label="Account">
+                  <User size={22} className="action-icon" />
                 </Link>
               )}
             </div>
+
+            {/* Shopping Cart */}
+            <Link to="/cart" className="crafty-action-item cart-action" aria-label="Shopping Cart">
+              <div className="cart-icon-wrapper">
+                <ShoppingCart size={22} className="action-icon" />
+                <span className="crafty-cart-badge">{cartQuantity}</span>
+              </div>
+            </Link>
           </div>
         </div>
+
+        {/* Mobile Search Bar Expansion */}
+        {isSearchOpen && (
+          <div className="mobile-search-bar mobile-only">
+            <form onSubmit={handleSearchSubmit} className="mobile-search-form">
+              <input
+                type="text"
+                className="mobile-search-input"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                autoFocus
+              />
+              {searchQuery && (
+                <button type="button" className="close-search-btn" onClick={handleClearSearch} aria-label="Clear Search">
+                  <X size={18} />
+                </button>
+              )}
+              <button type="submit" className="crafty-search-btn">
+                <Search size={18} />
+              </button>
+              <button type="button" className="close-search-btn" onClick={() => setIsSearchOpen(false)}>
+                <X size={20} />
+              </button>
+            </form>
+          </div>
+        )}
       </header>
 
-      {/* Mobile Sidebar Navigation */}
+      {/* 3. Sub-Navigation Bar */}
+      <div className="subnav-bar desktop-only">
+        <div className="subnav-container">
+          <nav className="subnav-links">
+            <Link to="/" className={`subnav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
+            <Link to="/products" className={`subnav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
+            <Link to="/contact" className={`subnav-link ${isActive('/contact') ? 'active' : ''}`}>Contact Us</Link>
+          </nav>
+        </div>
+      </div>
+
+      {/* Mobile Sidebar Navigation Drawer */}
       <div
         className={`mobile-nav-backdrop ${isMenuOpen ? "open" : ""}`}
         onClick={closeMenu}
@@ -182,7 +160,7 @@ const Header = () => {
 
       <div className={`mobile-nav-panel ${isMenuOpen ? "open" : ""}`}>
         <div className="mobile-nav-header">
-          <span>Explore</span>
+          <CraftyLogo size={32} />
           <button className="action-btn" onClick={closeMenu}>
             <X size={24} />
           </button>
@@ -198,12 +176,12 @@ const Header = () => {
 
         <nav className="mobile-nav-links">
           <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
-          <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop All</Link>
+          <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop</Link>
 
           {isAuthenticated && (
             <div className="mobile-nav-group">
               <span className="mobile-nav-group-title">My Account</span>
-              <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>Orders</Link>
+              <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>My Orders</Link>
             </div>
           )}
 
@@ -222,8 +200,9 @@ const Header = () => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
 export default Header;
+

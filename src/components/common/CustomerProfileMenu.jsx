@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { logout, selectUserName, selectUserEmail } from '../../redux/authSlice';
-import '@/styles/css/components/CustomerProfileMenu.css';
+import '@/styles/components/CustomerProfileMenu.css';
 
 const CustomerProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,8 +12,6 @@ const CustomerProfileMenu = () => {
   const navigate = useNavigate();
   const userName = useSelector(selectUserName);
   const userEmail = useSelector(selectUserEmail);
-
-  console.log("username", userName);
 
   // Determine avatar initial
   let avatarInitial = '';

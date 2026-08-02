@@ -3,7 +3,7 @@ import { X, Save } from 'lucide-react';
 import Button from '../ui/Button';
 import { useCreateProductMutation, useUpdateProductMutation, useGetCategoriesQuery, useDecodeUrlMutation } from '../../api/productApi';
 import { useToast } from '../ui/ToastProvider';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminProductForm = ({ editingProduct, onClose }) => {
   const { pushToast } = useToast();

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Lock, User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useLogin } from '../../hooks/useLogin';
-import '@/styles/css/pages/auth/Login.css';
+import '@/styles/pages/auth/Login.css';
 
 const Login = () => {
   const { email, setEmail, password, setPassword, showPassword, setShowPassword, error, isLoading, storeSettings, handleLogin } = useLogin();

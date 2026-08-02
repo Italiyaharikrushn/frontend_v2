@@ -3,7 +3,9 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
 import { LayoutDashboard, Package, ShoppingBag, Users, LogOut, X, Tag, Ticket } from 'lucide-react';
-import '@/styles/css/components/Sidebar.css';
+import '@/styles/components/Sidebar.css';
+
+import CraftyLogo from '../common/CraftyLogo';
 
 const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
   const dispatch = useDispatch();
@@ -23,7 +25,10 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
   return (
     <aside className={`sidebar ${isMobileOpen ? 'mobile-open' : ''}`}>
       <div className="sidebar-header">
-        <h2 className="sidebar-brand">KIYA Admin</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <CraftyLogo size={32} />
+          <span style={{ color: '#d4af37', fontSize: '0.75rem', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase' }}>ADMIN</span>
+        </div>
         <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">
           <X size={18} />
         </button>

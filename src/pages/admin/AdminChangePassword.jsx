@@ -1,7 +1,7 @@
 import React from 'react';
 import SecuritySettingsForm from '../../components/admin/SecuritySettingsForm';
 import { useAdminSettings } from '../../hooks/useAdminSettings';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminChangePassword = () => {
   const { passwordData, setPasswordData, handlePasswordChange, isChangingPassword } = useAdminSettings();

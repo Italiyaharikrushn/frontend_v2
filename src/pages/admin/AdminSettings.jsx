@@ -3,7 +3,7 @@ import { Save, Bell } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import StoreProfileForm from '../../components/admin/StoreProfileForm';
 import { useAdminSettings } from '../../hooks/useAdminSettings';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminSettings = () => {
   const { formData, setFormData, handleSave, isLoading, isUpdating } = useAdminSettings();

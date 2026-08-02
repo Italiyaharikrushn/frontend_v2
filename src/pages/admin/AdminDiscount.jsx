@@ -5,7 +5,7 @@ import { useAdminDiscount } from '../../hooks/useAdminDiscount';
 import FestivalSalePanel from '../../components/admin/FestivalSalePanel';
 import CategoryDiscountPanel from '../../components/admin/CategoryDiscountPanel';
 import BulkDiscountPanel from '../../components/admin/BulkDiscountPanel';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminDiscount = () => {
   const { data: products = [], isLoading } = useGetProductsQuery();

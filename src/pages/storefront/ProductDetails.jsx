@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { ChevronDown, Shield, Clock, Activity, Droplets, X } from 'lucide-react';
 import ProductGallery from '../../components/storefront/ProductGallery';
 import { useProductDetails } from '../../hooks/useProductDetails';
-import '@/styles/css/pages/storefront/ProductDetails.css';
+import '@/styles/pages/storefront/ProductDetails.css';
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;

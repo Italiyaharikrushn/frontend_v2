@@ -5,7 +5,7 @@ import { useSubmitMessageMutation } from '../../api/contactApi';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 import { useToast } from '../../components/ui/ToastProvider';
 import { formatPhoneNumber } from '../../utils/formatters';
-import '@/styles/css/pages/storefront/Contact.css';
+import '@/styles/pages/storefront/Contact.css';
 
 const Contact = () => {
   const { pushToast } = useToast();

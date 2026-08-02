@@ -5,7 +5,7 @@ import { useGetProductsQuery, useDeleteProductMutation, useBulkUploadProductsMut
 import AdminProductForm from '../../components/admin/AdminProductForm';
 import { useToast } from '../../components/ui/ToastProvider';
 import { useAlert } from '../../components/ui/AlertProvider';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminProducts = () => {
   const { pushToast } = useToast();

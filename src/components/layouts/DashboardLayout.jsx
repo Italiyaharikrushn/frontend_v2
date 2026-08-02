@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectUserName, selectUserEmail } from '../../redux/authSlice';
 import Sidebar from '../admin/Sidebar';
 import { Bell, Menu, X, Settings, Lock } from 'lucide-react';
-import '@/styles/css/components/DashboardLayout.css';
+import '@/styles/components/DashboardLayout.css';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
 
 const DashboardLayout = () => {
@@ -54,7 +54,7 @@ const DashboardLayout = () => {
               <span className="notification-badge" />
             </button>
             <div className="user-profile" ref={profileRef} style={{ position: 'relative' }}>
-              <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--primary-color, #4f46e5)', color: 'white', fontWeight: 'bold' }}>
+              <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #c5a059 0%, #a07d3b 100%)', color: '#0d0c0a', fontWeight: 'bold' }}>
                 {avatarInitial}
               </div>
 

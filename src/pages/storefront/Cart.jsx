@@ -5,7 +5,7 @@ import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { selectCartItems, updateQuantity, setQuantity, removeItem, updateItemPrices } from '../../redux/cartSlice';
 import { useGetProductsQuery } from '../../api/productApi';
-import '@/styles/css/pages/storefront/Cart.css';
+import '@/styles/pages/storefront/Cart.css';
 
 const Cart = () => {
   const dispatch = useDispatch();

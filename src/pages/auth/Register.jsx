@@ -4,7 +4,7 @@ import { UserPlus, User, Lock, Mail, Phone, Eye, EyeOff } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import PhoneInput from '../../components/ui/PhoneInput';
 import { useRegister } from '../../hooks/useRegister';
-import '@/styles/css/pages/auth/Login.css';
+import '@/styles/pages/auth/Login.css';
 
 const Register = () => {
   const { formData, setFormData, showPassword, setShowPassword, error, success, isLoading, storeSettings, handleChange, handleRegister } = useRegister();

@@ -3,7 +3,7 @@ import { MessageSquare, Users, Mail } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import AdminCustomerTable from '../../components/admin/AdminCustomerTable';
 import { useAdminCustomers } from '../../hooks/useAdminCustomers';
-import '@/styles/css/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminCustomers = () => {
   const {

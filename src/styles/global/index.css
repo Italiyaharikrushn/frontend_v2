@@ -1,82 +1,94 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
-  --primary: #6b0f32;
-  --primary-light: #8c1b47;
-  --primary-dark: #47071f;
-  --primary-rgb: 107, 15, 50;
+  /* Crafty Kiya Luxury Theme Tokens */
+  --primary: #c5a059;
+  --primary-light: #d4af37;
+  --primary-dark: #a07d3b;
+  --primary-rgb: 197, 160, 89;
 
-  --secondary: #0f766e;
-  --secondary-light: #14b8a6;
-  --secondary-rgb: 15, 118, 110;
+  --secondary: #d4af37;
+  --secondary-light: #f3d375;
+  --secondary-rgb: 212, 175, 55;
 
   --accent: #d4af37;
-  --accent-light: #f3e5ab;
-  --accent-dark: #ab8922;
+  --accent-light: #f5e4a8;
+  --accent-dark: #b88a28;
   --accent-rgb: 212, 175, 55;
 
-  --background: #f9f7f4;
-  --surface: #ffffff;
-  --surface-alt: #f3efe9;
-  --surface-hover: #ede7df;
+  --gold-primary: #d4af37;
+  --gold-metallic: linear-gradient(135deg, #e6c567 0%, #c5a059 50%, #9e7a2b 100%);
+  --gold-banner: #c5a059;
 
-  --text-main: #1a1715;
+  --background: #fdfbf7;
+  --surface: #ffffff;
+  --surface-alt: #f6f2ea;
+  --surface-hover: #efe9de;
+
+  --dark-bg: #090807;
+  --dark-header: #0d0c0a;
+  --dark-surface: #161412;
+  --dark-border: rgba(212, 175, 55, 0.25);
+
+  --text-main: #1c1917;
   --text-muted: #685f58;
-  --border: #e6ded6;
-  --border-light: #f0e8e0;
+  --text-gold: #d4af37;
+  --border: #e8e0d4;
+  --border-light: #f2ebd9;
 
   --success: #10b981;
   --error: #e11d48;
   --warning: #f59e0b;
   --info: #0284c7;
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-xl: 30px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
 
-  --shadow-sm: 0 4px 14px rgba(26, 23, 21, 0.05);
-  --shadow-md: 0 10px 30px rgba(26, 23, 21, 0.08);
-  --shadow-lg: 0 20px 50px rgba(26, 23, 21, 0.12);
-  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.25);
-  --shadow-primary-glow: 0 0 25px rgba(107, 15, 50, 0.25);
+  --shadow-sm: 0 4px 14px rgba(9, 8, 7, 0.06);
+  --shadow-md: 0 10px 30px rgba(9, 8, 7, 0.1);
+  --shadow-lg: 0 20px 50px rgba(9, 8, 7, 0.16);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.3);
+  --shadow-primary-glow: 0 0 25px rgba(197, 160, 89, 0.3);
 
-  --font-sans: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 320ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme="dark"] {
-  --primary: #a82559;
-  --primary-light: #c93671;
-  --primary-dark: #751239;
-  --primary-rgb: 168, 37, 89;
+  --primary: #d4af37;
+  --primary-light: #f3d375;
+  --primary-dark: #a07d3b;
+  --primary-rgb: 212, 175, 55;
 
-  --secondary: #14b8a6;
-  --secondary-light: #2dd4bf;
-  --secondary-rgb: 20, 184, 166;
+  --secondary: #c5a059;
+  --secondary-light: #e6c567;
+  --secondary-rgb: 197, 160, 89;
 
-  --accent: #e6c35c;
+  --accent: #d4af37;
   --accent-light: #f5e4a8;
-  --accent-dark: #c29d34;
-  --accent-rgb: 230, 195, 92;
+  --accent-dark: #b88a28;
+  --accent-rgb: 212, 175, 55;
 
-  --background: #0c0c0e;
-  --surface: #141317;
-  --surface-alt: #1c1a21;
-  --surface-hover: #26232c;
+  --background: #090807;
+  --surface: #12100e;
+  --surface-alt: #1a1815;
+  --surface-hover: #24211d;
 
-  --text-main: #f6f4f0;
-  --text-muted: #a39992;
-  --border: #2a262e;
-  --border-light: #221e25;
+  --text-main: #fbf9f5;
+  --text-muted: #a39b90;
+  --border: #2a251e;
+  --border-light: #201c17;
 
-  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.65);
-  --shadow-glow: 0 0 30px rgba(230, 195, 92, 0.3);
-  --shadow-primary-glow: 0 0 30px rgba(168, 37, 89, 0.35);
+  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.75);
+  --shadow-glow: 0 0 30px rgba(212, 175, 55, 0.35);
+  --shadow-primary-glow: 0 0 30px rgba(212, 175, 55, 0.4);
 }
 
 * {
@@ -268,23 +280,34 @@ textarea:focus-visible {
   to { background-position: -200% 0; }
 }
 
-/* Custom Scrollbars */
+/* HIDE VISUAL SCROLLBAR WHILE PRESERVING FULL SCROLLING FUNCTIONALITY */
+html, body, *, ::-webkit-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-
+::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 999px;
+  display: none !important;
+  background: transparent !important;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+/* Utility class for explicit scrollbar hiding */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Responsive Container Utilities */

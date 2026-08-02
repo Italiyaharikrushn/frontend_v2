@@ -4,7 +4,7 @@ import { useCheckoutLogic } from '../../hooks/useCheckoutLogic';
 import { useGetUserAddressesQuery } from '../../api/orderApi';
 import CheckoutForm from '../../components/storefront/CheckoutForm';
 import CheckoutSummary from '../../components/storefront/CheckoutSummary';
-import '@/styles/css/pages/storefront/Checkout.css';
+import '@/styles/pages/storefront/Checkout.css';
 const Checkout = () => {
   const [phone, setPhone] = useState('');
   const { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon } = useCheckoutLogic();
