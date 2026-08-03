@@ -17,6 +17,19 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
   const dropdownRef = useRef(null);
 
   useEffect(() => {
+    if (value) {
+      const currentFullNumber = `${country.code}${phoneNumber.replace(/\s+/g, '')}`;
+      if (value.replace(/\s+/g, '') !== currentFullNumber) {
+        const sorted = [...COUNTRIES].sort((a, b) => b.code.length - a.code.length);
+        const newCode = sorted.find(c => value.startsWith(c.code))?.code || '+91';
+        const newNumber = value.replace(newCode, '').trim();
+        setCountry(COUNTRIES.find(c => c.code === newCode) || COUNTRIES[0]);
+        setPhoneNumber(newNumber);
+      }
+    }
+  }, [value]);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);

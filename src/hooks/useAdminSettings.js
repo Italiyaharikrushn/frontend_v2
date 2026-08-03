@@ -50,6 +50,7 @@ export const useAdminSettings = () => {
     }
   }, [settingsData]);
 
+
   const handleSave = async () => {
     try {
       const payload = {
