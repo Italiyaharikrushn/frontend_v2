@@ -45,7 +45,7 @@ const DashboardLayout = () => {
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <div className="dashboard-brand-container">
-            <h2 className="sidebar-brand">{storeSettings?.storeName} ADMIN</h2>
+            <h2 className="sidebar-brand">{storeSettings?.storeName}</h2>
           </div>
 
           <div className="header-actions">

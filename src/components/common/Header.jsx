@@ -16,7 +16,6 @@ const Header = () => {
     isSearchOpen,
     setIsSearchOpen,
     searchQuery,
-    setSearchQuery,
     isMenuOpen,
     setIsMenuOpen,
     searchInputRef,

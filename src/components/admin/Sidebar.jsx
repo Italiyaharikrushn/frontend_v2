@@ -27,7 +27,6 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
       <div className="sidebar-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <CraftyLogo size={32} />
-          <span style={{ color: '#d4af37', fontSize: '0.75rem', fontWeight: 'bold', letterSpacing: '0.12em', textTransform: 'uppercase' }}>ADMIN</span>
         </div>
         <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">
           <X size={18} />

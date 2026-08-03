@@ -50,6 +50,7 @@
   max-width: calc(100vw - 1.25rem);
   z-index: 60;
   overflow: hidden;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 [data-theme="dark"] .profile-dropdown-menu {
