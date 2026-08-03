@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Truck, ShieldCheck, Award, Headphones, ShoppingCart, Eye } from 'lucide-react';
+import { ShoppingBag, Truck, ShieldCheck, Award, Headphones } from 'lucide-react';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import { CraftyLogoEmblem } from '../../components/common/CraftyLogo';
 import { useHome } from '../../hooks/useHome';
@@ -13,61 +13,60 @@ const Home = () => {
     trendingProducts,
     quickViewProductId,
     setQuickViewProductId,
-    handleAddToCart,
   } = useHome();
 
-  const renderProductCard = (product, isDup = false) => (
-    <article key={isDup ? `${product.id}-dup` : product.id} className="feature-card glass-panel hover-lift">
-      <div className="feature-media">
-        {product.images && product.images.length > 0 ? (
-          <img
-            src={product.images[0]}
-            alt={product.title}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.style.display = 'none';
-            }}
-          />
-        ) : (
-          <ShoppingBag size={48} className="pulse-element" style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
-        )}
+  const renderProductCard = (product, index, isDup = false) => {
+    const pId = product._id || product.id || index;
+    return (
+      <div 
+        key={isDup ? `${pId}-dup` : pId} 
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem',
+          width: '280px',
+          flexShrink: 0
+        }}
+      >
+        <Link 
+          to={`/product/${pId}`}
+          style={{ textDecoration: 'none', color: 'inherit', display: 'block', width: '100%' }}
+          className="hover-lift"
+        >
+          <div style={{
+            width: '100%',
+            height: '350px',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {product.images && product.images.length > 0 ? (
+              <img
+                src={product.images[0]}
+                alt={product.title}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
+                onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
+                onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.style.display = 'none';
+                }}
+              />
+            ) : (
+              <ShoppingBag size={48} className="pulse-element" style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
+            )}
+          </div>
+        </Link>
+        <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500, color: '#333', textAlign: 'center' }}>
+          {product.title}
+        </h3>
       </div>
-      <div className="feature-body">
-        <h3>{product.title}</h3>
-        <p className="feature-meta">Crafted for You • Premium Quality</p>
-        {product.discountPrice ? (
-          <p className="feature-price" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ color: '#D4AF37', fontWeight: 'bold' }}>₹{product.discountPrice}</span>
-            <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.85em' }}>₹{product.price}</span>
-            <span style={{ fontSize: '0.75em', padding: '0.15rem 0.4rem', background: '#c5a059', color: '#0d0c0a', borderRadius: '4px', fontWeight: 'bold' }}>
-              {Math.round(((parseFloat(product.price) - parseFloat(product.discountPrice)) / parseFloat(product.price)) * 100)}% OFF
-            </span>
-          </p>
-        ) : (
-          <p className="feature-price" style={{ color: '#D4AF37' }}>₹{product.price}</p>
-        )}
-        
-        <div className="card-actions-row">
-          <button 
-            type="button" 
-            className="card-add-cart-btn"
-            onClick={(e) => handleAddToCart(e, product)}
-          >
-            <ShoppingCart size={16} />
-            <span>Add to Cart</span>
-          </button>
-          <button 
-            type="button" 
-            className="card-quick-view-btn"
-            title="Quick View"
-            onClick={() => setQuickViewProductId(product.id)}
-          >
-            <Eye size={16} />
-          </button>
-        </div>
-      </div>
-    </article>
-  );
+    );
+  };
 
   return (
     <div className="home-page">
@@ -162,7 +161,7 @@ const Home = () => {
       <section className="featured-section">
         <div className="container">
           <h2 className="section-title">Trending Collection</h2>
-          
+
           <div className="trending-row-wrapper">
             {isLoading ? (
               <div className="product-grid">
@@ -173,17 +172,17 @@ const Home = () => {
               <div className="marquee-container">
                 <div className="marquee-track">
                   <div className="marquee-content">
-                    {trendingProducts.map((product) => renderProductCard(product, false))}
+                    {trendingProducts.map((product, index) => renderProductCard(product, index, false))}
                   </div>
                   <div className="marquee-content" aria-hidden="true">
-                    {trendingProducts.map((product) => renderProductCard(product, true))}
+                    {trendingProducts.map((product, index) => renderProductCard(product, index, true))}
                   </div>
                 </div>
               </div>
             ) : trendingProducts.length === 1 ? (
               /* Single card row: Centered without autoplay */
               <div className="single-card-row">
-                {renderProductCard(trendingProducts[0], false)}
+                {renderProductCard(trendingProducts[0], 0, false)}
               </div>
             ) : (
               <div className="products-empty" style={{ gridColumn: '1 / -1' }}>
@@ -195,9 +194,9 @@ const Home = () => {
       </section>
 
       {quickViewProductId && (
-        <ProductDetails 
-          productId={quickViewProductId} 
-          onClose={() => setQuickViewProductId(null)} 
+        <ProductDetails
+          productId={quickViewProductId}
+          onClose={() => setQuickViewProductId(null)}
         />
       )}
     </div>
