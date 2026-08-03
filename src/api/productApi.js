@@ -50,7 +50,19 @@ export const productApi = createApi({
         }),
 
         getProducts: builder.query({
-            query: () => "/product/all",
+            query: (params) => {
+                if (!params) return "/product/all";
+                if (typeof params === 'string') return `/product/all${params}`;
+                const queryParams = new URLSearchParams();
+                if (params.page !== undefined && params.page !== null) queryParams.append("page", params.page);
+                if (params.size !== undefined && params.size !== null) queryParams.append("size", params.size);
+                if (params.category && params.category !== "All" && params.category !== "all") {
+                    queryParams.append("category", params.category);
+                }
+                if (params.search) queryParams.append("search", params.search);
+                const queryString = queryParams.toString();
+                return queryString ? `/product/all?${queryString}` : "/product/all";
+            },
             providesTags: ['Product'],
         }),
 

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../redux/cartSlice';
@@ -20,6 +20,8 @@ export const useProducts = () => {
   const [quantities, setQuantities] = useState({});
   const [page, setPage] = useState(0);
   const size = 12;
+
+  useEffect(() => { setPage(0); }, [category, searchQuery]);
 
   const handleQuantityChange = (id, delta) => {
     setQuantities(prev => {
@@ -48,10 +50,15 @@ export const useProducts = () => {
     });
   };
 
-  const { data = {}, isLoading } = useGetProductsQuery({ page, size });
+  const { data = {}, isLoading } = useGetProductsQuery({
+    page,
+    size,
+    category: category || '',
+    search: searchQuery || ''
+  });
   const products = data.content || [];
   const totalPages = data.totalPages || 0;
-  
+
   const { data: categories = [] } = useGetCategoriesQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
 
@@ -99,7 +106,7 @@ export const useProducts = () => {
         console.error('Failed to save item to database cart:', error);
       }
     }
-    
+
     setQuantities(prev => ({ ...prev, [product.id]: 1 }));
   };
 
