@@ -28,7 +28,7 @@ export const CraftyLogoEmblem = ({ size = 44, className = "" }) => (
       ry="22"
       stroke="url(#craftyGoldGrad)"
       strokeWidth="5"
-      fill="none"
+      fill="#3D2314"
     />
 
     {/* Floral Blossom 4-Petal Motif */}

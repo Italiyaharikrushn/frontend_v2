@@ -115,7 +115,7 @@ const Home = () => {
             </div>
             <div className="trust-badge-text">
               <h4>Free Shipping</h4>
-              <p>On orders above ₹999</p>
+              <p>Fast delivery across India</p>
             </div>
           </div>
 
@@ -139,7 +139,7 @@ const Home = () => {
             </div>
             <div className="trust-badge-text">
               <h4>Premium Quality</h4>
-              <p>Handpicked with care</p>
+              <p>Luxury materials & expert finishing</p>
             </div>
           </div>
 
