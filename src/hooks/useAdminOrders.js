@@ -10,7 +10,12 @@ export const useAdminOrders = () => {
   const [labelFilter, setLabelFilter] = useState('');
 
   const [selectedOrders, setSelectedOrders] = useState([]);
-  const { data: orders = [], isLoading } = useGetSellerOrdersQuery();
+  const [page, setPage] = useState(0);
+  const size = 10;
+  
+  const { data = {}, isLoading } = useGetSellerOrdersQuery({ page, size, status: activeTab });
+  const orders = data.content || [];
+  const totalPages = data.totalPages || 0;
   
   const downloadedLabels = orders.filter(o => o.labelDownloaded).map(o => o.id);
 
@@ -19,8 +24,6 @@ export const useAdminOrders = () => {
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
 
   const filteredOrders = orders.filter(order => {
-    if (order.status !== activeTab) return false;
-
     if (labelFilter === 'YES') {
       if (!downloadedLabels.includes(order.id)) return false;
     }
@@ -94,9 +97,15 @@ export const useAdminOrders = () => {
     }
   };
 
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setPage(0);
+    setSelectedOrders([]);
+  };
+
   return {
     activeTab,
-    setActiveTab,
+    setActiveTab: handleTabChange,
     labelFilter,
     setLabelFilter,
     selectedOrders,
@@ -104,6 +113,9 @@ export const useAdminOrders = () => {
     downloadedLabels,
     isLoading,
     filteredOrders,
+    page,
+    setPage,
+    totalPages,
     handleSelectAll,
     handleSelectOrder,
     handleDownloadLabels,

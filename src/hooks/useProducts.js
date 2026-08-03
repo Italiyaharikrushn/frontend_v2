@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../redux/cartSlice';
 import { selectIsAuthenticated } from '../redux/authSlice';
-import { useGetProductsQuery } from '../api/productApi';
+import { useGetProductsQuery, useGetCategoriesQuery } from '../api/productApi';
 import { useAddToBackendCartMutation } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
 
@@ -18,6 +18,8 @@ export const useProducts = () => {
   const { pushToast } = useToast();
   const [quickViewProductId, setQuickViewProductId] = useState(null);
   const [quantities, setQuantities] = useState({});
+  const [page, setPage] = useState(0);
+  const size = 12;
 
   const handleQuantityChange = (id, delta) => {
     setQuantities(prev => {
@@ -46,28 +48,26 @@ export const useProducts = () => {
     });
   };
 
-  const { data: allProducts = [], isLoading } = useGetProductsQuery();
+  const { data = {}, isLoading } = useGetProductsQuery({ page, size });
+  const products = data.content || [];
+  const totalPages = data.totalPages || 0;
+  
+  const { data: categories = [] } = useGetCategoriesQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
 
   const dynamicCategories = useMemo(() => {
-    if (!allProducts || allProducts.length === 0) return ["All"];
+    if (!categories || categories.length === 0) return ["All"];
 
     const catSet = new Set();
-    allProducts.forEach(p => {
-      if (p.category) {
-        const capitalized = p.category.charAt(0).toUpperCase() + p.category.slice(1).toLowerCase();
+    categories.forEach(c => {
+      if (c) {
+        const capitalized = c.charAt(0).toUpperCase() + c.slice(1).toLowerCase();
         catSet.add(capitalized);
       }
     });
 
     return ["All", ...Array.from(catSet).sort()];
-  }, [allProducts]);
-
-  const products = allProducts.filter((p) => {
-    if (category) return p.category?.toLowerCase() === category.toLowerCase() || p.globalCategory?.toLowerCase() === category.toLowerCase();
-    if (searchQuery) return p.title?.toLowerCase().includes(searchQuery.toLowerCase());
-    return true;
-  });
+  }, [categories]);
 
   let title = 'Our Collection';
   let subtitle = 'Explore our complete collection of exquisite accessories designed to elevate your style.';
@@ -110,6 +110,7 @@ export const useProducts = () => {
     } else {
       params.set('category', cat.toLowerCase());
     }
+    setPage(0);
     navigate({ search: params.toString() });
   };
 
@@ -125,6 +126,9 @@ export const useProducts = () => {
     isLoading,
     dynamicCategories,
     products,
+    page,
+    setPage,
+    totalPages,
     title,
     subtitle,
     handleAddToCart,

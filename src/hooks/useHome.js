@@ -11,7 +11,8 @@ export const useHome = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { pushToast } = useToast();
-  const { data: products = [], isLoading } = useGetProductsQuery();
+  const { data = {}, isLoading } = useGetProductsQuery({ page: 0, size: 20 });
+  const products = data.content || [];
   const { data: settings } = useGetPublicStoreSettingsQuery();
   const [addToBackendCart] = useAddToBackendCartMutation();
 

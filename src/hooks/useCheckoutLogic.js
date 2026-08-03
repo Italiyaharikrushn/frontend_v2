@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
 import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useValidateCouponMutation } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
-import { useGetProductsQuery } from '../api/productApi';
+import { useGetProductsByIdsMutation } from '../api/productApi';
 
 export const useCheckoutLogic = () => {
   const navigate = useNavigate();
@@ -20,7 +20,14 @@ export const useCheckoutLogic = () => {
   const [couponError, setCouponError] = useState('');
   const { pushToast } = useToast();
 
-  const { data: allProducts = [] } = useGetProductsQuery();
+  const [getProductsByIds, { data: allProducts = [] }] = useGetProductsByIdsMutation();
+
+  useEffect(() => {
+    if (rawCartItems.length > 0) {
+      const ids = rawCartItems.map(item => item.id);
+      getProductsByIds(ids);
+    }
+  }, [rawCartItems, getProductsByIds]);
 
   const cartItems = useMemo(() => {
     return rawCartItems.map(item => {

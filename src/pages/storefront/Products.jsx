@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShoppingBag } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import { useProducts } from '../../hooks/useProducts';
+import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/storefront/Products.css';
 import ProductDetails from './ProductDetails';
 
 const Products = () => {
   const {
     category,
-    searchQuery,
     quickViewProductId,
     setQuickViewProductId,
     quantities,
@@ -19,6 +19,9 @@ const Products = () => {
     isLoading,
     dynamicCategories,
     products,
+    page,
+    setPage,
+    totalPages,
     title,
     subtitle,
     handleAddToCart,
@@ -133,6 +136,12 @@ const Products = () => {
           </div>
         )}
       </div>
+
+      <Pagination 
+        currentPage={page} 
+        totalPages={totalPages} 
+        onPageChange={setPage} 
+      />
 
       {quickViewProductId && (
         <ProductDetails 

@@ -5,12 +5,19 @@ import { useGetProductsQuery, useDeleteProductMutation, useBulkUploadProductsMut
 import AdminProductForm from '../../components/admin/AdminProductForm';
 import { useToast } from '../../components/ui/ToastProvider';
 import { useAlert } from '../../components/ui/AlertProvider';
+import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminProducts = () => {
   const { pushToast } = useToast();
   const { confirm, bulkUploadPrompt } = useAlert();
-  const { data: products = [], isLoading } = useGetProductsQuery();
+  const [page, setPage] = useState(0);
+  const size = 10;
+  
+  const { data = {}, isLoading } = useGetProductsQuery({ page, size });
+  const products = data.content || [];
+  const totalPages = data.totalPages || 0;
+
   const [deleteProduct] = useDeleteProductMutation();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -133,6 +140,12 @@ const AdminProducts = () => {
                 )}
               </tbody>
             </table>
+            
+            <Pagination 
+              currentPage={page} 
+              totalPages={totalPages} 
+              onPageChange={setPage} 
+            />
           </div>
         )}
       </div>

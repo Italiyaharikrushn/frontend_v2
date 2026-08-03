@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Pagination from '../../components/ui/Pagination';
 import { useGetProductsQuery } from '../../api/productApi';
 import { useAdminSettings } from '../../hooks/useAdminSettings';
 import { useAdminDiscount } from '../../hooks/useAdminDiscount';
@@ -8,7 +9,11 @@ import BulkDiscountPanel from '../../components/admin/BulkDiscountPanel';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminDiscount = () => {
-  const { data: products = [], isLoading } = useGetProductsQuery();
+  const [page, setPage] = useState(0);
+  const size = 10;
+  const { data = {}, isLoading } = useGetProductsQuery({ page, size });
+  const products = data.content || [];
+  const totalPages = data.totalPages || 0;
   const { formData, setFormData, handleSave, isUpdating } = useAdminSettings();
   
   const discountLogic = useAdminDiscount(products);
@@ -43,19 +48,26 @@ const AdminDiscount = () => {
           isApplyingCategory={discountLogic.isApplyingCategory}
         />
 
-        <BulkDiscountPanel 
-          products={products}
-          isLoading={isLoading}
-          selectedProductIds={discountLogic.selectedProductIds}
-          discountPercentage={discountLogic.discountPercentage}
-          setDiscountPercentage={discountLogic.setDiscountPercentage}
-          validForDays={discountLogic.validForDays}
-          setValidForDays={discountLogic.setValidForDays}
-          handleSelectAll={discountLogic.handleSelectAll}
-          handleSelectProduct={discountLogic.handleSelectProduct}
-          handleApplyDiscount={discountLogic.handleApplyDiscount}
-          isApplying={discountLogic.isApplying}
-        />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <BulkDiscountPanel 
+            products={products}
+            isLoading={isLoading}
+            selectedProductIds={discountLogic.selectedProductIds}
+            discountPercentage={discountLogic.discountPercentage}
+            setDiscountPercentage={discountLogic.setDiscountPercentage}
+            validForDays={discountLogic.validForDays}
+            setValidForDays={discountLogic.setValidForDays}
+            handleSelectAll={discountLogic.handleSelectAll}
+            handleSelectProduct={discountLogic.handleSelectProduct}
+            handleApplyDiscount={discountLogic.handleApplyDiscount}
+            isApplying={discountLogic.isApplying}
+          />
+          <Pagination 
+            currentPage={page} 
+            totalPages={totalPages} 
+            onPageChange={setPage} 
+          />
+        </div>
       </div>
     </div>
   );

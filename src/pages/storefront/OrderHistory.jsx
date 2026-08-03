@@ -4,11 +4,18 @@ import Button from '../../components/ui/Button';
 import { useGetCustomerOrdersQuery, useReturnCustomerOrderMutation, useCancelCustomerOrderMutation } from '../../api/orderApi';
 import { useToast } from '../../components/ui/ToastProvider';
 import { useAlert } from '../../components/ui/AlertProvider';
+import Pagination from '../../components/ui/Pagination';
 
 const OrderHistory = () => {
   const { pushToast } = useToast();
   const { confirm } = useAlert();
-  const { data: orders = [], isLoading } = useGetCustomerOrdersQuery();
+  const [page, setPage] = useState(0);
+  const size = 10;
+  
+  const { data = {}, isLoading } = useGetCustomerOrdersQuery({ page, size });
+  const orders = data.content || [];
+  const totalPages = data.totalPages || 0;
+
   const [returnOrder] = useReturnCustomerOrderMutation();
   const [cancelOrder] = useCancelCustomerOrderMutation();
 
@@ -105,6 +112,14 @@ const OrderHistory = () => {
             </div>
           ))}
         </div>
+      )}
+
+      {totalPages > 1 && (
+        <Pagination 
+          currentPage={page} 
+          totalPages={totalPages} 
+          onPageChange={setPage} 
+        />
       )}
     </div>
   );

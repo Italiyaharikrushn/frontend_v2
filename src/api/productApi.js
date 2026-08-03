@@ -54,9 +54,22 @@ export const productApi = createApi({
             providesTags: ['Product'],
         }),
 
+        getProductsByIds: builder.mutation({
+            query: (ids) => ({
+                url: "/product/by-ids",
+                method: "POST",
+                body: ids
+            }),
+        }),
+
         getCategories: builder.query({
             query: () => "/product/categories",
             providesTags: ['Product'],
+        }),
+
+        getCatalogs: builder.query({
+            query: () => "/api/catalog/all",
+            providesTags: ['Catalog'],
         }),
 
         getProductById: builder.query({
@@ -102,6 +115,7 @@ export const productApi = createApi({
 export const {
     useGetProductsQuery,
     useGetCategoriesQuery,
+    useGetCatalogsQuery,
     useGetProductByIdQuery,
     useCreateProductMutation,
     useUpdateProductMutation,
@@ -110,4 +124,5 @@ export const {
     useApplyDiscountMutation,
     useApplyCategoryDiscountMutation,
     useDecodeUrlMutation,
+    useGetProductsByIdsMutation,
 } = productApi;

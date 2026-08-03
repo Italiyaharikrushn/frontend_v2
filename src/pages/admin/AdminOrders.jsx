@@ -4,6 +4,7 @@ import Button from '../../components/ui/Button';
 import AdminOrderTable from '../../components/admin/AdminOrderTable';
 import AdminOrderTabs from '../../components/admin/AdminOrderTabs';
 import { useAdminOrders } from '../../hooks/useAdminOrders';
+import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminOrders = () => {
@@ -24,7 +25,10 @@ const AdminOrders = () => {
     handleDownloadLabels,
     handleDownloadSingleLabel,
     handleAcceptOrders,
-    handleAcceptSingleOrder
+    handleAcceptSingleOrder,
+    page,
+    setPage,
+    totalPages
   } = useAdminOrders();
 
   return (
@@ -75,6 +79,12 @@ const AdminOrders = () => {
           handleAcceptSingleOrder={handleAcceptSingleOrder}
           handleDownloadSingleLabel={handleDownloadSingleLabel}
           downloadedLabels={downloadedLabels}
+        />
+
+        <Pagination 
+          currentPage={page} 
+          totalPages={totalPages} 
+          onPageChange={setPage} 
         />
 
         {selectedOrders.length > 0 && (

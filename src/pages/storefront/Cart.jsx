@@ -4,13 +4,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { selectCartItems, updateQuantity, setQuantity, removeItem, updateItemPrices } from '../../redux/cartSlice';
-import { useGetProductsQuery } from '../../api/productApi';
+import { useGetProductsByIdsMutation } from '../../api/productApi';
 import '@/styles/pages/storefront/Cart.css';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const rawCartItems = useSelector(selectCartItems);
-  const { data: allProducts = [], isLoading } = useGetProductsQuery();
+  const [getProductsByIds, { data: allProducts = [], isLoading }] = useGetProductsByIdsMutation();
+
+  useEffect(() => {
+    if (rawCartItems.length > 0) {
+      const ids = rawCartItems.map(item => item.id);
+      getProductsByIds(ids);
+    }
+  }, [rawCartItems, getProductsByIds]);
 
   const cartItems = useMemo(() => {
     return rawCartItems.map(item => {
