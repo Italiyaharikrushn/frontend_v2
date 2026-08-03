@@ -18,8 +18,8 @@ const Home = () => {
   const renderProductCard = (product, index, isDup = false) => {
     const pId = product._id || product.id || index;
     return (
-      <div 
-        key={isDup ? `${pId}-dup` : pId} 
+      <div
+        key={isDup ? `${pId}-dup` : pId}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -29,7 +29,7 @@ const Home = () => {
           flexShrink: 0
         }}
       >
-        <Link 
+        <Link
           to={`/product/${pId}`}
           style={{ textDecoration: 'none', color: 'inherit', display: 'block', width: '100%' }}
           className="hover-lift"
