@@ -193,7 +193,7 @@
 }
 
 .dashboard-content {
-  padding: 1.25rem;
+  /* padding: 1.25rem; */
   overflow-y: auto;
   flex-grow: 1;
   display: flex;
@@ -219,7 +219,7 @@
 @media (min-width: 768px) {
   .dashboard-header { padding: 0 1.75rem; }
   .mobile-sidebar-toggle { display: none; }
-  .dashboard-content { padding: 1.75rem; }
+  /* .dashboard-content { padding: 1.75rem; } */
   .dashboard-sidebar-overlay { display: none; }
   .desktop-only-profile-info { display: flex !important; }
 }

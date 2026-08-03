@@ -4,6 +4,7 @@
   padding: clamp(1rem, 2vw, 2rem);
   animation: fadeIn var(--transition-normal);
   width: 100%;
+  margin-top: 0%;
   min-width: 0;
 }
 

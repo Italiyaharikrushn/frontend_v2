@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Package, Clock, IndianRupee, RotateCcw } from 'lucide-react';
+import { Package, Clock, IndianRupee, RotateCcw, Wallet } from 'lucide-react';
 import { useGetProductsQuery } from '../../api/productApi';
 import { useGetSellerOrdersQuery } from '../../api/orderApi';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const DashboardHome = () => {
-  const { data: products = [], isLoading: isLoadingProducts } = useGetProductsQuery();
-  const { data: orders = [], isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
+  const { data: productsData = {}, isLoading: isLoadingProducts } = useGetProductsQuery();
+  const { data: ordersData = {}, isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
+
+  const products = Array.isArray(productsData) ? productsData : (productsData.content || []);
+  const orders = Array.isArray(ordersData) ? ordersData : (ordersData.content || []);
   const navigate = useNavigate();
 
   // Calculate dynamic stats
@@ -16,12 +19,13 @@ const DashboardHome = () => {
     const pendingOrders = orders.filter(o => o.status === 'PENDING').length;
     const returnedOrders = orders.filter(o => o.status === 'RETURNED').length;
     const totalSales = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const productValue = products.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0);
 
     return {
       activeProducts,
       pendingOrders,
       returnedOrders,
-      totalSales
+      totalSales,
     };
   }, [products, orders]);
 
