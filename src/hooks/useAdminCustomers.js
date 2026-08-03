@@ -25,10 +25,13 @@ export const useAdminCustomers = () => {
     }
   };
 
-  const realCustomers = rawCustomers.map(customer => {
-    const customerOrders = orders.filter(order => order.customerEmail === customer.email);
+  const customersList = Array.isArray(rawCustomers) ? rawCustomers : (rawCustomers?.content || []);
+  const ordersList = Array.isArray(orders) ? orders : (orders?.content || []);
+
+  const realCustomers = customersList.map(customer => {
+    const customerOrders = ordersList.filter(order => order?.customerEmail === customer?.email || order?.buyer?.email === customer?.email);
     const totalOrders = customerOrders.length;
-    const totalSpent = customerOrders.reduce((sum, order) => sum + (order.totalAmount || 0), 0);
+    const totalSpent = customerOrders.reduce((sum, order) => sum + (parseFloat(order.totalAmount) || 0), 0);
     return {
       ...customer,
       orders: totalOrders,
