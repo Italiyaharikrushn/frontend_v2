@@ -753,4 +753,35 @@
   color: var(--text-main);
 }
 
+/* Customer Details Modal Specific Styles */
+.customer-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: var(--text-main);
+}
 
+.customer-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+}
+
+.customer-detail-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.customer-detail-label {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.customer-detail-value {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 0.95rem;
+}
