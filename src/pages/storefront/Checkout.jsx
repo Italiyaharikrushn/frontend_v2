@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Button from '../../components/ui/Button';
 import { useCheckoutLogic } from '../../hooks/useCheckoutLogic';
-import { useGetUserAddressesQuery } from '../../api/orderApi';
 import CheckoutForm from '../../components/storefront/CheckoutForm';
 import CheckoutSummary from '../../components/storefront/CheckoutSummary';
 import '@/styles/pages/storefront/Checkout.css';
-const Checkout = () => {
-  const [phone, setPhone] = useState('');
-  const { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon } = useCheckoutLogic();
-  const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
 
-  useEffect(() => {
-    if (addresses.length >= 5 && selectedAddressId === 'new') {
-      setSelectedAddressId(addresses[0]?.id || 'new');
-    }
-  }, [addresses, selectedAddressId, setSelectedAddressId]);
+const Checkout = () => {
+  const { 
+    cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, 
+    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, 
+    appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, 
+    addresses, isLoadingAddresses 
+  } = useCheckoutLogic();
 
   if (cartItems.length === 0) {
     return (

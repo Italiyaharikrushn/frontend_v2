@@ -1,73 +1,10 @@
-import React, { useState } from 'react';
-import { useGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation } from '../../api/orderApi';
-import { useToast } from '../../components/ui/ToastProvider';
+import React from 'react';
+import { useAdminCoupons } from '../../hooks/useAdminCoupons';
 import Button from '../../components/ui/Button';
-import { useAlert } from '../../components/ui/AlertProvider';
 import { Ticket, PlusCircle, Edit, Trash2, CheckCircle, XCircle, X } from 'lucide-react';
 
 const AdminCoupons = () => {
-    const { data: coupons = [], isLoading } = useGetCouponsQuery();
-    const [createCoupon] = useCreateCouponMutation();
-    const [updateCoupon] = useUpdateCouponMutation();
-    const [deleteCoupon] = useDeleteCouponMutation();
-    const { pushToast } = useToast();
-    const { confirm } = useAlert();
-
-    const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState({
-        code: '',
-        discountType: 'PERCENTAGE',
-        discountValue: 0,
-        expiryDate: '',
-        isActive: true
-    });
-
-    const resetForm = () => {
-        setFormData({ code: '', discountType: 'PERCENTAGE', discountValue: 0, expiryDate: '', isActive: true });
-        setIsEditing(false);
-    };
-
-    const handleEdit = (coupon) => {
-        setFormData(coupon);
-        setIsEditing(true);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            if (isEditing && formData.id) {
-                const payload = {
-                    ...formData,
-                    expiryDate: formData.expiryDate.includes('T') ? formData.expiryDate : formData.expiryDate + 'T23:59:59'
-                };
-                await updateCoupon(payload).unwrap();
-                pushToast('Coupon updated', 'success');
-            } else {
-                const payload = {
-                    ...formData,
-                    expiryDate: formData.expiryDate.includes('T') ? formData.expiryDate : formData.expiryDate + 'T23:59:59'
-                };
-                await createCoupon(payload).unwrap();
-                pushToast('Coupon created', 'success');
-            }
-            resetForm();
-        } catch (err) {
-            const errorMsg = err?.data?.message || err?.data?.error || err?.error || 'Failed to save coupon';
-            pushToast(errorMsg, 'error');
-        }
-    };
-
-    const handleDelete = async (id) => {
-        if (await confirm("Delete this coupon?")) {
-            try {
-                await deleteCoupon(id).unwrap();
-                pushToast('Coupon deleted', 'success');
-            } catch (err) {
-                pushToast('Failed to delete', 'error');
-            }
-        }
-    };
-
+    const { coupons, isLoading, isEditing, setIsEditing, formData, setFormData, resetForm, handleEdit, handleSubmit, handleDelete } = useAdminCoupons();
     if (isLoading) return <div className="admin-page"><div className="loading-state">Loading coupons...</div></div>;
 
     return (
@@ -84,7 +21,7 @@ const AdminCoupons = () => {
                     </div>
                 )}
             </div>
-            
+
             <div className="admin-full-height-card glass-panel" style={{ padding: '0' }}>
                 <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border)' }}>
                     <h2 className="form-card-title" style={{ margin: 0, padding: 0, border: 'none' }}>Existing Coupons</h2>
@@ -157,25 +94,25 @@ const AdminCoupons = () => {
                                 <div className="admin-form-grid">
                                     <div className="admin-form-field full">
                                         <label>Coupon Code</label>
-                                        <input required type="text" value={formData.code} onChange={e => setFormData({...formData, code: e.target.value.toUpperCase()})} placeholder="e.g. SUMMER20" />
+                                        <input required type="text" value={formData.code} onChange={e => setFormData({ ...formData, code: e.target.value.toUpperCase() })} placeholder="e.g. SUMMER20" />
                                     </div>
                                     <div className="admin-form-field">
                                         <label>Discount Type</label>
-                                        <select value={formData.discountType} onChange={e => setFormData({...formData, discountType: e.target.value})}>
+                                        <select value={formData.discountType} onChange={e => setFormData({ ...formData, discountType: e.target.value })}>
                                             <option value="PERCENTAGE">Percentage (%)</option>
                                             <option value="FIXED_AMOUNT">Fixed Amount (₹)</option>
                                         </select>
                                     </div>
                                     <div className="admin-form-field">
                                         <label>Discount Value</label>
-                                        <input required type="number" min="0" step="0.01" value={formData.discountValue} onChange={e => setFormData({...formData, discountValue: e.target.value})} />
+                                        <input required type="number" min="0" step="0.01" value={formData.discountValue} onChange={e => setFormData({ ...formData, discountValue: e.target.value })} />
                                     </div>
                                     <div className="admin-form-field">
                                         <label>Expiry Date</label>
-                                        <input required type="date" value={formData.expiryDate ? formData.expiryDate.split('T')[0] : ''} onChange={e => setFormData({...formData, expiryDate: e.target.value})} />
+                                        <input required type="date" value={formData.expiryDate ? formData.expiryDate.split('T')[0] : ''} onChange={e => setFormData({ ...formData, expiryDate: e.target.value })} />
                                     </div>
                                     <div className="admin-form-field full" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius-md)' }}>
-                                        <input type="checkbox" id="isActive" checked={formData.isActive} onChange={e => setFormData({...formData, isActive: e.target.checked})} style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }} />
+                                        <input type="checkbox" id="isActive" checked={formData.isActive} onChange={e => setFormData({ ...formData, isActive: e.target.checked })} style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }} />
                                         <label htmlFor="isActive" style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold' }}>Coupon is Active</label>
                                     </div>
                                 </div>

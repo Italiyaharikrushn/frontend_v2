@@ -1,65 +1,12 @@
-import React, { useEffect, useMemo } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { selectCartItems, updateQuantity, setQuantity, removeItem, updateItemPrices } from '../../redux/cartSlice';
-import { useGetProductsByIdsMutation } from '../../api/productApi';
+import { useCartPage } from '../../hooks/useCartPage';
 import '@/styles/pages/storefront/Cart.css';
 
 const Cart = () => {
-  const dispatch = useDispatch();
-  const rawCartItems = useSelector(selectCartItems);
-  const [getProductsByIds, { data: allProducts = [], isLoading }] = useGetProductsByIdsMutation();
-
-  useEffect(() => {
-    if (rawCartItems.length > 0) {
-      const ids = rawCartItems.map(item => item.id);
-      getProductsByIds(ids);
-    }
-  }, [rawCartItems, getProductsByIds]);
-
-  const cartItems = useMemo(() => {
-    return rawCartItems.map(item => {
-      const product = allProducts.find(p => p.id === item.id);
-      if (product) {
-        const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
-        return { ...item, price: latestPrice };
-      }
-      return item;
-    });
-  }, [rawCartItems, allProducts]);
-
-  // Optionally sync back to redux so checkout gets it easily, but we can also just compute on the fly
-  useEffect(() => {
-    if (allProducts.length > 0 && rawCartItems.length > 0) {
-      const needsUpdate = rawCartItems.some(item => {
-        const product = allProducts.find(p => p.id === item.id);
-        if (product) {
-          const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
-          return item.price !== latestPrice;
-        }
-        return false;
-      });
-      if (needsUpdate) {
-        dispatch(updateItemPrices(cartItems));
-      }
-    }
-  }, [allProducts, rawCartItems, cartItems, dispatch]);
-
-  const handleQuantity = (id, cartItemId, change) => {
-    dispatch(updateQuantity({ id, cartItemId, change }));
-  };
-
-  const handleSetQuantity = (id, cartItemId, quantity) => {
-    dispatch(setQuantity({ id, cartItemId, quantity }));
-  };
-
-  const handleRemove = async (id, cartItemId) => {
-    dispatch(removeItem({ id, cartItemId }));
-  };
-
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const { cartItems, isLoading, subtotal, handleQuantity, handleSetQuantity, handleRemove } = useCartPage();
   const total = subtotal;
 
   return (

@@ -1,33 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import Button from '../../components/ui/Button';
-import { useSubmitMessageMutation } from '../../api/contactApi';
-import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
-import { useToast } from '../../components/ui/ToastProvider';
+import { useContact } from '../../hooks/useContact';
 import { formatPhoneNumber } from '../../utils/formatters';
 import '@/styles/pages/storefront/Contact.css';
 
 const Contact = () => {
-  const { pushToast } = useToast();
-  const { data: storeSettings, isLoading: isSettingsLoading } = useGetPublicStoreSettingsQuery();
-  const [submitMessage, { isLoading }] = useSubmitMessageMutation();
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await submitMessage(formData).unwrap();
-      pushToast('Thank you for contacting us. We will get back to you shortly.', 'success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (err) {
-      console.error('Failed to submit message:', err);
-      pushToast('Failed to send message. Please try again.', 'error');
-    }
-  };
+  const { storeSettings, isSettingsLoading, isLoading, formData, handleChange, handleSubmit } = useContact();
 
   return (
     <div className="contact-page fade-in">

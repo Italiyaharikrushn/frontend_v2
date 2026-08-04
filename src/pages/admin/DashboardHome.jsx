@@ -1,35 +1,12 @@
-import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Package, Clock, IndianRupee, RotateCcw, Wallet } from 'lucide-react';
-import { useGetProductsQuery } from '../../api/productApi';
-import { useGetSellerOrdersQuery } from '../../api/orderApi';
+import { useDashboardHome } from '../../hooks/useDashboardHome';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const DashboardHome = () => {
-  const { data: productsData = {}, isLoading: isLoadingProducts } = useGetProductsQuery();
-  const { data: ordersData = {}, isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
+  const { stats, isLoading, navigate } = useDashboardHome();
 
-  const products = Array.isArray(productsData) ? productsData : (productsData.content || []);
-  const orders = Array.isArray(ordersData) ? ordersData : (ordersData.content || []);
-  const navigate = useNavigate();
-
-  // Calculate dynamic stats
-  const stats = useMemo(() => {
-    const activeProducts = products.length; // Assuming all returned are active for now
-    const pendingOrders = orders.filter(o => o.status === 'PENDING').length;
-    const returnedOrders = orders.filter(o => o.status === 'RETURNED').length;
-    const totalSales = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
-    const productValue = products.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0);
-
-    return {
-      activeProducts,
-      pendingOrders,
-      returnedOrders,
-      totalSales,
-    };
-  }, [products, orders]);
-
-  if (isLoadingProducts || isLoadingOrders) {
+  if (isLoading) {
     return (
       <div className="admin-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
         <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Loading dashboard data...</p>

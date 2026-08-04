@@ -1,0 +1,33 @@
+import { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGetProductsQuery } from '../api/productApi';
+import { useGetSellerOrdersQuery } from '../api/orderApi';
+
+export const useDashboardHome = () => {
+    const { data: productsData = {}, isLoading: isLoadingProducts } = useGetProductsQuery();
+    const { data: ordersData = {}, isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
+
+    const products = Array.isArray(productsData) ? productsData : (productsData.content || []);
+    const orders = Array.isArray(ordersData) ? ordersData : (ordersData.content || []);
+    const navigate = useNavigate();
+
+    const stats = useMemo(() => {
+        const activeProducts = products.length; // Assuming all returned are active for now
+        const pendingOrders = orders.filter(o => o.status === 'PENDING').length;
+        const returnedOrders = orders.filter(o => o.status === 'RETURNED').length;
+        const totalSales = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+        const productValue = products.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0);
+
+        return {
+            activeProducts,
+            pendingOrders,
+            returnedOrders,
+            totalSales,
+            productValue
+        };
+    }, [products, orders]);
+
+    const isLoading = isLoadingProducts || isLoadingOrders;
+
+    return { stats, isLoading, navigate };
+};

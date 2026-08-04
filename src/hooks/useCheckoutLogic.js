@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
-import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useValidateCouponMutation } from '../api/orderApi';
+import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useValidateCouponMutation, useGetUserAddressesQuery } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useGetProductsByIdsMutation } from '../api/productApi';
 
@@ -13,6 +13,15 @@ export const useCheckoutLogic = () => {
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [selectedAddressId, setSelectedAddressId] = useState('new');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [phone, setPhone] = useState('');
+  
+  const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
+
+  useEffect(() => {
+    if (addresses.length >= 5 && selectedAddressId === 'new') {
+      setSelectedAddressId(addresses[0]?.id || 'new');
+    }
+  }, [addresses, selectedAddressId]);
   
   const [couponCode, setCouponCode] = useState('');
   const [appliedCouponCode, setAppliedCouponCode] = useState(null);
@@ -112,5 +121,5 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon };
+  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, addresses, isLoadingAddresses };
 };
