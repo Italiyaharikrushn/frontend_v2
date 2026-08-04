@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useGetStoreSettingsQuery, useUpdateStoreSettingsMutation } from '../api/settingsApi';
-import { useChangePasswordMutation } from '../api/authApi';
 import { useToast } from '../components/ui/ToastProvider';
 
 export const useAdminSettings = () => {
@@ -18,13 +17,6 @@ export const useAdminSettings = () => {
     pincode: ''
   });
 
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-
-  const [changePassword, { isLoading: isChangingPassword }] = useChangePasswordMutation();
 
   useEffect(() => {
     if (settingsData) {
@@ -55,44 +47,13 @@ export const useAdminSettings = () => {
     }
   };
 
-  const handlePasswordChange = async (e) => {
-    e.preventDefault();
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      pushToast("New passwords don't match!", 'error');
-      return;
-    }
 
-    try {
-      const response = await changePassword({
-        currentPassword: passwordData.currentPassword,
-        newPassword: passwordData.newPassword
-      }).unwrap();
-
-      if (response.success) {
-        pushToast('Password updated successfully!', 'success');
-        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-      } else {
-        pushToast(response.message || 'Failed to update password.', 'error');
-      }
-    } catch (err) {
-      console.error(err);
-      if (err.data && err.data.message) {
-        pushToast(err.data.message, 'error');
-      } else {
-        pushToast('An error occurred while updating password.', 'error');
-      }
-    }
-  };
 
   return {
     formData,
     setFormData,
-    passwordData,
-    setPasswordData,
     handleSave,
-    handlePasswordChange,
     isLoading,
-    isUpdating,
-    isChangingPassword
+    isUpdating
   };
 };
