@@ -1,5 +1,5 @@
 .products-page {
-  padding:1.5rem;
+  padding: 1.5rem;
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -15,10 +15,6 @@
   color: var(--text-main);
   margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
-}
-
-[data-theme="dark"] .products-title {
-  color: var(--text-main);
 }
 
 .products-subtitle {
@@ -47,12 +43,12 @@
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-  border-color: rgba(var(--accent-rgb), 0.3);
+  border-color: var(--primary);
 }
 
 .product-image-container {
   height: 230px;
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.08), rgba(var(--accent-rgb), 0.12));
+  background: var(--surface-alt);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,12 +87,12 @@
 
 .product-price {
   font-size: 1.1rem;
-  color: var(--primary);
+  color: var(--primary-dark);
   font-weight: 800;
 }
 
 [data-theme="dark"] .product-price {
-  color: var(--accent);
+  color: var(--primary-light);
 }
 
 .product-actions {
@@ -138,23 +134,12 @@
   color: var(--primary);
 }
 
-[data-theme="dark"] .category-tab:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 .category-tab.active {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  color: #ffffff;
+  background: var(--gold-metallic);
+  color: #0b0f17;
   border-color: var(--primary);
-  box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.25);
-}
-
-[data-theme="dark"] .category-tab.active {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: #1a1715;
-  border-color: var(--accent);
-  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.35);
 }
 
 @media (max-width: 640px) {
@@ -205,7 +190,7 @@
   padding: 0.65rem 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  background: var(--bg-main);
+  background: var(--surface);
   color: var(--text-main);
   font-size: 0.95rem;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
@@ -214,12 +199,7 @@
 .filter-input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
-}
-
-[data-theme="dark"] .filter-input:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.2);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
 }
 
 .price-range {
@@ -253,4 +233,3 @@
     flex: 1;
   }
 }
-

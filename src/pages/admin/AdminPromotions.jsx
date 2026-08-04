@@ -13,9 +13,6 @@ const AdminPromotions = () => {
                 <h1 className="admin-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <Gift size={24} style={{ color: 'var(--primary)' }} /> Promotions & Offers
                 </h1>
-                <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                    Manage store-wide discounts, category sales, and promotional coupons.
-                </p>
             </div>
 
             <div className="admin-tabs" style={{ 

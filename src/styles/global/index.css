@@ -1,16 +1,15 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap');
 
 :root {
-  /* Crafty Kiya Luxury Theme Tokens */
+  /* Modern Luxury & Executive Palette - Light Theme Tokens */
   --primary: #c5a059;
-  --primary-light: #d4af37;
+  --primary-light: #e6c567;
   --primary-dark: #a07d3b;
   --primary-rgb: 197, 160, 89;
 
-  --secondary: #d4af37;
-  --secondary-light: #f3d375;
-  --secondary-rgb: 212, 175, 55;
+  --secondary: #1e293b;
+  --secondary-light: #334155;
+  --secondary-rgb: 30, 41, 59;
 
   --accent: #d4af37;
   --accent-light: #f5e4a8;
@@ -18,39 +17,47 @@
   --accent-rgb: 212, 175, 55;
 
   --gold-primary: #d4af37;
-  --gold-metallic: linear-gradient(135deg, #e6c567 0%, #c5a059 50%, #9e7a2b 100%);
+  --gold-metallic: linear-gradient(135deg, #f3d375 0%, #c5a059 50%, #9e7a2b 100%);
   --gold-banner: #c5a059;
 
-  --background: #fdfbf7;
+  --background: #faf8f5;
   --surface: #ffffff;
-  --surface-alt: #f6f2ea;
-  --surface-hover: #efe9de;
+  --surface-alt: #f4efe6;
+  --surface-hover: #eae3d5;
+  --surface-card: #ffffff;
 
-  --dark-bg: #090807;
-  --dark-header: #0d0c0a;
-  --dark-surface: #161412;
+  --dark-bg: #0b0f17;
+  --dark-header: #101622;
+  --dark-surface: #162030;
   --dark-border: rgba(212, 175, 55, 0.25);
 
-  --text-main: #1c1917;
-  --text-muted: #685f58;
-  --text-gold: #d4af37;
-  --border: #e8e0d4;
-  --border-light: #f2ebd9;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-gold: #b88a28;
+  --border: #e2d9cc;
+  --border-light: #ede6dc;
+  --border-hover: #c5a059;
 
   --success: #10b981;
-  --error: #e11d48;
+  --success-bg: rgba(16, 185, 129, 0.1);
+  --error: #f43f5e;
+  --error-bg: rgba(244, 63, 94, 0.1);
   --warning: #f59e0b;
+  --warning-bg: rgba(245, 158, 11, 0.1);
   --info: #0284c7;
+  --info-bg: rgba(2, 132, 199, 0.1);
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 26px;
 
-  --shadow-sm: 0 4px 14px rgba(9, 8, 7, 0.06);
-  --shadow-md: 0 10px 30px rgba(9, 8, 7, 0.1);
-  --shadow-lg: 0 20px 50px rgba(9, 8, 7, 0.16);
-  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.3);
+  --shadow-xs: 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.09);
+  --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.12);
+  --shadow-xl: 0 24px 60px rgba(15, 23, 42, 0.16);
+  --shadow-glow: 0 0 30px rgba(212, 175, 55, 0.35);
   --shadow-primary-glow: 0 0 25px rgba(197, 160, 89, 0.3);
 
   --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
@@ -60,35 +67,41 @@
 }
 
 [data-theme="dark"] {
-  --primary: #d4af37;
-  --primary-light: #f3d375;
-  --primary-dark: #a07d3b;
-  --primary-rgb: 212, 175, 55;
+  /* Modern Luxury Midnight Obsidian - Dark Theme Tokens */
+  --primary: #e6c567;
+  --primary-light: #f5e4a8;
+  --primary-dark: #c5a059;
+  --primary-rgb: 230, 197, 103;
 
-  --secondary: #c5a059;
-  --secondary-light: #e6c567;
-  --secondary-rgb: 197, 160, 89;
+  --secondary: #94a3b8;
+  --secondary-light: #cbd5e1;
+  --secondary-rgb: 148, 163, 184;
 
-  --accent: #d4af37;
+  --accent: #e6c567;
   --accent-light: #f5e4a8;
   --accent-dark: #b88a28;
-  --accent-rgb: 212, 175, 55;
+  --accent-rgb: 230, 197, 103;
 
-  --background: #090807;
-  --surface: #12100e;
-  --surface-alt: #1a1815;
-  --surface-hover: #24211d;
+  --background: #0b0f17;
+  --surface: #131924;
+  --surface-alt: #1c2433;
+  --surface-hover: #263145;
+  --surface-card: #131924;
 
-  --text-main: #fbf9f5;
-  --text-muted: #a39b90;
-  --border: #2a251e;
-  --border-light: #201c17;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-gold: #e6c567;
+  --border: #263145;
+  --border-light: #1c2433;
+  --border-hover: #e6c567;
 
-  --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.45);
-  --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.75);
-  --shadow-glow: 0 0 30px rgba(212, 175, 55, 0.35);
-  --shadow-primary-glow: 0 0 30px rgba(212, 175, 55, 0.4);
+  --shadow-xs: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 18px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 32px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 0 28px 70px rgba(0, 0, 0, 0.9);
+  --shadow-glow: 0 0 35px rgba(230, 197, 103, 0.3);
+  --shadow-primary-glow: 0 0 30px rgba(230, 197, 103, 0.35);
 }
 
 * {
@@ -110,6 +123,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   letter-spacing: -0.01em;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 img {
@@ -122,21 +136,12 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 0.5rem;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] h4,
-[data-theme="dark"] h5,
-[data-theme="dark"] h6 {
-  color: var(--text-main);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent-dark) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -165,22 +170,22 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid rgba(var(--accent-rgb), 0.4);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
 /* Glassmorphism Panel */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(230, 222, 214, 0.7);
+  border: 1px solid rgba(226, 217, 204, 0.8);
   box-shadow: var(--shadow-sm);
 }
 
 [data-theme="dark"] .glass-panel {
-  background: rgba(20, 19, 23, 0.82);
-  border: 1px solid rgba(230, 195, 92, 0.12);
+  background: rgba(19, 25, 36, 0.85);
+  border: 1px solid rgba(230, 197, 103, 0.15);
   box-shadow: var(--shadow-md);
 }
 
@@ -259,7 +264,7 @@ textarea:focus-visible {
 .skeleton-media {
   height: 190px;
   border-radius: var(--radius-md);
-  background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06) 25%, rgba(var(--accent-rgb),0.14) 50%, rgba(var(--accent-rgb),0.06) 75%);
+  background: linear-gradient(90deg, rgba(var(--primary-rgb),0.06) 25%, rgba(var(--primary-rgb),0.16) 50%, rgba(var(--primary-rgb),0.06) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -267,7 +272,7 @@ textarea:focus-visible {
 .skeleton-line {
   height: 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(var(--accent-rgb),0.06) 25%, rgba(var(--accent-rgb),0.14) 50%, rgba(var(--accent-rgb),0.06) 75%);
+  background: linear-gradient(90deg, rgba(var(--primary-rgb),0.06) 25%, rgba(var(--primary-rgb),0.16) 50%, rgba(var(--primary-rgb),0.06) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

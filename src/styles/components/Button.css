@@ -5,14 +5,14 @@
   gap: 0.55rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   transition: all var(--transition-normal);
   cursor: pointer;
   border: 1px solid transparent;
-  min-height: 46px;
-  padding: 0.75rem 1.35rem;
+  min-height: 44px;
+  padding: 0.7rem 1.35rem;
   white-space: nowrap;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   position: relative;
   overflow: hidden;
 }
@@ -27,7 +27,7 @@
   background: linear-gradient(
     45deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.2) 50%,
     transparent 100%
   );
   transform: rotate(30deg) translateY(-100%);
@@ -57,49 +57,66 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #c5a059 0%, #a07d3b 100%);
-  color: #0d0c0a;
+  background: var(--gold-metallic);
+  color: #0f172a;
   font-weight: 700;
-  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.35);
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #d4af37 0%, #c5a059 100%);
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.45);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+  box-shadow: var(--shadow-glow);
+}
+
+[data-theme="dark"] .btn-primary {
+  color: #0b0f17;
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #d4af37 0%, #b88a28 100%);
-  color: #0d0c0a;
-  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
-  font-weight: 700;
+  background: var(--secondary);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.45);
+  background: var(--secondary-light);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: var(--surface-hover);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .btn-secondary:hover:not(:disabled) {
+  background: var(--border);
+  border-color: var(--primary);
 }
 
 .btn-outline {
   background-color: transparent;
-  color: #c5a059;
-  border-color: #c5a059;
+  color: var(--primary-dark);
+  border-color: var(--primary);
 }
 
 [data-theme="dark"] .btn-outline {
-  color: #d4af37;
-  border-color: #d4af37;
+  color: var(--primary-light);
+  border-color: var(--primary);
 }
 
 .btn-outline:hover:not(:disabled) {
-  background-color: #c5a059;
-  color: #0d0c0a;
-  box-shadow: 0 4px 16px rgba(197, 160, 89, 0.35);
+  background-color: var(--primary);
+  color: #0f172a;
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.35);
 }
 
 [data-theme="dark"] .btn-outline:hover:not(:disabled) {
-  background-color: var(--accent);
-  color: #1a1715;
-  box-shadow: 0 4px 16px rgba(var(--accent-rgb), 0.3);
+  background-color: var(--primary);
+  color: #0b0f17;
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.4);
 }
 
 .btn-ghost {
@@ -108,28 +125,28 @@
 }
 
 .btn-ghost:hover:not(:disabled) {
-  background-color: rgba(var(--accent-rgb), 0.1);
-  color: var(--primary);
+  background-color: rgba(var(--primary-rgb), 0.12);
+  color: var(--primary-dark);
 }
 
 [data-theme="dark"] .btn-ghost:hover:not(:disabled) {
-  color: var(--accent);
+  color: var(--primary-light);
+  background-color: rgba(var(--primary-rgb), 0.18);
 }
 
-.btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; min-height: 38px; }
-.btn-md { padding: 0.75rem 1.35rem; font-size: 0.95rem; min-height: 46px; }
-.btn-lg { padding: 0.95rem 1.75rem; font-size: 1.05rem; min-height: 52px; }
+.btn-sm { padding: 0.45rem 0.95rem; font-size: 0.85rem; min-height: 36px; border-radius: var(--radius-sm); }
+.btn-md { padding: 0.7rem 1.35rem; font-size: 0.95rem; min-height: 44px; border-radius: var(--radius-md); }
+.btn-lg { padding: 0.9rem 1.75rem; font-size: 1.05rem; min-height: 50px; border-radius: var(--radius-md); }
 
 .loader {
   width: 1.1rem;
   height: 1.1rem;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  border-top-color: #ffffff;
+  border-top-color: currentColor;
   animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
-

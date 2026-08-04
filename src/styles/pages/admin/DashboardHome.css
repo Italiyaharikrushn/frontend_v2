@@ -34,17 +34,11 @@
 }
 
 .stat-icon {
-  color: white;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #0b0f17;
+  background: var(--gold-metallic);
   padding: 0.6rem;
   border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
-}
-
-[data-theme="dark"] .stat-icon {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color: #1a1715;
-  box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.35);
 }
 
 .stat-value {
@@ -116,14 +110,13 @@
 }
 
 .badge-success {
-  background-color: rgba(16, 185, 129, 0.12);
+  background-color: var(--success-bg);
   color: var(--success);
   border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .badge-warning {
-  background-color: rgba(245, 158, 11, 0.12);
+  background-color: var(--warning-bg);
   color: var(--warning);
   border: 1px solid rgba(245, 158, 11, 0.25);
 }
-
