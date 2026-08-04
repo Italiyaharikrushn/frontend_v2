@@ -30,12 +30,41 @@ const OrderHistory = () => {
           {orders.map(order => (
             <div key={order.id} className="glass-panel hover-lift" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', paddingBottom: '1rem', marginBottom: '1rem' }}>
-                <div>
-                  <h3 style={{ fontSize: '1.2rem', marginBottom: '0.25rem' }}>
-                    {order.orderItems && order.orderItems.length > 0 
-                      ? order.orderItems.map(item => item.productName || 'Product').join(', ') 
-                      : `Order #${order.orderId || order.id}`}
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem' }}>
+                    {`Order #${order.orderId || order.id}`}
                   </h3>
+                  {order.orderItems && order.orderItems.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1rem' }}>
+                      {order.orderItems.map(item => (
+                        <div key={item.id || Math.random()} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm, 6px)', overflow: 'hidden', backgroundColor: 'var(--surface)', flexShrink: 0 }}>
+                            {(item.productImage || (item.product && item.product.images && item.product.images.length > 0)) ? (
+                              <img 
+                                src={item.productImage || item.product.images[0]} 
+                                alt={item.productName || 'Product'} 
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            ) : (
+                              <Package size={24} style={{ margin: '12px auto', display: 'block', color: 'var(--text-muted)' }} />
+                            )}
+                          </div>
+                          <div>
+                            <p style={{ margin: 0, fontWeight: '500', fontSize: '0.95rem' }}>{item.productName || 'Product'}</p>
+                            <div style={{ display: 'flex', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
+                              <span>Qty: {item.quantity || 1}</span>
+                              {item.phoneModel && <span>Model: {item.phoneModel}</span>}
+                              <span>₹{(item.price || item.totalPrice || 0).toFixed(2)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Placed on: {new Date(order.orderDate).toLocaleDateString()}</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>

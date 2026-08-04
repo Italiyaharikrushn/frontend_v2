@@ -7,7 +7,15 @@ export const orderApi = createApi({
     tagTypes: ['Order'],
     endpoints: (builder) => ({
         getSellerOrders: builder.query({
-            query: () => "/api/orders/seller/all",
+            query: (params) => {
+                if (!params) return "/api/orders/seller/all";
+                const queryParams = new URLSearchParams();
+                if (params.page !== undefined) queryParams.append("page", params.page);
+                if (params.size !== undefined) queryParams.append("size", params.size);
+                if (params.status) queryParams.append("status", params.status);
+                const queryString = queryParams.toString();
+                return queryString ? `/api/orders/seller/all?${queryString}` : "/api/orders/seller/all";
+            },
             transformResponse: (response) => {
                 if (response && response.message) {
                     console.log(response.message);
@@ -135,7 +143,15 @@ export const orderApi = createApi({
         }),
 
         getCustomerOrders: builder.query({
-            query: () => "/api/orders/history",
+            query: (params) => {
+                if (!params) return "/api/orders/history";
+                const queryParams = new URLSearchParams();
+                if (params.page !== undefined) queryParams.append("page", params.page);
+                if (params.size !== undefined) queryParams.append("size", params.size);
+                if (params.status) queryParams.append("status", params.status);
+                const queryString = queryParams.toString();
+                return queryString ? `/api/orders/history?${queryString}` : "/api/orders/history";
+            },
             transformResponse: (response) => {
                 if (response && response.message) {
                     console.log(response.message);
