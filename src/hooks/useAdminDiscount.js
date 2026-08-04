@@ -12,6 +12,7 @@ export const useAdminDiscount = (products) => {
   const [discountPercentage, setDiscountPercentage] = useState('');
   const [validForDays, setValidForDays] = useState('');
   const [categoryInputs, setCategoryInputs] = useState({});
+  const [selectedCategories, setSelectedCategories] = useState(new Set());
 
   const categoryStats = useMemo(() => {
     const stats = {};
@@ -55,29 +56,50 @@ export const useAdminDiscount = (products) => {
   };
 
   const handleApplyDiscount = async () => {
-    if (selectedProductIds.size === 0) {
-      pushToast('Please select at least one product.', 'error');
-      return;
-    }
     const percentage = parseFloat(discountPercentage);
     if (isNaN(percentage) || percentage <= 0 || percentage > 100) {
       pushToast('Please enter a valid discount percentage (1-100).', 'error');
       return;
     }
 
-    try {
-      await applyDiscount({
-        productIds: Array.from(selectedProductIds),
-        discountPercentage: percentage,
-        validForDays: validForDays ? parseInt(validForDays) : null
-      }).unwrap();
-      pushToast('Discount applied successfully!', 'success');
-      setSelectedProductIds(new Set());
-      setDiscountPercentage('');
-      setValidForDays('');
-    } catch (err) {
-      console.error('Failed to apply discount:', err);
-      pushToast('Failed to apply discount.', 'error');
+    if (selectedCategories.size > 0) {
+      try {
+        await Promise.all(
+          Array.from(selectedCategories).map(category => 
+            applyCategoryDiscount({
+              category: category,
+              discountPercentage: percentage,
+              validForDays: validForDays ? parseInt(validForDays) : null
+            }).unwrap()
+          )
+        );
+        pushToast(`Discount applied successfully to selected categories`, 'success');
+        setDiscountPercentage('');
+        setValidForDays('');
+        setSelectedCategories(new Set());
+      } catch (err) {
+        console.error('Failed to apply category discounts:', err);
+        pushToast('Failed to apply category discounts.', 'error');
+      }
+    } else {
+      if (selectedProductIds.size === 0) {
+        pushToast('Please select at least one product or a category.', 'error');
+        return;
+      }
+      try {
+        await applyDiscount({
+          productIds: Array.from(selectedProductIds),
+          discountPercentage: percentage,
+          validForDays: validForDays ? parseInt(validForDays) : null
+        }).unwrap();
+        pushToast('Discount applied successfully!', 'success');
+        setSelectedProductIds(new Set());
+        setDiscountPercentage('');
+        setValidForDays('');
+      } catch (err) {
+        console.error('Failed to apply discount:', err);
+        pushToast('Failed to apply discount.', 'error');
+      }
     }
   };
 
@@ -112,6 +134,8 @@ export const useAdminDiscount = (products) => {
     setDiscountPercentage,
     validForDays,
     setValidForDays,
+    selectedCategories,
+    setSelectedCategories,
     categoryInputs,
     categoryStats,
     isApplying,

@@ -4,7 +4,6 @@ import { useGetProductsQuery } from '../../api/productApi';
 import { useAdminFestival } from '../../hooks/useAdminFestival';
 import { useAdminDiscount } from '../../hooks/useAdminDiscount';
 import FestivalSalePanel from '../../components/admin/FestivalSalePanel';
-import CategoryDiscountPanel from '../../components/admin/CategoryDiscountPanel';
 import BulkDiscountPanel from '../../components/admin/BulkDiscountPanel';
 import '@/styles/pages/admin/AdminStyles.css';
 
@@ -37,14 +36,6 @@ const AdminDiscount = () => {
       />
 
       <div className="admin-discount-row">
-        <CategoryDiscountPanel 
-          categoryStats={discountLogic.categoryStats}
-          categoryInputs={discountLogic.categoryInputs}
-          handleCategoryInputChange={discountLogic.handleCategoryInputChange}
-          handleApplyCategoryDiscount={discountLogic.handleApplyCategoryDiscount}
-          isApplyingCategory={discountLogic.isApplyingCategory}
-        />
-
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <BulkDiscountPanel 
             products={products}
@@ -54,10 +45,13 @@ const AdminDiscount = () => {
             setDiscountPercentage={discountLogic.setDiscountPercentage}
             validForDays={discountLogic.validForDays}
             setValidForDays={discountLogic.setValidForDays}
+            categoryStats={discountLogic.categoryStats}
+            selectedCategories={discountLogic.selectedCategories}
+            setSelectedCategories={discountLogic.setSelectedCategories}
             handleSelectAll={discountLogic.handleSelectAll}
             handleSelectProduct={discountLogic.handleSelectProduct}
             handleApplyDiscount={discountLogic.handleApplyDiscount}
-            isApplying={discountLogic.isApplying}
+            isApplying={discountLogic.isApplying || discountLogic.isApplyingCategory}
           />
           <Pagination 
             currentPage={page} 

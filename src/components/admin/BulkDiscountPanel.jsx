@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tag, CheckSquare, ImageIcon } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Tag, CheckSquare, ImageIcon, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
 
 const BulkDiscountPanel = ({
@@ -10,11 +10,37 @@ const BulkDiscountPanel = ({
   setDiscountPercentage,
   validForDays,
   setValidForDays,
+  categoryStats,
+  selectedCategories,
+  setSelectedCategories,
   handleSelectAll,
   handleSelectProduct,
   handleApplyDiscount,
   isApplying
 }) => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleCategoryToggle = (category) => {
+    const newSelected = new Set(selectedCategories);
+    if (newSelected.has(category)) {
+      newSelected.delete(category);
+    } else {
+      newSelected.add(category);
+    }
+    setSelectedCategories(newSelected);
+  };
+
   return (
     <div className="glass-panel admin-panel-card admin-discount-panel">
       <div className="admin-discount-panel-header">
@@ -22,6 +48,36 @@ const BulkDiscountPanel = ({
           <CheckSquare size={20} /> Bulk Product Discount
         </h2>
         <div className="admin-discount-actions">
+          <div className="admin-category-dropdown" ref={dropdownRef} style={{ position: 'relative', width: '220px' }}>
+            <div 
+              className="admin-discount-input" 
+              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: 'var(--surface)', padding: '0.65rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {selectedCategories.size === 0 ? 'Specific Products' : `${selectedCategories.size} Categories Selected`}
+              </span>
+              <ChevronDown size={16} />
+            </div>
+            {isDropdownOpen && (
+              <div style={{ position: 'absolute', top: '100%', left: 0, width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', marginTop: '0.25rem', zIndex: 999, maxHeight: '200px', overflowY: 'auto', boxShadow: 'var(--shadow-md)' }}>
+                {categoryStats && categoryStats.map((stat) => (
+                  <label key={stat.category} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', cursor: 'pointer', borderBottom: '1px solid var(--border)', margin: 0 }}>
+                    <input 
+                      type="checkbox" 
+                      checked={selectedCategories.has(stat.category)}
+                      onChange={() => handleCategoryToggle(stat.category)}
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <span style={{ fontSize: '0.9rem' }}>{stat.category}</span>
+                  </label>
+                ))}
+                {categoryStats.length === 0 && (
+                  <div style={{ padding: '0.5rem 0.75rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>No categories found</div>
+                )}
+              </div>
+            )}
+          </div>
           <input 
             type="number" 
             placeholder="% Discount" 

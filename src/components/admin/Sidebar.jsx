@@ -7,7 +7,7 @@ import '@/styles/components/Sidebar.css';
 
 import CraftyLogo from '../common/CraftyLogo';
 
-const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
+const Sidebar = ({ isMobileOpen = false, onClose = () => { } }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -41,20 +41,20 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
           <Package size={20} />
           <span>Products</span>
         </NavLink>
-        <NavLink to="/admin/promotions" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
-          <Tag size={20} />
-          <span>Promotions</span>
-        </NavLink>
         <NavLink to="/admin/orders" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
           <ShoppingBag size={20} />
           <span>Orders</span>
+        </NavLink>
+        <NavLink to="/admin/promotions" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
+          <Tag size={20} />
+          <span>Promotions</span>
         </NavLink>
         <NavLink to="/admin/customers" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
           <Users size={20} />
           <span>Customers</span>
         </NavLink>
       </nav>
-      
+
       <div className="sidebar-footer">
 
         <button className="sidebar-link text-error" onClick={() => { handleLogout(); handleNavClick(); }}>
