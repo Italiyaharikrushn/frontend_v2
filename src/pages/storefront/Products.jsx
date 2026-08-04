@@ -132,7 +132,7 @@ const Products = () => {
           );
         }) : (
           <div className="products-empty" style={{ gridColumn: '1 / -1' }}>
-            No products found for this selection. Please try another search or browse the full catalog.
+            No products found for this selection. Please try another search or browse the full collection.
           </div>
         )}
       </div>

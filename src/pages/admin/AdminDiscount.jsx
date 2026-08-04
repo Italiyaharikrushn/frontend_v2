@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Pagination from '../../components/ui/Pagination';
 import { useGetProductsQuery } from '../../api/productApi';
-import { useAdminSettings } from '../../hooks/useAdminSettings';
+import { useAdminFestival } from '../../hooks/useAdminFestival';
 import { useAdminDiscount } from '../../hooks/useAdminDiscount';
 import FestivalSalePanel from '../../components/admin/FestivalSalePanel';
 import CategoryDiscountPanel from '../../components/admin/CategoryDiscountPanel';
@@ -14,7 +14,7 @@ const AdminDiscount = () => {
   const { data = {}, isLoading } = useGetProductsQuery({ page, size });
   const products = data.content || [];
   const totalPages = data.totalPages || 0;
-  const { formData, setFormData, handleSave, isUpdating } = useAdminSettings();
+  const { formData, setFormData, handleSave, isUpdating } = useAdminFestival();
   
   const discountLogic = useAdminDiscount(products);
 

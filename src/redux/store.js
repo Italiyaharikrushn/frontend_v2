@@ -7,6 +7,7 @@ import { productApi } from '../api/productApi';
 import { profileApi } from '../api/profileApi';
 import { contactApi } from '../api/contactApi';
 import { settingsApi } from '../api/settingsApi';
+import { festivalApi } from '../api/festivalApi';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
 
@@ -20,6 +21,7 @@ const appReducer = combineReducers({
     [profileApi.reducerPath]: profileApi.reducer,
     [contactApi.reducerPath]: contactApi.reducer,
     [settingsApi.reducerPath]: settingsApi.reducer,
+    [festivalApi.reducerPath]: festivalApi.reducer,
 });
 
 const rootReducer = (state, action) => {
@@ -40,7 +42,8 @@ export const store = configureStore({
       productApi.middleware,
       profileApi.middleware,
       contactApi.middleware,
-      settingsApi.middleware
+      settingsApi.middleware,
+      festivalApi.middleware
     ),
 });
 

@@ -79,10 +79,6 @@ export const productApi = createApi({
             providesTags: ['Product'],
         }),
 
-        getCatalogs: builder.query({
-            query: () => "/api/catalog/all",
-            providesTags: ['Catalog'],
-        }),
 
         getProductById: builder.query({
             query: (id) => `/product/${id}`,
@@ -127,7 +123,6 @@ export const productApi = createApi({
 export const {
     useGetProductsQuery,
     useGetCategoriesQuery,
-    useGetCatalogsQuery,
     useGetProductByIdQuery,
     useCreateProductMutation,
     useUpdateProductMutation,

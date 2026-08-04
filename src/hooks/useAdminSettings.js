@@ -15,12 +15,7 @@ export const useAdminSettings = () => {
     address: '',
     city: '',
     state: '',
-    pincode: '',
-    festivalName: '',
-    festivalStartDate: '',
-    festivalEndDate: '',
-    isFestivalActive: false,
-    festivalDiscountPercentage: ''
+    pincode: ''
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -40,12 +35,7 @@ export const useAdminSettings = () => {
         address: settingsData.address || '',
         city: settingsData.city || '',
         state: settingsData.state || '',
-        pincode: settingsData.pincode || '',
-        festivalName: settingsData.festivalName || '',
-        festivalStartDate: settingsData.festivalStartDate || '',
-        festivalEndDate: settingsData.festivalEndDate || '',
-        isFestivalActive: settingsData.isFestivalActive || false,
-        festivalDiscountPercentage: settingsData.festivalDiscountPercentage || ''
+        pincode: settingsData.pincode || ''
       });
     }
   }, [settingsData]);
