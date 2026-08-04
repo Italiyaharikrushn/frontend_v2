@@ -8,11 +8,9 @@ const AdminCoupons = () => {
     if (isLoading) return <div className="admin-page"><div className="loading-state">Loading coupons...</div></div>;
 
     return (
-        <div className="admin-page admin-full-height-page fade-in">
-            <div className="admin-header">
-                <h1 className="admin-title" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <span className="admin-section-icon"><Ticket size={20} /></span> Manage Coupons
-                </h1>
+        <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
+            <div className="admin-header" style={{ marginBottom: 0, paddingBottom: 0, borderBottom: 'none' }}>
+                <div style={{ flex: 1 }}></div>
                 {!isEditing && (
                     <div className="admin-actions">
                         <Button variant="primary" onClick={() => setIsEditing(true)} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>

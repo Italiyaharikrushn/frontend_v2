@@ -41,13 +41,9 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => {} }) => {
           <Package size={20} />
           <span>Products</span>
         </NavLink>
-        <NavLink to="/admin/discount" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
+        <NavLink to="/admin/promotions" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
           <Tag size={20} />
-          <span>Discount</span>
-        </NavLink>
-        <NavLink to="/admin/coupons" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
-          <Ticket size={20} />
-          <span>Coupons</span>
+          <span>Promotions</span>
         </NavLink>
         <NavLink to="/admin/orders" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
           <ShoppingBag size={20} />

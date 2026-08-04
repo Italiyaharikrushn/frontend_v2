@@ -27,10 +27,7 @@ const AdminDiscount = () => {
   }
 
   return (
-    <div className="admin-page fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div className="admin-header" style={{ marginBottom: '0' }}>
-        <h1 className="admin-title">Discounts & Offers</h1>
-      </div>
+    <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
       <FestivalSalePanel 
         formData={formData} 

@@ -8,10 +8,9 @@ import ProtectedRoute from '@/components/common/ProtectedRoute';
 // Admin Pages
 import DashboardHome from '../pages/admin/DashboardHome';
 import AdminProducts from '../pages/admin/AdminProducts';
-import AdminDiscount from '../pages/admin/AdminDiscount';
+import AdminPromotions from '../pages/admin/AdminPromotions';
 import AdminOrders from '../pages/admin/AdminOrders';
 import AdminCustomers from '../pages/admin/AdminCustomers';
-import AdminCoupons from '../pages/admin/AdminCoupons';
 import AdminReports from '../pages/admin/AdminReports';
 import AdminSettings from '../pages/admin/AdminSettings';
 import AdminChangePassword from '../pages/admin/AdminChangePassword';
@@ -24,10 +23,9 @@ const AdminRoutes = () => {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<DashboardHome />} />
           <Route path="products" element={<AdminProducts />} />
-          <Route path="discount" element={<AdminDiscount />} />
+          <Route path="promotions" element={<AdminPromotions />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="customers" element={<AdminCustomers />} />
-          <Route path="coupons" element={<AdminCoupons />} />
           <Route path="reports" element={<AdminReports />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="change-password" element={<AdminChangePassword />} />
