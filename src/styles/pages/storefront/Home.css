@@ -523,6 +523,9 @@
   .trust-badge-item {
     flex: 1 1 40%;
   }
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
@@ -538,6 +541,10 @@
   }
   .feature-media {
     height: 200px;
+  }
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 }
 
