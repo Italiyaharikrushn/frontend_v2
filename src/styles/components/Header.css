@@ -187,6 +187,24 @@
   color: #d4af37;
 }
 
+.action-btn {
+  background: transparent;
+  border: none;
+  color: #fbf9f5;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem;
+  transition: color 0.2s, background 0.2s;
+  border-radius: 4px;
+}
+
+.action-btn:hover {
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.15);
+}
+
 .cart-icon-wrapper {
   position: relative;
   display: inline-flex;
@@ -304,12 +322,19 @@
   padding: 0.75rem 1rem;
   background: #141210;
   border-top: 1px solid rgba(212, 175, 55, 0.2);
+  width: 100%;
 }
 
 .mobile-search-form {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+}
+
+.mobile-search-form .crafty-search-btn {
+  height: 40px;
+  border-radius: var(--radius-sm, 6px);
 }
 
 .mobile-search-input {

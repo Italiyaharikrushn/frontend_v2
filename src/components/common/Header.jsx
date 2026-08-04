@@ -132,9 +132,9 @@ const Header = () => {
               <button type="submit" className="crafty-search-btn">
                 <Search size={18} />
               </button>
-              <button type="button" className="close-search-btn" onClick={() => setIsSearchOpen(false)}>
+              {/* <button type="button" className="close-search-btn" onClick={() => setIsSearchOpen(false)}>
                 <X size={20} />
-              </button>
+              </button> */}
             </form>
           </div>
         )}
