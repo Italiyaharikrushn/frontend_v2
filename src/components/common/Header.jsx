@@ -25,6 +25,10 @@ const Header = () => {
     handleClearSearch,
     handleLogout,
     isActive,
+    searchSuggestions,
+    showSuggestions,
+    setShowSuggestions,
+    setSearchQuery,
   } = useHeader();
 
   const getAvatarInitial = () => {
@@ -53,7 +57,7 @@ const Header = () => {
           </div>
 
           {/* Search Bar Container (Clean input box without Category Dropdown) */}
-          <div className="header-center desktop-only">
+          <div className="header-center desktop-only" style={{ position: 'relative' }}>
             <form className="crafty-search-form" onSubmit={handleSearchSubmit}>
               <input
                 ref={searchInputRef}
@@ -62,6 +66,8 @@ const Header = () => {
                 placeholder="Search for products, brands and more..."
                 value={searchQuery}
                 onChange={handleSearchChange}
+                onFocus={() => setShowSuggestions(true)}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
               />
 
               {searchQuery && (
@@ -79,6 +85,25 @@ const Header = () => {
                 <Search size={18} />
               </button>
             </form>
+
+            {/* Desktop Suggestions Dropdown */}
+            {showSuggestions && searchSuggestions && searchSuggestions.length > 0 && (
+              <div className="search-suggestions-dropdown">
+                {searchSuggestions.map(product => (
+                  <Link 
+                    to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`} 
+                    key={product.id} 
+                    className="suggestion-item"
+                    onClick={() => {
+                      setShowSuggestions(false);
+                    }}
+                  >
+                    <span className="suggestion-title">{product.title}</span>
+                    <span className="suggestion-category">{product.category}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Right Action Icons: Account & Cart */}
@@ -115,27 +140,48 @@ const Header = () => {
         {/* Mobile Search Bar Expansion */}
         {isSearchOpen && (
           <div className="mobile-search-bar mobile-only">
-            <form onSubmit={handleSearchSubmit} className="mobile-search-form">
-              <input
-                type="text"
-                className="mobile-search-input"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                autoFocus
-              />
-              {searchQuery && (
-                <button type="button" className="close-search-btn" onClick={handleClearSearch} aria-label="Clear Search">
-                  <X size={18} />
+            <div style={{ position: 'relative', width: '100%' }}>
+              <form onSubmit={handleSearchSubmit} className="mobile-search-form">
+                <input
+                  type="text"
+                  className="mobile-search-input"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                  autoFocus
+                />
+                {searchQuery && (
+                  <button type="button" className="close-search-btn" onClick={handleClearSearch} aria-label="Clear Search">
+                    <X size={18} />
+                  </button>
+                )}
+                <button type="submit" className="crafty-search-btn">
+                  <Search size={18} />
                 </button>
+              </form>
+              
+              {/* Mobile Suggestions Dropdown */}
+              {showSuggestions && searchSuggestions && searchSuggestions.length > 0 && (
+                <div className="search-suggestions-dropdown mobile-suggestions">
+                  {searchSuggestions.map(product => (
+                    <Link 
+                      to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`} 
+                      key={product.id} 
+                      className="suggestion-item"
+                      onClick={() => {
+                        setShowSuggestions(false);
+                        setIsSearchOpen(false);
+                      }}
+                    >
+                      <span className="suggestion-title">{product.title}</span>
+                      <span className="suggestion-category">{product.category}</span>
+                    </Link>
+                  ))}
+                </div>
               )}
-              <button type="submit" className="crafty-search-btn">
-                <Search size={18} />
-              </button>
-              {/* <button type="button" className="close-search-btn" onClick={() => setIsSearchOpen(false)}>
-                <X size={20} />
-              </button> */}
-            </form>
+            </div>
           </div>
         )}
       </header>
