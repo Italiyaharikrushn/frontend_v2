@@ -320,7 +320,7 @@
 
 /* 4. FEATURED PRODUCTS STYLING */
 .featured-section {
-  padding: 4rem 1.5rem 5rem;
+  padding:1.5rem;
   background-color: #fdfbf7;
 }
 
@@ -328,7 +328,7 @@
   font-family: var(--font-serif, 'Playfair Display', serif);
   font-size: clamp(1.8rem, 3.2vw, 2.4rem);
   color: #1c1917;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
@@ -341,8 +341,8 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  /* mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%); */
+  /* -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%); */
   padding: 1rem 0;
 }
 
