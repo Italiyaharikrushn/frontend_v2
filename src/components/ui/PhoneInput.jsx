@@ -40,10 +40,16 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
   }, []);
 
   const handlePhoneChange = (e) => {
-    const newNumber = e.target.value;
+    let newNumber = e.target.value.replace(/\D/g, '');
+    const maxLength = Array.isArray(country.length) ? Math.max(...country.length) : country.length;
+    
+    if (newNumber.length > maxLength) {
+      newNumber = newNumber.slice(0, maxLength);
+    }
+    
     setPhoneNumber(newNumber);
     if (onChange) {
-      onChange(`${country.code}${newNumber.replace(/\s+/g, '')}`);
+      onChange(`${country.code}${newNumber}`);
     }
   };
 
@@ -111,14 +117,12 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
           onChange={handlePhoneChange}
           placeholder="Enter your contact number"
           required={required}
+          maxLength={Array.isArray(country.length) ? Math.max(...country.length) : country.length}
           className="phone-number-field"
         />
         {/* Hidden input for native form submission */}
         <input type="hidden" id={id} name={name} value={`${country.code}${phoneNumber.replace(/\s+/g, '')}`} />
       </div>
-      {/[^\d]/.test(phoneNumber) && (
-        <span className="phone-error">Please enter digits only.</span>
-      )}
     </div>
   );
 }
