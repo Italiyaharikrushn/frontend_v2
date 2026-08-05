@@ -1,6 +1,18 @@
+.phone-model-dropdowns-wrapper {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
 .phone-model-dropdown-container {
   position: relative;
-  width: 100%;
+  flex: 1;
+}
+
+.phone-model-dropdown-container.disabled .dropdown-trigger {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--surface-alt);
 }
 
 .dropdown-trigger {

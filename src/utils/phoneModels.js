@@ -9,23 +9,13 @@ export const PHONE_SERIES = [
     ]
   },
   {
-    name: "Samsung Galaxy S Series",
+    name: "Samsung Galaxy",
     models: [
       "Galaxy S24 Ultra", "Galaxy S24+", "Galaxy S24",
       "Galaxy S23 Ultra", "Galaxy S23+", "Galaxy S23", "Galaxy S23 FE",
-      "Galaxy S22 Ultra", "Galaxy S22+", "Galaxy S22", "Galaxy S21 FE 5G"
-    ]
-  },
-  {
-    name: "Samsung Galaxy A & M Series",
-    models: [
+      "Galaxy S22 Ultra", "Galaxy S22+", "Galaxy S22", "Galaxy S21 FE 5G",
       "Galaxy A55 5G", "Galaxy A35 5G", "Galaxy A54 5G", "Galaxy A34 5G", "Galaxy A15 5G",
-      "Galaxy M55 5G", "Galaxy M34 5G", "Galaxy M14 5G"
-    ]
-  },
-  {
-    name: "Samsung Galaxy Z Series",
-    models: [
+      "Galaxy M55 5G", "Galaxy M34 5G", "Galaxy M14 5G",
       "Galaxy Z Fold5", "Galaxy Z Flip5", "Galaxy Z Fold4", "Galaxy Z Flip4"
     ]
   },
