@@ -6,6 +6,7 @@ import Sidebar from '../admin/Sidebar';
 import { Bell, Menu, X, Settings, Lock } from 'lucide-react';
 import '@/styles/components/DashboardLayout.css';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
+import { getMediaUrl } from '../../utils/apiHelpers';
 
 const DashboardLayout = () => {
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
@@ -54,8 +55,12 @@ const DashboardLayout = () => {
               <span className="notification-badge" />
             </button>
             <div className="user-profile" ref={profileRef} style={{ position: 'relative' }}>
-              <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #c5a059 0%, #a07d3b 100%)', color: '#0d0c0a', fontWeight: 'bold' }}>
-                {avatarInitial}
+              <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #c5a059 0%, #a07d3b 100%)', color: '#0d0c0a', fontWeight: 'bold', overflow: 'hidden' }}>
+                {storeSettings?.profilePhoto ? (
+                  <img src={getMediaUrl(storeSettings.profilePhoto)} alt="Store" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  avatarInitial
+                )}
               </div>
 
               {isProfileOpen && (

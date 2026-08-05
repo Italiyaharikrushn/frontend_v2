@@ -25,6 +25,18 @@ export const settingsApi = createApi({
             }),
             invalidatesTags: ['Settings'],
         }),
+
+        uploadImage: builder.mutation({
+            query: (file) => {
+                const formData = new FormData();
+                formData.append("file", file);
+                return {
+                    url: "/api/utils/upload-image",
+                    method: "POST",
+                    body: formData,
+                };
+            }
+        }),
     }),
 });
 
@@ -32,4 +44,5 @@ export const {
     useGetStoreSettingsQuery,
     useGetPublicStoreSettingsQuery,
     useUpdateStoreSettingsMutation,
+    useUploadImageMutation,
 } = settingsApi;

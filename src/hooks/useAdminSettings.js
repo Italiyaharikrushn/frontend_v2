@@ -14,7 +14,8 @@ export const useAdminSettings = () => {
     address: '',
     city: '',
     state: '',
-    pincode: ''
+    pincode: '',
+    profilePhoto: ''
   });
 
 
@@ -27,7 +28,8 @@ export const useAdminSettings = () => {
         address: settingsData.address || '',
         city: settingsData.city || '',
         state: settingsData.state || '',
-        pincode: settingsData.pincode || ''
+        pincode: settingsData.pincode || '',
+        profilePhoto: settingsData.profilePhoto || ''
       });
     }
   }, [settingsData]);

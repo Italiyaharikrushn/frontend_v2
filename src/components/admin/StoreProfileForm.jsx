@@ -1,13 +1,49 @@
-import React from 'react';
-import { Store, MapPin } from 'lucide-react';
+import React, { useRef } from 'react';
+import { Store, MapPin, Camera, Loader } from 'lucide-react';
 import PhoneInput from '../ui/PhoneInput';
+import { useUploadImageMutation } from '../../api/settingsApi';
+import { getMediaUrl } from '../../utils/apiHelpers';
 
 const StoreProfileForm = ({ formData, setFormData }) => {
+  const [uploadImage, { isLoading: isUploading }] = useUploadImageMutation();
+  const fileInputRef = useRef(null);
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const res = await uploadImage(file).unwrap();
+      if (res.success) {
+        setFormData({ ...formData, profilePhoto: res.url });
+      }
+    } catch (err) {
+      console.error("Failed to upload image", err);
+    }
+  };
+
   return (
     <div className="glass-panel admin-panel-card">
       <h2 style={{ marginBottom: '1rem', color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <Store size={20} /> Store Profile
       </h2>
+
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+        <div style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '50%', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '2px solid var(--primary-main)' }}>
+          {formData.profilePhoto ? (
+            <img src={getMediaUrl(formData.profilePhoto)} alt="Store Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <Store size={40} color="var(--text-muted)" />
+          )}
+          
+          <div 
+            style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.5)', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+            onClick={() => fileInputRef.current?.click()}
+          >
+            {isUploading ? <Loader size={16} color="#fff" className="spin" /> : <Camera size={16} color="#fff" />}
+          </div>
+          <input type="file" ref={fileInputRef} onChange={handleImageChange} accept="image/*" style={{ display: 'none' }} />
+        </div>
+      </div>
 
       <div className="admin-form-grid">
         <div className="admin-form-field full">
