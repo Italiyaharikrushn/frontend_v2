@@ -122,7 +122,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
         } else {
           lastDecodedVideoUrl.current = currentUrl;
           if (!currentUrl.includes('.mp4') && !currentUrl.includes('.webm') && !currentUrl.includes('.ogg')) {
-             setVideoError('This URL does not point to a direct video file. The video may not play. Please use a direct link ending in .mp4 or a supported Google Photos link.');
+             setVideoError('We could not extract a direct video stream from this link. The video may not play unless it is a direct link or a public sharing link.');
           }
         }
       } catch (e) {
