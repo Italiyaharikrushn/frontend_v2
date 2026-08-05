@@ -2,8 +2,10 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown, Shield, Clock, Activity, Droplets, X } from 'lucide-react';
 import ProductGallery from '../../components/storefront/ProductGallery';
+import PhoneModelDropdown from '../../components/storefront/PhoneModelDropdown';
 import { useProductDetails } from '../../hooks/useProductDetails';
 import '@/styles/pages/storefront/ProductDetails.css';
+
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;
@@ -56,14 +58,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
           {isPhoneCover && (
             <div className="phone-model-input" style={{ marginBottom: '1.5rem' }}>
               <label htmlFor="phoneModel" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', color: 'var(--text-main)' }}>Phone Model <span style={{ color: 'red' }}>*</span></label>
-              <input
-                type="text"
-                id="phoneModel"
-                value={phoneModel}
-                onChange={(e) => setPhoneModel(e.target.value)}
-                placeholder="e.g. iPhone 17 Pro Max, v25 pro"
-                style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)' }}
-              />
+              <PhoneModelDropdown value={phoneModel} onChange={setPhoneModel} />
             </div>
           )}
 
