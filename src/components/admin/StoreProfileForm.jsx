@@ -24,7 +24,7 @@ const StoreProfileForm = ({ formData, setFormData }) => {
             id="contactNo"
             name="contactNo"
             value={formData.contactNo} 
-            placeholder="9876543210"
+            placeholder='83647 21474'
             onChange={(val) => setFormData({ ...formData, contactNo: val })} 
             required 
           />
