@@ -3,7 +3,7 @@ import { Search, ChevronDown } from 'lucide-react';
 import { COUNTRIES } from '../../utils/countries';
 import '@/styles/components/PhoneInput.css';
 
-export default function PhoneInput({ value, onChange, required, id, name, style }) {
+export default function PhoneInput({ value, onChange, required, id, name, style, placeholder }) {
   // Parse initial value if it contains a country code, prioritize longer codes first to avoid partial matches
   const sortedCountries = [...COUNTRIES].sort((a, b) => b.code.length - a.code.length);
   const initialCode = value ? (sortedCountries.find(c => value.startsWith(c.code))?.code || '+91') : '+91';
@@ -115,7 +115,7 @@ export default function PhoneInput({ value, onChange, required, id, name, style 
           type="tel" 
           value={phoneNumber}
           onChange={handlePhoneChange}
-          placeholder="Enter your contact number"
+          placeholder={placeholder || "Enter your contact number"}
           required={required}
           maxLength={Array.isArray(country.length) ? Math.max(...country.length) : country.length}
           className="phone-number-field"

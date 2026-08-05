@@ -12,11 +12,11 @@ const StoreProfileForm = ({ formData, setFormData }) => {
       <div className="admin-form-grid">
         <div className="admin-form-field full">
           <label>Store Name</label>
-          <input type="text" value={formData.storeName} onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} />
+          <input type="text" placeholder="crafty_kiya" value={formData.storeName} onChange={(e) => setFormData({ ...formData, storeName: e.target.value })} />
         </div>
         <div className="admin-form-field">
           <label>Support Email</label>
-          <input type="email" value={formData.supportEmail} onChange={(e) => setFormData({ ...formData, supportEmail: e.target.value })} />
+          <input type="email" placeholder="support@kiyaaccessories.com" value={formData.supportEmail} onChange={(e) => setFormData({ ...formData, supportEmail: e.target.value })} />
         </div>
         <div className="admin-form-field">
           <label>Contact Number</label>
@@ -24,6 +24,7 @@ const StoreProfileForm = ({ formData, setFormData }) => {
             id="contactNo"
             name="contactNo"
             value={formData.contactNo} 
+            placeholder="9876543210"
             onChange={(val) => setFormData({ ...formData, contactNo: val })} 
             required 
           />
@@ -36,19 +37,19 @@ const StoreProfileForm = ({ formData, setFormData }) => {
       <div className="admin-form-grid">
         <div className="admin-form-field full">
           <label>Street Address</label>
-          <textarea rows="3" value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+          <textarea rows="3" value={formData.address} placeholder='123 Main St, Anytown, USA' onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
         </div>
         <div className="admin-form-field">
           <label>City</label>
-          <input type="text" value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
+          <input type="text" value={formData.city} placeholder='Anytown' onChange={(e) => setFormData({ ...formData, city: e.target.value })} />
         </div>
         <div className="admin-form-field">
           <label>State</label>
-          <input type="text" value={formData.state} onChange={(e) => setFormData({ ...formData, state: e.target.value })} />
+          <input type="text" value={formData.state} placeholder='USA' onChange={(e) => setFormData({ ...formData, state: e.target.value })} />
         </div>
         <div className="admin-form-field">
           <label>PIN Code</label>
-          <input type="text" value={formData.pincode} onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} />
+          <input type="text" value={formData.pincode} placeholder='123456' onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} />
         </div>
       </div>
     </div>
