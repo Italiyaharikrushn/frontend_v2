@@ -209,8 +209,19 @@
 }
 
 @media (min-width: 768px) {
-  .dashboard-header { padding: 0 1.75rem; }
-  .mobile-sidebar-toggle { display: none; }
-  .dashboard-sidebar-overlay { display: none; }
-  .desktop-only-profile-info { display: flex !important; }
+  .dashboard-header {
+    padding: 0 1.75rem;
+  }
+
+  .mobile-sidebar-toggle {
+    display: none;
+  }
+
+  .dashboard-sidebar-overlay {
+    display: none;
+  }
+
+  .desktop-only-profile-info {
+    display: flex !important;
+  }
 }

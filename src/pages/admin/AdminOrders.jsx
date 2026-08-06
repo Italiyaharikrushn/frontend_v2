@@ -41,6 +41,7 @@ const AdminOrders = () => {
         />
 
         <div className="admin-search-toolbar">
+
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <Filter size={18} /> Filter :
           </div>
