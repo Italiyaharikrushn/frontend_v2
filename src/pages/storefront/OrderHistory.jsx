@@ -5,7 +5,11 @@ import { useOrderHistory } from '../../hooks/useOrderHistory';
 import Pagination from '../../components/ui/Pagination';
 
 const OrderHistory = () => {
-  const { orders, isLoading, page, setPage, totalPages, handleReturn, handleCancel } = useOrderHistory();
+  const { 
+    orders, isLoading, page, setPage, totalPages, 
+    handleCancel, openReturnModal, closeReturnModal, submitReturn,
+    isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails 
+  } = useOrderHistory();
 
   return (
     <div className="fade-in" style={{ padding: '2rem 5%' }}>
@@ -88,8 +92,8 @@ const OrderHistory = () => {
                   )}
                   
                   {order.status === 'DELIVERED' && (
-                    <Button variant="secondary" onClick={() => handleReturn(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                      <RotateCcw size={16} /> Return Order
+                    <Button variant="secondary" onClick={() => openReturnModal(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                      <RotateCcw size={16} /> Request Return
                     </Button>
                   )}
                   
@@ -113,6 +117,31 @@ const OrderHistory = () => {
           totalPages={totalPages} 
           onPageChange={setPage} 
         />
+      )}
+
+      {isReturnModalOpen && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+          <div className="glass-panel" style={{ padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '400px' }}>
+            <h3 style={{ marginBottom: '1rem' }}>Request Return</h3>
+            <label style={{ display: 'block', marginBottom: '1rem' }}>
+              Reason:
+              <select className="input-field" value={returnReason} onChange={(e) => setReturnReason(e.target.value)} style={{ width: '100%', marginTop: '0.5rem' }}>
+                <option value="Changed my mind">Changed my mind</option>
+                <option value="Damaged product">Damaged product</option>
+                <option value="Wrong item sent">Wrong item sent</option>
+                <option value="Not as described">Not as described</option>
+              </select>
+            </label>
+            <label style={{ display: 'block', marginBottom: '1.5rem' }}>
+              Additional Details (Optional):
+              <textarea className="input-field" value={returnDetails} onChange={(e) => setReturnDetails(e.target.value)} rows="3" style={{ width: '100%', marginTop: '0.5rem' }} />
+            </label>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
+              <Button variant="outline" onClick={closeReturnModal}>Cancel</Button>
+              <Button variant="primary" onClick={submitReturn}>Submit Request</Button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

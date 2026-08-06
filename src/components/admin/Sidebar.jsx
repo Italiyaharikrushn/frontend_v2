@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
-import { LayoutDashboard, Package, ShoppingBag, Users, LogOut, X, Tag } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Users, LogOut, X, Tag, RotateCcw, FileText } from 'lucide-react';
 import '@/styles/components/Sidebar.css';
 
 import CraftyLogo from '../common/CraftyLogo';
@@ -52,6 +52,14 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => { } }) => {
         <NavLink to="/admin/customers" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
           <Users size={20} />
           <span>Customers</span>
+        </NavLink>
+        <NavLink to="/admin/returns" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
+          <RotateCcw size={20} />
+          <span>Returns</span>
+        </NavLink>
+        <NavLink to="/admin/policies" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`} onClick={handleNavClick}>
+          <FileText size={20} />
+          <span>Store Policies</span>
         </NavLink>
       </nav>
 

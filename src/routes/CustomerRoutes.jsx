@@ -13,6 +13,7 @@ import Cart from '../pages/storefront/Cart';
 import Contact from '../pages/storefront/Contact';
 import Checkout from '../pages/storefront/Checkout';
 import OrderHistory from '../pages/storefront/OrderHistory';
+import ReturnPolicyPage from '../pages/storefront/ReturnPolicyPage';
 
 const CustomerRoutes = () => {
   return (
@@ -23,6 +24,7 @@ const CustomerRoutes = () => {
         <Route path="product/:id" element={<ProductDetails />} />
         <Route path="cart" element={<Cart />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="return-policy" element={<ReturnPolicyPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="checkout" element={<Checkout />} />
           <Route path="orders" element={<OrderHistory />} />

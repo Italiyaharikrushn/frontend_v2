@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useGetCustomerOrdersQuery, useReturnCustomerOrderMutation, useCancelCustomerOrderMutation } from '../api/orderApi';
+import { useGetCustomerOrdersQuery, useCancelCustomerOrderMutation } from '../api/orderApi';
+import { useCreateReturnRequestMutation } from '../api/returnApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useAlert } from '../components/ui/AlertProvider';
 
@@ -13,18 +14,41 @@ export const useOrderHistory = () => {
     const orders = data.content || [];
     const totalPages = data.totalPages || 0;
 
-    const [returnOrder] = useReturnCustomerOrderMutation();
-    const [cancelOrder] = useCancelCustomerOrderMutation();
+    const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [returnReason, setReturnReason] = useState('Changed my mind');
+    const [returnDetails, setReturnDetails] = useState('');
 
-    const handleReturn = async (orderId) => {
-        if (await confirm('Are you sure you want to return this order?')) {
-            try {
-                await returnOrder(orderId).unwrap();
-                pushToast('Return request submitted successfully', 'success');
-            } catch (err) {
-                console.error('Failed to submit return request:', err);
-                pushToast('Error submitting return request. Please try again.', 'error');
-            }
+    const [cancelOrder] = useCancelCustomerOrderMutation();
+    const [createReturnRequest] = useCreateReturnRequestMutation();
+
+    const openReturnModal = (orderId) => {
+        setSelectedOrderId(orderId);
+        setIsReturnModalOpen(true);
+    };
+
+    const closeReturnModal = () => {
+        setSelectedOrderId(null);
+        setIsReturnModalOpen(false);
+        setReturnReason('Changed my mind');
+        setReturnDetails('');
+    };
+
+    const submitReturn = async () => {
+        if (!selectedOrderId) return;
+        try {
+            await createReturnRequest({
+                orderId: selectedOrderId,
+                reason: returnReason,
+                details: returnDetails
+            }).unwrap();
+            pushToast('Return request submitted successfully', 'success');
+            closeReturnModal();
+            // Ideally we'd refetch orders here, or reload
+            window.location.reload();
+        } catch (err) {
+            console.error('Failed to submit return request:', err);
+            pushToast('Error submitting return request. Please try again.', 'error');
         }
     };
 
@@ -40,5 +64,9 @@ export const useOrderHistory = () => {
         }
     };
 
-    return { orders, isLoading, page, setPage, totalPages, handleReturn, handleCancel };
+    return { 
+        orders, isLoading, page, setPage, totalPages, 
+        handleCancel, openReturnModal, closeReturnModal, submitReturn,
+        isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails 
+    };
 };
