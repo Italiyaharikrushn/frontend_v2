@@ -39,6 +39,12 @@ export const useRegister = () => {
     setError('');
     setSuccess('');
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      setError('Password must contain at least 8 characters, including uppercase, lowercase, number, and special character.');
+      return;
+    }
+
     try {
       const response = await register(formData).unwrap();
       if (response.success) {

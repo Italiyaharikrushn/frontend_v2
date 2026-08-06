@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, User, Lock, Mail, Phone, Eye, EyeOff } from 'lucide-react';
+import { UserPlus, User, Lock, Mail, Phone, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import PhoneInput from '../../components/ui/PhoneInput';
 import { useRegister } from '../../hooks/useRegister';
@@ -8,6 +8,17 @@ import '@/styles/pages/auth/Login.css';
 
 const Register = () => {
   const { formData, setFormData, showPassword, setShowPassword, error, success, isLoading, storeSettings, handleChange, handleRegister } = useRegister();
+
+  const passwordRulesCol1 = [
+    { label: 'At least 8 characters', met: formData.password.length >= 8 },
+    { label: 'Uppercase letter', met: /[A-Z]/.test(formData.password) },
+    { label: 'Lowercase letter', met: /[a-z]/.test(formData.password) },
+  ];
+
+  const passwordRulesCol2 = [
+    { label: 'Number', met: /\d/.test(formData.password) },
+    { label: 'Special character', met: /[^a-zA-Z\d]/.test(formData.password) },
+  ];
 
   return (
     <div className="login-page fade-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: 'var(--bg-main)', padding: '2rem' }}>
@@ -44,6 +55,29 @@ const Register = () => {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+            {formData.password && (
+              <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.35rem', padding: '0.75rem', background: 'rgba(0,0,0,0.02)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)' }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-main)', marginBottom: '0.25rem' }}>Password Requirements:</div>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+                    {passwordRulesCol1.map((rule, index) => (
+                      <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}>
+                        {rule.met ? <CheckCircle size={14} color="#16a34a" /> : <XCircle size={14} color="#94a3b8" />}
+                        <span style={{ color: rule.met ? '#16a34a' : 'var(--text-muted)' }}>{rule.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+                    {passwordRulesCol2.map((rule, index) => (
+                      <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}>
+                        {rule.met ? <CheckCircle size={14} color="#16a34a" /> : <XCircle size={14} color="#94a3b8" />}
+                        <span style={{ color: rule.met ? '#16a34a' : 'var(--text-muted)' }}>{rule.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="input-group">
