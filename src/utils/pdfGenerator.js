@@ -5,87 +5,335 @@ import { formatPhoneNumber } from './formatters';
 export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
     if (!orderIdsToPrint || orderIdsToPrint.length === 0) return;
 
-    const doc = new jsPDF();
-
+    const doc = new jsPDF('p', 'mm', 'a4');
+    
     orderIdsToPrint.forEach((id, index) => {
       const order = orders.find(o => o.id === id);
       if (!order) return;
 
       if (index > 0) doc.addPage();
-
-      // Header
-      doc.setFontSize(20);
-      doc.text('INVOICE', 14, 22);
-
-      doc.setFontSize(10);
-      doc.text(`Invoice Number: INV-${order.id}-${new Date().getTime()}`, 14, 30);
-      doc.text(`Order Date: ${new Date(order.orderDate).toLocaleDateString()}`, 14, 35);
-
-      // Admin / Store Details
-      doc.setFontSize(12);
-      doc.text('FROM:', 14, 45);
-      doc.setFontSize(10);
-      doc.text(`${storeSettings?.settings?.storeSettings?.storeName}`, 14, 50);
-
-      let adminY = 55;
-      if (storeSettings?.settings?.contacts?.email) { doc.text(`Email: ${storeSettings.settings.contacts.email}`, 14, adminY); adminY += 5; }
-      if (storeSettings?.settings?.contacts?.address?.street) { doc.text(`Address: ${storeSettings.settings.contacts.address.street}`, 14, adminY); adminY += 5; }
-      if (storeSettings?.settings?.contacts?.address?.city || storeSettings?.settings?.contacts?.address?.state) {
-        const cityState = `${storeSettings?.settings?.contacts?.address?.city || ''} ${storeSettings?.settings?.contacts?.address?.state || ''} ${storeSettings?.settings?.contacts?.address?.pincode || ''}`.trim();
-        if (cityState) { doc.text(cityState, 14, adminY); adminY += 5; }
-      }
-      if (storeSettings?.settings?.contacts?.phone) { doc.text(`Phone: ${formatPhoneNumber(storeSettings.settings.contacts.phone)}`, 14, adminY); }
-
-      // Customer Details
-      doc.setFontSize(12);
-      doc.text('TO (CUSTOMER):', 120, 45);
-      doc.setFontSize(10);
-      doc.text(`${order.customerName || 'N/A'}`, 120, 50);
-      if (order.customerEmail) doc.text(`Email: ${order.customerEmail}`, 120, 55);
-
+      
+      const pageWidth = doc.internal.pageSize.getWidth(); // 210
+      const pageHeight = doc.internal.pageSize.getHeight(); // 297
+      const margin = 10;
+      const contentWidth = pageWidth - 2 * margin; // 190
+      
+      // Main Outer Border
+      let currentY = margin;
+      
+      // --- TOP SECTION (Address & Shipping Label) ---
+      const topSectionHeight = 85;
+      
+      // Left Box (Address)
+      const leftBoxWidth = contentWidth * 0.45;
+      doc.rect(margin, currentY, leftBoxWidth, topSectionHeight);
+      
+      // Right Box (Shipping)
+      const rightBoxWidth = contentWidth * 0.55;
+      doc.rect(margin + leftBoxWidth, currentY, rightBoxWidth, topSectionHeight);
+      
+      // Left Box Content
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('Customer Address', margin + 2, currentY + 5);
+      
+      doc.setFontSize(11);
+      doc.text(`${order.customerName || 'N/A'}`, margin + 2, currentY + 11);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
       const addr = order.shippingAddress;
-      let addrY = 60;
+      let leftY = currentY + 16;
       if (addr) {
-        if (addr.phoneNumber) { doc.text(`Phone: ${formatPhoneNumber(addr.phoneNumber)}`, 120, addrY); addrY += 5; }
-        if (addr.street) { doc.text(addr.street, 120, addrY); addrY += 5; }
-        if (addr.city || addr.state) { doc.text(`${addr.city || ''}, ${addr.state || ''}`, 120, addrY); addrY += 5; }
-        if (addr.zipCode) { doc.text(`Zip: ${addr.zipCode}`, 120, addrY); addrY += 5; }
-        if (addr.country) { doc.text(addr.country, 120, addrY); }
+        if (addr.street) { 
+           const splitStreet = doc.splitTextToSize(addr.street, leftBoxWidth - 4);
+           doc.text(splitStreet, margin + 2, leftY); 
+           leftY += splitStreet.length * 4; 
+        }
+        if (addr.city || addr.state || addr.zipCode) {
+           doc.text(`${addr.city || ''}, ${addr.state || ''} ${addr.zipCode || ''}`, margin + 2, leftY);
+           leftY += 4;
+        }
+        if (addr.phoneNumber) { doc.text(`Phone: ${formatPhoneNumber(addr.phoneNumber)}`, margin + 2, leftY); leftY += 4; }
       }
+      if (order.customerEmail) doc.text(`Email: ${order.customerEmail}`, margin + 2, leftY);
 
-      // Order Items Table
-      const tableColumn = ["Product Name", "Quantity", "Price"];
-      const tableRows = [];
-      let totalQty = 0;
-
-      if (order.orderItems && order.orderItems.length > 0) {
-        order.orderItems.forEach(item => {
-          const qty = item.quantity || 1;
-          totalQty += qty;
-          tableRows.push([
-            item.productName ? (item.phoneModel ? `${item.productName}\n(Model: ${item.phoneModel})` : item.productName) : 'Product',
-            qty.toString(),
-            `Rs. ${item.price || 0}`
-          ]);
-        });
-      } else {
-        tableRows.push(['Custom Order', '1', `Rs. ${order.totalAmount}`]);
-        totalQty = 1;
+      // Separator Line in Left Box
+      doc.line(margin, currentY + 40, margin + leftBoxWidth, currentY + 40);
+      
+      // Return Address
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text('If undelivered, return to:', margin + 2, currentY + 45);
+      
+      const storeName = storeSettings?.settings?.storeSettings?.storeName || 'Store Name';
+      doc.text(storeName.toUpperCase(), margin + 2, currentY + 50);
+      
+      doc.setFont('helvetica', 'normal');
+      let returnY = currentY + 54;
+      const contacts = storeSettings?.settings?.contacts;
+      if (contacts?.address?.street) {
+          const splitStreet = doc.splitTextToSize(contacts.address.street, leftBoxWidth - 4);
+          doc.text(splitStreet, margin + 2, returnY);
+          returnY += splitStreet.length * 4;
       }
-
-      autoTable(doc, {
-        startY: Math.max(75, addrY + 5),
-        head: [tableColumn],
-        body: tableRows,
-        theme: 'striped',
-        headStyles: { fillColor: [41, 128, 185] },
-      });
-
-      // Total
-      const finalY = doc.lastAutoTable.finalY || 90;
+      if (contacts?.address?.city || contacts?.address?.state || contacts?.address?.pincode) {
+          doc.text(`${contacts.address.city || ''}, ${contacts.address.state || ''} ${contacts.address.pincode || ''}`, margin + 2, returnY);
+          returnY += 4;
+      }
+      if (contacts?.phone) {
+          doc.text(`Phone: ${formatPhoneNumber(contacts.phone)}`, margin + 2, returnY);
+      }
+      
+      // Right Box Content
+      // Black header background
+      doc.setFillColor(0, 0, 0);
+      doc.rect(margin + leftBoxWidth, currentY, rightBoxWidth, 8, 'F');
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(order.paymentMethod === 'COD' ? 'COD: Check the payable amount on the app' : 'PREPAID ORDER', margin + leftBoxWidth + 2, currentY + 5.5);
+      
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('', margin + leftBoxWidth + 2, currentY + 16);
+      
+      doc.setFontSize(8);
+      doc.setFillColor(0, 0, 0);
+      doc.rect(margin + leftBoxWidth + 2, currentY + 20, 15, 5, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.text('Pickup', margin + leftBoxWidth + 4, currentY + 23.5);
+      doc.setTextColor(0, 0, 0);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text('Destination Code', margin + leftBoxWidth + 2, currentY + 30);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text(`${addr?.city ? addr.city.toUpperCase() : 'N/A'}_D`, margin + leftBoxWidth + 2, currentY + 34);
+      
+      doc.setFont('helvetica', 'bold');
+      doc.text(`(${addr?.state || 'State'})`, margin + leftBoxWidth + 2, currentY + 44);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.text('Return Code', margin + leftBoxWidth + 2, currentY + 52);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${contacts?.address?.pincode || ''}`, margin + leftBoxWidth + 2, currentY + 56);
+      
+      // QR Code Blank Space
+      // Leaving 30x30 mm blank at (margin + leftBoxWidth + rightBoxWidth - 35, currentY + 12)
+      
+      // Barcode Blank Space
+      // AWB Number Text Placeholder
+      doc.setFont('helvetica', 'bold');
       doc.setFontSize(12);
-      doc.text(`Total Quantity: ${totalQty}`, 14, finalY + 10);
-      doc.text(`Total Amount: Rs. ${order.totalAmount}`, 14, finalY + 15);
+      const awbNo = order.trackingNumber || `${order.id}${new Date().getTime()}`;
+      doc.text(awbNo.toString(), margin + leftBoxWidth + (rightBoxWidth / 2), currentY + 68, { align: 'center' });
+      // Leaving Barcode Space below AWB at (margin + leftBoxWidth + 10, currentY + 70, rightBoxWidth - 20, 12)
+      
+      currentY += topSectionHeight;
+      doc.setDrawColor(0, 0, 0);
+      
+      // --- PRODUCT DETAILS SECTION ---
+      doc.rect(margin, currentY, contentWidth, 20);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.text('Product Details', margin + 2, currentY + 5);
+      
+      // Minimal AutoTable for Product Specs
+      const productDetailsRows = [];
+      let itemSku = 'N/A';
+      let itemSize = 'Free Size';
+      let itemColor = 'NA';
+      if (order.orderItems && order.orderItems.length > 0) {
+         const firstItem = order.orderItems[0];
+         itemSku = firstItem.sku || firstItem.productName?.substring(0, 15) || 'Product';
+         itemSize = firstItem.size || 'Free Size';
+         itemColor = firstItem.color || 'NA';
+      }
+      
+      productDetailsRows.push([
+         itemSku,
+         itemSize,
+         (order.orderItems?.reduce((acc, curr) => acc + (curr.quantity || 1), 0) || 1).toString(),
+         itemColor,
+         order.id.toString()
+      ]);
+      
+      autoTable(doc, {
+        startY: currentY + 7,
+        head: [['SKU', 'Size', 'Qty', 'Color', 'Order No.']],
+        body: productDetailsRows,
+        theme: 'plain',
+        styles: { fontSize: 9, cellPadding: 1, textColor: [0, 0, 0] },
+        headStyles: { fontStyle: 'bold' },
+        margin: { left: margin + 1 }
+      });
+      
+      currentY += 20;
+      
+      // --- TAX INVOICE HEADER ---
+      doc.rect(margin, currentY, contentWidth, 6);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text('TAX INVOICE', pageWidth / 2, currentY + 4.5, { align: 'center' });
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Original For Recipient', margin + contentWidth - 2, currentY + 4.5, { align: 'right' });
+      
+      currentY += 6;
+      
+      // --- BILLING & SELLER INFO ---
+      const billingSectionHeight = 35;
+      const billLeftWidth = contentWidth * 0.45;
+      const billRightWidth = contentWidth * 0.55;
+      
+      doc.rect(margin, currentY, billLeftWidth, billingSectionHeight);
+      doc.rect(margin + billLeftWidth, currentY, billRightWidth, billingSectionHeight);
+      
+      // Bill Left
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.text('BILL TO / SHIP TO', margin + 2, currentY + 4);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(7);
+      
+      let billY = currentY + 8;
+      const billAddrText = `${order.customerName || 'N/A'} - ${addr?.street || ''}, ${addr?.city || ''}, ${addr?.state || ''}, ${addr?.zipCode || ''}`;
+      const splitBillAddr = doc.splitTextToSize(billAddrText, billLeftWidth - 4);
+      doc.text(splitBillAddr, margin + 2, billY);
+      billY += splitBillAddr.length * 3.5;
+      doc.text(`Place of Supply: ${addr?.state || ''}`, margin + 2, billY + 2);
+      
+      // Bill Right
+      doc.setFont('helvetica', 'normal');
+      doc.text('Sold by : ', margin + billLeftWidth + 2, currentY + 4);
+      doc.setFont('helvetica', 'bold');
+      doc.text(storeName.toUpperCase(), margin + billLeftWidth + 14, currentY + 4);
+      doc.setFont('helvetica', 'normal');
+      
+      let sellerY = currentY + 8;
+      const sellerAddrStr = `${contacts?.address?.street || ''}, ${contacts?.address?.city || ''}, ${contacts?.address?.state || ''}, ${contacts?.address?.pincode || ''}`;
+      const splitSellerAddr = doc.splitTextToSize(sellerAddrStr, billRightWidth - 4);
+      doc.text(splitSellerAddr, margin + billLeftWidth + 2, sellerY);
+      sellerY += splitSellerAddr.length * 3.5;
+      
+      doc.setFont('helvetica', 'bold');
+      doc.text(`GSTIN - ${storeSettings?.settings?.taxSettings?.gstin || 'Unregistered'}`, margin + billLeftWidth + 2, sellerY + 2);
+      
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'normal');
+      sellerY += 8;
+      doc.text('Purchase Order No.', margin + billLeftWidth + 2, sellerY);
+      doc.text('Invoice No.', margin + billLeftWidth + billRightWidth / 3 + 2, sellerY);
+      doc.text('Order Date', margin + billLeftWidth + (2 * billRightWidth) / 3 + 2, sellerY);
+      doc.text('Invoice Date', margin + billLeftWidth + billRightWidth - 15, sellerY);
+      
+      doc.setFont('helvetica', 'bold');
+      sellerY += 4;
+      doc.text(order.id.toString(), margin + billLeftWidth + 2, sellerY);
+      doc.text(`INV-${order.id}`, margin + billLeftWidth + billRightWidth / 3 + 2, sellerY);
+      doc.text(new Date(order.orderDate).toLocaleDateString('en-GB'), margin + billLeftWidth + (2 * billRightWidth) / 3 + 2, sellerY);
+      doc.text(new Date().toLocaleDateString('en-GB'), margin + billLeftWidth + billRightWidth - 15, sellerY);
+      
+      currentY += billingSectionHeight;
+      
+      // --- TAX & TOTAL TABLE ---
+      const taxTableCols = ['Description', 'HSN', 'Qty', 'Gross Amount', 'Discount', 'Taxable Value', 'Taxes', 'Total'];
+      const taxTableRows = [];
+      
+      let sumTaxable = 0;
+      let sumTax = 0;
+      let sumTotal = 0;
+      
+      if (order.orderItems && order.orderItems.length > 0) {
+          order.orderItems.forEach(item => {
+              const qty = item.quantity || 1;
+              const price = item.price || 0;
+              const totalItemPrice = qty * price;
+              
+              const taxRate = 0.05; // 5% IGST example
+              const taxableVal = totalItemPrice / (1 + taxRate);
+              const taxAmt = totalItemPrice - taxableVal;
+              
+              sumTaxable += taxableVal;
+              sumTax += taxAmt;
+              sumTotal += totalItemPrice;
+              
+              taxTableRows.push([
+                  item.productName || 'Product',
+                  '3004', 
+                  qty.toString(),
+                  `Rs.${totalItemPrice.toFixed(2)}`,
+                  `Rs.0.00`,
+                  `Rs.${taxableVal.toFixed(2)}`,
+                  `IGST @5.0%\nRs.${taxAmt.toFixed(2)}`,
+                  `Rs.${totalItemPrice.toFixed(2)}`
+              ]);
+          });
+      } else {
+          taxTableRows.push(['Custom Order', 'N/A', '1', `Rs.${order.totalAmount}`, 'Rs.0.00', `Rs.${order.totalAmount}`, 'Rs.0.00', `Rs.${order.totalAmount}`]);
+          sumTotal = order.totalAmount;
+      }
+      
+      const otherCharges = order.totalAmount - sumTotal;
+      if (otherCharges > 0.01 || otherCharges < -0.01) {
+          const shipTaxRate = 0.05;
+          const shipTaxable = otherCharges / (1 + shipTaxRate);
+          const shipTax = otherCharges - shipTaxable;
+          sumTaxable += shipTaxable;
+          sumTax += shipTax;
+          sumTotal += otherCharges;
+          
+          taxTableRows.push([
+              'Other Charges',
+              '9968',
+              'NA',
+              `Rs.${otherCharges.toFixed(2)}`,
+              'Rs.0.00',
+              `Rs.${shipTaxable.toFixed(2)}`,
+              `IGST @5.0%\nRs.${shipTax.toFixed(2)}`,
+              `Rs.${otherCharges.toFixed(2)}`
+          ]);
+      }
+      
+      // Add Total Row at the end
+      taxTableRows.push([
+          { content: 'Total', styles: { fontStyle: 'bold' } },
+          '',
+          '',
+          '',
+          '',
+          '',
+          { content: `Rs.${sumTax.toFixed(2)}`, styles: { fontStyle: 'bold' } },
+          { content: `Rs.${order.totalAmount.toFixed(2)}`, styles: { fontStyle: 'bold' } }
+      ]);
+      
+      autoTable(doc, {
+          startY: currentY,
+          head: [taxTableCols],
+          body: taxTableRows,
+          theme: 'plain',
+          styles: { fontSize: 7, cellPadding: 2, textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0] },
+          headStyles: { fontStyle: 'bold', fillColor: [245, 245, 245], lineWidth: 0.1, lineColor: [0, 0, 0] },
+          columnStyles: {
+              0: { cellWidth: 40 },
+              6: { halign: 'right' },
+              7: { halign: 'right' }
+          }
+      });
+      
+      const finalY = doc.lastAutoTable.finalY;
+      
+      // --- FOOTER ---
+      doc.rect(margin, finalY, contentWidth, 12);
+      doc.setFontSize(6);
+      doc.setFont('helvetica', 'normal');
+      const footerText = "Tax is not payable on reverse charge basis. This is a computer generated invoice and does not require signature. Other charges are charges that are applicable to your order and include charges for logistics fee (where applicable). Includes discounts for your city and/or for online payments (as applicable)";
+      doc.text(doc.splitTextToSize(footerText, contentWidth - 4), margin + 2, finalY + 4);
+      
     });
 
     doc.save(`shipping_labels_${new Date().getTime()}.pdf`);
