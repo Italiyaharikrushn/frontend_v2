@@ -103,11 +103,6 @@ export const useCheckoutLogic = () => {
         finalAddressId = selectedAddressId;
       }
 
-      await clearBackendCart().unwrap();
-      for (const item of cartItems) {
-        await addToBackendCart({ productId: item.id, quantity: item.quantity, phoneModel: item.phoneModel }).unwrap();
-      }
-
       await checkoutOrder({addressId: finalAddressId, couponCode: appliedCouponCode}).unwrap();
 
       setIsProcessing(false);
