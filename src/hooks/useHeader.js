@@ -70,7 +70,7 @@ export const useHeader = () => {
   const handleLogout = () => {
     dispatch(logout());
     setIsMenuOpen(false);
-    navigate('/');
+    window.location.href = '/';
   };
 
   const isActive = (path) => {

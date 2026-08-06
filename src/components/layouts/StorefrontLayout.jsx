@@ -20,7 +20,7 @@ const StorefrontLayout = () => {
         <Outlet />
       </main>
       <footer style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
-        <p>&copy; {new Date().getFullYear()} {storeSettings?.storeName || 'Kiya Accessories'}. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} {storeSettings?.settings?.storeSettings?.storeName}. All rights reserved.</p>
       </footer>
     </div>
   );

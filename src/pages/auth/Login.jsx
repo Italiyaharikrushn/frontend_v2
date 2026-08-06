@@ -16,7 +16,7 @@ const Login = () => {
             <ShieldCheck size={28} />
           </div>
           <h1>Welcome Back</h1>
-          <p>Sign in to continue to {storeSettings?.storeName || 'Kiya Accessories'}</p>
+          <p>Sign in to continue to {storeSettings?.settings?.storeSettings?.storeName}</p>
         </div>
 
         {error && <div className="auth-error">{error}</div>}

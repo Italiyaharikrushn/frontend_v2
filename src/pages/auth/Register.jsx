@@ -18,7 +18,7 @@ const Register = () => {
             <UserPlus size={32} />
           </div>
           <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold', color: 'var(--text-main)' }}>Create an Account</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.5rem' }}>Join {storeSettings?.storeName || 'Kiya Accessories'} today</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.5rem' }}>Join {storeSettings?.settings?.storeSettings?.storeName} today</p>
         </div>
 
         {error && <div style={{ background: '#fee2e2', color: '#b91c1c', padding: '0.75rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontSize: '0.875rem', textAlign: 'center' }}>{error}</div>}

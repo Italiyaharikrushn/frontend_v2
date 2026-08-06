@@ -25,16 +25,16 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
       doc.setFontSize(12);
       doc.text('FROM:', 14, 45);
       doc.setFontSize(10);
-      doc.text(`${storeSettings?.storeName || 'Store Name'}`, 14, 50);
+      doc.text(`${storeSettings?.settings?.storeSettings?.storeName}`, 14, 50);
 
       let adminY = 55;
-      if (storeSettings?.supportEmail) { doc.text(`Email: ${storeSettings.supportEmail}`, 14, adminY); adminY += 5; }
-      if (storeSettings?.address) { doc.text(`Address: ${storeSettings.address}`, 14, adminY); adminY += 5; }
-      if (storeSettings?.city || storeSettings?.state) {
-        const cityState = `${storeSettings?.city || ''} ${storeSettings?.state || ''} ${storeSettings?.pincode || ''}`.trim();
+      if (storeSettings?.settings?.contacts?.email) { doc.text(`Email: ${storeSettings.settings.contacts.email}`, 14, adminY); adminY += 5; }
+      if (storeSettings?.settings?.contacts?.address?.street) { doc.text(`Address: ${storeSettings.settings.contacts.address.street}`, 14, adminY); adminY += 5; }
+      if (storeSettings?.settings?.contacts?.address?.city || storeSettings?.settings?.contacts?.address?.state) {
+        const cityState = `${storeSettings?.settings?.contacts?.address?.city || ''} ${storeSettings?.settings?.contacts?.address?.state || ''} ${storeSettings?.settings?.contacts?.address?.pincode || ''}`.trim();
         if (cityState) { doc.text(cityState, 14, adminY); adminY += 5; }
       }
-      if (storeSettings?.contactNo) { doc.text(`Phone: ${formatPhoneNumber(storeSettings.contactNo)}`, 14, adminY); }
+      if (storeSettings?.settings?.contacts?.phone) { doc.text(`Phone: ${formatPhoneNumber(storeSettings.settings.contacts.phone)}`, 14, adminY); }
 
       // Customer Details
       doc.setFontSize(12);

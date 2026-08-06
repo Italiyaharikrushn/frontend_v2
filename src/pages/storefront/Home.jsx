@@ -30,7 +30,7 @@ const Home = () => {
         }}
       >
         <Link
-          to={`/product/${pId}`}
+          to={product.category ? `/products?category=${encodeURIComponent(product.category.toLowerCase())}` : `/products`}
           style={{ textDecoration: 'none', color: 'inherit', display: 'block', width: '100%' }}
           className="hover-lift"
         >

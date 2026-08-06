@@ -65,12 +65,12 @@ const ProductDetails = ({ productId: propId, onClose }) => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
             <label style={{ fontWeight: '500', color: 'var(--text-main)' }}>Quantity</label>
             <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
-              <button 
+              <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 disabled={quantity <= 1}
                 style={{ width: '40px', height: '40px', background: 'var(--surface)', border: 'none', cursor: quantity <= 1 ? 'not-allowed' : 'pointer', fontSize: '1.2rem', opacity: quantity <= 1 ? 0.5 : 1 }}
               >-</button>
-              <input 
+              <input
                 type="number"
                 value={quantity === '' ? '' : quantity}
                 onChange={(e) => {
@@ -81,7 +81,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
                 style={{ width: '50px', textAlign: 'center', fontWeight: 'bold', border: 'none', background: 'transparent', color: 'var(--text-main)' }}
                 className="no-spin-button"
               />
-              <button 
+              <button
                 onClick={() => setQuantity(quantity + 1)}
                 style={{ width: '40px', height: '40px', background: 'var(--surface)', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
               >+</button>

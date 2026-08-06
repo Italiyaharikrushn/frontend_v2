@@ -30,10 +30,10 @@ const Contact = () => {
                   <MapPin size={28} />
                 </div>
                 <div className="info-details">
-                  <h3>Visit {storeSettings?.storeName}</h3>
+                  <h3>Visit {storeSettings?.settings?.storeSettings?.storeName}</h3>
                   <p>
-                    {storeSettings?.address}<br />
-                    {storeSettings?.city}, {storeSettings?.state} {storeSettings?.pincode}
+                    {storeSettings?.settings?.contacts?.address?.street}<br />
+                    {storeSettings?.settings?.contacts?.address?.city}, {storeSettings?.settings?.contacts?.address?.state} {storeSettings?.settings?.contacts?.address?.pincode}
                   </p>
                 </div>
               </div>
@@ -44,7 +44,7 @@ const Contact = () => {
                 </div>
                 <div className="info-details">
                   <h3>Call Us</h3>
-                  <p>{formatPhoneNumber(storeSettings?.contactNo)}<br />Mon-Sun, 10:00 AM - 10:00 PM (IST)</p>
+                  <p>{formatPhoneNumber(storeSettings?.settings?.contacts?.phone)}<br />Mon-Sun, 10:00 AM - 10:00 PM (IST)</p>
                 </div>
               </div>
 
@@ -54,7 +54,7 @@ const Contact = () => {
                 </div>
                 <div className="info-details">
                   <h3>Email Us</h3>
-                  <p>{storeSettings?.supportEmail}<br />We'll respond within 24 hours.</p>
+                  <p>{storeSettings?.settings?.contacts?.email}<br />We'll respond within 24 hours.</p>
                 </div>
               </div>
             </>

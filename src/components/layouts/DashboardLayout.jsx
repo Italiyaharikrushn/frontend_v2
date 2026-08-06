@@ -46,7 +46,7 @@ const DashboardLayout = () => {
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           <div className="dashboard-brand-container">
-            <h2 className="sidebar-brand">{storeSettings?.storeName}</h2>
+            <h2 className="sidebar-brand">{storeSettings?.settings?.storeSettings?.storeName}</h2>
           </div>
 
           <div className="header-actions">
@@ -56,8 +56,8 @@ const DashboardLayout = () => {
             </button>
             <div className="user-profile" ref={profileRef} style={{ position: 'relative' }}>
               <div className="avatar" onClick={() => setIsProfileOpen(!isProfileOpen)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #c5a059 0%, #a07d3b 100%)', color: '#0d0c0a', fontWeight: 'bold', overflow: 'hidden' }}>
-                {storeSettings?.profilePhoto ? (
-                  <img src={getMediaUrl(storeSettings.profilePhoto)} alt="Store" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {storeSettings?.settings?.storeSettings?.profilePhoto ? (
+                  <img src={getMediaUrl(storeSettings.settings.storeSettings.profilePhoto)} alt="Store" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   avatarInitial
                 )}

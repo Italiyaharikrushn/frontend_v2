@@ -13,7 +13,7 @@ const Sidebar = ({ isMobileOpen = false, onClose = () => { } }) => {
 
   const handleLogout = () => {
     dispatch(logout());
-    window.location.reload();
+    window.location.href = '/';
   };
 
   const handleNavClick = () => {

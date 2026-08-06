@@ -51,7 +51,7 @@ const CustomerProfileMenu = () => {
   const handleLogout = () => {
     dispatch(logout());
     setIsOpen(false);
-    window.location.reload();
+    window.location.href = '/';
   };
 
   return (
