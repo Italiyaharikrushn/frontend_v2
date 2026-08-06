@@ -3,8 +3,10 @@ import AppRoutes from './routes/AppRoutes';
 import { ToastProvider } from './components/ui/ToastProvider';
 import { AlertProvider } from './components/ui/AlertProvider';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import useCartSync from './hooks/useCartSync';
 
 function App() {
+  useCartSync();
   return (
     <ErrorBoundary>
       <ToastProvider>

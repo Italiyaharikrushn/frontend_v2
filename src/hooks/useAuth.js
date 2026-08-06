@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { login, logout, selectIsAuthenticated, selectUserRole, selectUserName, selectUserEmail } from '../redux/authSlice';
+import { clearCart } from '../redux/cartSlice';
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -9,7 +10,10 @@ export const useAuth = () => {
   const email = useSelector(selectUserEmail);
 
   const handleLogin = (credentials) => dispatch(login(credentials));
-  const handleLogout = () => dispatch(logout());
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(clearCart());
+  };
 
   return {
     isAuthenticated,

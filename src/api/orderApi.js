@@ -89,6 +89,18 @@ export const orderApi = createApi({
             })
         }),
 
+        getBackendCart: builder.query({
+            query: () => "/api/cart/"
+        }),
+
+        syncBackendCart: builder.mutation({
+            query: (cartItems) => ({
+                url: "/api/cart/sync",
+                method: "POST",
+                body: cartItems
+            })
+        }),
+
         checkoutOrder: builder.mutation({
             query: ({addressId, couponCode}) => {
                 let url = `/api/orders/checkout?addressId=${addressId}`;
@@ -180,6 +192,8 @@ export const {
     useGetCouponsQuery,
     useCreateCouponMutation,
     useUpdateCouponMutation,
-    useDeleteCouponMutation
+    useDeleteCouponMutation,
+    useGetBackendCartQuery,
+    useSyncBackendCartMutation
 } = orderApi;
 
