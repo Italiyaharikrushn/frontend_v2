@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Smartphone, CheckCircle2 } from 'lucide-react';
 import Button from '../ui/Button';
 
 const PaymentModal = ({ isOpen, onClose, paymentMethod, total, onConfirm }) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+      };
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const paymentNames = {
@@ -11,85 +28,62 @@ const PaymentModal = ({ isOpen, onClose, paymentMethod, total, onConfirm }) => {
     phonepe: 'PhonePe'
   };
 
-  return (
-    <div className="modal-overlay fade-in" style={{ 
-      position: 'fixed', 
-      top: 0, 
-      left: 0, 
-      right: 0, 
-      bottom: 0, 
-      backgroundColor: 'rgba(0,0,0,0.5)', 
-      zIndex: 1000, 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'center',
-      backdropFilter: 'blur(4px)'
-    }}>
-      <div className="modal-content glass-panel" style={{ 
-        width: '90%', 
-        maxWidth: '400px', 
-        backgroundColor: 'var(--bg-card)', 
-        borderRadius: 'var(--radius-lg)', 
-        padding: '2rem', 
-        position: 'relative',
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-      }}>
-        <button onClick={onClose} style={{ 
-          position: 'absolute', 
-          top: '1rem', 
-          right: '1rem', 
-          background: 'none', 
-          border: 'none', 
-          cursor: 'pointer', 
-          color: 'var(--text-muted)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '0.5rem',
-          borderRadius: '50%'
-        }}>
+  const selectedMethodName = paymentNames[paymentMethod] || (paymentMethod ? paymentMethod.toUpperCase() : 'Selected Method');
+
+  return createPortal(
+    <div 
+      className="payment-modal-overlay" 
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="payment-modal-title"
+    >
+      <div className="payment-modal-card">
+        <button 
+          onClick={onClose} 
+          className="payment-modal-close" 
+          aria-label="Close payment modal"
+          type="button"
+        >
           <X size={20} />
         </button>
         
-        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-          <div style={{ 
-            width: '64px', 
-            height: '64px', 
-            borderRadius: '50%', 
-            backgroundColor: 'var(--primary-light)', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            margin: '0 auto 1rem' 
-          }}>
-            <Smartphone size={32} style={{ color: 'var(--primary)' }} />
+        <div className="payment-modal-header">
+          <div className="payment-modal-icon-badge">
+            <Smartphone size={32} />
           </div>
-          <h2 style={{ marginBottom: '0.5rem', fontSize: '1.5rem', fontWeight: '600' }}>Complete Payment</h2>
-          <p style={{ color: 'var(--text-muted)' }}>You selected {paymentNames[paymentMethod] || paymentMethod}</p>
+          <h2 id="payment-modal-title" className="payment-modal-title">
+            Complete Payment
+          </h2>
+          <p className="payment-modal-subtitle">
+            You selected <strong style={{ color: 'var(--text-main)' }}>{selectedMethodName}</strong>
+          </p>
         </div>
         
-        <div style={{ 
-          backgroundColor: 'var(--bg-secondary)', 
-          padding: '1.5rem', 
-          borderRadius: 'var(--radius-md)', 
-          textAlign: 'center', 
-          marginBottom: '2rem',
-          border: '1px solid var(--border)'
-        }}>
-          <p style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Amount to pay</p>
-          <p style={{ fontSize: '2rem', fontWeight: '700', color: 'var(--text)' }}>₹{total.toFixed(2)}</p>
+        <div className="payment-modal-amount-box">
+          <span className="payment-modal-amount-label">Total Amount to Pay</span>
+          <span className="payment-modal-amount-value">₹{total.toFixed(2)}</span>
         </div>
         
-        <p style={{ fontSize: '0.875rem', textAlign: 'center', marginBottom: '1.5rem', color: 'var(--text-muted)' }}>
-          Please complete the payment using your mobile app to confirm your order.
+        <p className="payment-modal-instructions">
+          Please approve and complete the transaction in your {selectedMethodName} app to confirm your order.
         </p>
         
-        <Button onClick={onConfirm} variant="primary" size="lg" fullWidth style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+        <Button 
+          onClick={onConfirm} 
+          variant="primary" 
+          size="lg" 
+          fullWidth 
+          className="payment-modal-confirm-btn"
+        >
           <CheckCircle2 size={20} />
           Confirm Payment
         </Button>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

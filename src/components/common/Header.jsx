@@ -1,4 +1,5 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, Search, X, LogIn, User } from "lucide-react";
 import CraftyLogo from "./CraftyLogo";
@@ -50,7 +51,7 @@ const Header = () => {
 
   return (
     <div className="crafty-header-wrapper">
-      {/* 1. Main Black Header Bar */}
+      {/* 1. Main Header Bar */}
       <header className="main-header">
         <div className="main-header-container">
           <div className="header-left">
@@ -67,7 +68,7 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Search Bar Container (Clean input box without Category Dropdown) */}
+          {/* Search Bar Container (Centered on Desktop) */}
           <div className="header-center desktop-only" style={{ position: 'relative' }}>
             <form className="crafty-search-form" onSubmit={handleSearchSubmit}>
               <input
@@ -197,7 +198,7 @@ const Header = () => {
         )}
       </header>
 
-      {/* 3. Sub-Navigation Bar */}
+      {/* 2. Sub-Navigation Bar */}
       <div className="subnav-bar desktop-only">
         <div className="subnav-container">
           <nav className="subnav-links">
@@ -208,57 +209,63 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Sidebar Navigation Drawer */}
-      <div
-        className={`mobile-nav-backdrop ${isMenuOpen ? "open" : ""}`}
-        onClick={closeMenu}
-      />
+      {/* 3. Mobile Sidebar Navigation Drawer Rendered via Portal to Body */}
+      {createPortal(
+        <>
+          <div
+            className={`mobile-nav-backdrop ${isMenuOpen ? "open" : ""}`}
+            onClick={closeMenu}
+          />
 
-      <div className={`mobile-nav-panel ${isMenuOpen ? "open" : ""}`}>
-        <div className="mobile-nav-header">
-          <CraftyLogo size={32} />
-          <button className="action-btn" onClick={closeMenu}>
-            <X size={24} />
-          </button>
-        </div>
-
-        <div className="mobile-profile-card">
-          <div className="mobile-profile-avatar">{getAvatarInitial()}</div>
-          <div className="mobile-profile-info">
-            <h4>{isAuthenticated ? userName || "Customer" : "Welcome"}</h4>
-            <p>{isAuthenticated ? userEmail : "Sign in to continue"}</p>
-          </div>
-        </div>
-
-        <nav className="mobile-nav-links">
-          <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
-          <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop</Link>
-
-          {isAuthenticated && (
-            <div className="mobile-nav-group">
-              <span className="mobile-nav-group-title">My Account</span>
-              <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>My Orders</Link>
+          <aside className={`mobile-nav-panel ${isMenuOpen ? "open" : ""}`}>
+            <div className="mobile-nav-header">
+              <CraftyLogo size={32} />
+              <button className="action-btn" onClick={closeMenu} aria-label="Close menu">
+                <X size={24} />
+              </button>
             </div>
-          )}
 
-          <Link to="/contact" className={`mobile-nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={closeMenu}>Contact Us</Link>
-        </nav>
+            <div className="mobile-profile-card">
+              <div className="mobile-profile-avatar">{getAvatarInitial()}</div>
+              <div className="mobile-profile-info">
+                <h4>{isAuthenticated ? userName || "Customer" : "Welcome"}</h4>
+                <p>{isAuthenticated ? userEmail : "Sign in to continue"}</p>
+              </div>
+            </div>
 
-        <div className="mobile-nav-footer">
-          {isAuthenticated ? (
-            <button className="mobile-logout-btn" onClick={handleLogout}>
-              <LogIn size={18} /> Logout
-            </button>
-          ) : (
-            <Link className="mobile-logout-btn" to="/login" onClick={closeMenu}>
-              <LogIn size={18} /> Login
-            </Link>
-          )}
-        </div>
-      </div>
+            <nav className="mobile-nav-links">
+              <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
+              <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop</Link>
+
+              {isAuthenticated && (
+                <div className="mobile-nav-group">
+                  <span className="mobile-nav-group-title">My Account</span>
+                  <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>My Orders</Link>
+                  <Link to="/profile" className={`mobile-nav-link ${isActive('/profile') ? 'active' : ''}`} onClick={closeMenu}>Account Settings</Link>
+                </div>
+              )}
+
+              <Link to="/contact" className={`mobile-nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={closeMenu}>Contact Us</Link>
+              <Link to="/return-policy" className={`mobile-nav-link ${isActive('/return-policy') ? 'active' : ''}`} onClick={closeMenu}>Return Policy</Link>
+            </nav>
+
+            <div className="mobile-nav-footer">
+              {isAuthenticated ? (
+                <button className="mobile-logout-btn" onClick={handleLogout}>
+                  <LogIn size={18} /> Logout
+                </button>
+              ) : (
+                <Link className="mobile-logout-btn" to="/login" onClick={closeMenu}>
+                  <LogIn size={18} /> Login
+                </Link>
+              )}
+            </div>
+          </aside>
+        </>,
+        document.body
+      )}
     </div>
   );
 };
 
 export default Header;
-
