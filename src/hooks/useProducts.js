@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../redux/cartSlice';
 import { selectIsAuthenticated } from '../redux/authSlice';
 import { useGetProductsQuery, useGetCategoriesQuery } from '../api/productApi';
-import { useAddToBackendCartMutation } from '../api/orderApi';
 import { useToast } from '../components/ui/ToastProvider';
 
 export const useProducts = () => {
@@ -60,7 +59,6 @@ export const useProducts = () => {
   const totalPages = data.totalPages || 0;
 
   const { data: categories = [] } = useGetCategoriesQuery();
-  const [addToBackendCart] = useAddToBackendCartMutation();
 
   const dynamicCategories = useMemo(() => {
     if (!categories || categories.length === 0) return ["All"];
@@ -98,14 +96,6 @@ export const useProducts = () => {
     }));
 
     pushToast(`${qty} ${product.title} added to your cart.`, 'success');
-
-    if (isAuthenticated) {
-      try {
-        await addToBackendCart({ productId: product.id, quantity: qty }).unwrap();
-      } catch (error) {
-        console.error('Failed to save item to database cart:', error);
-      }
-    }
 
     setQuantities(prev => ({ ...prev, [product.id]: 1 }));
   };

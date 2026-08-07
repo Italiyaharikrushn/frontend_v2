@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductsQuery } from '../api/productApi';
 import { useGetPublicStoreSettingsQuery } from '../api/settingsApi';
-import { useAddToBackendCartMutation } from '../api/orderApi';
 import { addItem } from '../redux/cartSlice';
 import { selectIsAuthenticated } from '../redux/authSlice';
 import { useToast } from '../components/ui/ToastProvider';
@@ -14,7 +13,6 @@ export const useHome = () => {
   const { data = {}, isLoading } = useGetProductsQuery({ page: 0, size: 20 });
   const products = data.content || [];
   const { data: settings } = useGetPublicStoreSettingsQuery();
-  const [addToBackendCart] = useAddToBackendCartMutation();
 
   let trendingProducts = [];
   if (settings?.isFestivalActive && settings?.festivalName) {
@@ -43,14 +41,6 @@ export const useHome = () => {
     }));
 
     pushToast(`${product.title} added to your cart.`, 'success');
-
-    if (isAuthenticated) {
-      try {
-        await addToBackendCart({ productId: product.id, quantity: 1 }).unwrap();
-      } catch (error) {
-        console.error('Failed to save item to database cart:', error);
-      }
-    }
   };
 
   return {

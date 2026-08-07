@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, Search, X, LogIn, User } from "lucide-react";
-
 import CraftyLogo from "./CraftyLogo";
 import CustomerProfileMenu from "./CustomerProfileMenu";
 import { useHeader } from "../../hooks/useHeader";
@@ -28,7 +27,6 @@ const Header = () => {
     searchSuggestions,
     showSuggestions,
     setShowSuggestions,
-    setSearchQuery,
   } = useHeader();
 
   const getAvatarInitial = () => {
@@ -36,6 +34,19 @@ const Header = () => {
     if (userEmail) return userEmail.charAt(0).toUpperCase();
     return "U";
   };
+
+  const mobileSearchRef = React.useRef(null);
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isSearchOpen && mobileSearchRef.current && !mobileSearchRef.current.contains(event.target)) {
+        if (!event.target.closest('.search-trigger')) {
+          setIsSearchOpen(false);
+        }
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSearchOpen, setIsSearchOpen]);
 
   return (
     <div className="crafty-header-wrapper">
@@ -139,7 +150,7 @@ const Header = () => {
 
         {/* Mobile Search Bar Expansion */}
         {isSearchOpen && (
-          <div className="mobile-search-bar mobile-only">
+          <div className="mobile-search-bar mobile-only" ref={mobileSearchRef}>
             <div style={{ position: 'relative', width: '100%' }}>
               <form onSubmit={handleSearchSubmit} className="mobile-search-form">
                 <input

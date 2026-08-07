@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductByIdQuery } from '../api/productApi';
-import { useAddToBackendCartMutation } from '../api/orderApi';
 import { selectIsAuthenticated } from '../redux/authSlice';
 import { addItem } from '../redux/cartSlice';
 import { useToast } from '../components/ui/ToastProvider';
@@ -15,7 +14,6 @@ export const useProductDetails = ({ propId, isModal }) => {
   const { pushToast } = useToast();
 
   const { data: product, isLoading, isError } = useGetProductByIdQuery(id);
-  const [addToBackendCart, { isLoading: isAdding }] = useAddToBackendCartMutation();
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const [pincode, setPincode] = useState('');
@@ -45,18 +43,6 @@ export const useProductDetails = ({ propId, isModal }) => {
     }));
 
     pushToast(`${quantity} ${product.title} added to your cart.`, 'success');
-
-    if (isAuthenticated) {
-      try {
-        await addToBackendCart({
-          productId: product.id,
-          quantity: quantity,
-          phoneModel: isPhoneCover ? phoneModel : undefined
-        }).unwrap();
-      } catch (error) {
-        console.error('Failed to save item to database cart:', error);
-      }
-    }
   };
 
   const handleBuyNow = async () => {
@@ -67,5 +53,5 @@ export const useProductDetails = ({ propId, isModal }) => {
   const currentPrice = product ? (product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price)) : 0;
   const originalPrice = product ? parseFloat(product.price) || 0 : 0;
 
-  return { product, isLoading, isError, isAdding, pincode, setPincode, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate };
+  return { product, isLoading, isError, pincode, setPincode, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate };
 };

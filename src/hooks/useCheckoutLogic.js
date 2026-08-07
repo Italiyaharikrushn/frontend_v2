@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
@@ -10,11 +10,15 @@ export const useCheckoutLogic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const rawCartItems = useSelector(selectCartItems);
-  const [paymentMethod, setPaymentMethod] = useState('cod');
+  const [paymentMethod, setPaymentMethod] = useState('gpay');
   const [selectedAddressId, setSelectedAddressId] = useState('new');
   const [isProcessing, setIsProcessing] = useState(false);
   const [phone, setPhone] = useState('');
-  
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [pendingAddressId, setPendingAddressId] = useState(null);
+  const [showPaymentSection, setShowPaymentSection] = useState(false);
+  const isSubmittingRef = useRef(false);
+
   const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
 
   useEffect(() => {
@@ -22,7 +26,7 @@ export const useCheckoutLogic = () => {
       setSelectedAddressId(addresses[0]?.id || 'new');
     }
   }, [addresses, selectedAddressId]);
-  
+
   const [couponCode, setCouponCode] = useState('');
   const [appliedCouponCode, setAppliedCouponCode] = useState(null);
   const [discountAmount, setDiscountAmount] = useState(0);
@@ -61,23 +65,35 @@ export const useCheckoutLogic = () => {
   const validateCoupon = async () => {
     setCouponError('');
     if (!couponCode.trim()) {
-       setCouponError('Please enter a coupon code.');
-       return;
+      setCouponError('Please enter a coupon code.');
+      return;
     }
     try {
-       const res = await validateCouponApi({ code: couponCode, cartTotal: subtotal }).unwrap();
-       setDiscountAmount(res.discountAmount);
-       setAppliedCouponCode(couponCode);
-       pushToast('Coupon applied successfully!', 'success');
+      const res = await validateCouponApi({ code: couponCode, cartTotal: subtotal }).unwrap();
+      setDiscountAmount(res.discountAmount);
+      setAppliedCouponCode(couponCode);
+      pushToast('Coupon applied successfully!', 'success');
     } catch (err) {
-       setDiscountAmount(0);
-       setAppliedCouponCode(null);
-       setCouponError(err?.data?.error || 'Failed to apply coupon.');
+      setDiscountAmount(0);
+      setAppliedCouponCode(null);
+      setCouponError(err?.data?.error || 'Failed to apply coupon.');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmittingRef.current) return;
+
+    if (!showPaymentSection) {
+      setShowPaymentSection(true);
+      setTimeout(() => {
+        const el = document.getElementById('payment-method-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
+
+    isSubmittingRef.current = true;
     setIsProcessing(true);
 
     try {
@@ -102,10 +118,34 @@ export const useCheckoutLogic = () => {
       } else {
         finalAddressId = selectedAddressId;
       }
+      setPendingAddressId(finalAddressId);
 
-      await checkoutOrder({addressId: finalAddressId, couponCode: appliedCouponCode}).unwrap();
+      if (['gpay', 'paytm', 'phonepe'].includes(paymentMethod)) {
+        setIsProcessing(false);
+        setShowPaymentModal(true);
+        isSubmittingRef.current = false;
+        return;
+      }
 
+      isSubmittingRef.current = false;
+      await finalizeOrder(finalAddressId);
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      pushToast('Checkout failed. Please check your details.', 'error');
       setIsProcessing(false);
+      isSubmittingRef.current = false;
+    }
+  };
+
+  const finalizeOrder = async (addressIdToUse) => {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+    setIsProcessing(true);
+    try {
+      const addrId = addressIdToUse || pendingAddressId;
+      await checkoutOrder({ addressId: addrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
+      setIsProcessing(false);
+      setShowPaymentModal(false);
       dispatch(clearCart());
       pushToast('Order placed successfully. Thank you for shopping with us.', 'success');
       navigate('/');
@@ -113,8 +153,10 @@ export const useCheckoutLogic = () => {
       console.error('Checkout failed:', error);
       pushToast('Checkout failed. Please try again or check your connection.', 'error');
       setIsProcessing(false);
+      setShowPaymentModal(false);
+      isSubmittingRef.current = false;
     }
   };
 
-  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, addresses, isLoadingAddresses };
+  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection };
 };

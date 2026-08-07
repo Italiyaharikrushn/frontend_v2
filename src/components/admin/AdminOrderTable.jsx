@@ -16,19 +16,21 @@ const AdminOrderTable = ({ isLoading, filteredOrders, activeTab, selectedOrders,
                 style={{ cursor: 'pointer' }}
               />
             </th>
+            <th>Order Id</th>
             <th>Order Name</th>
             <th>Image</th>
             <th>Customer</th>
             <th>Quantity</th>
             <th>Date</th>
             <th>Total</th>
+            <th>Payment</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+              <td colSpan="10" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
                 Loading orders...
               </td>
             </tr>
@@ -42,6 +44,9 @@ const AdminOrderTable = ({ isLoading, filteredOrders, activeTab, selectedOrders,
                     onChange={() => handleSelectOrder(order.id)}
                     style={{ cursor: 'pointer' }}
                   />
+                </td>
+                <td style={{ fontWeight: '500' }}>
+                  {order.orderId || order.id}
                 </td>
                 <td style={{ fontWeight: '500' }}>
                   {order.orderItems && order.orderItems.length > 0 ? (
@@ -106,6 +111,11 @@ const AdminOrderTable = ({ isLoading, filteredOrders, activeTab, selectedOrders,
                 <td>{new Date(order.orderDate).toLocaleDateString()}</td>
                 <td>₹{order.totalAmount}</td>
                 <td>
+                  <span className={`status-badge status-${order.paymentMethod ? order.paymentMethod.toLowerCase() : 'prepaid'}`} style={{ display: 'inline-block', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', background: 'var(--surface)', border: '1px solid var(--border)' }}>
+                    {order.paymentMethod}
+                  </span>
+                </td>
+                <td>
                   {activeTab === 'PENDING' && (
                     <Button variant="secondary" onClick={() => handleAcceptSingleOrder(order.id)} style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}>
                       Accept
@@ -130,7 +140,7 @@ const AdminOrderTable = ({ isLoading, filteredOrders, activeTab, selectedOrders,
             </Fragment>
           )) : (
             <tr>
-              <td colSpan="8" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
+              <td colSpan="10" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
                 No {activeTab} orders found.
               </td>
             </tr>

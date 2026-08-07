@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AdminDiscountTab from '../../components/admin/AdminDiscountTab';
 import AdminCouponsTab from '../../components/admin/AdminCouponsTab';
-import { Tag, Ticket, Gift } from 'lucide-react';
+import { Ticket, Gift, PartyPopper } from 'lucide-react';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminPromotions = () => {
@@ -38,7 +38,7 @@ const AdminPromotions = () => {
                         fontSize: '1rem'
                     }}
                 >
-                    <Tag size={18} /> Store Discounts
+                    <PartyPopper size={20} /> Store Discounts
                 </button>
                 <button 
                     onClick={() => setActiveTab('COUPONS')}

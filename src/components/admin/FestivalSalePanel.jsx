@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useAlert } from '../ui/AlertProvider';
 import { Tag, ChevronDown } from 'lucide-react';
 import Button from '../ui/Button';
 import { useGetCategoriesQuery, useGetProductsQuery } from '../../api/productApi';
@@ -131,6 +132,7 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
 };
 
 const FestivalSalePanel = ({ formData, setFormData, handleSave, isUpdating }) => {
+  const { alert } = useAlert();
   const { data: categories = [] } = useGetCategoriesQuery();
   const { data: allProductsData } = useGetProductsQuery(); // Fetch all to populate dropdown
   const products = Array.isArray(allProductsData) ? allProductsData : (allProductsData?.content || []);

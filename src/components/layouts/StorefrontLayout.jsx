@@ -20,9 +20,6 @@ const StorefrontLayout = () => {
         <Outlet />
       </main>
       <footer style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
-        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-          <Link to="/return-policy" style={{ color: 'var(--primary-dark)', textDecoration: 'none', fontSize: '0.9rem' }}>Return Policy</Link>
-        </div>
         <p>&copy; {new Date().getFullYear()} {storeSettings?.settings?.storeSettings?.storeName}. All rights reserved.</p>
       </footer>
     </div>

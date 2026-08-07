@@ -45,7 +45,7 @@ const DashboardHome = () => {
           <div className="summary-icon summary-icon-success"><IndianRupee size={24} /></div>
         </div>
 
-        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/returns')} style={{ cursor: 'pointer' }}>
           <div className="summary-info">
             <h3>Returns</h3>
             <div className="summary-value">{stats.returnedOrders}</div>

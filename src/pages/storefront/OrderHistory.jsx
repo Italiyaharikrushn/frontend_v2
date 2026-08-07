@@ -5,10 +5,9 @@ import { useOrderHistory } from '../../hooks/useOrderHistory';
 import Pagination from '../../components/ui/Pagination';
 
 const OrderHistory = () => {
-  const { 
-    orders, isLoading, page, setPage, totalPages, 
-    handleCancel, openReturnModal, closeReturnModal, submitReturn,
-    isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails 
+  const {
+    orders, isLoading, page, setPage, totalPages, closeReturnModal, submitReturn,
+    isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails
   } = useOrderHistory();
 
   return (
@@ -44,10 +43,10 @@ const OrderHistory = () => {
                         <div key={item.id || Math.random()} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                           <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-sm, 6px)', overflow: 'hidden', backgroundColor: 'var(--surface)', flexShrink: 0 }}>
                             {(item.productImage || (item.product && item.product.images && item.product.images.length > 0)) ? (
-                              <img 
-                                src={item.productImage || item.product.images[0]} 
-                                alt={item.productName || 'Product'} 
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                              <img
+                                src={item.productImage || item.product.images[0]}
+                                alt={item.productName || 'Product'}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 onError={(e) => {
                                   e.target.onerror = null;
                                   e.target.style.display = 'none';
@@ -78,25 +77,17 @@ const OrderHistory = () => {
                   <p style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total: ₹{order.totalAmount}</p>
                 </div>
               </div>
-              
+
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                   Items: {order.totalItems || (order.orderItems ? order.orderItems.length : 0)}
                 </p>
-                
+
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {(order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && order.status !== 'RETURNED') && (
-                    <Button variant="outline" onClick={() => handleCancel(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                      <X size={16} /> Cancel Order
-                    </Button>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>Orders cannot be cancelled after being placed.</p>
                   )}
-                  
-                  {order.status === 'DELIVERED' && (
-                    <Button variant="secondary" onClick={() => openReturnModal(order.id)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                      <RotateCcw size={16} /> Request Return
-                    </Button>
-                  )}
-                  
+
                   {order.status === 'RETURNED' && (
                     <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Processed</p>
                   )}
@@ -112,16 +103,16 @@ const OrderHistory = () => {
       )}
 
       {totalPages > 1 && (
-        <Pagination 
-          currentPage={page} 
-          totalPages={totalPages} 
-          onPageChange={setPage} 
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
         />
       )}
 
       {isReturnModalOpen && (
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div className="glass-panel" style={{ padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '400px' }}>
+        <div onClick={closeReturnModal} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
+          <div onClick={(e) => e.stopPropagation()} className="glass-panel" style={{ padding: '2rem', borderRadius: '8px', width: '90%', maxWidth: '400px' }}>
             <h3 style={{ marginBottom: '1rem' }}>Request Return</h3>
             <label style={{ display: 'block', marginBottom: '1rem' }}>
               Reason:

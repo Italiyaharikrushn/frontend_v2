@@ -9,7 +9,7 @@ import '@/styles/pages/storefront/ProductDetails.css';
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;
-  const { product, isLoading, isError, isAdding, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
+  const { product, isLoading, isError, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
 
   if (isLoading) {
     return <div className="product-details-container loading"><div className="spinner"></div></div>;
@@ -92,14 +92,14 @@ const ProductDetails = ({ productId: propId, onClose }) => {
             <button
               className="btn-add-to-cart"
               onClick={handleAddToCart}
-              disabled={!product.active || isAdding || (isPhoneCover && !phoneModel.trim())}
+              disabled={!product.active || (isPhoneCover && !phoneModel.trim())}
             >
               ADD TO CART
             </button>
             <button
               className="btn-buy-now"
               onClick={handleBuyNow}
-              disabled={!product.active || isAdding || (isPhoneCover && !phoneModel.trim())}
+              disabled={!product.active || (isPhoneCover && !phoneModel.trim())}
             >
               BUY NOW
             </button>

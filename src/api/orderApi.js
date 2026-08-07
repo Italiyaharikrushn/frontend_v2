@@ -102,10 +102,13 @@ export const orderApi = createApi({
         }),
 
         checkoutOrder: builder.mutation({
-            query: ({addressId, couponCode}) => {
+            query: ({addressId, couponCode, paymentMethod}) => {
                 let url = `/api/orders/checkout?addressId=${addressId}`;
                 if (couponCode) {
                     url += `&couponCode=${encodeURIComponent(couponCode)}`;
+                }
+                if (paymentMethod) {
+                    url += `&paymentMethod=${encodeURIComponent(paymentMethod)}`;
                 }
                 return {
                     url: url,

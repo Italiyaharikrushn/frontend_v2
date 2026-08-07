@@ -3,6 +3,7 @@ import Button from '../../components/ui/Button';
 import { useCheckoutLogic } from '../../hooks/useCheckoutLogic';
 import CheckoutForm from '../../components/storefront/CheckoutForm';
 import CheckoutSummary from '../../components/storefront/CheckoutSummary';
+import PaymentModal from '../../components/storefront/PaymentModal';
 import '@/styles/pages/storefront/Checkout.css';
 
 const Checkout = () => {
@@ -10,7 +11,7 @@ const Checkout = () => {
     cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, 
     isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, 
     appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, 
-    addresses, isLoadingAddresses 
+    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection
   } = useCheckoutLogic();
 
   if (cartItems.length === 0) {
@@ -40,6 +41,7 @@ const Checkout = () => {
           setSelectedAddressId={setSelectedAddressId}
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
+          showPaymentSection={showPaymentSection}
         />
 
         <CheckoutSummary
@@ -53,6 +55,15 @@ const Checkout = () => {
           discountAmount={discountAmount}
           couponError={couponError}
           validateCoupon={validateCoupon}
+          showPaymentSection={showPaymentSection}
+        />
+        
+        <PaymentModal 
+          isOpen={showPaymentModal} 
+          onClose={() => setShowPaymentModal(false)}
+          paymentMethod={paymentMethod}
+          total={total}
+          onConfirm={() => finalizeOrder()}
         />
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Package } from 'lucide-react';
+import { LogOut, Package, User, MapPin } from 'lucide-react';
 import { logout, selectUserName, selectUserEmail } from '../../redux/authSlice';
 import '@/styles/components/CustomerProfileMenu.css';
 
@@ -72,6 +72,16 @@ const CustomerProfileMenu = () => {
             {userEmail && <p className="profile-email">{userEmail}</p>}
             {!userName && !userEmail && <p className="profile-name">Customer</p>}
           </div>
+          <div className="dropdown-divider"></div>
+          <button className="dropdown-action-btn" onClick={() => { navigate('/profile'); setIsOpen(false); }}>
+            <User size={16} />
+            <span>Profile Settings</span>
+          </button>
+          {/* <div className="dropdown-divider"></div>
+          <button className="dropdown-action-btn" onClick={() => { navigate('/addresses'); setIsOpen(false); }}>
+            <MapPin size={16} />
+            <span>Address Book</span>
+          </button> */}
           <div className="dropdown-divider"></div>
           <button className="dropdown-action-btn" onClick={() => { navigate('/orders'); setIsOpen(false); }}>
             <Package size={16} />

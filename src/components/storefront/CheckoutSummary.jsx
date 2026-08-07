@@ -2,7 +2,7 @@ import React from 'react';
 import { ShoppingBag, Lock, Tag, Ticket, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from '../ui/Button';
 
-const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon }) => {
+const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, showPaymentSection }) => {
   return (
     <div className="checkout-summary glass-panel">
       <h2 className="form-card-title">Order Summary</h2>
@@ -83,7 +83,7 @@ const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode,
 
         <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
         <Button type="submit" form="checkout-form" variant="primary" size="lg" fullWidth disabled={isProcessing} style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-          {isProcessing ? 'Processing...' : (<><Lock size={18} /> Pay ₹{total.toFixed(2)}</>)}
+          {isProcessing ? 'Processing...' : (<><Lock size={18} /> {showPaymentSection ? `Pay ₹${total.toFixed(2)}` : 'Provide Payment'}</>)}
         </Button>
         <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
           Your payment information is processed securely. We do not store credit card details.

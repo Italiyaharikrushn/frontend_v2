@@ -93,7 +93,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
-      doc.text(order.paymentMethod === 'COD' ? 'COD: Check the payable amount on the app' : 'PREPAID ORDER', margin + leftBoxWidth + 2, currentY + 5.5);
+      doc.text('PREPAID ORDER', margin + leftBoxWidth + 2, currentY + 5.5);
       
       doc.setTextColor(0, 0, 0);
       doc.setFont('helvetica', 'bold');

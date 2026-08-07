@@ -11,7 +11,8 @@ const CheckoutForm = ({
   selectedAddressId,
   setSelectedAddressId,
   paymentMethod,
-  setPaymentMethod
+  setPaymentMethod,
+  showPaymentSection
 }) => {
   return (
     <div className="checkout-form-section">
@@ -122,42 +123,31 @@ const CheckoutForm = ({
           )}
         </div>
 
-        <div className="form-card glass-panel hover-lift">
-          <h2 className="form-card-title"><CreditCard size={20} /> Payment Method</h2>
-          <div className="payment-methods">
-            <button type="button" className={`payment-method-card ${paymentMethod === 'cod' ? 'active' : ''}`} onClick={() => setPaymentMethod('cod')}>
-              <Wallet size={18} />
-              <span>Cash on Delivery</span>
-            </button>
-            <button type="button" className={`payment-method-card ${paymentMethod === 'card' ? 'active' : ''}`} onClick={() => setPaymentMethod('card')}>
-              <CreditCard size={18} />
-              <span>Credit Card</span>
-            </button>
+        {showPaymentSection && (
+          <div id="payment-method-section" className="form-card glass-panel hover-lift fade-in">
+            <h2 className="form-card-title"><CreditCard size={20} /> Payment Method</h2>
+            <div className="payment-methods">
+              <button type="button" className={`payment-method-card ${paymentMethod === 'gpay' ? 'active' : ''}`} onClick={() => setPaymentMethod('gpay')}>
+                <Wallet size={18} />
+                <span>GPay</span>
+              </button>
+              <button type="button" className={`payment-method-card ${paymentMethod === 'paytm' ? 'active' : ''}`} onClick={() => setPaymentMethod('paytm')}>
+                <Wallet size={18} />
+                <span>Paytm</span>
+              </button>
+              <button type="button" className={`payment-method-card ${paymentMethod === 'phonepe' ? 'active' : ''}`} onClick={() => setPaymentMethod('phonepe')}>
+                <Wallet size={18} />
+                <span>PhonePe</span>
+              </button>
+            </div>
+
+            {(paymentMethod === 'gpay' || paymentMethod === 'paytm' || paymentMethod === 'phonepe') && (
+              <div className="form-grid full fade-in">
+                <p style={{ color: 'var(--text-muted)' }}>You will be securely redirected to {paymentMethod === 'gpay' ? 'Google Pay' : paymentMethod === 'paytm' ? 'Paytm' : 'PhonePe'} to complete your purchase.</p>
+              </div>
+            )}
           </div>
-
-          {paymentMethod === 'card' && (
-            <div className="form-grid fade-in">
-              <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                <label htmlFor="cardNumber">Card Number (Demo - Leave Blank)</label>
-                <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" />
-              </div>
-              <div className="input-group">
-                <label htmlFor="expDate">Expiration Date</label>
-                <input type="text" id="expDate" placeholder="MM/YY" />
-              </div>
-              <div className="input-group">
-                <label htmlFor="cvc">CVC</label>
-                <input type="text" id="cvc" placeholder="123" />
-              </div>
-            </div>
-          )}
-
-          {paymentMethod === 'cod' && (
-            <div className="form-grid full fade-in">
-              <p style={{ color: 'var(--text-muted)' }}>You will pay for your order upon delivery. No payment details required.</p>
-            </div>
-          )}
-        </div>
+        )}
       </form>
     </div>
   );
