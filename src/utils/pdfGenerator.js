@@ -219,10 +219,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
       const splitSellerAddr = doc.splitTextToSize(sellerAddrStr, billRightWidth - 4);
       doc.text(splitSellerAddr, margin + billLeftWidth + 2, sellerY);
       sellerY += splitSellerAddr.length * 3.5;
-      
-      doc.setFont('helvetica', 'bold');
-      doc.text(`GSTIN - ${storeSettings?.settings?.taxSettings?.gstin || 'Unregistered'}`, margin + billLeftWidth + 2, sellerY + 2);
-      
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(7);
       doc.setFont('helvetica', 'normal');
       sellerY += 8;
@@ -253,10 +250,9 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
               const qty = item.quantity || 1;
               const price = item.price || 0;
               const totalItemPrice = qty * price;
-              
-              const taxRate = 0.05; // 5% IGST example
-              const taxableVal = totalItemPrice / (1 + taxRate);
-              const taxAmt = totalItemPrice - taxableVal;
+              const taxRate = 0;
+              const taxableVal = totalItemPrice;
+              const taxAmt = 0;
               
               sumTaxable += taxableVal;
               sumTax += taxAmt;
@@ -269,7 +265,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
                   `Rs.${totalItemPrice.toFixed(2)}`,
                   `Rs.0.00`,
                   `Rs.${taxableVal.toFixed(2)}`,
-                  `IGST @5.0%\nRs.${taxAmt.toFixed(2)}`,
+                  `Rs.0.00`,
                   `Rs.${totalItemPrice.toFixed(2)}`
               ]);
           });
@@ -280,9 +276,9 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
       
       const otherCharges = order.totalAmount - sumTotal;
       if (otherCharges > 0.01 || otherCharges < -0.01) {
-          const shipTaxRate = 0.05;
-          const shipTaxable = otherCharges / (1 + shipTaxRate);
-          const shipTax = otherCharges - shipTaxable;
+          const shipTaxRate = 0;
+          const shipTaxable = otherCharges;
+          const shipTax = 0;
           sumTaxable += shipTaxable;
           sumTax += shipTax;
           sumTotal += otherCharges;
@@ -294,7 +290,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
               `Rs.${otherCharges.toFixed(2)}`,
               'Rs.0.00',
               `Rs.${shipTaxable.toFixed(2)}`,
-              `IGST @5.0%\nRs.${shipTax.toFixed(2)}`,
+              `Rs.0.00`,
               `Rs.${otherCharges.toFixed(2)}`
           ]);
       }

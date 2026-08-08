@@ -16,7 +16,6 @@ export const profileApi = createApi({
                     return {
                         id: 1,
                         shopName: 'SuperMart Electronics (Preview)',
-                        gstNumber: '22AAAAA0000A1Z5',
                         bankName: 'HDFC Bank',
                         accountNumber: '501002341234',
                         ifscCode: 'HDFC0001234',
