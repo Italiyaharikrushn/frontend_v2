@@ -26,7 +26,9 @@ const Home = () => {
           alignItems: 'center',
           gap: '1rem',
           width: '280px',
-          flexShrink: 0
+          flexShrink: 0,
+          contentVisibility: 'auto',
+          containIntrinsicSize: '1px 400px'
         }}
       >
         <Link
