@@ -5,6 +5,7 @@ import AdminProductForm from '../../components/admin/AdminProductForm';
 import Pagination from '../../components/ui/Pagination';
 import { useAdminProducts } from '../../hooks/useAdminProducts';
 import '@/styles/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminProducts.css';
 
 const AdminProducts = () => {
   const { products, totalPages, page, setPage, isLoading, isFormOpen, editingProduct, handleOpenForm, handleCloseForm, handleDelete, handleBulkUploadClick } = useAdminProducts();
@@ -54,20 +55,20 @@ const AdminProducts = () => {
                   <tr key={product.id || idx}>
                     <td>
                       {product.images && product.images.length > 0 ? (
-                        <img src={product.images[0]} alt="product" style={{ width: '48px', height: '48px', borderRadius: '8px', objectFit: 'cover', border: '1px solid var(--border)' }} />
+                        <img src={product.images[0]} alt="product" className="admin-products-img" />
                       ) : (
-                        <div style={{ width: '48px', height: '48px', borderRadius: '8px', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+                        <div className="admin-products-img-placeholder">
                           <ImageIcon size={20} />
                         </div>
                       )}
                     </td>
                     <td>
-                      <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ fontWeight: '600', color: 'var(--text-main)' }}>{product.title || 'Untitled'}</span>
+                      <div className="admin-products-td-title">
+                        <span className="admin-products-title">{product.title || 'Untitled'}</span>
                       </div>
                     </td>
                     <td>{product.sku || 'N/A'}</td>
-                    <td style={{ fontWeight: '500' }}>₹{product.price}</td>
+                    <td className="admin-products-price">₹{product.price}</td>
                     <td>{product.stock}</td>
                     <td>
                       <span className={`status-badge ${(product.isActive ?? product.active ?? true) ? 'status-active' : 'status-inactive'}`}>
@@ -83,7 +84,7 @@ const AdminProducts = () => {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan="7" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No products found in the database.</td>
+                    <td colSpan="7" className="admin-products-empty">No products found in the database.</td>
                   </tr>
                 )}
               </tbody>

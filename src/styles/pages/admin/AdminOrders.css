@@ -1,37 +1,73 @@
-.admin-orders {
+/* AdminOrders Styles */
+.admin-search-toolbar-filter {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.orders-card-header {
-  display: flex;
-  justify-content: space-between;
+  gap: 0.5rem;
   align-items: center;
-  padding: 1.5rem;
 }
 
-.font-semibold {
-  font-weight: 700;
-}
-
-.text-primary {
-  color: var(--primary);
-}
-
-[data-theme="dark"] .text-primary {
-  color: var(--accent);
-}
-
-.badge-info {
-  background-color: rgba(2, 132, 199, 0.12);
-  color: var(--info);
-  border: 1px solid rgba(2, 132, 199, 0.25);
-}
-
-.badge-secondary {
-  background-color: var(--surface-alt);
-  color: var(--text-muted);
+.label-dropdown-button {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: var(--surface);
   border: 1px solid var(--border);
+  color: var(--text-main);
+  padding: 0.6rem 1rem;
 }
 
+.label-dropdown-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+}
+
+.label-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  padding: 1rem;
+  z-index: 50;
+  border-radius: var(--radius-md);
+  min-width: 180px;
+}
+
+.label-dropdown-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.label-dropdown-item:last-of-type {
+  margin-bottom: 1rem;
+}
+
+.label-dropdown-clear {
+  color: #4F46E5;
+  font-weight: 600;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.admin-bulk-actions {
+  padding: 1rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.admin-bulk-actions-text {
+  font-weight: 600;
+  color: var(--text-main);
+}

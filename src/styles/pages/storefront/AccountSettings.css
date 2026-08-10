@@ -1,0 +1,61 @@
+/* Account Settings Page Styles */
+
+.account-settings-container {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.account-settings-title {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.account-settings-panel {
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.account-settings-panel-title {
+    margin-bottom: 1.5rem;
+    color: var(--primary-dark);
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.account-settings-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.account-settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.account-settings-password-wrapper {
+    position: relative;
+}
+
+.account-settings-password-input {
+    padding-right: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.account-settings-password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+}

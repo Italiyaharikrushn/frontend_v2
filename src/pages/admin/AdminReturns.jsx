@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, X, RotateCcw, ShoppingBag, Loader } from 'lucide-react';
+import { Check, X, RotateCcw, Loader } from 'lucide-react';
 import { useGetAllReturnRequestsQuery, useUpdateReturnStatusMutation } from '../../api/returnApi';
-import Button from '../../components/ui/Button';
 import { useToast } from '../../hooks/useToast';
+import Button from '../../components/ui/Button';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminReturns = () => {

@@ -13,7 +13,7 @@ import Cart from '../pages/storefront/Cart';
 import Contact from '../pages/storefront/Contact';
 import Checkout from '../pages/storefront/Checkout';
 import OrderHistory from '../pages/storefront/OrderHistory';
-import ReturnPolicyPage from '../pages/storefront/ReturnPolicyPage';
+import PolicyPage from '../pages/storefront/PolicyPage';
 // import AddressBook from '../pages/storefront/AddressBook';
 import AccountSettings from '../pages/storefront/AccountSettings';
 
@@ -26,7 +26,7 @@ const CustomerRoutes = () => {
         <Route path="product/:id" element={<ProductDetails />} />
         <Route path="cart" element={<Cart />} />
         <Route path="contact" element={<Contact />} />
-        <Route path="return-policy" element={<ReturnPolicyPage />} />
+        <Route path="policies/:type" element={<PolicyPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="checkout" element={<Checkout />} />
           <Route path="orders" element={<OrderHistory />} />

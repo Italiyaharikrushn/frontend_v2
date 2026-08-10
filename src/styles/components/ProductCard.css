@@ -1,0 +1,55 @@
+/* ProductCard Styles */
+
+.product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 280px;
+  flex-shrink: 0;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 400px;
+}
+
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  width: 100%;
+}
+
+.product-card-image-container {
+  width: 100%;
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--surface);
+}
+
+.product-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card-image:hover {
+  transform: scale(1.05);
+}
+
+.product-card-placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.product-card-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  text-align: center;
+}

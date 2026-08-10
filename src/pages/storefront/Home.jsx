@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Truck, ShieldCheck, Award, Headphones } from 'lucide-react';
+import { Truck, ShieldCheck, Award, Headphones } from 'lucide-react';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import { CraftyLogoEmblem } from '../../components/common/CraftyLogo';
 import { useHome } from '../../hooks/useHome';
 import ProductDetails from './ProductDetails';
+import ProductCard from '../../components/storefront/ProductCard';
 import '@/styles/pages/storefront/Home.css';
 
 const Home = () => {
@@ -14,61 +15,6 @@ const Home = () => {
     quickViewProductId,
     setQuickViewProductId,
   } = useHome();
-
-  const renderProductCard = (product, index, isDup = false) => {
-    const pId = product._id || product.id || index;
-    return (
-      <div
-        key={isDup ? `${pId}-dup` : pId}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '1rem',
-          width: '280px',
-          flexShrink: 0,
-          contentVisibility: 'auto',
-          containIntrinsicSize: '1px 400px'
-        }}
-      >
-        <Link
-          to={product.category ? `/products?category=${encodeURIComponent(product.category.toLowerCase())}` : `/products`}
-          style={{ textDecoration: 'none', color: 'inherit', display: 'block', width: '100%' }}
-          className="hover-lift"
-        >
-          <div style={{
-            width: '100%',
-            height: '350px',
-            borderRadius: '12px',
-            overflow: 'hidden',
-            boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            {product.images && product.images.length > 0 ? (
-              <img
-                src={product.images[0]}
-                alt={product.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }}
-                onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'}
-                onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.style.display = 'none';
-                }}
-              />
-            ) : (
-              <ShoppingBag size={48} className="pulse-element" style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
-            )}
-          </div>
-        </Link>
-        <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500, color: '#333', textAlign: 'center' }}>
-          {product.title}
-        </h3>
-      </div>
-    );
-  };
 
   return (
     <div className="home-page">
@@ -174,17 +120,21 @@ const Home = () => {
               <div className="marquee-container">
                 <div className="marquee-track">
                   <div className="marquee-content">
-                    {trendingProducts.map((product, index) => renderProductCard(product, index, false))}
+                    {trendingProducts.map((product) => (
+                      <ProductCard key={product.id || product._id} product={product} />
+                    ))}
                   </div>
                   <div className="marquee-content" aria-hidden="true">
-                    {trendingProducts.map((product, index) => renderProductCard(product, index, true))}
+                    {trendingProducts.map((product) => (
+                      <ProductCard key={`${product.id || product._id}-dup`} product={product} />
+                    ))}
                   </div>
                 </div>
               </div>
             ) : trendingProducts.length === 1 ? (
               /* Single card row: Centered without autoplay */
               <div className="single-card-row">
-                {renderProductCard(trendingProducts[0], 0, false)}
+                <ProductCard product={trendingProducts[0]} />
               </div>
             ) : (
               <div className="products-empty" style={{ gridColumn: '1 / -1' }}>
@@ -206,5 +156,3 @@ const Home = () => {
 };
 
 export default Home;
-
-

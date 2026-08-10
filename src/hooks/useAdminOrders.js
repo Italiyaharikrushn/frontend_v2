@@ -8,6 +8,7 @@ export const useAdminOrders = () => {
   const { pushToast } = useToast();
   const [activeTab, setActiveTab] = useState('PENDING');
   const [labelFilter, setLabelFilter] = useState('');
+  const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
 
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [page, setPage] = useState(0);
@@ -108,6 +109,8 @@ export const useAdminOrders = () => {
     setActiveTab: handleTabChange,
     labelFilter,
     setLabelFilter,
+    isLabelDropdownOpen,
+    setIsLabelDropdownOpen,
     selectedOrders,
     setSelectedOrders,
     downloadedLabels,

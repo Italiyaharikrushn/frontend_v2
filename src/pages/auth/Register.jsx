@@ -4,72 +4,63 @@ import { UserPlus, User, Lock, Mail, Phone, Eye, EyeOff, CheckCircle, XCircle } 
 import Button from '../../components/ui/Button';
 import PhoneInput from '../../components/ui/PhoneInput';
 import { useRegister } from '../../hooks/useRegister';
+import { getPasswordRulesCol1, getPasswordRulesCol2 } from '../../utils/validationRules';
 import '@/styles/pages/auth/Login.css';
 
 const Register = () => {
   const { formData, setFormData, showPassword, setShowPassword, error, success, isLoading, storeSettings, handleChange, handleRegister } = useRegister();
 
-  const passwordRulesCol1 = [
-    { label: 'At least 8 characters', met: formData.password.length >= 8 },
-    { label: 'Uppercase letter', met: /[A-Z]/.test(formData.password) },
-    { label: 'Lowercase letter', met: /[a-z]/.test(formData.password) },
-  ];
-
-  const passwordRulesCol2 = [
-    { label: 'Number', met: /\d/.test(formData.password) },
-    { label: 'Special character', met: /[^a-zA-Z\d]/.test(formData.password) },
-  ];
+  const passwordRulesCol1 = getPasswordRulesCol1(formData.password);
+  const passwordRulesCol2 = getPasswordRulesCol2(formData.password);
 
   return (
-    <div className="login-page fade-in" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', backgroundColor: 'var(--bg-main)', padding: '2rem' }}>
-      <div className="glass-panel hover-lift" style={{ width: '100%', maxWidth: '450px', padding: '2.5rem', borderRadius: 'var(--radius-lg)' }}>
-
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '64px', height: '64px', borderRadius: '50%', background: 'var(--primary)', color: 'white', marginBottom: '1rem' }}>
+    <div className="login-page fade-in">
+      <div className="auth-card glass-panel hover-lift">
+        <div className="auth-card-header">
+          <div className="auth-icon">
             <UserPlus size={32} />
           </div>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold', color: 'var(--text-main)' }}>Create an Account</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '0.5rem' }}>Join {storeSettings?.settings?.storeSettings?.storeName} today</p>
+          <h1>Create an Account</h1>
+          <p>Join {storeSettings?.settings?.storeSettings?.storeName} today</p>
         </div>
 
-        {error && <div style={{ background: '#fee2e2', color: '#b91c1c', padding: '0.75rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontSize: '0.875rem', textAlign: 'center' }}>{error}</div>}
-        {success && <div style={{ background: '#dcfce3', color: '#166534', padding: '0.75rem', borderRadius: 'var(--radius-md)', marginBottom: '1.5rem', fontSize: '0.875rem', textAlign: 'center' }}>{success}</div>}
+        {error && <div className="auth-error">{error}</div>}
+        {success && <div className="auth-success">{success}</div>}
 
-        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-
+        <form onSubmit={handleRegister} className="auth-form">
           <div className="input-group">
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><User size={16} /> Full Name</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" required style={{ width: '100%', padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+            <label htmlFor="name"><User size={16} /> Full Name</label>
+            <input id="name" type="text" name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" required />
           </div>
 
           <div className="input-group">
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Mail size={16} /> Email Address</label>
-            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required style={{ width: '100%', padding: '0.875rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
+            <label htmlFor="email"><Mail size={16} /> Email Address</label>
+            <input id="email" type="email" name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required />
           </div>
 
           <div className="input-group">
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Lock size={16} /> Password</label>
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <input type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required style={{ width: '100%', padding: '0.875rem', paddingRight: '2.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)' }} />
-              <button type="button" onClick={() => setShowPassword(!showPassword)} style={{ position: 'absolute', right: '0.75rem', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', padding: 0 }}>
+            <label htmlFor="password"><Lock size={16} /> Password</label>
+            <div className="password-input-wrapper">
+              <input id="password" type={showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleChange} placeholder="••••••••" required />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="password-toggle-btn">
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
             {formData.password && (
-              <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.35rem', padding: '0.75rem', background: 'rgba(0,0,0,0.02)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)' }}>
-                <div style={{ fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-main)', marginBottom: '0.25rem' }}>Password Requirements:</div>
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+              <div className="password-requirements">
+                <div className="password-requirements-title">Password Requirements:</div>
+                <div className="password-requirements-grid">
+                  <div className="password-requirements-col">
                     {passwordRulesCol1.map((rule, index) => (
-                      <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}>
+                      <div key={index} className="password-requirement-item">
                         {rule.met ? <CheckCircle size={14} color="#16a34a" /> : <XCircle size={14} color="#94a3b8" />}
                         <span style={{ color: rule.met ? '#16a34a' : 'var(--text-muted)' }}>{rule.label}</span>
                       </div>
                     ))}
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1 }}>
+                  <div className="password-requirements-col">
                     {passwordRulesCol2.map((rule, index) => (
-                      <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}>
+                      <div key={index} className="password-requirement-item">
                         {rule.met ? <CheckCircle size={14} color="#16a34a" /> : <XCircle size={14} color="#94a3b8" />}
                         <span style={{ color: rule.met ? '#16a34a' : 'var(--text-muted)' }}>{rule.label}</span>
                       </div>
@@ -81,7 +72,7 @@ const Register = () => {
           </div>
 
           <div className="input-group">
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={16} /> Phone Number</label>
+            <label htmlFor="phone"><Phone size={16} /> Phone Number</label>
             <PhoneInput
               name="phone"
               id="phone"
@@ -91,18 +82,16 @@ const Register = () => {
             />
           </div>
 
-
           <Button type="submit" variant="primary" size="lg" fullWidth disabled={isLoading} style={{ marginTop: '1rem' }}>
             {isLoading ? 'Registering...' : 'Register'}
           </Button>
-
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          Already have an account? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>Sign In</Link>
+        <p className="auth-footer">
+          Already have an account? <Link to="/login">Sign In</Link>
         </p>
-        <p style={{ textAlign: 'center', marginTop: '0.75rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-          <Link to="/" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>Back to Home</Link>
+        <p className="auth-footer" style={{ marginTop: '0.75rem' }}>
+          <Link to="/">Back to Home</Link>
         </p>
       </div>
     </div>

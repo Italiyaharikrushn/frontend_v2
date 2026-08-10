@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, Search, X, LogIn, User } from "lucide-react";
@@ -36,8 +36,8 @@ const Header = () => {
     return "U";
   };
 
-  const mobileSearchRef = React.useRef(null);
-  React.useEffect(() => {
+  const mobileSearchRef = useRef(null);
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (isSearchOpen && mobileSearchRef.current && !mobileSearchRef.current.contains(event.target)) {
         if (!event.target.closest('.search-trigger')) {

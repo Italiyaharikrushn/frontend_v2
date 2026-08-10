@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import { Download, Filter, Search, ChevronDown, ChevronUp } from 'lucide-react';
+import React from 'react';
+import { Download, Filter, ChevronDown, ChevronUp } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import AdminOrderTable from '../../components/admin/AdminOrderTable';
 import AdminOrderTabs from '../../components/admin/AdminOrderTabs';
 import { useAdminOrders } from '../../hooks/useAdminOrders';
 import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
+import '@/styles/pages/admin/AdminOrders.css';
 
 const AdminOrders = () => {
-  const [isLabelDropdownOpen, setIsLabelDropdownOpen] = useState(false);
-
   const {
     activeTab,
     setActiveTab,
     labelFilter,
     setLabelFilter,
+    isLabelDropdownOpen,
+    setIsLabelDropdownOpen,
     selectedOrders,
     setSelectedOrders,
     downloadedLabels,
@@ -42,25 +43,25 @@ const AdminOrders = () => {
 
         <div className="admin-search-toolbar">
 
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+          <div className="admin-search-toolbar-filter">
             <Filter size={18} /> Filter :
           </div>
           {activeTab === 'READY_TO_SHIP' && (
             <div style={{ position: 'relative' }}>
-              <Button variant="secondary" onClick={() => setIsLabelDropdownOpen(!isLabelDropdownOpen)} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-main)', padding: '0.6rem 1rem' }}>
+              <Button variant="secondary" onClick={() => setIsLabelDropdownOpen(!isLabelDropdownOpen)} className="label-dropdown-button">
                 Label downloaded {isLabelDropdownOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
               </Button>
               {isLabelDropdownOpen && (
                 <>
-                  <div onClick={() => setIsLabelDropdownOpen(false)} style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 40 }} />
-                  <div className="glass-panel" style={{ position: 'absolute', top: '100%', left: 0, marginTop: '0.5rem', padding: '1rem', zIndex: 50, borderRadius: 'var(--radius-md)', minWidth: '180px' }}>
-                    <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '0.75rem', cursor: 'pointer', color: 'var(--text-main)' }}>
+                  <div onClick={() => setIsLabelDropdownOpen(false)} className="label-dropdown-overlay" />
+                  <div className="glass-panel label-dropdown-menu">
+                    <label className="label-dropdown-item">
                       <input type="radio" name="labelFilter" checked={labelFilter === 'YES'} onChange={() => { setLabelFilter('YES'); setIsLabelDropdownOpen(false); }} /> Yes
                     </label>
-                    <label style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1rem', cursor: 'pointer', color: 'var(--text-main)' }}>
+                    <label className="label-dropdown-item">
                       <input type="radio" name="labelFilter" checked={labelFilter === 'NO'} onChange={() => { setLabelFilter('NO'); setIsLabelDropdownOpen(false); }} /> No
                     </label>
-                    <button onClick={() => { setLabelFilter(''); setIsLabelDropdownOpen(false); }} style={{ color: '#4F46E5', fontWeight: '600', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: '0.9rem' }}>
+                    <button onClick={() => { setLabelFilter(''); setIsLabelDropdownOpen(false); }} className="label-dropdown-clear">
                       Clear Filter
                     </button>
                   </div>
@@ -89,8 +90,8 @@ const AdminOrders = () => {
         />
 
         {selectedOrders.length > 0 && (
-          <div className="admin-bulk-actions" style={{ padding: '1rem', background: 'var(--surface)', borderTop: '1px solid var(--border)', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <span style={{ fontWeight: '600', color: 'var(--text-main)' }}>{selectedOrders.length} order(s) selected</span>
+          <div className="admin-bulk-actions">
+            <span className="admin-bulk-actions-text">{selectedOrders.length} order(s) selected</span>
             {activeTab === 'PENDING' && (
               <Button variant="primary" onClick={handleAcceptOrders}>
                 Accept Orders

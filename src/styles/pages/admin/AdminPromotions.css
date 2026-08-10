@@ -1,0 +1,41 @@
+/* AdminPromotions Styles */
+.admin-promotions-header {
+  margin-bottom: 1.5rem;
+}
+
+.admin-promotions-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-promotions-title-icon {
+  color: var(--primary);
+}
+
+.admin-promotions-tabs {
+  display: flex;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.admin-promotions-tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.admin-promotions-tab-btn.active {
+  border-bottom: 2px solid var(--primary);
+  color: var(--primary);
+}

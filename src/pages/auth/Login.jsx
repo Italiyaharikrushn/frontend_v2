@@ -30,7 +30,7 @@ const Login = () => {
           <div className="input-group">
             <label htmlFor="password"><Lock size={16} /> Password</label>
             <div className="password-input-wrapper">
-              <input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required style={{ width: '100%' }} />
+              <input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required />
               <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)} aria-label="Toggle password visibility">
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -45,7 +45,7 @@ const Login = () => {
         <p className="auth-footer">
           Don't have an account? <Link to="/register">Register</Link>
         </p>
-        <p className="auth-footer" style={{ marginTop: '0.75rem' }}>
+        <p className="auth-footer auth-footer-bottom">
           <Link to="/">Back to Home</Link>
         </p>
       </div>

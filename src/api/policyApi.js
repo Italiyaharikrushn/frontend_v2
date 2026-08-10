@@ -6,13 +6,13 @@ export const policyApi = createApi({
     baseQuery: customFetchBaseQuery,
     tagTypes: ['Policy'],
     endpoints: (builder) => ({
-        getReturnPolicy: builder.query({
-            query: () => 'api/policy/return',
+        getStorePolicy: builder.query({
+            query: () => 'api/policy/store',
             providesTags: ['Policy']
         }),
-        updateReturnPolicy: builder.mutation({
+        updateStorePolicy: builder.mutation({
             query: (policyData) => ({
-                url: 'api/policy/return',
+                url: 'api/policy/store',
                 method: 'PUT',
                 body: policyData
             }),
@@ -22,6 +22,6 @@ export const policyApi = createApi({
 });
 
 export const {
-    useGetReturnPolicyQuery,
-    useUpdateReturnPolicyMutation
+    useGetStorePolicyQuery,
+    useUpdateStorePolicyMutation
 } = policyApi;
