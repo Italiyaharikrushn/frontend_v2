@@ -69,9 +69,6 @@ const AdminPolicies = () => {
 
       {/* Written policies Card */}
       <div className="policy-card">
-        <div className="policy-action-button">
-          <MoreHorizontal size={20} />
-        </div>
         <div className="policy-card-header">
           <h2 className="policy-card-title">Written policies</h2>
           <p className="policy-card-subtitle">
