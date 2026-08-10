@@ -134,7 +134,7 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 0.92rem;
+  font-size: clamp(0.78rem, 0.46rem + 0.92vw, 0.92rem);
   font-weight: 500;
   text-align: left;
 }
@@ -155,7 +155,7 @@
 .profile-name {
   font-weight: 700;
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   margin-bottom: 0.2rem;
   white-space: nowrap;
   overflow: hidden;
@@ -164,7 +164,7 @@
 
 .profile-email {
   color: var(--text-muted);
-  font-size: 0.82rem;
+  font-size: clamp(0.70rem, 0.41rem + 0.82vw, 0.82rem);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

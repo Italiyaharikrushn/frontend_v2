@@ -39,7 +39,7 @@
 
 .sidebar-brand {
   font-family: var(--font-serif, 'Playfair Display', serif);
-  font-size: 1.25rem;
+  font-size: clamp(1.06rem, 0.63rem + 1.25vw, 1.25rem);
   font-weight: 700;
   color: var(--primary-light);
   margin: 0;
@@ -86,7 +86,7 @@
   cursor: pointer;
   border: none;
   background: none;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   width: 100%;
 }
 

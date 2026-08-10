@@ -85,7 +85,7 @@
 }
 
 .summary-info h3 {
-  font-size: 0.82rem;
+  font-size: clamp(0.70rem, 0.41rem + 0.82vw, 0.82rem);
   color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
@@ -205,7 +205,7 @@
 }
 
 .chart-title {
-  font-size: 1.15rem;
+  font-size: clamp(0.98rem, 0.57rem + 1.15vw, 1.15rem);
   margin-bottom: 1.25rem;
   color: var(--text-main);
   font-weight: 700;
@@ -263,7 +263,7 @@
   background-color: var(--surface-alt);
   color: var(--text-muted);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-bottom: 1px solid var(--border);
@@ -276,7 +276,7 @@
   color: var(--text-main);
   vertical-align: middle;
   word-break: break-word;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 .admin-table tr:hover {
@@ -286,7 +286,7 @@
 .status-badge {
   padding: 0.3rem 0.85rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   font-weight: 700;
   display: inline-block;
   letter-spacing: 0.02em;
@@ -371,7 +371,7 @@
 
 .admin-form-field label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   color: var(--text-main);
 }
 
@@ -385,7 +385,7 @@
   background: var(--surface);
   color: var(--text-main);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   min-height: 44px;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
@@ -457,7 +457,7 @@
   margin-left: 0.55rem;
   color: var(--text-main);
   width: 100%;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 .admin-message-card {
@@ -608,7 +608,7 @@
   background: var(--surface);
   color: var(--text-main);
   font-family: inherit;
-  font-size: 0.88rem;
+  font-size: clamp(0.75rem, 0.44rem + 0.88vw, 0.88rem);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
@@ -749,13 +749,13 @@
 .customer-detail-label {
   font-weight: 600;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 .customer-detail-value {
   font-weight: 600;
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 /* Admin Return Policy Styles */
@@ -773,7 +773,7 @@
   align-items: center;
   gap: 0.65rem;
   color: var(--text-main);
-  font-size: 1.25rem;
+  font-size: clamp(1.06rem, 0.63rem + 1.25vw, 1.25rem);
   font-weight: 700;
   margin: 0;
 }
@@ -785,7 +785,7 @@
   padding: 0.9rem 1.1rem;
   border-radius: var(--radius-md);
   margin-bottom: 1.25rem;
-  font-size: 0.92rem;
+  font-size: clamp(0.78rem, 0.46rem + 0.92vw, 0.92rem);
   font-weight: 600;
   animation: fadeIn var(--transition-fast);
 }
@@ -826,14 +826,14 @@
 .policy-toggle-title {
   font-weight: 700;
   color: var(--text-main);
-  font-size: 0.98rem;
+  font-size: clamp(0.83rem, 0.49rem + 0.98vw, 0.98rem);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .policy-toggle-desc {
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 0.42rem + 0.85vw, 0.85rem);
   color: var(--text-muted);
 }
 
@@ -904,7 +904,7 @@ input:checked+.policy-slider:before {
   border-bottom-right-radius: var(--radius-md);
   color: var(--text-muted);
   font-weight: 600;
-  font-size: 0.88rem;
+  font-size: clamp(0.75rem, 0.44rem + 0.88vw, 0.88rem);
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -915,7 +915,7 @@ input:checked+.policy-slider:before {
   justify-content: space-between;
   align-items: center;
   margin-top: 0.35rem;
-  font-size: 0.82rem;
+  font-size: clamp(0.70rem, 0.41rem + 0.82vw, 0.82rem);
   color: var(--text-muted);
 }
 
@@ -937,7 +937,7 @@ input:checked+.policy-slider:before {
 }
 
 .policy-stat-label {
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
@@ -946,7 +946,7 @@ input:checked+.policy-slider:before {
 
 .policy-stat-value {
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: clamp(0.89rem, 0.53rem + 1.05vw, 1.05rem);
   color: var(--text-main);
   display: flex;
   align-items: center;
@@ -960,7 +960,7 @@ input:checked+.policy-slider:before {
   border: 1px solid var(--border);
   max-height: 380px;
   overflow-y: auto;
-  font-size: 0.93rem;
+  font-size: clamp(0.79rem, 0.47rem + 0.93vw, 0.93rem);
   line-height: 1.7;
   color: var(--text-main);
   white-space: pre-wrap;

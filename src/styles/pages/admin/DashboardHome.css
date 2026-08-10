@@ -5,7 +5,7 @@
 }
 
 .page-title {
-  font-size: 1.75rem;
+  font-size: clamp(1.49rem, 0.88rem + 1.75vw, 1.75rem);
   font-weight: 800;
   margin: 0;
   color: var(--text-main);
@@ -28,7 +28,7 @@
 .stat-title {
   color: var(--text-muted);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -42,7 +42,7 @@
 }
 
 .stat-value {
-  font-size: 2.1rem;
+  font-size: clamp(1.78rem, 1.05rem + 2.10vw, 2.10rem);
   font-weight: 800;
   color: var(--text-main);
   margin-bottom: 0.4rem;
@@ -50,12 +50,12 @@
 }
 
 .stat-trend {
-  font-size: 0.875rem;
+  font-size: clamp(0.74rem, 0.44rem + 0.88vw, 0.88rem);
   font-weight: 700;
 }
 
 .text-sm {
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   font-weight: 500;
 }
 
@@ -97,7 +97,7 @@
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   letter-spacing: 0.08em;
   background: var(--surface-alt);
 }
@@ -105,7 +105,7 @@
 .badge {
   padding: 0.3rem 0.8rem;
   border-radius: 999px;
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   font-weight: 700;
 }
 

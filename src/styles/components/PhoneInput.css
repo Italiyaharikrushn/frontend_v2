@@ -81,7 +81,7 @@
   outline: none;
   width: 100%;
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 .country-list {
@@ -99,7 +99,7 @@
   cursor: pointer;
   transition: background var(--transition-fast);
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 .country-item:hover {
@@ -146,7 +146,7 @@
 
 .phone-error {
   color: var(--error);
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   margin-top: 0.15rem;
   font-weight: 500;
 }

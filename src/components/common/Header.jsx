@@ -68,58 +68,67 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Search Bar Container (Centered on Desktop) */}
-          <div className="header-center desktop-only" style={{ position: 'relative' }}>
-            <form className="crafty-search-form" onSubmit={handleSearchSubmit}>
-              <input
-                ref={searchInputRef}
-                type="text"
-                className="crafty-search-input"
-                placeholder="Search for products, brands and more..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                onFocus={() => setShowSuggestions(true)}
-                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-              />
-
-              {searchQuery && (
-                <button
-                  type="button"
-                  className="clear-search-btn"
-                  onClick={handleClearSearch}
-                  aria-label="Clear Search"
-                >
-                  <X size={16} />
-                </button>
-              )}
-
-              <button type="submit" className="crafty-search-btn" aria-label="Search">
-                <Search size={18} />
-              </button>
-            </form>
-
-            {/* Desktop Suggestions Dropdown */}
-            {showSuggestions && searchSuggestions && searchSuggestions.length > 0 && (
-              <div className="search-suggestions-dropdown">
-                {searchSuggestions.map(product => (
-                  <Link 
-                    to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`} 
-                    key={product.id} 
-                    className="suggestion-item"
-                    onClick={() => {
-                      setShowSuggestions(false);
-                    }}
-                  >
-                    <span className="suggestion-title">{product.title}</span>
-                    <span className="suggestion-category">{product.category}</span>
-                  </Link>
-                ))}
-              </div>
-            )}
+          {/* Center Navigation Tabs (Desktop) */}
+          <div className="header-center desktop-only">
+            <nav className="main-nav-links">
+              <Link to="/" className={`main-nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
+              <Link to="/products" className={`main-nav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
+              <Link to="/contact" className={`main-nav-link ${isActive('/contact') ? 'active' : ''}`}>Contact Us</Link>
+            </nav>
           </div>
 
-          {/* Right Action Icons: Account & Cart */}
+          {/* Right Action Icons: Search, Account & Cart */}
           <div className="header-right">
+            {/* Desktop Search Bar */}
+            <div className="desktop-search-container desktop-only" style={{ position: 'relative' }}>
+              <form className="crafty-search-form" onSubmit={handleSearchSubmit}>
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  className="crafty-search-input"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                />
+
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className="clear-search-btn"
+                    onClick={handleClearSearch}
+                    aria-label="Clear Search"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+
+                <button type="submit" className="crafty-search-btn" aria-label="Search">
+                  <Search size={18} />
+                </button>
+              </form>
+
+              {/* Desktop Suggestions Dropdown */}
+              {showSuggestions && searchSuggestions && searchSuggestions.length > 0 && (
+                <div className="search-suggestions-dropdown">
+                  {searchSuggestions.map(product => (
+                    <Link 
+                      to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`} 
+                      key={product.id} 
+                      className="suggestion-item"
+                      onClick={() => {
+                        setShowSuggestions(false);
+                      }}
+                    >
+                      <span className="suggestion-title">{product.title}</span>
+                      <span className="suggestion-category">{product.category}</span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <button
               className="action-btn mobile-only search-trigger"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -198,16 +207,7 @@ const Header = () => {
         )}
       </header>
 
-      {/* 2. Sub-Navigation Bar */}
-      <div className="subnav-bar desktop-only">
-        <div className="subnav-container">
-          <nav className="subnav-links">
-            <Link to="/" className={`subnav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
-            <Link to="/products" className={`subnav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
-            <Link to="/contact" className={`subnav-link ${isActive('/contact') ? 'active' : ''}`}>Contact Us</Link>
-          </nav>
-        </div>
-      </div>
+
 
       {/* 3. Mobile Sidebar Navigation Drawer Rendered via Portal to Body */}
       {createPortal(

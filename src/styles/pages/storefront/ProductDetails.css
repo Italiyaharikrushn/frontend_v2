@@ -170,7 +170,7 @@
 }
 
 .product-brand {
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 0.42rem + 0.85vw, 0.85rem);
   letter-spacing: 2.5px;
   color: var(--primary-dark);
   margin: 0 0 4px 0;
@@ -183,7 +183,7 @@
 }
 
 .product-title {
-  font-size: 1.6rem;
+  font-size: clamp(1.36rem, 0.80rem + 1.60vw, 1.60rem);
   font-weight: 800;
   color: var(--text-main);
   margin: 0;
@@ -196,7 +196,7 @@
 }
 
 .product-description-text {
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   color: var(--text-muted);
   line-height: 1.6;
   margin: 0;
@@ -210,13 +210,13 @@
 }
 
 .mrp {
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   color: var(--text-muted);
   text-decoration: line-through;
 }
 
 .current-price {
-  font-size: 1.4rem;
+  font-size: clamp(1.19rem, 0.70rem + 1.40vw, 1.40rem);
   font-weight: 800;
   color: var(--primary-dark);
 }
@@ -226,13 +226,13 @@
 }
 
 .tax-info {
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   color: var(--text-muted);
   margin: 0 0 16px 0;
 }
 
 .section-label {
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--text-muted);
@@ -292,7 +292,7 @@
 .bg-rosegold { background-color: #b76e79; }
 
 .color-option span {
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   color: var(--text-muted);
   font-weight: 500;
 }
@@ -307,7 +307,7 @@
 }
 
 .action-link {
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--primary-dark);
@@ -329,7 +329,7 @@
 .btn-add-to-cart, .btn-buy-now {
   flex: 1;
   padding: 14px 0;
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -392,7 +392,7 @@
   flex: 1;
   padding: 12px 16px;
   border: none;
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   outline: none;
   background: transparent;
   color: var(--text-main);
@@ -403,7 +403,7 @@
   color: #0b0f17;
   border: none;
   padding: 0 24px;
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
@@ -454,7 +454,7 @@
 }
 
 .feature-item span {
-  font-size: 0.88rem;
+  font-size: clamp(0.75rem, 0.44rem + 0.88vw, 0.88rem);
   color: var(--text-main);
   font-weight: 500;
 }
@@ -488,7 +488,7 @@
 
   .btn-check-pincode {
     padding: 0 16px;
-    font-size: 0.75rem;
+    font-size: clamp(0.64rem, 0.38rem + 0.75vw, 0.75rem);
   }
 }
 
@@ -508,7 +508,7 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   font-family: inherit;
   cursor: pointer;
   outline: none;

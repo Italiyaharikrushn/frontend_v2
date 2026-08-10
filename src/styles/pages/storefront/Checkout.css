@@ -38,7 +38,7 @@
 }
 
 .form-card-title {
-  font-size: 1.15rem;
+  font-size: clamp(0.98rem, 0.57rem + 1.15vw, 1.15rem);
   font-weight: 800;
   margin-bottom: 1.15rem;
   padding-bottom: 0.75rem;
@@ -67,7 +67,7 @@
 
 .input-group label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   color: var(--text-main);
 }
 
@@ -79,7 +79,7 @@
   background: var(--surface);
   color: var(--text-main);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   min-height: 46px;
   width: 100%;
@@ -161,18 +161,18 @@
 
 .summary-item-name {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   color: var(--text-main);
 }
 
 .summary-item-qty {
-  font-size: 0.82rem;
+  font-size: clamp(0.70rem, 0.41rem + 0.82vw, 0.82rem);
   color: var(--text-muted);
 }
 
 .summary-item-price {
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   color: var(--primary-dark);
 }
 
@@ -192,7 +192,7 @@
   display: flex;
   justify-content: space-between;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
 }
 
 .summary-row.total {
@@ -200,7 +200,7 @@
   padding-top: 0.85rem;
   border-top: 1px dashed var(--border);
   color: var(--text-main);
-  font-size: 1.15rem;
+  font-size: clamp(0.98rem, 0.57rem + 1.15vw, 1.15rem);
   font-weight: 800;
 }
 
@@ -225,7 +225,7 @@
   background: var(--surface);
   min-height: 50px;
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: clamp(0.78rem, 0.46rem + 0.92vw, 0.92rem);
   color: var(--text-main);
 }
 
@@ -275,7 +275,7 @@
   background: var(--surface);
   color: var(--text-main);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   transition: all var(--transition-fast);
   min-width: 0;
 }
@@ -295,7 +295,7 @@
 .coupon-btn {
   padding: 0 1.35rem;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   display: flex;
@@ -329,7 +329,7 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 0.42rem + 0.85vw, 0.85rem);
   font-weight: 500;
   animation: fadeIn var(--transition-fast);
 }
@@ -342,7 +342,7 @@
   justify-content: space-between;
   align-items: center;
   color: var(--success);
-  font-size: 0.92rem;
+  font-size: clamp(0.78rem, 0.46rem + 0.92vw, 0.92rem);
   font-weight: 700;
   padding: 0.45rem 0;
   animation: fadeIn var(--transition-fast);
@@ -360,7 +360,7 @@
   padding: 0.2rem 0.55rem;
   background: var(--success-bg);
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: clamp(0.64rem, 0.38rem + 0.75vw, 0.75rem);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border: 1px dashed rgba(16, 185, 129, 0.3);
@@ -460,7 +460,7 @@
 
 .payment-modal-subtitle {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   margin: 0;
 }
 
@@ -483,7 +483,7 @@
 }
 
 .payment-modal-amount-label {
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -503,7 +503,7 @@
 }
 
 .payment-modal-instructions {
-  font-size: 0.88rem;
+  font-size: clamp(0.75rem, 0.44rem + 0.88vw, 0.88rem);
   color: var(--text-muted);
   line-height: 1.55;
   text-align: center;
@@ -516,7 +516,7 @@
   justify-content: center;
   gap: 0.5rem;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 0.50rem + 1.00vw, 1.00rem);
   min-height: 50px;
   box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.35);
 }
@@ -550,6 +550,6 @@
     padding: 1.5rem 1.25rem;
   }
   .payment-modal-amount-value {
-    font-size: 1.85rem;
+    font-size: clamp(1.57rem, 0.93rem + 1.85vw, 1.85rem);
   }
 }

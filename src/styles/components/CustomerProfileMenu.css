@@ -35,7 +35,7 @@
 
 .avatar-initial {
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: clamp(0.98rem, 0.57rem + 1.15vw, 1.15rem);
 }
 
 .profile-dropdown-menu {
@@ -65,13 +65,13 @@
 
 .profile-name {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 0.50rem + 1.00vw, 1.00rem);
   color: var(--text-main);
   margin: 0 0 0.25rem 0;
 }
 
 .profile-email {
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 0.42rem + 0.85vw, 0.85rem);
   color: var(--text-muted);
   margin: 0;
   word-break: break-all;
@@ -92,7 +92,7 @@
   background: transparent;
   border: none;
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;

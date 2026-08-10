@@ -22,7 +22,7 @@
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -99,7 +99,7 @@
   border: 1px solid var(--border);
   background: var(--surface-alt);
   color: var(--text-main);
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   outline: none;
 }
 
@@ -139,7 +139,7 @@
 
 .optgroup-label {
   padding: 6px 16px;
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -152,7 +152,7 @@
 
 .option {
   padding: 10px 16px 10px 24px;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   color: var(--text-main);
   cursor: pointer;
   transition: background-color var(--transition-fast);
@@ -176,5 +176,5 @@
   padding: 16px;
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }

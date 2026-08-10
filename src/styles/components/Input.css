@@ -10,7 +10,7 @@
 }
 
 .input-label {
-  font-size: 0.875rem;
+  font-size: clamp(0.74rem, 0.44rem + 0.88vw, 0.88rem);
   font-weight: 600;
   color: var(--text-main);
   letter-spacing: 0.01em;
@@ -18,7 +18,7 @@
 
 .input-field {
   padding: 0.75rem 1.1rem;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   font-family: var(--font-sans);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -68,7 +68,7 @@
 }
 
 .input-helper {
-  font-size: 0.78rem;
+  font-size: clamp(0.66rem, 0.39rem + 0.78vw, 0.78rem);
   margin-top: 0.2rem;
 }
 

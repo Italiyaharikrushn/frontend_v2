@@ -28,7 +28,7 @@
 .card-header {
   padding: 1.5rem 1.5rem 0.5rem;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: clamp(1.02rem, 0.60rem + 1.20vw, 1.20rem);
   color: var(--text-main);
   letter-spacing: -0.01em;
 }

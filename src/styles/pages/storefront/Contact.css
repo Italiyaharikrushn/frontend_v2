@@ -20,7 +20,7 @@
 
 .contact-subtitle {
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: clamp(0.94rem, 0.55rem + 1.10vw, 1.10rem);
   max-width: 620px;
   margin: 0 auto;
   line-height: 1.6;
@@ -76,14 +76,14 @@
 }
 
 .info-details h3 {
-  font-size: 1.2rem;
+  font-size: clamp(1.02rem, 0.60rem + 1.20vw, 1.20rem);
   font-weight: 700;
   margin-bottom: 0.4rem;
 }
 
 .info-details p {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
 .contact-form-container {
@@ -108,7 +108,7 @@
 
 .form-group label {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   color: var(--text-main);
 }
 
@@ -120,7 +120,7 @@
   background: var(--surface);
   color: var(--text-main);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 

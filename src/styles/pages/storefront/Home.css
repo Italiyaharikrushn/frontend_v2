@@ -71,7 +71,7 @@
 }
 
 .hero-welcome-badge {
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 0.42rem + 0.85vw, 0.85rem);
   letter-spacing: 0.25em;
   color: var(--primary-light);
   font-weight: 700;
@@ -117,7 +117,7 @@
   background: var(--gold-metallic);
   color: #0b0f17;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   letter-spacing: 0.12em;
   padding: 0.85rem 2.25rem;
   border-radius: var(--radius-md);
@@ -185,14 +185,14 @@
 }
 
 .trust-badge-text h4 {
-  font-size: 0.95rem;
+  font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   font-weight: 700;
   color: var(--text-main);
   margin: 0 0 0.15rem 0;
 }
 
 .trust-badge-text p {
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   color: var(--text-muted);
   margin: 0;
 }
@@ -289,7 +289,7 @@
 }
 
 .category-title-text {
-  font-size: 0.9rem;
+  font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   font-weight: 600;
   color: var(--text-main);
 }
@@ -422,7 +422,7 @@
 }
 
 .feature-body h3 {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 0.50rem + 1.00vw, 1.00rem);
   font-weight: 600;
   color: var(--text-main);
   margin: 0 0 0.35rem 0;
@@ -432,13 +432,13 @@
 }
 
 .feature-meta {
-  font-size: 0.8rem;
+  font-size: clamp(0.68rem, 0.40rem + 0.80vw, 0.80rem);
   color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
 
 .feature-price {
-  font-size: 1.1rem;
+  font-size: clamp(0.94rem, 0.55rem + 1.10vw, 1.10rem);
   font-weight: 700;
   color: var(--primary-dark);
   margin-bottom: 1rem;
@@ -462,7 +462,7 @@
   border: none;
   border-radius: var(--radius-sm);
   padding: 0.65rem 0.85rem;
-  font-size: 0.85rem;
+  font-size: clamp(0.72rem, 0.42rem + 0.85vw, 0.85rem);
   font-weight: 700;
   display: flex;
   align-items: center;
