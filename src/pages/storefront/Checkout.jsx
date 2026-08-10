@@ -11,7 +11,7 @@ const Checkout = () => {
     cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, 
     isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, 
     appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, 
-    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection
+    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy
   } = useCheckoutLogic();
 
   if (cartItems.length === 0) {
@@ -56,6 +56,7 @@ const Checkout = () => {
           couponError={couponError}
           validateCoupon={validateCoupon}
           showPaymentSection={showPaymentSection}
+          storePolicy={storePolicy}
         />
         
         <PaymentModal 

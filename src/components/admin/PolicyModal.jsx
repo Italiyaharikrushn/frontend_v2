@@ -3,88 +3,170 @@ import { X } from 'lucide-react';
 import Button from '../ui/Button';
 import { WRITTEN_POLICIES } from '../../utils/policyConstants';
 
-const PolicyModal = ({ 
-  activeModal, 
-  setActiveModal, 
-  modalData, 
-  setModalData, 
-  handleSaveModal, 
-  isUpdating 
+const PolicyModal = ({
+  activeModal,
+  setActiveModal,
+  modalData,
+  setModalData,
+  handleSaveModal,
+  isUpdating
 }) => {
   if (!activeModal) return null;
 
-  const title = activeModal === 'rules' 
-    ? 'Return Rules' 
+  const title = activeModal === 'rules'
+    ? 'Return Rules'
     : WRITTEN_POLICIES.find(p => p.id === activeModal)?.label;
 
   return (
-    <div className="modal-overlay" style={{
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
-      backgroundColor: 'rgba(17, 24, 39, 0.6)', zIndex: 1000, 
-      display: 'flex', alignItems: 'center', justifyContent: 'center'
-    }}
-    onClick={() => setActiveModal(null)}
-    >
-      <div className="modal-content" style={{ 
-        backgroundColor: '#ffffff',
-        borderRadius: '12px',
-        width: '90%', maxWidth: '600px', maxHeight: '90vh', overflowY: 'auto',
-        padding: '2rem', position: 'relative',
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-      }}
-      onClick={(e) => e.stopPropagation()}
-      >
-        <button 
-          onClick={() => setActiveModal(null)}
-          style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', cursor: 'pointer', color: '#9ca3af' }}
-        >
-          <X size={24} />
-        </button>
-        
-        <h2 style={{ marginBottom: '1.5rem', color: '#111827', fontSize: '1.25rem', fontWeight: '600' }}>
-          {title}
-        </h2>
+    <div className="modal-overlay-bg" onClick={() => setActiveModal(null)}>
+      <div className="modal-content-box" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-body-scroll">
+          {activeModal !== 'rules' && (
+            <h2 className="modal-title">
+              {title}
+            </h2>
+          )}
 
-        {activeModal === 'rules' ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
-              <input 
-                type="checkbox" 
-                checked={modalData.isReturnsAccepted || false}
-                onChange={(e) => setModalData({...modalData, isReturnsAccepted: e.target.checked})}
-                style={{ width: '1.2rem', height: '1.2rem' }}
-              />
-              <span style={{ color: '#374151', fontWeight: '500' }}>Accept Returns</span>
-            </label>
-            
-            {modalData.isReturnsAccepted && (
+          {activeModal === 'rules' ? (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              {/* Return Rules Section */}
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#4b5563', fontWeight: '500' }}>Return Window (Days)</label>
-                <input 
-                  type="number" 
-                  value={modalData.returnWindowDays || ''}
-                  onChange={(e) => setModalData({...modalData, returnWindowDays: parseInt(e.target.value) || 0})}
-                  className="input-field"
-                  style={{ border: '1px solid #d1d5db', borderRadius: '6px', padding: '0.75rem', width: '100%' }}
-                />
+                <div className="rules-section-header">
+                  <span className="rules-section-title">Return rules</span>
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={modalData.isReturnsAccepted || false}
+                      onChange={(e) => setModalData({ ...modalData, isReturnsAccepted: e.target.checked })}
+                    />
+                    <span className="toggle-slider"></span>
+                  </label>
+                </div>
+                <div className="rules-section-desc">Applied to fulfilled items in an order</div>
+
+                {modalData.isReturnsAccepted && (
+                  <div className="rules-group-margin">
+                    <div className="rules-input-group">
+                      <div>
+                        <label className="rules-label">Return window</label>
+                        <select
+                          className="rules-select"
+                          value={modalData.returnWindow || "7 days"}
+                          onChange={(e) => setModalData({ ...modalData, returnWindow: e.target.value })}
+                        >
+                          <option value="7 days">7 days</option>
+                          <option value="14 days">14 days</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="rules-label">Starting from</label>
+                        <select
+                          className="rules-select"
+                          value={modalData.startingFrom || "Delivery of item"}
+                          onChange={(e) => setModalData({ ...modalData, startingFrom: e.target.value })}
+                        >
+                          <option value="Delivery of item">Delivery of item</option>
+                          <option value="Purchase date">Purchase date</option>
+                          <option value="Shipment date">Shipment date</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <label className="rules-checkbox-label">
+                      <input
+                        type="checkbox"
+                        className="rules-checkbox"
+                        checked={modalData.extendWeekends || false}
+                        onChange={(e) => setModalData({ ...modalData, extendWeekends: e.target.checked })}
+                      />
+                      Extend to account for weekends or holidays
+                    </label>
+
+                    <div style={{ marginTop: '1.25rem' }}>
+                      <label className="rules-label">Return shipping</label>
+                      <select
+                        className="rules-select"
+                        value={modalData.returnShipping || "Free return shipping"}
+                        onChange={(e) => setModalData({ ...modalData, returnShipping: e.target.value })}
+                      >
+                        <option value="Free return shipping">Free return shipping</option>
+                        <option value="Customer provides label">Customer provides label</option>
+                        <option value="Flat rate">Flat rate</option>
+                      </select>
+                    </div>
+                    <div className="rules-helper-text">Doesn't apply to POS returns</div>
+
+                    <label className="rules-checkbox-label" style={{ marginTop: '1.25rem' }}>
+                      <input
+                        type="checkbox"
+                        className="rules-checkbox"
+                        checked={modalData.restockingFee || false}
+                        onChange={(e) => setModalData({ ...modalData, restockingFee: e.target.checked })}
+                      />
+                      Charge restocking fee
+                    </label>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ) : (
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: '#4b5563', fontWeight: '500' }}>Policy Content</label>
-            <textarea 
-              value={modalData[activeModal] || ''}
-              onChange={(e) => setModalData({...modalData, [activeModal]: e.target.value})}
-              className="input-field"
-              rows="12"
-              placeholder="Enter policy details here..."
-              style={{ lineHeight: '1.6', fontFamily: 'inherit', border: '1px solid #d1d5db', borderRadius: '6px', padding: '0.75rem', width: '100%', resize: 'vertical' }}
-            />
+
+              <hr className="rules-divider" />
+
+              {/* Cancellation Rules Section */}
+              <div>
+                <div className="rules-section-header">
+                  <span className="rules-section-title">Cancellation rules</span>
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={modalData.isCancellationAccepted !== false}
+                      onChange={(e) => setModalData({ ...modalData, isCancellationAccepted: e.target.checked })}
+                    />
+                    <span className="toggle-slider"></span>
+                  </label>
+                </div>
+                <div className="rules-section-desc">Applied to unfulfilled items in an order</div>
+
+                {modalData.isCancellationAccepted !== false && (
+                  <div className="rules-half-width rules-group-margin">
+                    <label className="rules-label">Cancellation window</label>
+                    <select
+                      className="rules-select"
+                      value={modalData.cancellationWindow || "15 minutes"}
+                      onChange={(e) => setModalData({ ...modalData, cancellationWindow: e.target.value })}
+                    >
+                      <option value="No cancellations">No cancellations</option>
+                      <option value="15 minutes">15 minutes</option>
+                      <option value="30 minutes">30 minutes</option>
+                      <option value="1 hour">1 hour</option>
+                      <option value="12 hours">12 hours</option>
+                      <option value="24 hours">24 hours</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', color: '#4b5563', fontWeight: '500' }}>Policy Content</label>
+              <textarea
+                value={modalData[activeModal] || ''}
+                onChange={(e) => setModalData({ ...modalData, [activeModal]: e.target.value })}
+                className="input-field"
+                rows="12"
+                placeholder="Enter policy details here..."
+                style={{ lineHeight: '1.6', fontFamily: 'inherit', border: '1px solid #d1d5db', borderRadius: '6px', padding: '0.75rem', width: '100%', resize: 'vertical' }}
+              />
+            </div>
+          )}
+        </div>
+
+        {activeModal === 'rules' && (
+          <div className="rules-footer">
+            <div className="rules-footer-text">Return and cancellation rules apply to items purchased after the rules were turned on or updated</div>
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '2rem' }}>
+        <div className="rules-actions">
           <Button variant="outline" onClick={() => setActiveModal(null)}>Cancel</Button>
           <Button variant="primary" onClick={handleSaveModal} disabled={isUpdating}>
             {isUpdating ? 'Saving...' : 'Save'}

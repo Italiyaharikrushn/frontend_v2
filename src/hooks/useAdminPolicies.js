@@ -15,7 +15,13 @@ export const useAdminPolicies = () => {
       if (activeModal === 'rules') {
         setModalData({
           isReturnsAccepted: policyData.isReturnsAccepted !== false,
-          returnWindowDays: policyData.returnWindowDays || 7
+          returnWindow: policyData.returnWindow || "7 days",
+          startingFrom: policyData.startingFrom || "Delivery of item",
+          extendWeekends: policyData.extendWeekends || false,
+          returnShipping: policyData.returnShipping || "Free return shipping",
+          restockingFee: policyData.restockingFee || false,
+          isCancellationAccepted: policyData.isCancellationAccepted !== false,
+          cancellationWindow: policyData.cancellationWindow || "15 minutes"
         });
       } else {
         setModalData({

@@ -1,13 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Package, RotateCcw, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useOrderHistory } from '../../hooks/useOrderHistory';
 import Pagination from '../../components/ui/Pagination';
 
+const CancellationTimer = ({ deadline }) => {
+  const [timeLeft, setTimeLeft] = useState(deadline - new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(deadline - new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [deadline]);
+
+  if (timeLeft <= 0) return null;
+
+  const m = Math.floor(timeLeft / 60000);
+  const s = Math.floor((timeLeft % 60000) / 1000);
+  
+  return (
+    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', marginLeft: '0.5rem' }}>
+      ({m}m {s}s left)
+    </span>
+  );
+};
+
 const OrderHistory = () => {
   const {
     orders, isLoading, page, setPage, totalPages, closeReturnModal, submitReturn,
-    isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails
+    isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails,
+    isOrderCancellable, handleCancel, getCancellationDeadline
   } = useOrderHistory();
 
   return (
@@ -83,10 +106,19 @@ const OrderHistory = () => {
                   Items: {order.totalItems || (order.orderItems ? order.orderItems.length : 0)}
                 </p>
 
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  {(order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && order.status !== 'RETURNED') && (
-                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>Orders cannot be cancelled after being placed.</p>
-                  )}
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                  {isOrderCancellable(order) ? (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Button variant="outline" size="sm" onClick={() => handleCancel(order.id || order.orderId)}>
+                        Cancel Order
+                      </Button>
+                      {getCancellationDeadline(order) && (
+                        <CancellationTimer deadline={getCancellationDeadline(order)} />
+                      )}
+                    </div>
+                  ) : (order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && order.status !== 'RETURNED') ? (
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>Orders cannot be cancelled after the window has expired.</p>
+                  ) : null}
 
                   {order.status === 'RETURNED' && (
                     <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Processed</p>

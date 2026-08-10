@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
 import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useValidateCouponMutation, useGetUserAddressesQuery } from '../api/orderApi';
+import { useGetStorePolicyQuery } from '../api/policyApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useGetProductsByIdsMutation } from '../api/productApi';
 
@@ -20,6 +21,7 @@ export const useCheckoutLogic = () => {
   const isSubmittingRef = useRef(false);
 
   const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
+  const { data: storePolicy } = useGetStorePolicyQuery();
 
   useEffect(() => {
     if (addresses.length >= 5 && selectedAddressId === 'new') {
@@ -158,5 +160,5 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection };
+  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy };
 };

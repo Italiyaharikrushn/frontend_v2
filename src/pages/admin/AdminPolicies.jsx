@@ -33,7 +33,7 @@ const AdminPolicies = () => {
 
   return (
     <div className="admin-page fade-in admin-policies-container">
-      
+
       {/* Title */}
       <div className="admin-policies-title-container">
         <FileText size={24} color="var(--text-main)" />
@@ -59,16 +59,9 @@ const AdminPolicies = () => {
             <span className="policy-row-label">Default rules</span>
             <div className="policy-row-right">
               <span className="policy-pill">
-                {policyData?.isReturnsAccepted ? `${policyData.returnWindowDays} Days` : 'No rules set'}
+                {policyData?.isReturnsAccepted ? (policyData.returnWindow || '7 days') : 'No rules set'}
               </span>
               <ChevronRight size={18} color="#9ca3af" />
-            </div>
-          </div>
-
-          <div className="policy-row">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <PlusCircle size={20} color="#6b7280" />
-              <span className="policy-row-label">Add rule</span>
             </div>
           </div>
         </div>
@@ -77,7 +70,7 @@ const AdminPolicies = () => {
       {/* Written policies Card */}
       <div className="policy-card">
         <div className="policy-action-button">
-            <MoreHorizontal size={20} />
+          <MoreHorizontal size={20} />
         </div>
         <div className="policy-card-header">
           <h2 className="policy-card-title">Written policies</h2>
@@ -90,18 +83,18 @@ const AdminPolicies = () => {
           <div className="policy-list-container">
             {WRITTEN_POLICIES.map((policy) => {
               const status = getPolicyStatus(policy.id);
-              
+
               const isAutomated = status.type === 'automated';
               const isRequired = status.type === 'required';
-              
-              const pillClass = isAutomated 
-                ? 'policy-pill policy-pill-automated' 
-                : isRequired 
-                  ? 'policy-pill policy-pill-required' 
+
+              const pillClass = isAutomated
+                ? 'policy-pill policy-pill-automated'
+                : isRequired
+                  ? 'policy-pill policy-pill-required'
                   : 'policy-pill';
 
               return (
-                <div 
+                <div
                   key={policy.id}
                   className="policy-list-item"
                   onClick={() => setActiveModal(policy.id)}
@@ -125,7 +118,7 @@ const AdminPolicies = () => {
       </div>
 
       {/* MODAL */}
-      <PolicyModal 
+      <PolicyModal
         activeModal={activeModal}
         setActiveModal={setActiveModal}
         modalData={modalData}

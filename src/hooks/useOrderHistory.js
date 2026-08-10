@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useGetCustomerOrdersQuery, useCancelCustomerOrderMutation } from '../api/orderApi';
 import { useCreateReturnRequestMutation } from '../api/returnApi';
+import { useGetStorePolicyQuery } from '../api/policyApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useAlert } from '../components/ui/AlertProvider';
 
@@ -13,6 +14,47 @@ export const useOrderHistory = () => {
     const { data = {}, isLoading } = useGetCustomerOrdersQuery({ page, size });
     const orders = data.content || [];
     const totalPages = data.totalPages || 0;
+
+    const { data: storePolicy } = useGetStorePolicyQuery();
+
+    const isOrderCancellable = (order) => {
+        if (!storePolicy) return false;
+        if (storePolicy.isCancellationAccepted === false) return false;
+        if (order.status !== 'PENDING' && order.status !== 'READY_TO_SHIP') return false;
+
+        const window = storePolicy.cancellationWindow;
+        if (window === 'No cancellations') return false;
+
+        let maxMinutes = 15;
+        if (window === '15 minutes') maxMinutes = 15;
+        else if (window === '30 minutes') maxMinutes = 30;
+        else if (window === '1 hour') maxMinutes = 60;
+        else if (window === '12 hours') maxMinutes = 12 * 60;
+        else if (window === '24 hours') maxMinutes = 24 * 60;
+
+        const orderDate = new Date(order.orderDate);
+        const now = new Date();
+        const diffMinutes = (now - orderDate) / (1000 * 60);
+
+        return diffMinutes <= maxMinutes;
+    };
+
+    const getCancellationDeadline = (order) => {
+        if (!storePolicy || storePolicy.isCancellationAccepted === false) return null;
+        if (order.status !== 'PENDING' && order.status !== 'READY_TO_SHIP') return null;
+
+        const window = storePolicy.cancellationWindow;
+        if (window === 'No cancellations') return null;
+
+        let maxMinutes = 15;
+        if (window === '15 minutes') maxMinutes = 15;
+        else if (window === '30 minutes') maxMinutes = 30;
+        else if (window === '1 hour') maxMinutes = 60;
+        else if (window === '12 hours') maxMinutes = 12 * 60;
+        else if (window === '24 hours') maxMinutes = 24 * 60;
+
+        return new Date(new Date(order.orderDate).getTime() + maxMinutes * 60000);
+    };
 
     const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -67,6 +109,7 @@ export const useOrderHistory = () => {
     return { 
         orders, isLoading, page, setPage, totalPages, 
         handleCancel, openReturnModal, closeReturnModal, submitReturn,
-        isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails 
+        isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails,
+        isOrderCancellable, getCancellationDeadline
     };
 };

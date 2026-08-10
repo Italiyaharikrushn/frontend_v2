@@ -2,7 +2,7 @@ import React from 'react';
 import { ShoppingBag, Lock, Tag, Ticket, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from '../ui/Button';
 
-const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, showPaymentSection }) => {
+const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, showPaymentSection, storePolicy }) => {
   return (
     <div className="checkout-summary glass-panel">
       <h2 className="form-card-title">Order Summary</h2>
@@ -82,6 +82,31 @@ const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode,
         )}
 
         <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
+        
+        {storePolicy && (
+          <div className="policy-summary" style={{ marginTop: '1rem', marginBottom: '1rem', padding: '1rem', backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            <h4 style={{ color: 'var(--text-main)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}>
+              <AlertCircle size={16} style={{ color: 'var(--primary)' }} /> Store Policies
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {storePolicy.isReturnsAccepted ? (
+                <p style={{ margin: 0, lineHeight: 1.4 }}>
+                  <strong>Returns:</strong> Accepted within {storePolicy.returnWindow} of {storePolicy.startingFrom.toLowerCase()}. {storePolicy.returnShipping === 'Free return shipping' ? 'Free return shipping.' : storePolicy.returnShipping === 'Customer provides label' ? 'Customer must pay for return shipping.' : 'Flat rate return shipping applies.'} {storePolicy.restockingFee && 'A restocking fee applies.'} {storePolicy.extendWeekends && 'Extended for weekends/holidays.'}
+                </p>
+              ) : (
+                <p style={{ margin: 0 }}><strong>Returns:</strong> Not accepted.</p>
+              )}
+              {storePolicy.isCancellationAccepted ? (
+                <p style={{ margin: 0, lineHeight: 1.4 }}>
+                  <strong>Cancellations:</strong> Allowed within {storePolicy.cancellationWindow} of placing the order.
+                </p>
+              ) : (
+                <p style={{ margin: 0 }}><strong>Cancellations:</strong> Not accepted once order is placed.</p>
+              )}
+            </div>
+          </div>
+        )}
+
         <Button type="submit" form="checkout-form" variant="primary" size="lg" fullWidth disabled={isProcessing} style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
           {isProcessing ? 'Processing...' : (<><Lock size={18} /> {showPaymentSection ? `Pay ₹${total.toFixed(2)}` : 'Provide Payment'}</>)}
         </Button>
