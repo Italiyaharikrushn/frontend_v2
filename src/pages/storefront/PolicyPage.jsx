@@ -8,10 +8,6 @@ const POLICY_TYPES = {
     title: 'Return & Refund Policy',
     key: 'returnAndRefundPolicy'
   },
-  'privacy-policy': {
-    title: 'Privacy Policy',
-    key: 'privacyPolicy'
-  },
   'terms-of-service': {
     title: 'Terms of Service',
     key: 'termsOfService'

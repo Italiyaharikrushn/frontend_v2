@@ -40,10 +40,6 @@ export const useAdminPolicies = () => {
   const getPolicyStatus = useCallback((id) => {
     if (!policyData) return { text: 'No policy set', type: 'empty' };
     
-    // For specific UI states from mock
-    if (id === 'privacyPolicy' && policyData[id] && policyData[id].trim() !== '') {
-        return { text: 'Automated', type: 'automated' };
-    }
     if (id === 'contactInformation' && policyData[id] && policyData[id].trim() !== '') {
         return { text: 'Required', type: 'required' };
     }
