@@ -78,7 +78,7 @@ export const useHeader = () => {
     if (path === '/products') {
       return location.pathname === '/products' || location.pathname.startsWith('/product/');
     }
-    return false;
+    return location.pathname === path || location.pathname.startsWith(`${path}/`);
   };
 
   // --- Fuzzy Search Suggestions Logic ---

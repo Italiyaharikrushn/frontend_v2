@@ -1,5 +1,5 @@
 .products-page {
-  padding: 1.5rem;
+  padding: clamp(0.75rem, 3vw, 1.5rem);
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -25,7 +25,7 @@
 
 .products-grid {
   display: grid;
-  gap: 1.5rem;
+  gap: clamp(0.75rem, 3vw, 1.5rem);
   grid-template-columns: 1fr;
 }
 
@@ -51,7 +51,8 @@
 }
 
 .product-image-container {
-  height: 230px;
+  aspect-ratio: 4/5;
+  height: auto;
   background: var(--surface-alt);
   display: flex;
   align-items: center;

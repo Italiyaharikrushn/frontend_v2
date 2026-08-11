@@ -1,19 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Truck, ShieldCheck, Award, Headphones } from 'lucide-react';
+import { Truck, ShieldCheck, Award, Headphones, ShoppingBag, Eye } from 'lucide-react';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import { CraftyLogoEmblem } from '../../components/common/CraftyLogo';
 import { useHome } from '../../hooks/useHome';
 import ProductDetails from './ProductDetails';
-import ProductCard from '../../components/storefront/ProductCard';
 import '@/styles/pages/storefront/Home.css';
 
+const FeatureCard = ({ product, onAddToCart, onQuickView }) => {
+  const pId = product.id || product._id;
+  const price = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+  
+  return (
+    <div className="feature-card">
+      <Link to={product.category ? `/products?category=${encodeURIComponent(product.category.toLowerCase())}` : `/products`} className="feature-media">
+        {product.images && product.images.length > 0 ? (
+          <img
+            src={product.images[0]}
+            alt={product.title}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.style.display = 'none';
+            }}
+          />
+        ) : (
+          <ShoppingBag size={48} style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
+        )}
+      </Link>
+      <div className="feature-body">
+        <h3>{product.title}</h3>
+        <div className="feature-meta">{product.category}</div>
+        <div className="feature-price">
+          ₹{price}
+        </div>
+      </div>
+    </div>
+  );
+};
 const Home = () => {
   const {
     isLoading,
     trendingProducts,
     quickViewProductId,
     setQuickViewProductId,
+    handleAddToCart,
   } = useHome();
 
   return (
@@ -121,12 +151,22 @@ const Home = () => {
                 <div className="marquee-track">
                   <div className="marquee-content">
                     {trendingProducts.map((product) => (
-                      <ProductCard key={product.id || product._id} product={product} />
+                      <FeatureCard 
+                        key={product.id || product._id} 
+                        product={product} 
+                        onAddToCart={handleAddToCart}
+                        onQuickView={setQuickViewProductId}
+                      />
                     ))}
                   </div>
                   <div className="marquee-content" aria-hidden="true">
                     {trendingProducts.map((product) => (
-                      <ProductCard key={`${product.id || product._id}-dup`} product={product} />
+                      <FeatureCard 
+                        key={`${product.id || product._id}-dup`} 
+                        product={product} 
+                        onAddToCart={handleAddToCart}
+                        onQuickView={setQuickViewProductId}
+                      />
                     ))}
                   </div>
                 </div>
@@ -134,7 +174,11 @@ const Home = () => {
             ) : trendingProducts.length === 1 ? (
               /* Single card row: Centered without autoplay */
               <div className="single-card-row">
-                <ProductCard product={trendingProducts[0]} />
+                <FeatureCard 
+                  product={trendingProducts[0]} 
+                  onAddToCart={handleAddToCart}
+                  onQuickView={setQuickViewProductId}
+                />
               </div>
             ) : (
               <div className="products-empty" style={{ gridColumn: '1 / -1' }}>

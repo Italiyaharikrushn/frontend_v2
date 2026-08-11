@@ -12,7 +12,7 @@
   position: relative;
   background: radial-gradient(circle at 65% 50%, var(--secondary) 0%, var(--dark-bg) 80%);
   color: #ffffff;
-  padding: 4.5rem 1.5rem 5.5rem;
+  padding: 4.5rem clamp(1rem, 3vw, 1.5rem) 5.5rem;
   overflow: hidden;
   min-height: 520px;
   display: flex;
@@ -81,7 +81,7 @@
 
 .hero-brand-title {
   font-family: var(--font-serif);
-  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  font-size: clamp(2rem, 9vw, 4.5rem);
   font-weight: 700;
   color: var(--primary-light);
   letter-spacing: 0.02em;

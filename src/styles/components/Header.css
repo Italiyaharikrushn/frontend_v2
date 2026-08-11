@@ -32,8 +32,8 @@
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
   flex-wrap: wrap;
 }
 
@@ -64,7 +64,7 @@
 .main-header {
   background-color: var(--secondary);
   border-bottom: 1px solid var(--border);
-  padding: 0.75rem clamp(1rem, 3vw, 1.5rem);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.5rem, 3vw, 1.5rem);
   transition: background-color var(--transition-normal);
 }
 
@@ -252,6 +252,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  /* justify-content: flex-start; */
   gap: 1.25rem;
 }
 
@@ -460,7 +461,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: min(85vw, 320px);
+  width: min(80vw, 280px);
   height: 100vh;
   height: 100dvh;
   background-color: #101622;
@@ -561,12 +562,21 @@
 
 .mobile-nav-group-title {
   display: block;
-  padding: 1rem 1.5rem 0.35rem;
-  font-size: clamp(0.61rem, 0.36rem + 0.72vw, 0.72rem);
+  padding: 1rem 1.5rem 0.5rem;
+  font-size: clamp(0.65rem, 0.4rem + 0.75vw, 0.75rem);
   color: #d4af37;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 700;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  margin-bottom: 0.25rem;
+}
+
+.mobile-nav-group {
+  background: rgba(197, 160, 89, 0.03);
+  margin: 0.5rem 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.08);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
 }
 
 .mobile-nav-footer {
@@ -592,6 +602,9 @@
   transition: all var(--transition-fast);
   text-decoration: none;
   box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobile-logout-btn:hover {
@@ -622,5 +635,26 @@
   }
   .mobile-only, .mobile-menu-btn {
     display: flex !important;
+  }
+  .header-right {
+    gap: clamp(0.25rem, 2vw, 0.5rem);
+  }
+  .crafty-action-item {
+    padding: 0.15rem;
+  }
+  .mobile-nav-link {
+    padding: 0.65rem 1.5rem;
+  }
+  .mobile-profile-card {
+    padding: 1rem 1.25rem;
+  }
+  .mobile-nav-footer {
+    padding: 1rem 1.25rem;
+  }
+  .mobile-nav-group-title {
+    padding: 0.75rem 1.5rem 0.25rem;
+  }
+  .mobile-nav-links {
+    padding: 0.5rem 0;
   }
 }

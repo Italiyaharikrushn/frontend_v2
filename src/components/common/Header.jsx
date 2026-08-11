@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, Search, X, LogIn, User } from "lucide-react";
+import { ShoppingCart, Menu, Search, X, LogIn, User, Heart } from "lucide-react";
 import CraftyLogo from "./CraftyLogo";
 import CustomerProfileMenu from "./CustomerProfileMenu";
 import { useHeader } from "../../hooks/useHeader";
@@ -48,6 +48,17 @@ const Header = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isSearchOpen, setIsSearchOpen]);
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
 
   return (
     <div className="crafty-header-wrapper">
@@ -148,6 +159,15 @@ const Header = () => {
               )}
             </div>
 
+            {/* Favorites */}
+            {isAuthenticated && (
+              <Link to="/favorites" className={`crafty-action-item cart-action desktop-only ${isActive('/favorites') ? 'active' : ''}`} aria-label="Favorites">
+                <div className="cart-icon-wrapper">
+                  <Heart size={22} className="action-icon" fill={isActive('/favorites') ? 'currentColor' : 'none'} />
+                </div>
+              </Link>
+            )}
+
             {/* Shopping Cart */}
             <Link to="/cart" className="crafty-action-item cart-action" aria-label="Shopping Cart">
               <div className="cart-icon-wrapper">
@@ -239,8 +259,9 @@ const Header = () => {
 
               {isAuthenticated && (
                 <div className="mobile-nav-group">
-                  <span className="mobile-nav-group-title">My Account</span>
+                  <div className="mobile-nav-group-title">My Account</div>
                   <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>My Orders</Link>
+                  <Link to="/favorites" className={`mobile-nav-link ${isActive('/favorites') ? 'active' : ''}`} onClick={closeMenu}>My Favorites</Link>
                   <Link to="/profile" className={`mobile-nav-link ${isActive('/profile') ? 'active' : ''}`} onClick={closeMenu}>Account Settings</Link>
                 </div>
               )}

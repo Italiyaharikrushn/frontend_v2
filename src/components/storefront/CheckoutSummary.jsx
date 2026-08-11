@@ -110,9 +110,6 @@ const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode,
         <Button type="submit" form="checkout-form" variant="primary" size="lg" fullWidth disabled={isProcessing} style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
           {isProcessing ? 'Processing...' : (<><Lock size={18} /> {showPaymentSection ? `Pay ₹${total.toFixed(2)}` : 'Provide Payment'}</>)}
         </Button>
-        <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-          Your payment information is processed securely. We do not store credit card details.
-        </p>
       </div>
     </div>
   );

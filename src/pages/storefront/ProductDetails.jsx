@@ -1,15 +1,39 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronDown, Shield, Clock, Activity, Droplets, X } from 'lucide-react';
+import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart } from 'lucide-react';
 import ProductGallery from '../../components/storefront/ProductGallery';
 import PhoneModelDropdown from '../../components/storefront/PhoneModelDropdown';
 import { useProductDetails } from '../../hooks/useProductDetails';
+import { useGetFavoritesQuery, useToggleFavoriteMutation } from '../../api/favoriteApi';
+import { useSelector } from 'react-redux';
+import { selectIsAuthenticated } from '../../redux/authSlice';
+import { useToast } from '../../components/ui/ToastProvider';
 import '@/styles/pages/storefront/ProductDetails.css';
 
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;
   const { product, isLoading, isError, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
+
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const { data: favorites } = useGetFavoritesQuery(undefined, { skip: !isAuthenticated });
+  const [toggleFavorite] = useToggleFavoriteMutation();
+  const { pushToast } = useToast();
+
+  const isFavorite = favorites?.some(fav => fav.id === propId || fav._id === propId) || false;
+
+  const handleFavoriteClick = async () => {
+    if (!isAuthenticated) {
+        pushToast('Please login to save favorites', 'warning');
+        return;
+    }
+    try {
+        await toggleFavorite(propId).unwrap();
+        pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
+    } catch (err) {
+        pushToast('Failed to update favorites', 'error');
+    }
+  };
 
   if (isLoading) {
     return <div className="product-details-container loading"><div className="spinner"></div></div>;
@@ -34,7 +58,21 @@ const ProductDetails = ({ productId: propId, onClose }) => {
 
         {/* Right Column - Details */}
         <div className="product-info-section">
-          <h1 className="product-title">{product.title?.toUpperCase()}</h1>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingRight: isModal ? '2.5rem' : '0' }}>
+            <h1 className="product-title" style={{ flex: 1, paddingRight: '1rem' }}>{product.title?.toUpperCase()}</h1>
+            <button 
+              onClick={handleFavoriteClick}
+              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              className={`product-details-favorite-btn ${isFavorite ? 'is-active' : ''}`}
+            >
+              <Heart 
+                size={28} 
+                fill={isFavorite ? '#ff4b4b' : 'none'} 
+                color={isFavorite ? '#ff4b4b' : 'var(--text-muted)'} 
+                style={{ transition: 'fill 0.3s ease, color 0.3s ease' }}
+              />
+            </button>
+          </div>
 
           <div className="product-description-container">
             <p className="product-description-text">{product.description}</p>

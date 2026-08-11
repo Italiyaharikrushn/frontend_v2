@@ -528,3 +528,27 @@
   color: var(--text-muted);
   pointer-events: none;
 }
+
+/* Favorite Button */
+.product-details-favorite-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background-color: var(--surface-hover);
+  margin-top: -0.5rem;
+}
+
+.product-details-favorite-btn:hover {
+  transform: scale(1.15);
+  background-color: rgba(255, 75, 75, 0.15);
+}
+
+.product-details-favorite-btn.is-active {
+  background-color: rgba(255, 75, 75, 0.1);
+}

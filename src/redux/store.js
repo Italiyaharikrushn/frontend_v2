@@ -10,6 +10,7 @@ import { settingsApi } from '../api/settingsApi';
 import { festivalApi } from '../api/festivalApi';
 import { policyApi } from '../api/policyApi';
 import { returnApi } from '../api/returnApi';
+import { favoriteApi } from '../api/favoriteApi';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
 
@@ -26,6 +27,7 @@ const appReducer = combineReducers({
     [festivalApi.reducerPath]: festivalApi.reducer,
     [policyApi.reducerPath]: policyApi.reducer,
     [returnApi.reducerPath]: returnApi.reducer,
+    [favoriteApi.reducerPath]: favoriteApi.reducer,
 });
 
 const rootReducer = (state, action) => {
@@ -49,7 +51,8 @@ export const store = configureStore({
       settingsApi.middleware,
       festivalApi.middleware,
       policyApi.middleware,
-      returnApi.middleware
+      returnApi.middleware,
+      favoriteApi.middleware
     ),
 });
 

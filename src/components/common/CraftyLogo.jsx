@@ -70,14 +70,14 @@ export const CraftyLogoEmblem = ({ size = 44, className = "" }) => (
 
 const CraftyLogo = ({ size = 42, showSubtitle = false }) => {
   return (
-    <div className="crafty-brand-container" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.7rem' }}>
+    <div className="crafty-brand-container" style={{ display: 'inline-flex', alignItems: 'center', gap: 'clamp(0.35rem, 2vw, 0.7rem)' }}>
       <CraftyLogoEmblem size={size} />
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <span
           className="crafty-brand-title"
           style={{
             fontFamily: "var(--font-serif, 'Playfair Display', serif)",
-            fontSize: '1.5rem',
+            fontSize: 'clamp(1.1rem, 5vw, 1.5rem)',
             fontWeight: 700,
             color: '#D4AF37',
             letterSpacing: '0.04em',
