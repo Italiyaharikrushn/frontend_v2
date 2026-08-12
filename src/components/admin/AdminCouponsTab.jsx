@@ -103,11 +103,11 @@ const AdminCoupons = () => {
                                     </div>
                                     <div className="admin-form-field">
                                         <label>Discount Value</label>
-                                        <input required type="number" min="0" step="0.01" value={formData.discountValue} onChange={e => setFormData({ ...formData, discountValue: e.target.value })} />
+                                        <input required type="number" min="0" step="0.01" value={formData.discountValue} onChange={e => setFormData({ ...formData, discountValue: e.target.value })} placeholder=" " />
                                     </div>
                                     <div className="admin-form-field">
                                         <label>Expiry Date</label>
-                                        <input required type="date" value={formData.expiryDate ? formData.expiryDate.split('T')[0] : ''} onChange={e => setFormData({ ...formData, expiryDate: e.target.value })} />
+                                        <input required type="date" value={formData.expiryDate ? formData.expiryDate.split('T')[0] : ''} onChange={e => setFormData({ ...formData, expiryDate: e.target.value })} placeholder=" " />
                                     </div>
                                     <div className="admin-form-field full" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius-md)' }}>
                                         <input type="checkbox" id="isActive" checked={formData.isActive} onChange={e => setFormData({ ...formData, isActive: e.target.checked })} style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }} />

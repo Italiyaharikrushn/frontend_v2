@@ -31,7 +31,9 @@ const cartSlice = createSlice({
     addItem: (state, action) => {
       const existingItem = state.items.find(item => 
         item.id === action.payload.id && 
-        (item.phoneModel || '') === (action.payload.phoneModel || '')
+        (item.phoneModel || '') === (action.payload.phoneModel || '') &&
+        (item.coverType || '') === (action.payload.coverType || '') &&
+        (item.customName || '') === (action.payload.customName || '')
       );
       const qtyToAdd = action.payload.quantity || 1;
       if (existingItem) {
@@ -40,7 +42,7 @@ const cartSlice = createSlice({
         state.items.push({ 
           ...action.payload, 
           quantity: qtyToAdd, 
-          cartItemId: `${action.payload.id}-${action.payload.phoneModel || 'default'}-${Date.now()}`
+          cartItemId: `${action.payload.id}-${action.payload.phoneModel || 'default'}-${action.payload.coverType || 'default'}-${Date.now()}`
         });
       }
       saveCartState(state);

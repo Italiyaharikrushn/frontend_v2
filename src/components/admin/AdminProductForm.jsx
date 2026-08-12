@@ -24,6 +24,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
     category: '',
     subCategory: '',
     price: '',
+    customNamePrice: '',
     stock: '',
     status: 'Active'
   });
@@ -46,6 +47,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
         category: editCategory,
         subCategory: editingProduct.subCategory || '',
         price: editingProduct.price || '',
+        customNamePrice: editingProduct.customNamePrice || '',
         stock: editingProduct.stock || '',
         status: (editingProduct.isActive ?? editingProduct.active ?? true) ? 'Active' : 'Inactive'
       });
@@ -54,7 +56,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
          // We'll just let the dropdown handle it by dynamically adding the current category to the options below
       }
     } else {
-      setFormData({ name: '', description: '', sku: '', images: [], video: '', videoPreview: '', category: '', subCategory: '', price: '', stock: '', status: 'Active' });
+      setFormData({ name: '', description: '', sku: '', images: [], video: '', videoPreview: '', category: '', subCategory: '', price: '', customNamePrice: '', stock: '', status: 'Active' });
       setIsAddingNewCategory(false);
       setVideoError('');
       setDraftImage('');
@@ -143,6 +145,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
         images: [...formData.images, ...(draftImagePreview ? [draftImagePreview] : (!isDecoding && draftImage ? [draftImage] : []))],
         videos: formData.video ? [formData.video] : [],
         price: parseFloat(formData.price),
+        customNamePrice: formData.customNamePrice ? parseFloat(formData.customNamePrice) : null,
         stock: parseInt(formData.stock, 10),
         isActive: formData.status === 'Active',
         category: formData.category
@@ -292,6 +295,12 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
             <label>Price (₹)</label>
             <input type="number" placeholder='Price (₹)' step="0.01" required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} />
           </div>
+          {formData.category && formData.category.toLowerCase().includes('cover') && (
+            <div className="admin-form-field">
+              <label>Custom Name Price (₹)</label>
+              <input type="number" placeholder='Price with Name (₹)' step="0.01" value={formData.customNamePrice} onChange={e => setFormData({ ...formData, customNamePrice: e.target.value })} />
+            </div>
+          )}
           <div className="admin-form-field">
             <label>Stock</label>
             <input type="number" placeholder='Stock' required value={formData.stock} onChange={e => setFormData({ ...formData, stock: e.target.value })} />

@@ -19,7 +19,10 @@ export const useCartPage = () => {
     return rawCartItems.map(item => {
       const product = allProducts.find(p => p.id === item.id);
       if (product) {
-        const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+        let latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+        if (item.coverType === 'custom_name' && product.customNamePrice) {
+          latestPrice = parseFloat(product.customNamePrice);
+        }
         return { ...item, price: latestPrice };
       }
       return item;
@@ -31,7 +34,10 @@ export const useCartPage = () => {
       const needsUpdate = rawCartItems.some(item => {
         const product = allProducts.find(p => p.id === item.id);
         if (product) {
-          const latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+          let latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
+          if (item.coverType === 'custom_name' && product.customNamePrice) {
+            latestPrice = parseFloat(product.customNamePrice);
+          }
           return item.price !== latestPrice;
         }
         return false;

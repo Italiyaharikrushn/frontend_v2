@@ -89,11 +89,11 @@ const CheckoutForm = ({
             <div className="form-grid fade-in">
               <div className="input-group">
                 <label htmlFor="firstName">First Name</label>
-                <input type="text" id="firstName" required />
+                <input type="text" id="firstName" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="lastName">Last Name</label>
-                <input type="text" id="lastName" required />
+                <input type="text" id="lastName" placeholder=" " required />
               </div>
               <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                 <label htmlFor="address">Street Address</label>
@@ -101,15 +101,15 @@ const CheckoutForm = ({
               </div>
               <div className="input-group">
                 <label htmlFor="city">City</label>
-                <input type="text" id="city" required />
+                <input type="text" id="city" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="state">State / Province</label>
-                <input type="text" id="state" required />
+                <input type="text" id="state" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="zip">ZIP / Postal Code</label>
-                <input type="text" id="zip" required />
+                <input type="text" id="zip" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="country">Country</label>

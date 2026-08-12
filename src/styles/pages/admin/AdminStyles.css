@@ -367,12 +367,38 @@
   flex-direction: column;
   gap: 0.45rem;
   min-width: 0;
+  position: relative;
+  margin-top: 0.5rem;
 }
 
 .admin-form-field label {
   font-weight: 600;
   font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
-  color: var(--text-main);
+  color: var(--text-muted);
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--surface);
+  padding: 0 0.3rem;
+  transition: all var(--transition-fast);
+  pointer-events: none;
+  z-index: 5;
+  transform-origin: left center;
+}
+
+.admin-form-field:has(textarea) label {
+  top: 1.25rem;
+}
+
+.admin-form-field:focus-within label,
+.admin-form-field:has(input:not(:placeholder-shown)) label,
+.admin-form-field:has(textarea:not(:placeholder-shown)) label,
+.admin-form-field:has(select) label {
+  top: 0;
+  transform: translateY(-50%) scale(0.9);
+  color: var(--primary);
+  font-weight: 700;
 }
 
 .admin-form-field input,
@@ -382,12 +408,23 @@
   padding: 0.8rem 1rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: transparent;
   color: var(--text-main);
   font-family: inherit;
   font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   min-height: 44px;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.admin-form-field input::placeholder,
+.admin-form-field textarea::placeholder {
+  color: transparent;
+  transition: color var(--transition-fast);
+}
+
+.admin-form-field input:focus::placeholder,
+.admin-form-field textarea:focus::placeholder {
+  color: var(--text-muted);
 }
 
 .admin-form-field input:focus,
