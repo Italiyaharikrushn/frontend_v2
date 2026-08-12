@@ -20,6 +20,9 @@ export const useProductDetails = ({ propId, isModal }) => {
   const [phoneModel, setPhoneModel] = useState('');
   const [quantity, setQuantity] = useState(1);
 
+  const [coverType, setCoverType] = useState('standard'); // 'standard' or 'custom_name'
+  const [customName, setCustomName] = useState('');
+
   const isPhoneCover = product ? (product.category?.toLowerCase().includes('cover') || product.title?.toLowerCase().includes('cover')) : false;
 
   useEffect(() => {
@@ -33,12 +36,14 @@ export const useProductDetails = ({ propId, isModal }) => {
 
   const handleAddToCart = async () => {
     dispatch(addItem({
-      id: product.id,
+      id: product.id || product._id,
       name: product.title,
       price: product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price),
       category: product.category || product.globalCategory || 'general',
       image: (product.images && product.images.length > 0) ? product.images[0] : null,
       phoneModel: isPhoneCover ? phoneModel : undefined,
+      coverType: isPhoneCover ? coverType : undefined,
+      customName: isPhoneCover && coverType === 'custom_name' ? customName : undefined,
       quantity,
     }));
 
@@ -53,5 +58,11 @@ export const useProductDetails = ({ propId, isModal }) => {
   const currentPrice = product ? (product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price)) : 0;
   const originalPrice = product ? parseFloat(product.price) || 0 : 0;
 
-  return { product, isLoading, isError, pincode, setPincode, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate };
+  return { 
+    product, isLoading, isError, pincode, setPincode, 
+    phoneModel, setPhoneModel, quantity, setQuantity, 
+    isPhoneCover, currentPrice, originalPrice, 
+    coverType, setCoverType, customName, setCustomName,
+    handleAddToCart, handleBuyNow, navigate 
+  };
 };

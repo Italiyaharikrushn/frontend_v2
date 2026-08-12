@@ -144,9 +144,9 @@ const Home = () => {
                 <div className="marquee-track">
                   <div className="marquee-content">
                     {trendingProducts.map((product) => (
-                      <FeatureCard 
-                        key={product.id || product._id} 
-                        product={product} 
+                      <FeatureCard
+                        key={product.id || product._id}
+                        product={product}
                         onAddToCart={handleAddToCart}
                         onQuickView={setQuickViewProductId}
                       />
@@ -154,9 +154,9 @@ const Home = () => {
                   </div>
                   <div className="marquee-content" aria-hidden="true">
                     {trendingProducts.map((product) => (
-                      <FeatureCard 
-                        key={`${product.id || product._id}-dup`} 
-                        product={product} 
+                      <FeatureCard
+                        key={`${product.id || product._id}-dup`}
+                        product={product}
                         onAddToCart={handleAddToCart}
                         onQuickView={setQuickViewProductId}
                       />
@@ -167,8 +167,8 @@ const Home = () => {
             ) : trendingProducts.length === 1 ? (
               /* Single card row: Centered without autoplay */
               <div className="single-card-row">
-                <FeatureCard 
-                  product={trendingProducts[0]} 
+                <FeatureCard
+                  product={trendingProducts[0]}
                   onAddToCart={handleAddToCart}
                   onQuickView={setQuickViewProductId}
                 />

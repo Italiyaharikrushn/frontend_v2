@@ -13,7 +13,7 @@ import '@/styles/pages/storefront/ProductDetails.css';
 
 const ProductDetails = ({ productId: propId, onClose }) => {
   const isModal = !!onClose;
-  const { product, isLoading, isError, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
+  const { product, isLoading, isError, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, coverType, setCoverType, customName, setCustomName, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { data: favorites } = useGetFavoritesQuery(undefined, { skip: !isAuthenticated });
@@ -94,9 +94,40 @@ const ProductDetails = ({ productId: propId, onClose }) => {
           <div className="action-links-container"></div>
 
           {isPhoneCover && (
-            <div className="phone-model-input" style={{ marginBottom: '1.5rem' }}>
-              <label htmlFor="phoneModel" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500', color: 'var(--text-main)' }}>Phone Model <span style={{ color: 'red' }}>*</span></label>
-              <PhoneModelDropdown value={phoneModel} onChange={setPhoneModel} />
+            <div className="phone-cover-options-container" style={{ marginBottom: '1.5rem', padding: '1.25rem', background: 'var(--surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+              <div className="phone-model-input" style={{ marginBottom: '1.25rem' }}>
+                <label htmlFor="phoneModel" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Select Phone Model <span style={{ color: 'red' }}>*</span></label>
+                <PhoneModelDropdown value={phoneModel} onChange={setPhoneModel} />
+              </div>
+
+              <div className="cover-variation-input" style={{ marginBottom: '1.25rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Select Variation <span style={{ color: 'red' }}>*</span></label>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', background: coverType === 'standard' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--surface)', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: `1px solid ${coverType === 'standard' ? 'var(--primary)' : 'var(--border)'}`, flex: 1, minWidth: 'max-content' }}>
+                    <input type="radio" name="coverType" value="standard" checked={coverType === 'standard'} onChange={(e) => setCoverType(e.target.value)} style={{ accentColor: 'var(--primary)' }} />
+                    <span style={{ fontWeight: coverType === 'standard' ? '600' : '400', color: coverType === 'standard' ? 'var(--primary)' : 'var(--text-main)' }}>Standard Cover</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', background: coverType === 'custom_name' ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--surface)', padding: '0.75rem 1rem', borderRadius: 'var(--radius-sm)', border: `1px solid ${coverType === 'custom_name' ? 'var(--primary)' : 'var(--border)'}`, flex: 1, minWidth: 'max-content' }}>
+                    <input type="radio" name="coverType" value="custom_name" checked={coverType === 'custom_name'} onChange={(e) => setCoverType(e.target.value)} style={{ accentColor: 'var(--primary)' }} />
+                    <span style={{ fontWeight: coverType === 'custom_name' ? '600' : '400', color: coverType === 'custom_name' ? 'var(--primary)' : 'var(--text-main)' }}>Cover with Name</span>
+                  </label>
+                </div>
+              </div>
+
+              {coverType === 'custom_name' && (
+                <div className="custom-name-input fade-in">
+                  <label htmlFor="customName" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Enter Custom Name <span style={{ color: 'red' }}>*</span></label>
+                  <input 
+                    type="text" 
+                    id="customName" 
+                    value={customName} 
+                    onChange={(e) => setCustomName(e.target.value)} 
+                    placeholder="e.g. PREITY" 
+                    style={{ width: '100%', padding: '0.85rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)', fontSize: '1rem', outline: 'none' }}
+                  />
+                  <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>This name will be crafted onto your cover exactly as typed.</p>
+                </div>
+              )}
             </div>
           )}
 
@@ -130,14 +161,14 @@ const ProductDetails = ({ productId: propId, onClose }) => {
             <button
               className="btn-add-to-cart"
               onClick={handleAddToCart}
-              disabled={!product.active || (isPhoneCover && !phoneModel.trim())}
+              disabled={!product.active || (isPhoneCover && !phoneModel.trim()) || (isPhoneCover && coverType === 'custom_name' && !customName.trim())}
             >
               ADD TO CART
             </button>
             <button
               className="btn-buy-now"
               onClick={handleBuyNow}
-              disabled={!product.active || (isPhoneCover && !phoneModel.trim())}
+              disabled={!product.active || (isPhoneCover && !phoneModel.trim()) || (isPhoneCover && coverType === 'custom_name' && !customName.trim())}
             >
               BUY NOW
             </button>

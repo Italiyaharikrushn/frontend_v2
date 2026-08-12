@@ -24,13 +24,14 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: 
+  background-image:
     radial-gradient(ellipse at 10% 20%, rgba(var(--primary-rgb), 0.18) 0%, transparent 50%),
     radial-gradient(ellipse at 90% 80%, rgba(var(--primary-rgb), 0.22) 0%, transparent 60%);
   opacity: 0.85;
 }
 
-.crafty-hero-bg-waves::before, .crafty-hero-bg-waves::after {
+.crafty-hero-bg-waves::before,
+.crafty-hero-bg-waves::after {
   content: '';
   position: absolute;
   width: 600px;
@@ -360,8 +361,13 @@
 }
 
 @keyframes marqueeAutoplay {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 /* SINGLE CARD STATIC ROW */
@@ -503,21 +509,27 @@
     grid-template-columns: 1fr;
     text-align: center;
   }
+
   .hero-text-col {
     align-items: center;
   }
+
   .hero-ornament-divider {
     justify-content: center;
   }
+
   .trust-badges-container {
     flex-wrap: wrap;
   }
+
   .trust-divider {
     display: none;
   }
+
   .trust-badge-item {
     flex: 1 1 40%;
   }
+
   .category-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -528,15 +540,19 @@
     flex: 1 1 100%;
     justify-content: flex-start;
   }
+
   .emblem-gold-frame {
     padding: 1.5rem;
   }
+
   .feature-card {
     width: 250px;
   }
+
   .feature-media {
     height: 200px;
   }
+
   .category-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
