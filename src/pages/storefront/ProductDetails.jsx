@@ -54,11 +54,11 @@ const ProductDetails = ({ productId: propId, onClose }) => {
       <div className="product-details-grid">
 
         {/* Left Column - Image */}
-        <ProductGallery product={product} />
+        <ProductGallery product={product} isFavorite={isFavorite} onFavoriteClick={handleFavoriteClick} />
 
         {/* Right Column - Details */}
         <div className="product-info-section">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingRight: isModal ? '2.5rem' : '0' }}>
+          <div className="title-favorite-row">
             <h1 className="product-title" style={{ flex: 1, paddingRight: '1rem' }}>{product.title?.toUpperCase()}</h1>
             <button 
               onClick={handleFavoriteClick}
@@ -106,7 +106,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 disabled={quantity <= 1}
-                style={{ width: '40px', height: '40px', background: 'var(--surface)', border: 'none', cursor: quantity <= 1 ? 'not-allowed' : 'pointer', fontSize: '1.2rem', opacity: quantity <= 1 ? 0.5 : 1 }}
+                style={{ minWidth: '44px', minHeight: '44px', background: 'var(--surface)', border: 'none', cursor: quantity <= 1 ? 'not-allowed' : 'pointer', fontSize: '1.2rem', opacity: quantity <= 1 ? 0.5 : 1 }}
               >-</button>
               <input
                 type="number"
@@ -121,7 +121,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
               />
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                style={{ width: '40px', height: '40px', background: 'var(--surface)', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
+                style={{ minWidth: '44px', minHeight: '44px', background: 'var(--surface)', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}
               >+</button>
             </div>
           </div>
