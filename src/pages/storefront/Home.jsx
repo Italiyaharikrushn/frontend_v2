@@ -7,10 +7,7 @@ import { useHome } from '../../hooks/useHome';
 import ProductDetails from './ProductDetails';
 import '@/styles/pages/storefront/Home.css';
 
-const FeatureCard = ({ product, onAddToCart, onQuickView }) => {
-  const pId = product.id || product._id;
-  const price = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
-  
+const FeatureCard = ({ product }) => {
   return (
     <div className="feature-card">
       <Link to={product.category ? `/products?category=${encodeURIComponent(product.category.toLowerCase())}` : `/products`} className="feature-media">
@@ -29,10 +26,6 @@ const FeatureCard = ({ product, onAddToCart, onQuickView }) => {
       </Link>
       <div className="feature-body">
         <h3>{product.title}</h3>
-        <div className="feature-meta">{product.category}</div>
-        <div className="feature-price">
-          ₹{price}
-        </div>
       </div>
     </div>
   );
