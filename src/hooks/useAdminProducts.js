@@ -47,8 +47,8 @@ export const useAdminProducts = () => {
         const file = await bulkUploadPrompt('Upload your product CSV/Excel file.');
         if (file) {
             try {
-                await bulkUpload(file).unwrap();
-                pushToast('Bulk upload successful!', 'success');
+                const res = await bulkUpload(file).unwrap();
+                pushToast(res?.message || 'The file was successfully uploaded.', 'success');
             } catch (err) {
                 console.error('Bulk upload failed', err);
                 pushToast(err.data?.message || 'Bulk upload failed.', 'error');
