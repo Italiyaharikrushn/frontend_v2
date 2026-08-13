@@ -138,10 +138,12 @@ const FestivalSalePanel = ({ formData, setFormData, handleSave, isUpdating }) =>
   const products = Array.isArray(allProductsData) ? allProductsData : (allProductsData?.content || []);
   
   return (
-    <div className="glass-panel admin-panel-card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-      <h2 style={{ color: 'var(--primary-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0 }}>
-        <Tag size={20} /> Festival Sale Configuration
-      </h2>
+    <div className="glass-panel admin-panel-card" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <div className="admin-discount-panel-header">
+        <h2 className="admin-discount-panel-title">
+          <Tag size={20} /> Festival Sale Configuration
+        </h2>
+      </div>
       <div className="admin-form-grid">
         <div className="admin-form-field">
           <label>Sale Name</label>
@@ -196,14 +198,15 @@ const FestivalSalePanel = ({ formData, setFormData, handleSave, isUpdating }) =>
             placeholder="-- All Products --"
           />
         </div>
-        <div className="admin-form-field full" style={{ display: 'flex', alignItems: 'center' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer', margin: 0, fontSize: '1rem' }}>
-            <input 
-              type="checkbox" 
-              style={{ width: '18px', height: '18px', margin: 0, cursor: 'pointer' }} 
-              checked={formData.isFestivalActive || false} 
-              onChange={(e) => setFormData({...formData, isFestivalActive: e.target.checked})} 
-            />
+        <div className="admin-form-field full" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius-md)' }}>
+          <input 
+            type="checkbox" 
+            id="isFestivalActive"
+            style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }} 
+            checked={formData.isFestivalActive || false} 
+            onChange={(e) => setFormData({...formData, isFestivalActive: e.target.checked})} 
+          />
+          <label htmlFor="isFestivalActive" style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold', position: 'static', transform: 'none' }}>
             Enable Festival Sale (Applies discount based on targets above & shows banner)
           </label>
         </div>

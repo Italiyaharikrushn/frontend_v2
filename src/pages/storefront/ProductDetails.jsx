@@ -8,6 +8,7 @@ import { useGetFavoritesQuery, useToggleFavoriteMutation } from '../../api/favor
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../redux/authSlice';
 import { useToast } from '../../components/ui/ToastProvider';
+import { formatCurrency } from '../../utils/formatters';
 import '@/styles/pages/storefront/ProductDetails.css';
 
 
@@ -81,14 +82,14 @@ const ProductDetails = ({ productId: propId, onClose }) => {
           <div className="product-pricing">
             {product.discountPrice ? (
               <span className="current-price" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                Rs. {currentPrice.toFixed(2)}
-                <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.75em' }}>Rs. {originalPrice.toFixed(2)}</span>
+                {formatCurrency(currentPrice)}
+                <span style={{ textDecoration: 'line-through', color: 'var(--text-muted)', fontSize: '0.75em' }}>{formatCurrency(originalPrice)}</span>
                 <span style={{ fontSize: '0.75em', padding: '0.25rem 0.5rem', background: 'var(--success)', color: 'white', borderRadius: '4px' }}>
                   {Math.round(((originalPrice - currentPrice) / originalPrice) * 100)}% OFF
                 </span>
               </span>
             ) : (
-              <span className="current-price">Rs. {currentPrice.toFixed(2)}</span>
+              <span className="current-price">{formatCurrency(currentPrice)}</span>
             )}
           </div>
           <div className="action-links-container"></div>

@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { formatPhoneNumber } from './formatters';
+import { formatPhoneNumber, formatCurrency } from './formatters';
 
 export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
     if (!orderIdsToPrint || orderIdsToPrint.length === 0) return;
@@ -262,15 +262,15 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
                   item.productName || 'Product',
                   '3004', 
                   qty.toString(),
-                  `Rs.${totalItemPrice.toFixed(2)}`,
-                  `Rs.0.00`,
-                  `Rs.${taxableVal.toFixed(2)}`,
-                  `Rs.0.00`,
-                  `Rs.${totalItemPrice.toFixed(2)}`
+                  formatCurrency(totalItemPrice),
+                  formatCurrency(0),
+                  formatCurrency(taxableVal),
+                  formatCurrency(0),
+                  formatCurrency(totalItemPrice)
               ]);
           });
       } else {
-          taxTableRows.push(['Custom Order', 'N/A', '1', `Rs.${order.totalAmount}`, 'Rs.0.00', `Rs.${order.totalAmount}`, 'Rs.0.00', `Rs.${order.totalAmount}`]);
+          taxTableRows.push(['Custom Order', 'N/A', '1', formatCurrency(order.totalAmount), formatCurrency(0), formatCurrency(order.totalAmount), formatCurrency(0), formatCurrency(order.totalAmount)]);
           sumTotal = order.totalAmount;
       }
       
@@ -287,11 +287,11 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
               'Other Charges',
               '9968',
               'NA',
-              `Rs.${otherCharges.toFixed(2)}`,
-              'Rs.0.00',
-              `Rs.${shipTaxable.toFixed(2)}`,
-              `Rs.0.00`,
-              `Rs.${otherCharges.toFixed(2)}`
+              formatCurrency(otherCharges),
+              formatCurrency(0),
+              formatCurrency(shipTaxable),
+              formatCurrency(0),
+              formatCurrency(otherCharges)
           ]);
       }
       
@@ -303,8 +303,8 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
           '',
           '',
           '',
-          { content: `Rs.${sumTax.toFixed(2)}`, styles: { fontStyle: 'bold' } },
-          { content: `Rs.${order.totalAmount.toFixed(2)}`, styles: { fontStyle: 'bold' } }
+          { content: formatCurrency(sumTax), styles: { fontStyle: 'bold' } },
+          { content: formatCurrency(order.totalAmount), styles: { fontStyle: 'bold' } }
       ]);
       
       autoTable(doc, {
