@@ -267,7 +267,7 @@ const Header = () => {
               )}
 
               <Link to="/contact" className={`mobile-nav-link ${isActive('/contact') ? 'active' : ''}`} onClick={closeMenu}>Contact Us</Link>
-              <Link to="/return-policy" className={`mobile-nav-link ${isActive('/return-policy') ? 'active' : ''}`} onClick={closeMenu}>Return Policy</Link>
+              <Link to="/policies/return-and-refund" className={`mobile-nav-link ${isActive('/policies/return-and-refund') ? 'active' : ''}`} onClick={closeMenu}>Return Policy</Link>
             </nav>
 
             <div className="mobile-nav-footer">

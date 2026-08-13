@@ -7,15 +7,15 @@ import '@/styles/pages/admin/AdminStyles.css'; // Reusing admin styles for setti
 import '@/styles/pages/storefront/AccountSettings.css';
 
 const AccountSettings = () => {
-    const { 
-        userName, 
-        userEmail, 
-        passwordData, 
-        setPasswordData, 
-        handlePasswordChange, 
+    const {
+        userName,
+        userEmail,
+        passwordData,
+        setPasswordData,
+        handlePasswordChange,
         isUpdating,
         showPasswords,
-        togglePassword 
+        togglePassword
     } = useAccountSettings();
 
     return (
@@ -47,14 +47,14 @@ const AccountSettings = () => {
                     <div className="form-group">
                         <label>Current Password</label>
                         <div className="account-settings-password-wrapper">
-                            <input 
-                                type={showPasswords.current ? "text" : "password"} 
+                            <input
+                                type={showPasswords.current ? "text" : "password"}
                                 className="form-input account-settings-password-input"
                                 value={passwordData.currentPassword}
-                                onChange={(e) => setPasswordData({...passwordData, currentPassword: e.target.value})}
+                                onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                                 required
                             />
-                            <button 
+                            <button
                                 type="button"
                                 onClick={() => togglePassword('current')}
                                 className="account-settings-password-toggle"
@@ -66,15 +66,15 @@ const AccountSettings = () => {
                     <div className="form-group">
                         <label>New Password</label>
                         <div className="account-settings-password-wrapper">
-                            <input 
-                                type={showPasswords.new ? "text" : "password"} 
+                            <input
+                                type={showPasswords.new ? "text" : "password"}
                                 className="form-input account-settings-password-input"
                                 value={passwordData.newPassword}
-                                onChange={(e) => setPasswordData({...passwordData, newPassword: e.target.value})}
+                                onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                                 required
                                 minLength={6}
                             />
-                            <button 
+                            <button
                                 type="button"
                                 onClick={() => togglePassword('new')}
                                 className="account-settings-password-toggle"
@@ -86,15 +86,15 @@ const AccountSettings = () => {
                     <div className="form-group">
                         <label>Confirm New Password</label>
                         <div className="account-settings-password-wrapper">
-                            <input 
-                                type={showPasswords.confirm ? "text" : "password"} 
+                            <input
+                                type={showPasswords.confirm ? "text" : "password"}
                                 className="form-input account-settings-password-input"
                                 value={passwordData.confirmPassword}
-                                onChange={(e) => setPasswordData({...passwordData, confirmPassword: e.target.value})}
+                                onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                                 required
                                 minLength={6}
                             />
-                            <button 
+                            <button
                                 type="button"
                                 onClick={() => togglePassword('confirm')}
                                 className="account-settings-password-toggle"
