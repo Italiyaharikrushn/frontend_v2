@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Trash2, Minus, Plus, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Trash2, Minus, Plus, ArrowRight, Truck, ShieldCheck } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useCartPage } from '../../hooks/useCartPage';
 import '@/styles/pages/storefront/Cart.css';
@@ -75,6 +75,17 @@ const Cart = () => {
             <h3 className="summary-title">Order Summary</h3>
             <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
             <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
+
+            <div className="trust-badges" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', margin: '1rem 0 1.5rem 0', paddingTop: '1.5rem', borderTop: '1px dashed var(--border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', fontSize: '0.85rem', fontWeight: '500' }}>
+                <Truck size={18} style={{ color: 'var(--primary)' }} />
+                <span>Free Delivery/Shipping</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', fontSize: '0.85rem', fontWeight: '500' }}>
+                <ShieldCheck size={18} style={{ color: 'var(--primary)' }} />
+                <span>Prepaid Secure Payment</span>
+              </div>
+            </div>
 
             <div className="summary-actions">
               <Link to="/checkout" style={{ display: 'block', width: '100%' }}>
