@@ -1,6 +1,7 @@
 import React from 'react';
 import AppRoutes from './routes/AppRoutes';
-import { ToastProvider } from './components/ui/ToastProvider';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { AlertProvider } from './components/ui/AlertProvider';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import useCartSync from './hooks/useCartSync';
@@ -9,11 +10,10 @@ function App() {
   useCartSync();
   return (
     <ErrorBoundary>
-      <ToastProvider>
-        <AlertProvider>
-          <AppRoutes />
-        </AlertProvider>
-      </ToastProvider>
+      <AlertProvider>
+        <AppRoutes />
+        <ToastContainer position="bottom-right" autoClose={3000} />
+      </AlertProvider>
     </ErrorBoundary>
   );
 }
