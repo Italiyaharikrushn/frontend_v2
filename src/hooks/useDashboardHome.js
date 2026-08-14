@@ -18,12 +18,23 @@ export const useDashboardHome = () => {
         const totalSales = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
         const productValue = products.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0);
 
+        const today = new Date();
+        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+        const todaySales = orders.reduce((sum, o) => {
+            const orderDate = new Date(o.orderDate || o.createdAt).getTime();
+            if (orderDate >= todayStart) {
+                return sum + (o.totalAmount || o.amount || 0);
+            }
+            return sum;
+        }, 0);
+
         return {
             activeProducts,
             pendingOrders,
             returnedOrders,
             totalSales,
-            productValue
+            productValue,
+            todaySales
         };
     }, [products, orders]);
 

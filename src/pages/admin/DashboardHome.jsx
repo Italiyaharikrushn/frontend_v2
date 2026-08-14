@@ -37,7 +37,15 @@ const DashboardHome = () => {
           <div className="summary-icon summary-icon-warning"><Clock size={24} /></div>
         </div>
 
-        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/payments')} style={{ cursor: 'pointer' }}>
+          <div className="summary-info">
+            <h3>Today's Sales</h3>
+            <div className="summary-value">₹{stats.todaySales.toLocaleString()}</div>
+          </div>
+          <div className="summary-icon summary-icon-success"><Wallet size={24} /></div>
+        </div>
+
+        <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/payments')} style={{ cursor: 'pointer' }}>
           <div className="summary-info">
             <h3>Total Sales</h3>
             <div className="summary-value">₹{stats.totalSales.toLocaleString()}</div>

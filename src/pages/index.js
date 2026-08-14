@@ -14,6 +14,7 @@ export { default as AdminOrders } from './admin/AdminOrders';
 export { default as AdminCustomers } from './admin/AdminCustomers';
 export { default as AdminReports } from './admin/AdminReports';
 export { default as AdminSettings } from './admin/AdminSettings';
+export { default as AdminPayments } from './admin/AdminPayments';
 
 // Auth Pages
 export { default as Login } from './auth/Login';

@@ -77,7 +77,7 @@ export const COUNTRIES = [
   { name: 'Honduras', code: '+504', length: 8 },
   { name: 'Hungary', code: '+36', length: 9 },
   { name: 'Iceland', code: '+354', length: 7 },
-  { name: 'India', code: '+91', length: 10 },
+  { name: 'India', code: '+91', length: [10] },
   { name: 'Indonesia', code: '+62', length: [9, 12] },
   { name: 'Iran', code: '+98', length: 10 },
   { name: 'Iraq', code: '+964', length: 10 },

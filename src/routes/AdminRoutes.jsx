@@ -16,6 +16,7 @@ import AdminSettings from '../pages/admin/AdminSettings';
 import AdminChangePassword from '../pages/admin/AdminChangePassword';
 import AdminPolicies from '../pages/admin/AdminPolicies';
 import AdminReturns from '../pages/admin/AdminReturns';
+import AdminPayments from '../pages/admin/AdminPayments';
 
 const AdminRoutes = () => {
   return (
@@ -29,6 +30,7 @@ const AdminRoutes = () => {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="reports" element={<AdminReports />} />
+          <Route path="payments" element={<AdminPayments />} />
           <Route path="returns" element={<AdminReturns />} />
           <Route path="policies" element={<AdminPolicies />} />
           <Route path="settings" element={<AdminSettings />} />

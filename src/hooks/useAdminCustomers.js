@@ -29,13 +29,20 @@ export const useAdminCustomers = () => {
   const ordersList = Array.isArray(orders) ? orders : (orders?.content || []);
 
   const realCustomers = customersList.map(customer => {
-    const customerOrders = ordersList.filter(order => order?.customerEmail === customer?.email || order?.buyer?.email === customer?.email);
+    const customerOrders = ordersList
+      .filter(order => order?.customerEmail === customer?.email || order?.buyer?.email === customer?.email)
+      .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // Sort newest first
+      
     const totalOrders = customerOrders.length;
     const totalSpent = customerOrders.reduce((sum, order) => sum + (parseFloat(order.totalAmount) || 0), 0);
+    const lastOrderDate = customerOrders.length > 0 ? customerOrders[0].orderDate : null;
+    
     return {
       ...customer,
       orders: totalOrders,
-      spent: `₹${totalSpent.toFixed(2)}`
+      spent: `₹${totalSpent.toFixed(2)}`,
+      recentOrders: customerOrders.slice(0, 5), // Top 5 recent orders
+      lastOrderDate
     };
   });
 

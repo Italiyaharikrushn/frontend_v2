@@ -6,3 +6,4 @@ export * from './productApi';
 export * from './profileApi';
 export * from './settingsApi';
 export * from './favoriteApi';
+export * from './paymentApi';
