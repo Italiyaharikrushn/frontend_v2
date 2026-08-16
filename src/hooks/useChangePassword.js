@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useChangePasswordMutation } from '../api/authApi';
 import { useToast } from '../components/ui/ToastProvider';
+import { isPasswordValid } from '../utils/validationRules';
 
 export const useChangePassword = () => {
   const { pushToast } = useToast();
@@ -9,6 +10,10 @@ export const useChangePassword = () => {
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
+    if (!isPasswordValid(passwordData.newPassword)) {
+      pushToast('Password must be at least 8 characters and include uppercase, lowercase, a number, and a special character.', 'error');
+      return;
+    }
     if (passwordData.newPassword !== passwordData.confirmPassword) {
       pushToast("New passwords don't match!", 'error');
       return;

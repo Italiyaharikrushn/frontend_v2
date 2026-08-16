@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation } from '../api/orderApi';
+import { useGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation } from '../api/couponApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useAlert } from '../components/ui/AlertProvider';
 

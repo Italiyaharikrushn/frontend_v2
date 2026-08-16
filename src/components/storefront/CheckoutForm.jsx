@@ -1,6 +1,9 @@
-import React from 'react';
-import { CreditCard, Wallet, User, MapPin } from 'lucide-react';
+import { CreditCard, Wallet, User, MapPin, Trash2, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PhoneInput from '../ui/PhoneInput';
+import { useDeleteAddressMutation } from '../../api/orderApi';
+import { useToast } from '../ui/ToastProvider';
+import { useAlert } from '../ui/AlertProvider';
 
 const CheckoutForm = ({
   handleSubmit,
@@ -14,6 +17,28 @@ const CheckoutForm = ({
   setPaymentMethod,
   showPaymentSection
 }) => {
+  const [deleteAddress] = useDeleteAddressMutation();
+  const { pushToast } = useToast();
+  const { confirm } = useAlert();
+
+  const handleDeleteAddress = async (e, addressId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const shouldDelete = await confirm('Delete this saved address?');
+    if (shouldDelete) {
+      try {
+        await deleteAddress(addressId).unwrap();
+        pushToast('Address deleted', 'success');
+        if (selectedAddressId === addressId) {
+          const remaining = addresses.filter(a => a.id !== addressId);
+          setSelectedAddressId(remaining.length > 0 ? remaining[0].id : 'new');
+        }
+      } catch (err) {
+        pushToast('Failed to delete address', 'error');
+      }
+    }
+  };
+
   return (
     <div className="checkout-form-section">
       <form id="checkout-form" onSubmit={handleSubmit}>
@@ -40,28 +65,44 @@ const CheckoutForm = ({
         )}
 
         <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
-          <h2 className="form-card-title"><MapPin size={20} /> Shipping Address</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h2 className="form-card-title" style={{ margin: 0 }}><MapPin size={20} /> Shipping Address</h2>
+            <Link to="/addresses" target="_blank" style={{ fontSize: '0.85rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none', fontWeight: '500' }}>
+              Manage Addresses <ExternalLink size={13} />
+            </Link>
+          </div>
           
           {!isLoadingAddresses && addresses.length > 0 && (
             <div className="address-selector" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {addresses.map(addr => (
-                <label key={addr.id} className={`payment-method-card ${selectedAddressId === addr.id ? 'active' : ''}`} style={{ justifyContent: 'flex-start', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }}>
-                  <input 
-                    type="radio" 
-                    name="addressSelection" 
-                    value={addr.id} 
-                    checked={selectedAddressId === addr.id}
-                    onChange={() => setSelectedAddressId(addr.id)}
-                    style={{ marginRight: '1rem', marginTop: '0.25rem' }}
-                  />
-                  <div style={{ lineHeight: '1.4' }}>
-                    <strong>{addr.fullName}</strong><br />
-                    <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                      {addr.streetAddress}, {addr.city}, {addr.state} {addr.postalCode}<br />
-                      {addr.country} • {addr.phoneNumber}
-                    </span>
+                <div key={addr.id} className={`payment-method-card ${selectedAddressId === addr.id ? 'active' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }} onClick={() => setSelectedAddressId(addr.id)}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                    <input 
+                      type="radio" 
+                      name="addressSelection" 
+                      value={addr.id} 
+                      checked={selectedAddressId === addr.id}
+                      onChange={() => setSelectedAddressId(addr.id)}
+                      style={{ marginRight: '1rem', marginTop: '0.25rem' }}
+                    />
+                    <div style={{ lineHeight: '1.4' }}>
+                      <strong>{addr.fullName}</strong><br />
+                      <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                        {addr.streetAddress}, {addr.city}, {addr.state} {addr.postalCode}<br />
+                        {addr.country} • {addr.phoneNumber}
+                      </span>
+                    </div>
                   </div>
-                </label>
+
+                  <button
+                    type="button"
+                    onClick={(e) => handleDeleteAddress(e, addr.id)}
+                    title="Delete address"
+                    style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.35rem', borderRadius: '4px' }}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               ))}
               
               {addresses.length < 5 && (

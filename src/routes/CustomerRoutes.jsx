@@ -14,7 +14,7 @@ import Contact from '../pages/storefront/Contact';
 import Checkout from '../pages/storefront/Checkout';
 import OrderHistory from '../pages/storefront/OrderHistory';
 import PolicyPage from '../pages/storefront/PolicyPage';
-// import AddressBook from '../pages/storefront/AddressBook';
+import AddressBook from '../pages/storefront/AddressBook';
 import AccountSettings from '../pages/storefront/AccountSettings';
 import Favorites from '../pages/storefront/Favorites';
 
@@ -31,7 +31,7 @@ const CustomerRoutes = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="checkout" element={<Checkout />} />
           <Route path="orders" element={<OrderHistory />} />
-          {/* <Route path="addresses" element={<AddressBook />} /> */}
+          <Route path="addresses" element={<AddressBook />} />
           <Route path="profile" element={<AccountSettings />} />
           <Route path="favorites" element={<Favorites />} />
         </Route>

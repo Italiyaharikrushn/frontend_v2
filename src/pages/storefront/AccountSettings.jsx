@@ -1,7 +1,8 @@
 import React from 'react';
 import Button from '../../components/ui/Button';
-import { Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
 import { useAccountSettings } from '../../hooks/useAccountSettings';
+import { getPasswordRulesCol1, getPasswordRulesCol2 } from '../../utils/validationRules';
 
 import '@/styles/pages/admin/AdminStyles.css'; // Reusing admin styles for settings panels
 import '@/styles/pages/storefront/AccountSettings.css';
@@ -17,6 +18,9 @@ const AccountSettings = () => {
         showPasswords,
         togglePassword
     } = useAccountSettings();
+
+    const passwordRulesCol1 = getPasswordRulesCol1(passwordData.newPassword || '');
+    const passwordRulesCol2 = getPasswordRulesCol2(passwordData.newPassword || '');
 
     return (
         <div className="storefront-container account-settings-container">
@@ -72,7 +76,7 @@ const AccountSettings = () => {
                                 value={passwordData.newPassword}
                                 onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                                 required
-                                minLength={6}
+                                minLength={8}
                             />
                             <button
                                 type="button"
@@ -82,6 +86,20 @@ const AccountSettings = () => {
                                 {showPasswords.new ? <EyeOff size={18} /> : <Eye size={18} />}
                             </button>
                         </div>
+
+                        {passwordData.newPassword && (
+                            <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: 'var(--surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+                                <div style={{ fontSize: '0.8rem', fontWeight: '600', marginBottom: '0.5rem', color: 'var(--text-muted)' }}>Password Requirements:</div>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.4rem' }}>
+                                    {[...passwordRulesCol1, ...passwordRulesCol2].map((rule, idx) => (
+                                        <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem' }}>
+                                            {rule.met ? <CheckCircle size={14} color="#16a34a" /> : <XCircle size={14} color="#94a3b8" />}
+                                            <span style={{ color: rule.met ? '#16a34a' : 'var(--text-muted)' }}>{rule.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div className="form-group">
                         <label>Confirm New Password</label>
@@ -92,7 +110,7 @@ const AccountSettings = () => {
                                 value={passwordData.confirmPassword}
                                 onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                                 required
-                                minLength={6}
+                                minLength={8}
                             />
                             <button
                                 type="button"

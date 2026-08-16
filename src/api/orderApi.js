@@ -70,6 +70,23 @@ export const orderApi = createApi({
             invalidatesTags: ['Order']
         }),
 
+        updateAddress: builder.mutation({
+            query: ({ id, ...addressData }) => ({
+                url: `/api/address/update/${id}`,
+                method: "PUT",
+                body: addressData
+            }),
+            invalidatesTags: ['Order']
+        }),
+
+        deleteAddress: builder.mutation({
+            query: (id) => ({
+                url: `/api/address/delete/${id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['Order']
+        }),
+
         getUserAddresses: builder.query({
             query: () => "/api/address/user",
             providesTags: ['Order'],
@@ -118,45 +135,6 @@ export const orderApi = createApi({
             invalidatesTags: ['Order']
         }),
 
-        validateCoupon: builder.mutation({
-            query: ({ code, cartTotal }) => ({
-                url: `/api/coupons/validate`,
-                method: 'POST',
-                body: { code, cartTotal }
-            })
-        }),
-        
-        getCoupons: builder.query({
-            query: () => `/api/coupons`,
-            providesTags: ['Order']
-        }),
-
-        createCoupon: builder.mutation({
-            query: (coupon) => ({
-                url: `/api/coupons`,
-                method: 'POST',
-                body: coupon
-            }),
-            invalidatesTags: ['Order']
-        }),
-
-        updateCoupon: builder.mutation({
-            query: ({ id, ...coupon }) => ({
-                url: `/api/coupons/${id}`,
-                method: 'PUT',
-                body: coupon
-            }),
-            invalidatesTags: ['Order']
-        }),
-
-        deleteCoupon: builder.mutation({
-            query: (id) => ({
-                url: `/api/coupons/${id}`,
-                method: 'DELETE'
-            }),
-            invalidatesTags: ['Order']
-        }),
-
         getCustomerOrders: builder.query({
             query: (params) => {
                 if (!params) return "/api/orders/history";
@@ -186,16 +164,13 @@ export const {
     useReturnCustomerOrderMutation,
     useCancelCustomerOrderMutation,
     useAddAddressMutation,
+    useUpdateAddressMutation,
+    useDeleteAddressMutation,
     useGetUserAddressesQuery,
     useAddToBackendCartMutation,
     useClearBackendCartMutation,
     useCheckoutOrderMutation,
     useGetCustomerOrdersQuery,
-    useValidateCouponMutation,
-    useGetCouponsQuery,
-    useCreateCouponMutation,
-    useUpdateCouponMutation,
-    useDeleteCouponMutation,
     useGetBackendCartQuery,
     useSyncBackendCartMutation
 } = orderApi;

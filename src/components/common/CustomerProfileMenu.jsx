@@ -78,6 +78,11 @@ const CustomerProfileMenu = () => {
             <span>Profile Settings</span>
           </button>
           <div className="dropdown-divider"></div>
+          <button className="dropdown-action-btn" onClick={() => { navigate('/addresses'); setIsOpen(false); }}>
+            <MapPin size={16} />
+            <span>Saved Addresses</span>
+          </button>
+          <div className="dropdown-divider"></div>
           <button className="dropdown-action-btn" onClick={() => { navigate('/orders'); setIsOpen(false); }}>
             <Package size={16} />
             <span>My Orders</span>
