@@ -37,6 +37,42 @@ export const loadCartState = () => {
   }
 };
 
+export const isTokenValid = (token) => {
+  if (!token || typeof token !== 'string') return false;
+  let clean = token.trim();
+  if (clean.startsWith('Bearer ')) {
+    clean = clean.substring(7).trim();
+  }
+  if (!clean || clean === 'null' || clean === 'undefined') return false;
+
+  try {
+    const parts = clean.split('.');
+    if (parts.length !== 3) return false;
+
+    // Decode base64url payload
+    const base64Url = parts[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    const parsed = JSON.parse(jsonPayload);
+
+    if (parsed.exp && typeof parsed.exp === 'number') {
+      const nowSeconds = Math.floor(Date.now() / 1000);
+      // 10 second safety buffer
+      if (nowSeconds >= parsed.exp - 10) {
+        return false;
+      }
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 export const saveCartState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
@@ -45,3 +81,4 @@ export const saveCartState = (state) => {
     // Ignore write errors
   }
 };
+

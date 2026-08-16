@@ -1,13 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { prepareAuthHeaders } from '../utils/apiHelpers';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { createCustomBaseQuery } from '../utils/apiHelpers';
 
 export const profileApi = createApi({
     reducerPath: 'profileApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_BASE_URL}/api/seller`, 
-        prepareHeaders: prepareAuthHeaders,
-    }),
+    baseQuery: createCustomBaseQuery('/api/seller'),
     tagTypes: ['Profile'],
+
     endpoints: (builder) => ({
         getSellerProfile: builder.query({
             query: () => "/profile",

@@ -68,30 +68,34 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
 
   useEffect(() => {
     const handler = setTimeout(async () => {
-      const currentUrl = draftImage;
+      const currentUrl = draftImage ? draftImage.trim() : '';
       if (!currentUrl || currentUrl === lastDecodedUrl.current) return;
       if (!currentUrl.startsWith('http')) return;
 
       try {
         const res = await decodeUrl(currentUrl).unwrap();
-        if (res.image || res.video) {
-          const finalUrl = res.image || res.video;
-          lastDecodedUrl.current = finalUrl;
-          setDraftImage(finalUrl);
+        if (res.image) {
+          const finalUrl = res.image;
+          lastDecodedUrl.current = currentUrl;
           setDraftImagePreview(finalUrl);
+        } else if (res.original) {
+          lastDecodedUrl.current = currentUrl;
+          setDraftImagePreview(res.original);
         } else {
           lastDecodedUrl.current = currentUrl;
+          setDraftImagePreview(currentUrl);
         }
       } catch (e) {
         lastDecodedUrl.current = currentUrl;
+        setDraftImagePreview(currentUrl);
       }
-    }, 800);
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [draftImage, decodeUrl]);
 
   const handleAddImageToGallery = () => {
-    const finalImageUrl = draftImagePreview || draftImage;
+    const finalImageUrl = (draftImagePreview || draftImage || '').trim();
     if (finalImageUrl) {
       setFormData(prev => ({ ...prev, images: [...prev.images, finalImageUrl] }));
       setDraftImage('');
@@ -106,7 +110,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
 
   useEffect(() => {
     const handler = setTimeout(async () => {
-      const currentUrl = formData.video;
+      const currentUrl = formData.video ? formData.video.trim() : '';
       if (!currentUrl) {
          setVideoError('');
          return;
@@ -119,18 +123,20 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
         const res = await decodeUrl(currentUrl).unwrap();
         if (res.video) {
           const finalUrl = res.video;
-          lastDecodedVideoUrl.current = finalUrl;
-          setFormData(prev => ({ ...prev, video: finalUrl, videoPreview: finalUrl }));
+          lastDecodedVideoUrl.current = currentUrl;
+          setFormData(prev => ({ ...prev, video: currentUrl, videoPreview: finalUrl }));
+        } else if (res.original) {
+          lastDecodedVideoUrl.current = currentUrl;
+          setFormData(prev => ({ ...prev, videoPreview: res.original }));
         } else {
           lastDecodedVideoUrl.current = currentUrl;
-          if (!currentUrl.includes('.mp4') && !currentUrl.includes('.webm') && !currentUrl.includes('.ogg')) {
-             setVideoError('We could not extract a direct video stream from this link. The video may not play unless it is a direct link or a public sharing link.');
-          }
+          setFormData(prev => ({ ...prev, videoPreview: currentUrl }));
         }
       } catch (e) {
         lastDecodedVideoUrl.current = currentUrl;
+        setFormData(prev => ({ ...prev, videoPreview: currentUrl }));
       }
-    }, 800);
+    }, 500);
 
     return () => clearTimeout(handler);
   }, [formData.video, decodeUrl]);
@@ -161,7 +167,13 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
       onClose();
     } catch (err) {
       console.error('Failed to save product: ', err);
-      pushToast('Error saving product. Check console.', 'error');
+      if (err?.status === 401) {
+        pushToast('Session expired or unauthorized. Please log in again as Admin.', 'error');
+      } else if (err?.data?.message) {
+        pushToast(err.data.message, 'error');
+      } else {
+        pushToast('Error saving product. Check console.', 'error');
+      }
     }
   };
 
@@ -248,8 +260,13 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
             {formData.images.length > 0 && (
               <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem', padding: '1rem', background: 'var(--surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
                 {formData.images.map((imgUrl, index) => (
-                  <div key={index} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                    <img src={imgUrl} alt={`Product ${index + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <div key={index} style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
+                    <img 
+                      src={imgUrl} 
+                      alt={`Product ${index + 1}`} 
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      onError={(e) => { e.target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'; }}
+                    />
                     <button 
                       type="button"
                       onClick={() => handleRemoveImage(index)}
@@ -265,7 +282,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
 
             {/* Add Image Input */}
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'stretch' }}>
-              <input type="text" placeholder="https://example.com/image.jpg or Google Photos link" value={draftImage} onChange={e => { setDraftImage(e.target.value); setDraftImagePreview(e.target.value); }} style={{ flex: 1 }} />
+              <input type="text" placeholder="https://example.com/image.jpg or Google Photos/Drive link" value={draftImage} onChange={e => { setDraftImage(e.target.value); setDraftImagePreview(e.target.value); }} style={{ flex: 1 }} />
               <Button type="button" variant="primary" onClick={handleAddImageToGallery} disabled={!draftImage && !draftImagePreview} style={{ padding: '0 1rem', whiteSpace: 'nowrap' }}>
                 Add
               </Button>
@@ -273,8 +290,13 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
             {isDecoding && draftImage !== lastDecodedUrl.current && <span style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block'}}>Loading preview...</span>}
             {draftImagePreview && !isDecoding && (
                <div style={{ marginTop: '0.5rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                 <img src={draftImagePreview} alt="Draft Preview" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} />
-                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Preview loaded. Click "Add to Gallery" to save.</span>
+                 <img 
+                   src={draftImagePreview} 
+                   alt="Draft Preview" 
+                   style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} 
+                   onError={(e) => { e.target.style.opacity = '0.5'; }}
+                 />
+                 <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Preview loaded. Click "Add" to add to gallery.</span>
                </div>
             )}
           </div>

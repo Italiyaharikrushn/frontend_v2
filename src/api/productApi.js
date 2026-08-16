@@ -8,16 +8,11 @@ export const productApi = createApi({
 
     endpoints: (builder) => ({
         createProduct: builder.mutation({
-            query: (data) => {
-                const formData = new FormData();
-                formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
-
-                return {
-                    url: "/product/add-product",
-                    method: "POST",
-                    body: formData,
-                };
-            },
+            query: (data) => ({
+                url: "/product/add-product",
+                method: "POST",
+                body: data,
+            }),
             invalidatesTags: ['Product'],
         }),
 
@@ -36,16 +31,11 @@ export const productApi = createApi({
         }),
 
         UpdateProduct: builder.mutation({
-            query: ({ id, data }) => {
-                const formData = new FormData();
-                formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
-
-                return {
-                    url: `/product/update/${id}`,
-                    method: "PUT",
-                    body: formData,
-                };
-            },
+            query: ({ id, data }) => ({
+                url: `/product/update/${id}`,
+                method: "PUT",
+                body: data,
+            }),
             invalidatesTags: ['Product'],
         }),
 

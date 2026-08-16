@@ -102,14 +102,15 @@ export const useCheckoutLogic = () => {
       let finalAddressId;
 
       if (selectedAddressId === 'new') {
+        const rawPhone = e.target.phone?.value || phone || '';
         const addressPayload = {
-          fullName: `${e.target.firstName.value} ${e.target.lastName.value}`,
-          streetAddress: e.target.address.value,
-          city: e.target.city.value,
-          state: e.target.state.value,
-          postalCode: e.target.zip.value,
-          country: e.target.country.value,
-          phoneNumber: e.target.phone.value,
+          fullName: `${e.target.firstName?.value || ''} ${e.target.lastName?.value || ''}`.trim(),
+          streetAddress: e.target.address?.value || '',
+          city: e.target.city?.value || '',
+          state: e.target.state?.value || '',
+          postalCode: e.target.zip?.value || '',
+          country: e.target.country?.value || 'India',
+          phoneNumber: rawPhone.trim(),
         };
 
         const savedAddress = await addAddress(addressPayload).unwrap();
@@ -133,7 +134,8 @@ export const useCheckoutLogic = () => {
       await finalizeOrder(finalAddressId);
     } catch (error) {
       console.error('Checkout failed:', error);
-      pushToast('Checkout failed. Please check your details.', 'error');
+      const msg = error?.data?.message || error?.message || 'Checkout failed. Please check your details.';
+      pushToast(msg, 'error');
       setIsProcessing(false);
       isSubmittingRef.current = false;
     }
@@ -153,7 +155,8 @@ export const useCheckoutLogic = () => {
       navigate('/');
     } catch (error) {
       console.error('Checkout failed:', error);
-      pushToast('Checkout failed. Please try again or check your connection.', 'error');
+      const msg = error?.data?.message || error?.message || 'Checkout failed. Please try again or check your connection.';
+      pushToast(msg, 'error');
       setIsProcessing(false);
       setShowPaymentModal(false);
       isSubmittingRef.current = false;

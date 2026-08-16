@@ -3,16 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../redux/authSlice';
 import { selectCartItems, setCartItems } from '../redux/cartSlice';
 import { useGetBackendCartQuery, useSyncBackendCartMutation } from '../api/orderApi';
+import { isTokenValid } from '../utils/storage';
 
 export const useCartSync = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const token = useSelector((state) => state.auth?.token);
+  const isAuthValid = isAuthenticated && isTokenValid(token);
   const cartItems = useSelector(selectCartItems);
   const cartItemsRef = useRef(cartItems);
 
   const { data: backendCart, isLoading, isSuccess, isFetching } = useGetBackendCartQuery(undefined, {
-    skip: !isAuthenticated,
+    skip: !isAuthValid,
   });
+
 
   const [syncBackendCart] = useSyncBackendCartMutation();
   const [hasInitialSyncCompleted, setHasInitialSyncCompleted] = useState(false);

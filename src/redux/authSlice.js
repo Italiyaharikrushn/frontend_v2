@@ -1,13 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getStoredItem, setStoredItem, removeStoredItem } from '../utils/storage';
+import { getStoredItem, setStoredItem, removeStoredItem, isTokenValid } from '../utils/storage';
+
+const storedToken = getStoredItem('token');
+const hasValidToken = isTokenValid(storedToken);
+
+// If token is invalid or expired, clear stale data from localStorage immediately
+if (storedToken && !hasValidToken) {
+  removeStoredItem('isAuthenticated');
+  removeStoredItem('userRole');
+  removeStoredItem('token');
+  removeStoredItem('userName');
+  removeStoredItem('userEmail');
+}
 
 const initialState = {
-  isAuthenticated: getStoredItem('isAuthenticated') === 'true',
-  role: getStoredItem('userRole'),
-  token: getStoredItem('token'),
-  name: getStoredItem('userName'),
-  email: getStoredItem('userEmail'),
+  isAuthenticated: hasValidToken && (getStoredItem('isAuthenticated') === 'true'),
+  role: hasValidToken ? getStoredItem('userRole') : null,
+  token: hasValidToken ? storedToken : null,
+  name: hasValidToken ? getStoredItem('userName') : null,
+  email: hasValidToken ? getStoredItem('userEmail') : null,
 };
+
 
 const authSlice = createSlice({
   name: 'auth',
