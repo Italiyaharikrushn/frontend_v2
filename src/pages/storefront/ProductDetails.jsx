@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart, ArrowLeft } from 'lucide-react';
 import ProductGallery from '../../components/storefront/ProductGallery';
@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../redux/authSlice';
 import { useToast } from '../../components/ui/ToastProvider';
 import { formatCurrency } from '../../utils/formatters';
+import { useIncrementProductViewMutation } from '../../api/productApi';
 import '@/styles/pages/storefront/ProductDetails.css';
 
 
@@ -20,6 +21,13 @@ const ProductDetails = ({ productId: propId, onClose }) => {
   const { data: favorites } = useGetFavoritesQuery(undefined, { skip: !isAuthenticated });
   const [toggleFavorite] = useToggleFavoriteMutation();
   const { pushToast } = useToast();
+  const [incrementView] = useIncrementProductViewMutation();
+
+  useEffect(() => {
+    if (propId) {
+        incrementView(propId).catch(console.error);
+    }
+  }, [propId, incrementView]);
 
   const isFavorite = favorites?.some(fav => fav.id === propId || fav._id === propId) || false;
 

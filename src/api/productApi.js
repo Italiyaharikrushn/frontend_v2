@@ -107,6 +107,13 @@ export const productApi = createApi({
                 method: 'GET',
             }),
         }),
+
+        incrementProductView: builder.mutation({
+            query: (id) => ({
+                url: `/product/${id}/view`,
+                method: 'POST',
+            }),
+        }),
     }),
 });
 
@@ -122,4 +129,5 @@ export const {
     useApplyCategoryDiscountMutation,
     useDecodeUrlMutation,
     useGetProductsByIdsMutation,
+    useIncrementProductViewMutation,
 } = productApi;

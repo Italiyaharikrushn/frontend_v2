@@ -28,13 +28,25 @@ export const useDashboardHome = () => {
             return sum;
         }, 0);
 
+        const orderStatusCounts = orders.reduce((acc, o) => {
+            const status = o.status || 'UNKNOWN';
+            acc[status] = (acc[status] || 0) + 1;
+            return acc;
+        }, {});
+
+        const orderStatusData = Object.keys(orderStatusCounts).map(key => ({
+            name: key,
+            value: orderStatusCounts[key]
+        }));
+
         return {
             activeProducts,
             pendingOrders,
             returnedOrders,
             totalSales,
             productValue,
-            todaySales
+            todaySales,
+            orderStatusData
         };
     }, [products, orders]);
 
