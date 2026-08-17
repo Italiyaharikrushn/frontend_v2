@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart } from 'lucide-react';
+import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart, ArrowLeft } from 'lucide-react';
 import ProductGallery from '../../components/storefront/ProductGallery';
 import PhoneModelDropdown from '../../components/storefront/PhoneModelDropdown';
 import { useProductDetails } from '../../hooks/useProductDetails';
@@ -52,6 +52,15 @@ const ProductDetails = ({ productId: propId, onClose }) => {
 
   const content = (
     <div className={`product-details-container fade-in ${isModal ? 'modal-mode' : ''}`}>
+      {!isModal && (
+        <button 
+          onClick={() => navigate(-1)} 
+          className="hover-lift"
+          style={{ background: 'none', border: 'none', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginBottom: '1.5rem', fontSize: '0.95rem', fontWeight: '600', padding: 0 }}
+        >
+          <ArrowLeft size={20} /> Back
+        </button>
+      )}
       <div className="product-details-grid">
 
         {/* Left Column - Image */}

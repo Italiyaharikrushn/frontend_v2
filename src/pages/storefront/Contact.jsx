@@ -44,7 +44,7 @@ const Contact = () => {
                 </div>
                 <div className="info-details">
                   <h3>Call Us</h3>
-                  <p>{formatPhoneNumber(storeSettings?.settings?.contacts?.phone)}<br />Mon-Sun, 10:00 AM - 10:00 PM (IST)</p>
+                  <p>{formatPhoneNumber(storeSettings?.settings?.contacts?.phone)}<br />{storeSettings?.settings?.contacts?.timing || 'Mon-Sun, 10:00 AM - 10:00 PM (IST)'}</p>
                 </div>
               </div>
 

@@ -65,6 +65,39 @@ const StoreProfileForm = ({ formData, setFormData }) => {
             required 
           />
         </div>
+        <div className="admin-form-field full">
+          <label>Store Timings</label>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginTop: '0.25rem' }}>
+            <select value={formData.timingDays} onChange={(e) => setFormData({ ...formData, timingDays: e.target.value })} style={{ flex: 1, minWidth: 0 }}>
+              <option value="Mon-Sun">Mon-Sun</option>
+              <option value="Mon-Sat">Mon-Sat</option>
+              <option value="Mon-Fri">Mon-Fri</option>
+              <option value="Tue-Sun">Tue-Sun</option>
+              <option value="Weekends">Weekends</option>
+            </select>
+            <select value={formData.timingOpen} onChange={(e) => setFormData({ ...formData, timingOpen: e.target.value })} style={{ flex: 1, minWidth: 0 }}>
+              <option value="06:00 AM">06:00 AM</option>
+              <option value="07:00 AM">07:00 AM</option>
+              <option value="08:00 AM">08:00 AM</option>
+              <option value="09:00 AM">09:00 AM</option>
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:00 AM">11:00 AM</option>
+              <option value="12:00 PM">12:00 PM</option>
+            </select>
+            <span style={{ color: 'var(--text-muted)', fontWeight: 500 }}>to</span>
+            <select value={formData.timingClose} onChange={(e) => setFormData({ ...formData, timingClose: e.target.value })} style={{ flex: 1, minWidth: 0 }}>
+              <option value="04:00 PM">04:00 PM</option>
+              <option value="05:00 PM">05:00 PM</option>
+              <option value="06:00 PM">06:00 PM</option>
+              <option value="07:00 PM">07:00 PM</option>
+              <option value="08:00 PM">08:00 PM</option>
+              <option value="09:00 PM">09:00 PM</option>
+              <option value="10:00 PM">10:00 PM</option>
+              <option value="11:00 PM">11:00 PM</option>
+              <option value="12:00 AM">12:00 AM</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <h3 style={{ marginTop: '1.25rem', marginBottom: '0.75rem', color: 'var(--text-main)', fontSize: '1.05rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

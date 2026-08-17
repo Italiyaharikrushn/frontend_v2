@@ -26,6 +26,7 @@ const Products = () => {
     subtitle,
     handleAddToCart,
     handleCategorySelect,
+    handleProductClick,
   } = useProducts();
 
   return (
@@ -61,7 +62,7 @@ const Products = () => {
           const isPhoneCover = product.category?.toLowerCase().includes('cover') || product.title?.toLowerCase().includes('cover');
           return (
             <div key={product.id} className="product-card glass-panel hover-lift">
-              <div onClick={() => setQuickViewProductId(product.id)} className="product-image-container" style={{ display: 'block', cursor: 'pointer' }}>
+              <div onClick={() => handleProductClick(product.id)} className="product-image-container" style={{ display: 'block', cursor: 'pointer' }}>
                 {product.images && product.images.length > 0 ? (
                   <img src={product.images[0]} alt={product.title} />
                 ) : (
@@ -69,7 +70,7 @@ const Products = () => {
                 )}
               </div>
               <div className="product-details">
-                <div onClick={() => setQuickViewProductId(product.id)} style={{ cursor: 'pointer', color: 'inherit' }}>
+                <div onClick={() => handleProductClick(product.id)} style={{ cursor: 'pointer', color: 'inherit' }}>
                   <h3 className="product-name">{product.title}</h3>
                 </div>
                 {product.discountPrice ? (
@@ -89,7 +90,7 @@ const Products = () => {
                       fullWidth
                       variant={isActive ? 'primary' : 'secondary'}
                       disabled={!isActive}
-                      onClick={() => setQuickViewProductId(product.id)}
+                      onClick={() => handleProductClick(product.id)}
                     >
                       {isActive ? 'Select Model' : 'Unavailable'}
                     </Button>

@@ -43,7 +43,7 @@ const Cart = () => {
                       <button className="quantity-btn" onClick={() => handleQuantity(item.id, item.cartItemId, -1)} aria-label={`Decrease quantity for ${item.name || item.title}`}>
                         <Minus size={16} />
                       </button>
-                      <input 
+                      <input
                         type="number"
                         className="quantity-value no-spin-button"
                         value={item.quantity === '' ? '' : item.quantity}
@@ -79,11 +79,11 @@ const Cart = () => {
             <div className="trust-badges" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', margin: '1rem 0 1.5rem 0', paddingTop: '1.5rem', borderTop: '1px dashed var(--border)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', fontSize: '0.85rem', fontWeight: '500' }}>
                 <Truck size={18} style={{ color: 'var(--primary)' }} />
-                <span>Free Delivery/Shipping</span>
+                <span>Free Delivery/Shipping All India</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)', fontSize: '0.85rem', fontWeight: '500' }}>
                 <ShieldCheck size={18} style={{ color: 'var(--primary)' }} />
-                <span>Prepaid Secure Payment</span>
+                <span>Secure Prepaid Payment</span>
               </div>
             </div>
 

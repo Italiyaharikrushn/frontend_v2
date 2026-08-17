@@ -1,4 +1,4 @@
-import { CreditCard, Wallet, User, MapPin, Trash2, ExternalLink } from 'lucide-react';
+import { CreditCard, Wallet, User, MapPin, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PhoneInput from '../ui/PhoneInput';
 import { useDeleteAddressMutation } from '../../api/orderApi';
@@ -67,8 +67,8 @@ const CheckoutForm = ({
         <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
             <h2 className="form-card-title" style={{ margin: 0 }}><MapPin size={20} /> Shipping Address</h2>
-            <Link to="/addresses" target="_blank" style={{ fontSize: '0.85rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none', fontWeight: '500' }}>
-              Manage Addresses <ExternalLink size={13} />
+            <Link to="/addresses" style={{ fontSize: '0.85rem', color: 'var(--primary)', display: 'flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none', fontWeight: '500' }}>
+              Manage Addresses
             </Link>
           </div>
           

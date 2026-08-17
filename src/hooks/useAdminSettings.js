@@ -11,6 +11,9 @@ export const useAdminSettings = () => {
     storeName: '',
     supportEmail: '',
     contactNo: '',
+    timingDays: 'Mon-Sun',
+    timingOpen: '10:00 AM',
+    timingClose: '10:00 PM',
     address: '',
     city: '',
     state: '',
@@ -24,11 +27,16 @@ export const useAdminSettings = () => {
       const contacts = settingsData.settings.contacts || {};
       const storeSettings = settingsData.settings.storeSettings || {};
       const address = contacts.address || {};
+      const timingStr = contacts.timing || 'Mon-Sun, 10:00 AM - 10:00 PM (IST)';
+      const match = timingStr.match(/^(.*?), (.*?) - (.*?) \(IST\)$/);
       
       setFormData({
         storeName: storeSettings.storeName || '',
         supportEmail: contacts.email || '',
         contactNo: contacts.phone || '',
+        timingDays: match ? match[1] : 'Mon-Sun',
+        timingOpen: match ? match[2] : '10:00 AM',
+        timingClose: match ? match[3] : '10:00 PM',
         address: address.street || '',
         city: address.city || '',
         state: address.state || '',
@@ -46,6 +54,7 @@ export const useAdminSettings = () => {
           contacts: {
             phone: formData.contactNo.replace(/\s+/g, ''),
             email: formData.supportEmail,
+            timing: `${formData.timingDays}, ${formData.timingOpen} - ${formData.timingClose} (IST)`,
             address: {
               street: formData.address,
               city: formData.city,

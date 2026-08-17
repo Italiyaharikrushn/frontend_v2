@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Upload, Edit, Trash2, Image as ImageIcon } from 'lucide-react';
+import { Plus, Upload, Edit, Trash2, Image as ImageIcon, Save } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import AdminProductForm from '../../components/admin/AdminProductForm';
 import Pagination from '../../components/ui/Pagination';
@@ -7,8 +7,46 @@ import { useAdminProducts } from '../../hooks/useAdminProducts';
 import '@/styles/pages/admin/AdminStyles.css';
 import '@/styles/pages/admin/AdminProducts.css';
 
+const InlineStockEditor = ({ product, onSave }) => {
+  const [stock, setStock] = React.useState(product.stock);
+  const [isChanged, setIsChanged] = React.useState(false);
+
+  const handleChange = (e) => {
+    setStock(e.target.value);
+    setIsChanged(parseInt(e.target.value, 10) !== product.stock && !isNaN(parseInt(e.target.value, 10)));
+  };
+
+  const handleSave = () => {
+    if (isChanged) {
+      onSave(product, stock);
+      setIsChanged(false);
+    }
+  };
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <input
+        type="number"
+        value={stock}
+        onChange={handleChange}
+        className="admin-form-field"
+        style={{ padding: '0.25rem 0.5rem', width: '70px', borderRadius: '4px', border: '1px solid var(--border)', background: 'var(--surface-alt)', color: 'var(--text-main)', fontSize: '0.9rem' }}
+      />
+      {isChanged && (
+        <button
+          onClick={handleSave}
+          style={{ background: 'var(--success)', color: 'white', border: 'none', borderRadius: '4px', padding: '0.35rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          title="Save Stock"
+        >
+          <Save size={14} />
+        </button>
+      )}
+    </div>
+  );
+};
+
 const AdminProducts = () => {
-  const { products, totalPages, page, setPage, isLoading, isFormOpen, editingProduct, handleOpenForm, handleCloseForm, handleDelete, handleBulkUploadClick } = useAdminProducts();
+  const { products, totalPages, page, setPage, isLoading, isFormOpen, editingProduct, handleOpenForm, handleCloseForm, handleDelete, handleBulkUploadClick, handleUpdateStock } = useAdminProducts();
 
   return (
     <div className="admin-page fade-in admin-full-height-page">
@@ -69,7 +107,9 @@ const AdminProducts = () => {
                     </td>
                     <td>{product.sku || 'N/A'}</td>
                     <td className="admin-products-price">₹{product.price}</td>
-                    <td>{product.stock}</td>
+                    <td style={{ width: '120px' }}>
+                      <InlineStockEditor product={product} onSave={handleUpdateStock} />
+                    </td>
                     <td>
                       <span className={`status-badge ${(product.isActive ?? product.active ?? true) ? 'status-active' : 'status-inactive'}`}>
                         {(product.isActive ?? product.active ?? true) ? 'Active' : 'Inactive'}

@@ -10,7 +10,7 @@ import '@/styles/pages/storefront/Home.css';
 const FeatureCard = ({ product }) => {
   return (
     <div className="feature-card">
-      <Link to={product.category ? `/products?category=${encodeURIComponent(product.category.toLowerCase())}` : `/products`} className="feature-media">
+      <Link to={`/product/${product.id || product._id}`} className="feature-media">
         {product.images && product.images.length > 0 ? (
           <img
             src={product.images[0]}

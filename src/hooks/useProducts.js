@@ -20,6 +20,14 @@ export const useProducts = () => {
   const [page, setPage] = useState(0);
   const size = 12;
 
+  const handleProductClick = (productId) => {
+    if (window.innerWidth <= 768) {
+      navigate(`/product/${productId}`);
+    } else {
+      setQuickViewProductId(productId);
+    }
+  };
+
   useEffect(() => { setPage(0); }, [category, searchQuery]);
 
   const handleQuantityChange = (id, delta) => {
@@ -130,6 +138,7 @@ export const useProducts = () => {
     subtitle,
     handleAddToCart,
     handleCategorySelect,
+    handleProductClick,
   };
 };
 
