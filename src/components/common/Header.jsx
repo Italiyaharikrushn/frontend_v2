@@ -124,9 +124,9 @@ const Header = () => {
               {showSuggestions && searchSuggestions && searchSuggestions.length > 0 && (
                 <div className="search-suggestions-dropdown">
                   {searchSuggestions.map(product => (
-                    <Link 
-                      to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`} 
-                      key={product.id} 
+                    <Link
+                      to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`}
+                      key={product.id}
                       className="suggestion-item"
                       onClick={() => {
                         setShowSuggestions(false);
@@ -202,14 +202,14 @@ const Header = () => {
                   <Search size={18} />
                 </button>
               </form>
-              
+
               {/* Mobile Suggestions Dropdown */}
               {showSuggestions && searchSuggestions && searchSuggestions.length > 0 && (
                 <div className="search-suggestions-dropdown mobile-suggestions">
                   {searchSuggestions.map(product => (
-                    <Link 
-                      to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`} 
-                      key={product.id} 
+                    <Link
+                      to={`/products${product.category ? `?category=${encodeURIComponent(product.category.toLowerCase())}` : ''}`}
+                      key={product.id}
                       className="suggestion-item"
                       onClick={() => {
                         setShowSuggestions(false);

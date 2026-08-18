@@ -17,44 +17,44 @@ const AdminCustomerTable = ({ realCustomers, isLoadingCustomers }) => {
   return (
     <>
       <div className="admin-table-container" style={{ overflowY: 'hidden' }}>
-      <table className="admin-table">
-        <thead>
-          <tr>
-            <th>Joining Date</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Contact Number</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {isLoadingCustomers ? (
+        <table className="admin-table">
+          <thead>
             <tr>
-              <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>Loading customers...</td>
+              <th>Joining Date</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Contact Number</th>
+              <th>Status</th>
             </tr>
-          ) : realCustomers.length > 0 ? (
-            realCustomers.map(customer => (
-              <tr key={customer.id} onClick={() => setSelectedCustomer(customer)} style={{ cursor: 'pointer' }} className="hover-row">
-                <td style={{ color: 'var(--text-muted)' }}>
-                  {customer.createdAt ? new Date(customer.createdAt).toLocaleDateString() : 'N/A'}
-                </td>
-                <td style={{ fontWeight: '600' }}>{customer.name}</td>
-                <td>{customer.email}</td>
-                <td>{formatPhoneNumber(customer.phone)}</td>
-                <td>
-                  <span className={(customer.active ?? customer.isActive ?? true) ? 'status-badge status-active' : 'status-badge status-inactive'}>
-                    {(customer.active ?? customer.isActive ?? true) ? 'Active' : 'Inactive'}
-                  </span>
-                </td>
+          </thead>
+          <tbody>
+            {isLoadingCustomers ? (
+              <tr>
+                <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>Loading customers...</td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No customers found</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            ) : realCustomers.length > 0 ? (
+              realCustomers.map(customer => (
+                <tr key={customer.id} onClick={() => setSelectedCustomer(customer)} style={{ cursor: 'pointer' }} className="hover-row">
+                  <td style={{ color: 'var(--text-muted)' }}>
+                    {customer.createdAt ? new Date(customer.createdAt).toLocaleDateString() : 'N/A'}
+                  </td>
+                  <td style={{ fontWeight: '600' }}>{customer.name}</td>
+                  <td>{customer.email}</td>
+                  <td>{formatPhoneNumber(customer.phone)}</td>
+                  <td>
+                    <span className={(customer.active ?? customer.isActive ?? true) ? 'status-badge status-active' : 'status-badge status-inactive'}>
+                      {(customer.active ?? customer.isActive ?? true) ? 'Active' : 'Inactive'}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>No customers found</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
 
       </div>
 
@@ -87,7 +87,7 @@ const AdminCustomerTable = ({ realCustomers, isLoadingCustomers }) => {
                     {selectedCustomer.lastOrderDate ? new Date(selectedCustomer.lastOrderDate).toLocaleDateString() : 'N/A'}
                   </span>
                 </div>
-                
+
                 {selectedCustomer.recentOrders && selectedCustomer.recentOrders.length > 0 && (
                   <div style={{ marginTop: '1rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
                     <h4 style={{ margin: '0 0 0.75rem 0', color: 'var(--text-main)', fontSize: '0.9rem' }}>Recent Orders</h4>

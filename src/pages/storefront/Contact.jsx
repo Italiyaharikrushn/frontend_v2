@@ -67,22 +67,22 @@ const Contact = () => {
               <label htmlFor="name">Full Name</label>
               <input type="text" id="name" value={formData.name} onChange={handleChange} placeholder="Enter your full name" required />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="email">Email Address</label>
               <input type="email" id="email" value={formData.email} onChange={handleChange} placeholder="Enter your email address" required />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="subject">Subject</label>
               <input type="text" id="subject" value={formData.subject} onChange={handleChange} placeholder="What is this regarding?" required />
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="message">Message</label>
               <textarea id="message" value={formData.message} onChange={handleChange} placeholder="Type your message here..." required></textarea>
             </div>
-            
+
             <Button type="submit" variant="primary" size="lg" disabled={isLoading} style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
               <Send size={20} />
               {isLoading ? 'Sending...' : 'Send Message'}

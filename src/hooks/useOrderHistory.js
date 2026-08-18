@@ -106,8 +106,8 @@ export const useOrderHistory = () => {
         }
     };
 
-    return { 
-        orders, isLoading, page, setPage, totalPages, 
+    return {
+        orders, isLoading, page, setPage, totalPages,
         handleCancel, openReturnModal, closeReturnModal, submitReturn,
         isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails,
         isOrderCancellable, getCancellationDeadline

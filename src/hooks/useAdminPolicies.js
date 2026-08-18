@@ -45,14 +45,14 @@ export const useAdminPolicies = () => {
 
   const getPolicyStatus = useCallback((id) => {
     if (!policyData) return { text: 'No policy set', type: 'empty' };
-    
+
     if (id === 'contactInformation' && policyData[id] && policyData[id].trim() !== '') {
-        return { text: 'Required', type: 'required' };
+      return { text: 'Required', type: 'required' };
     }
 
-    return policyData[id] && policyData[id].trim() !== '' 
-        ? { text: 'Policy set', type: 'set' } 
-        : { text: 'No policy set', type: 'empty' };
+    return policyData[id] && policyData[id].trim() !== ''
+      ? { text: 'Policy set', type: 'set' }
+      : { text: 'No policy set', type: 'empty' };
   }, [policyData]);
 
   return {

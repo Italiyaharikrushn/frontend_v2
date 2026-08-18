@@ -25,18 +25,18 @@ const ProductGallery = ({ product, isFavorite, onFavoriteClick }) => {
             <ShoppingBag size={64} className="placeholder-icon" />
           </div>
         )}
-        
+
         {onFavoriteClick && (
-          <button 
+          <button
             onClick={onFavoriteClick}
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             className={`gallery-mobile-favorite-btn ${isFavorite ? 'is-active' : ''}`}
           >
-            <Heart 
-              size={24} 
+            <Heart
+              size={24}
               strokeWidth={2}
-              fill={isFavorite ? '#ff4b4b' : 'none'} 
-              color={isFavorite ? '#ff4b4b' : 'var(--text-main)'} 
+              fill={isFavorite ? '#ff4b4b' : 'none'}
+              color={isFavorite ? '#ff4b4b' : 'var(--text-main)'}
               style={{ transition: 'fill 0.3s ease, color 0.3s ease' }}
             />
           </button>

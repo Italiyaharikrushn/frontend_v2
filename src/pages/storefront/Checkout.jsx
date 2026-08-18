@@ -7,10 +7,10 @@ import PaymentModal from '../../components/storefront/PaymentModal';
 import '@/styles/pages/storefront/Checkout.css';
 
 const Checkout = () => {
-  const { 
-    cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, 
-    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, 
-    appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, 
+  const {
+    cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId,
+    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode,
+    appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone,
     addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy
   } = useCheckoutLogic();
 
@@ -58,9 +58,9 @@ const Checkout = () => {
           showPaymentSection={showPaymentSection}
           storePolicy={storePolicy}
         />
-        
-        <PaymentModal 
-          isOpen={showPaymentModal} 
+
+        <PaymentModal
+          isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
           paymentMethod={paymentMethod}
           total={total}

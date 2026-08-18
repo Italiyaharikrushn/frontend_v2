@@ -49,12 +49,12 @@
   font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
 }
 
-  border-radius: var(--radius-md);
+  /* border-radius: var(--radius-md);
   padding: 0.85rem 1rem;
   margin-bottom: 1rem;
   font-size: clamp(0.77rem, 0.45rem + 0.90vw, 0.90rem);
   font-weight: 500;
-}
+} */
 
 .auth-footer {
   text-align: center;
@@ -339,3 +339,5 @@
 .auth-footer-bottom {
   margin-top: 0.75rem;
 }
+
+};

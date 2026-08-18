@@ -17,14 +17,14 @@ export const formatDate = (dateString, options = {}) => {
   if (!dateString) return '';
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return dateString;
-  
+
   const defaultOptions = {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     ...options,
   };
-  
+
   const locale = i18n.language || navigator.language || 'en-US';
   return new Intl.DateTimeFormat(locale, defaultOptions).format(date);
 };

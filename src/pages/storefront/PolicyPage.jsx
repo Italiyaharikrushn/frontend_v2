@@ -29,7 +29,7 @@ const POLICY_TYPES = {
 const PolicyPage = () => {
   const { type } = useParams();
   const { data: policyData, isLoading, isError } = useGetStorePolicyQuery();
-  
+
   const policyConfig = POLICY_TYPES[type];
 
   if (!policyConfig) {
@@ -52,7 +52,7 @@ const PolicyPage = () => {
       <h1 style={{ marginBottom: '2rem', textAlign: 'center', color: 'var(--primary-dark)' }}>{policyConfig.title}</h1>
       {isLoading ? (
         <div style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
-            <Loader className="spin" size={24} color="var(--primary)" style={{margin: '0 auto'}}/>
+          <Loader className="spin" size={24} color="var(--primary)" style={{ margin: '0 auto' }} />
         </div>
       ) : (
         <div style={{ lineHeight: '1.8', whiteSpace: 'pre-wrap', color: 'var(--text-main)' }}>

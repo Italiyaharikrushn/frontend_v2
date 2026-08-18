@@ -31,8 +31,8 @@ const PaymentModal = ({ isOpen, onClose, paymentMethod, total, onConfirm }) => {
   const selectedMethodName = paymentNames[paymentMethod] || (paymentMethod ? paymentMethod.toUpperCase() : 'Selected Method');
 
   return createPortal(
-    <div 
-      className="payment-modal-overlay" 
+    <div
+      className="payment-modal-overlay"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -41,15 +41,15 @@ const PaymentModal = ({ isOpen, onClose, paymentMethod, total, onConfirm }) => {
       aria-labelledby="payment-modal-title"
     >
       <div className="payment-modal-card">
-        <button 
-          onClick={onClose} 
-          className="payment-modal-close" 
+        <button
+          onClick={onClose}
+          className="payment-modal-close"
           aria-label="Close payment modal"
           type="button"
         >
           <X size={20} />
         </button>
-        
+
         <div className="payment-modal-header">
           <div className="payment-modal-icon-badge">
             <Smartphone size={32} />
@@ -61,21 +61,21 @@ const PaymentModal = ({ isOpen, onClose, paymentMethod, total, onConfirm }) => {
             You selected <strong style={{ color: 'var(--text-main)' }}>{selectedMethodName}</strong>
           </p>
         </div>
-        
+
         <div className="payment-modal-amount-box">
           <span className="payment-modal-amount-label">Total Amount to Pay</span>
           <span className="payment-modal-amount-value">₹{total.toFixed(2)}</span>
         </div>
-        
+
         <p className="payment-modal-instructions">
           Please approve and complete the transaction in your {selectedMethodName} app to confirm your order.
         </p>
-        
-        <Button 
-          onClick={onConfirm} 
-          variant="primary" 
-          size="lg" 
-          fullWidth 
+
+        <Button
+          onClick={onConfirm}
+          variant="primary"
+          size="lg"
+          fullWidth
           className="payment-modal-confirm-btn"
         >
           <CheckCircle2 size={20} />

@@ -10,7 +10,7 @@ export const useRegister = () => {
   const dispatch = useDispatch();
   const [register, { isLoading }] = useRegisterMutation();
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -54,8 +54,8 @@ export const useRegister = () => {
           role = 'ADMIN';
         }
 
-        dispatch(login({ 
-          role: role, 
+        dispatch(login({
+          role: role,
           token: response.token,
           name: response.name || formData.name,
           email: response.email || formData.email

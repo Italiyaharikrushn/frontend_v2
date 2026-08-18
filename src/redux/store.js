@@ -16,27 +16,27 @@ import cartReducer from './cartSlice';
 import authReducer from './authSlice';
 
 const appReducer = combineReducers({
-    auth: authReducer,
-    cart: cartReducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [couponApi.reducerPath]: couponApi.reducer,
-    [orderApi.reducerPath]: orderApi.reducer,
-    [productApi.reducerPath]: productApi.reducer,
-    [profileApi.reducerPath]: profileApi.reducer,
-    [contactApi.reducerPath]: contactApi.reducer,
-    [settingsApi.reducerPath]: settingsApi.reducer,
-    [festivalApi.reducerPath]: festivalApi.reducer,
-    [policyApi.reducerPath]: policyApi.reducer,
-    [returnApi.reducerPath]: returnApi.reducer,
-    [favoriteApi.reducerPath]: favoriteApi.reducer,
-    [paymentApi.reducerPath]: paymentApi.reducer,
+  auth: authReducer,
+  cart: cartReducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [couponApi.reducerPath]: couponApi.reducer,
+  [orderApi.reducerPath]: orderApi.reducer,
+  [productApi.reducerPath]: productApi.reducer,
+  [profileApi.reducerPath]: profileApi.reducer,
+  [contactApi.reducerPath]: contactApi.reducer,
+  [settingsApi.reducerPath]: settingsApi.reducer,
+  [festivalApi.reducerPath]: festivalApi.reducer,
+  [policyApi.reducerPath]: policyApi.reducer,
+  [returnApi.reducerPath]: returnApi.reducer,
+  [favoriteApi.reducerPath]: favoriteApi.reducer,
+  [paymentApi.reducerPath]: paymentApi.reducer,
 });
 
 const rootReducer = (state, action) => {
-    if (action.type === 'auth/logout') {
-        state = undefined;
-    }
-    return appReducer(state, action);
+  if (action.type === 'auth/logout') {
+    state = undefined;
+  }
+  return appReducer(state, action);
 };
 
 export const store = configureStore({

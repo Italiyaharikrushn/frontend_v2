@@ -22,8 +22,8 @@ export const PHONE_SERIES = [
   {
     name: "OnePlus",
     models: [
-      "OnePlus 12", "OnePlus 12R", 
-      "OnePlus 11 5G", "OnePlus 11R 5G", 
+      "OnePlus 12", "OnePlus 12R",
+      "OnePlus 11 5G", "OnePlus 11R 5G",
       "OnePlus 10 Pro", "OnePlus 10R", "OnePlus 10T",
       "OnePlus Nord 4", "OnePlus Nord CE 4 5G", "OnePlus Nord CE 3 Lite 5G"
     ]
@@ -45,7 +45,7 @@ export const PHONE_SERIES = [
   {
     name: "Vivo",
     models: [
-      "Vivo X100 Pro", "Vivo X100", 
+      "Vivo X100 Pro", "Vivo X100",
       "Vivo V30 Pro", "Vivo V30", "Vivo V29 Pro", "Vivo V29",
       "Vivo T2x 5G", "Vivo Y200 5G", "Vivo Y28 5G"
     ]
@@ -53,7 +53,7 @@ export const PHONE_SERIES = [
   {
     name: "iQOO",
     models: [
-      "iQOO 12 5G", "iQOO Neo 9 Pro", "iQOO Neo 7 Pro", 
+      "iQOO 12 5G", "iQOO Neo 9 Pro", "iQOO Neo 7 Pro",
       "iQOO Z9 5G", "iQOO Z7 Pro 5G"
     ]
   },
@@ -67,7 +67,7 @@ export const PHONE_SERIES = [
   {
     name: "Motorola",
     models: [
-      "Motorola Edge 50 Pro", "Motorola Edge 40 Neo", "Motorola Edge 40", 
+      "Motorola Edge 50 Pro", "Motorola Edge 40 Neo", "Motorola Edge 40",
       "Moto G84 5G", "Moto G54 5G", "Moto G34 5G"
     ]
   },
@@ -86,7 +86,7 @@ export const PHONE_SERIES = [
   {
     name: "Oppo",
     models: [
-      "Oppo Reno11 Pro 5G", "Oppo Reno11 5G", "Oppo Reno10 5G", 
+      "Oppo Reno11 Pro 5G", "Oppo Reno11 5G", "Oppo Reno10 5G",
       "Oppo F25 Pro 5G", "Oppo A79 5G"
     ]
   }

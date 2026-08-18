@@ -6,7 +6,7 @@ export const useAdminSettings = () => {
   const { pushToast } = useToast();
   const { data: settingsData, isLoading } = useGetStoreSettingsQuery();
   const [updateSettings, { isLoading: isUpdating }] = useUpdateStoreSettingsMutation();
-  
+
   const [formData, setFormData] = useState({
     storeName: '',
     supportEmail: '',
@@ -29,7 +29,7 @@ export const useAdminSettings = () => {
       const address = contacts.address || {};
       const timingStr = contacts.timing || 'Mon-Sun, 10:00 AM - 10:00 PM (IST)';
       const match = timingStr.match(/^(.*?), (.*?) - (.*?) \(IST\)$/);
-      
+
       setFormData({
         storeName: storeSettings.storeName || '',
         supportEmail: contacts.email || '',

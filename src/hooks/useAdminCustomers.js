@@ -32,11 +32,11 @@ export const useAdminCustomers = () => {
     const customerOrders = ordersList
       .filter(order => order?.customerEmail === customer?.email || order?.buyer?.email === customer?.email)
       .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // Sort newest first
-      
+
     const totalOrders = customerOrders.length;
     const totalSpent = customerOrders.reduce((sum, order) => sum + (parseFloat(order.totalAmount) || 0), 0);
     const lastOrderDate = customerOrders.length > 0 ? customerOrders[0].orderDate : null;
-    
+
     return {
       ...customer,
       orders: totalOrders,

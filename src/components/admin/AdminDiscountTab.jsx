@@ -14,7 +14,7 @@ const AdminDiscount = () => {
   const products = data.content || [];
   const totalPages = data.totalPages || 0;
   const { formData, setFormData, handleSave, isUpdating } = useAdminFestival();
-  
+
   const discountLogic = useAdminDiscount(products);
 
   if (isLoading) {
@@ -28,16 +28,16 @@ const AdminDiscount = () => {
   return (
     <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
-      <FestivalSalePanel 
-        formData={formData} 
-        setFormData={setFormData} 
-        handleSave={handleSave} 
-        isUpdating={isUpdating} 
+      <FestivalSalePanel
+        formData={formData}
+        setFormData={setFormData}
+        handleSave={handleSave}
+        isUpdating={isUpdating}
       />
 
       <div className="admin-discount-row">
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <BulkDiscountPanel 
+          <BulkDiscountPanel
             products={products}
             isLoading={isLoading}
             selectedProductIds={discountLogic.selectedProductIds}
@@ -53,10 +53,10 @@ const AdminDiscount = () => {
             handleApplyDiscount={discountLogic.handleApplyDiscount}
             isApplying={discountLogic.isApplying || discountLogic.isApplyingCategory}
           />
-          <Pagination 
-            currentPage={page} 
-            totalPages={totalPages} 
-            onPageChange={setPage} 
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
           />
         </div>
       </div>

@@ -52,12 +52,12 @@ const CheckoutForm = ({
               </div>
               <div className="input-group">
                 <label htmlFor="phone">Phone Number</label>
-                <PhoneInput 
-                  id="phone" 
+                <PhoneInput
+                  id="phone"
                   name="phone"
-                  value={phone} 
-                  onChange={setPhone} 
-                  required 
+                  value={phone}
+                  onChange={setPhone}
+                  required
                 />
               </div>
             </div>
@@ -71,16 +71,16 @@ const CheckoutForm = ({
               Manage Addresses
             </Link>
           </div>
-          
+
           {!isLoadingAddresses && addresses.length > 0 && (
             <div className="address-selector" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {addresses.map(addr => (
                 <div key={addr.id} className={`payment-method-card ${selectedAddressId === addr.id ? 'active' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }} onClick={() => setSelectedAddressId(addr.id)}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
-                    <input 
-                      type="radio" 
-                      name="addressSelection" 
-                      value={addr.id} 
+                    <input
+                      type="radio"
+                      name="addressSelection"
+                      value={addr.id}
                       checked={selectedAddressId === addr.id}
                       onChange={() => setSelectedAddressId(addr.id)}
                       style={{ marginRight: '1rem', marginTop: '0.25rem' }}
@@ -104,12 +104,12 @@ const CheckoutForm = ({
                   </button>
                 </div>
               ))}
-              
+
               {addresses.length < 5 && (
                 <label className={`payment-method-card ${selectedAddressId === 'new' ? 'active' : ''}`} style={{ justifyContent: 'flex-start', cursor: 'pointer', padding: '1rem' }}>
-                  <input 
-                    type="radio" 
-                    name="addressSelection" 
+                  <input
+                    type="radio"
+                    name="addressSelection"
                     value="new"
                     checked={selectedAddressId === 'new'}
                     onChange={() => setSelectedAddressId('new')}

@@ -34,8 +34,8 @@ const StoreProfileForm = ({ formData, setFormData }) => {
           ) : (
             <Store size={40} color="var(--text-muted)" />
           )}
-          
-          <div 
+
+          <div
             style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.5)', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
             onClick={() => fileInputRef.current?.click()}
           >
@@ -56,13 +56,13 @@ const StoreProfileForm = ({ formData, setFormData }) => {
         </div>
         <div className="admin-form-field">
           <label>Contact Number</label>
-          <PhoneInput 
+          <PhoneInput
             id="contactNo"
             name="contactNo"
-            value={formData.contactNo} 
+            value={formData.contactNo}
             placeholder='83647 21474'
-            onChange={(val) => setFormData({ ...formData, contactNo: val })} 
-            required 
+            onChange={(val) => setFormData({ ...formData, contactNo: val })}
+            required
           />
         </div>
         <div className="admin-form-field full">

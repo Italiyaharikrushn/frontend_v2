@@ -98,12 +98,12 @@ const Products = () => {
                     <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'stretch', gap: '0.5rem', width: '100%' }}>
                       {isActive && (
                         <div style={{ flex: '1 1 80px', display: 'flex', alignItems: 'center', border: '1px solid var(--border)', borderRadius: 'var(--radius-sm)', background: 'var(--surface)', overflow: 'hidden' }}>
-                          <button 
+                          <button
                             onClick={() => handleQuantityChange(product.id, -1)}
                             disabled={(quantities[product.id] || 1) <= 1}
                             style={{ flex: 1, minHeight: '32px', minWidth: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', cursor: (quantities[product.id] || 1) <= 1 ? 'not-allowed' : 'pointer', opacity: (quantities[product.id] || 1) <= 1 ? 0.5 : 1 }}
                           >-</button>
-                          <input 
+                          <input
                             type="number"
                             value={quantities[product.id] === undefined ? 1 : quantities[product.id]}
                             onChange={(e) => handleQuantityInputChange(product.id, e.target.value)}
@@ -111,7 +111,7 @@ const Products = () => {
                             style={{ fontWeight: 'bold', fontSize: '0.9rem', width: '2.5rem', height: '100%', textAlign: 'center', border: 'none', padding: '0', background: 'transparent', color: 'var(--text-main)' }}
                             className="no-spin-button"
                           />
-                          <button 
+                          <button
                             onClick={() => handleQuantityChange(product.id, 1)}
                             style={{ flex: 1, minHeight: '32px', minWidth: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: 'none', background: 'transparent', cursor: 'pointer' }}
                           >+</button>
@@ -138,16 +138,16 @@ const Products = () => {
         )}
       </div>
 
-      <Pagination 
-        currentPage={page} 
-        totalPages={totalPages} 
-        onPageChange={setPage} 
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
       />
 
       {quickViewProductId && (
-        <ProductDetails 
-          productId={quickViewProductId} 
-          onClose={() => setQuickViewProductId(null)} 
+        <ProductDetails
+          productId={quickViewProductId}
+          onClose={() => setQuickViewProductId(null)}
         />
       )}
     </div>

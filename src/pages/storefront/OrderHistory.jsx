@@ -18,7 +18,7 @@ const CancellationTimer = ({ deadline }) => {
 
   const m = Math.floor(timeLeft / 60000);
   const s = Math.floor((timeLeft % 60000) / 1000);
-  
+
   return (
     <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', marginLeft: '0.5rem' }}>
       ({m}m {s}s left)

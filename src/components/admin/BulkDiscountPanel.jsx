@@ -49,8 +49,8 @@ const BulkDiscountPanel = ({
         </h2>
         <div className="admin-discount-actions">
           <div className="admin-category-dropdown" ref={dropdownRef} style={{ position: 'relative', width: '220px' }}>
-            <div 
-              className="admin-discount-input" 
+            <div
+              className="admin-discount-input"
               style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: 'var(--surface)', padding: '0.65rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
@@ -63,8 +63,8 @@ const BulkDiscountPanel = ({
               <div style={{ position: 'absolute', top: '100%', left: 0, width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', marginTop: '0.25rem', zIndex: 999, maxHeight: '200px', overflowY: 'auto', boxShadow: 'var(--shadow-md)' }}>
                 {categoryStats && categoryStats.map((stat) => (
                   <label key={stat.category} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', cursor: 'pointer', borderBottom: '1px solid var(--border)', margin: 0 }}>
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       checked={selectedCategories.has(stat.category)}
                       onChange={() => handleCategoryToggle(stat.category)}
                       style={{ cursor: 'pointer' }}
@@ -78,19 +78,19 @@ const BulkDiscountPanel = ({
               </div>
             )}
           </div>
-          <input 
-            type="number" 
-            placeholder="% Discount" 
-            value={discountPercentage} 
+          <input
+            type="number"
+            placeholder="% Discount"
+            value={discountPercentage}
             onChange={(e) => setDiscountPercentage(e.target.value)}
             className="admin-discount-input"
             style={{ width: '120px' }}
             min="1" max="100"
           />
-          <input 
-            type="number" 
-            placeholder="Valid for (Days)" 
-            value={validForDays} 
+          <input
+            type="number"
+            placeholder="Valid for (Days)"
+            value={validForDays}
             onChange={(e) => setValidForDays(e.target.value)}
             className="admin-discount-input"
             style={{ width: '140px' }}
@@ -110,9 +110,9 @@ const BulkDiscountPanel = ({
             <thead>
               <tr>
                 <th style={{ width: '40px' }}>
-                  <input 
-                    type="checkbox" 
-                    onChange={handleSelectAll} 
+                  <input
+                    type="checkbox"
+                    onChange={handleSelectAll}
                     checked={products.length > 0 && selectedProductIds.size === products.length}
                     style={{ cursor: 'pointer' }}
                   />
@@ -128,9 +128,9 @@ const BulkDiscountPanel = ({
               {products.length > 0 ? products.map((product) => (
                 <tr key={product.id}>
                   <td>
-                    <input 
-                      type="checkbox" 
-                      checked={selectedProductIds.has(product.id)} 
+                    <input
+                      type="checkbox"
+                      checked={selectedProductIds.has(product.id)}
                       onChange={() => handleSelectProduct(product.id)}
                       style={{ cursor: 'pointer' }}
                     />

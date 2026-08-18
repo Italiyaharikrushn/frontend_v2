@@ -45,18 +45,18 @@ export const useCartSync = () => {
         let mergedItems = [...cartItemsRef.current];
 
         backendItems.forEach(bItem => {
-          const existingIndex = mergedItems.findIndex(mItem => 
+          const existingIndex = mergedItems.findIndex(mItem =>
             mItem.id === bItem.id && (mItem.phoneModel || '') === (bItem.phoneModel || '')
           );
           if (existingIndex === -1) {
             mergedItems.push(bItem);
           } else if (mergedItems[existingIndex].quantity < bItem.quantity) {
-             mergedItems[existingIndex].quantity = bItem.quantity;
+            mergedItems[existingIndex].quantity = bItem.quantity;
           }
         });
 
         const finalSyncItems = mergedItems.length > 0 ? mergedItems : backendItems;
-        
+
         dispatch(setCartItems(finalSyncItems));
         cartItemsRef.current = finalSyncItems;
 
@@ -95,7 +95,7 @@ export const useCartSync = () => {
         syncBackendCart(syncPayload);
       }
     } else {
-        cartItemsRef.current = cartItems;
+      cartItemsRef.current = cartItems;
     }
   }, [cartItems, isAuthenticated, hasInitialSyncCompleted, syncBackendCart]);
 };

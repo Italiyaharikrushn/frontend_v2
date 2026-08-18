@@ -62,16 +62,16 @@ export const useProductDetails = ({ propId, isModal }) => {
 
   const baseCurrentPrice = product ? (product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price)) : 0;
   const baseOriginalPrice = product ? parseFloat(product.price) || 0 : 0;
-  
+
   const customNamePrice = product && product.customNamePrice ? parseFloat(product.customNamePrice) : baseCurrentPrice;
   const currentPrice = isPhoneCover && coverType === 'custom_name' ? customNamePrice : baseCurrentPrice;
   const originalPrice = isPhoneCover && coverType === 'custom_name' ? customNamePrice : baseOriginalPrice;
 
-  return { 
-    product, isLoading, isError, pincode, setPincode, 
-    phoneModel, setPhoneModel, quantity, setQuantity, 
-    isPhoneCover, currentPrice, originalPrice, 
+  return {
+    product, isLoading, isError, pincode, setPincode,
+    phoneModel, setPhoneModel, quantity, setQuantity,
+    isPhoneCover, currentPrice, originalPrice,
     coverType, setCoverType, customName, setCustomName,
-    handleAddToCart, handleBuyNow, navigate 
+    handleAddToCart, handleBuyNow, navigate
   };
 };

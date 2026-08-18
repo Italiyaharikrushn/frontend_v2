@@ -25,7 +25,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
 
   useEffect(() => {
     if (propId) {
-        incrementView(propId).catch(console.error);
+      incrementView(propId).catch(console.error);
     }
   }, [propId, incrementView]);
 
@@ -33,14 +33,14 @@ const ProductDetails = ({ productId: propId, onClose }) => {
 
   const handleFavoriteClick = async () => {
     if (!isAuthenticated) {
-        pushToast('Please login to save favorites', 'warning');
-        return;
+      pushToast('Please login to save favorites', 'warning');
+      return;
     }
     try {
-        await toggleFavorite(propId).unwrap();
-        pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
+      await toggleFavorite(propId).unwrap();
+      pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
     } catch (err) {
-        pushToast('Failed to update favorites', 'error');
+      pushToast('Failed to update favorites', 'error');
     }
   };
 
@@ -61,8 +61,8 @@ const ProductDetails = ({ productId: propId, onClose }) => {
   const content = (
     <div className={`product-details-container fade-in ${isModal ? 'modal-mode' : ''}`}>
       {!isModal && (
-        <button 
-          onClick={() => navigate(-1)} 
+        <button
+          onClick={() => navigate(-1)}
           className="hover-lift"
           style={{ background: 'none', border: 'none', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginBottom: '1.5rem', fontSize: '0.95rem', fontWeight: '600', padding: 0 }}
         >
@@ -78,15 +78,15 @@ const ProductDetails = ({ productId: propId, onClose }) => {
         <div className="product-info-section">
           <div className="title-favorite-row">
             <h1 className="product-title" style={{ flex: 1, paddingRight: '1rem' }}>{product.title?.toUpperCase()}</h1>
-            <button 
+            <button
               onClick={handleFavoriteClick}
               aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
               className={`product-details-favorite-btn ${isFavorite ? 'is-active' : ''}`}
             >
-              <Heart 
-                size={28} 
-                fill={isFavorite ? '#ff4b4b' : 'none'} 
-                color={isFavorite ? '#ff4b4b' : 'var(--text-muted)'} 
+              <Heart
+                size={28}
+                fill={isFavorite ? '#ff4b4b' : 'none'}
+                color={isFavorite ? '#ff4b4b' : 'var(--text-muted)'}
                 style={{ transition: 'fill 0.3s ease, color 0.3s ease' }}
               />
             </button>
@@ -135,12 +135,12 @@ const ProductDetails = ({ productId: propId, onClose }) => {
               {coverType === 'custom_name' && (
                 <div className="custom-name-input fade-in">
                   <label htmlFor="customName" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Enter Custom Name <span style={{ color: 'red' }}>*</span></label>
-                  <input 
-                    type="text" 
-                    id="customName" 
-                    value={customName} 
-                    onChange={(e) => setCustomName(e.target.value)} 
-                    placeholder="e.g. PREITY" 
+                  <input
+                    type="text"
+                    id="customName"
+                    value={customName}
+                    onChange={(e) => setCustomName(e.target.value)}
+                    placeholder="e.g. PREITY"
                     style={{ width: '100%', padding: '0.85rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)', fontSize: '1rem', outline: 'none' }}
                   />
                   <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>This name will be crafted onto your cover exactly as typed.</p>

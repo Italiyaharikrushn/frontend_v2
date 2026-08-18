@@ -4,7 +4,7 @@ import { useToast } from '../components/ui/ToastProvider';
 
 export const useAdminDiscount = (products) => {
   const { pushToast } = useToast();
-  
+
   const [applyDiscount, { isLoading: isApplying }] = useApplyDiscountMutation();
   const [applyCategoryDiscount, { isLoading: isApplyingCategory }] = useApplyCategoryDiscountMutation();
 
@@ -65,7 +65,7 @@ export const useAdminDiscount = (products) => {
     if (selectedCategories.size > 0) {
       try {
         await Promise.all(
-          Array.from(selectedCategories).map(category => 
+          Array.from(selectedCategories).map(category =>
             applyCategoryDiscount({
               category: category,
               discountPercentage: percentage,

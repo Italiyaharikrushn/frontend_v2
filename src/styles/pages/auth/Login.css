@@ -5,8 +5,8 @@
   justify-content: center;
   padding: 1.5rem 1.25rem;
   background: radial-gradient(circle at 10% 10%, rgba(var(--primary-rgb), 0.18), transparent 45%),
-              radial-gradient(circle at 90% 90%, rgba(var(--primary-rgb), 0.12), transparent 45%),
-              var(--background);
+    radial-gradient(circle at 90% 90%, rgba(var(--primary-rgb), 0.12), transparent 45%),
+    var(--background);
 }
 
 .auth-card {
@@ -145,8 +145,13 @@
 }
 
 @media (min-width: 768px) {
-  .auth-card { padding: 2.5rem 2.25rem; }
-  .auth-card-header h1 { font-size: clamp(1.61rem, 0.95rem + 1.90vw, 1.90rem); }
+  .auth-card {
+    padding: 2.5rem 2.25rem;
+  }
+
+  .auth-card-header h1 {
+    font-size: clamp(1.61rem, 0.95rem + 1.90vw, 1.90rem);
+  }
 }
 
 .password-input-wrapper {
@@ -197,7 +202,7 @@
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.75rem;
-  background: rgba(0,0,0,0.02);
+  background: rgba(0, 0, 0, 0.02);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
 }

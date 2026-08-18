@@ -32,10 +32,10 @@ const MyMessages = () => {
                 </div>
 
                 {(!messages || messages.length === 0) ? (
-                    <div style={{ 
-                        textAlign: 'center', 
-                        padding: '4rem 2rem', 
-                        background: 'var(--bg-secondary)', 
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '4rem 2rem',
+                        background: 'var(--bg-secondary)',
                         borderRadius: '16px',
                         border: '1px solid var(--border)',
                         boxShadow: 'var(--shadow-sm)'
@@ -56,14 +56,14 @@ const MyMessages = () => {
                                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                                 cursor: 'default'
                             }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'translateY(0)';
-                                e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                            }}>
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-2px)';
+                                    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                                }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
                                     <div>
                                         <h3 style={{ fontSize: '1.25rem', fontWeight: '600', color: 'var(--text-primary)', margin: '0 0 0.25rem 0' }}>
@@ -89,11 +89,11 @@ const MyMessages = () => {
                                         {msg.status === 'REPLIED' ? 'Answered' : 'Pending'}
                                     </div>
                                 </div>
-                                
-                                <div style={{ 
-                                    background: 'var(--bg-secondary)', 
-                                    padding: '1rem', 
-                                    borderRadius: '8px', 
+
+                                <div style={{
+                                    background: 'var(--bg-secondary)',
+                                    padding: '1rem',
+                                    borderRadius: '8px',
                                     color: 'var(--text-secondary)',
                                     lineHeight: '1.6',
                                     whiteSpace: 'pre-wrap',
@@ -109,14 +109,14 @@ const MyMessages = () => {
                                         borderTop: '1px solid var(--border)'
                                     }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                                            <div style={{ 
-                                                width: '28px', 
-                                                height: '28px', 
-                                                borderRadius: '50%', 
-                                                background: 'var(--primary)', 
-                                                color: 'white', 
-                                                display: 'flex', 
-                                                alignItems: 'center', 
+                                            <div style={{
+                                                width: '28px',
+                                                height: '28px',
+                                                borderRadius: '50%',
+                                                background: 'var(--primary)',
+                                                color: 'white',
+                                                display: 'flex',
+                                                alignItems: 'center',
                                                 justifyContent: 'center',
                                                 fontSize: '0.75rem',
                                                 fontWeight: 'bold'

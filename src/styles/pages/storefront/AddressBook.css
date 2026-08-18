@@ -169,6 +169,7 @@
   .address-book-page {
     padding: 1.5rem 1rem;
   }
+
   .address-form-grid {
     grid-template-columns: 1fr;
   }

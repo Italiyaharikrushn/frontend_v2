@@ -13,7 +13,7 @@ export const useLogin = () => {
   const [loginApi, { isLoading }] = useLoginMutation();
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
   const { pushToast } = useToast();
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

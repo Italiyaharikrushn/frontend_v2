@@ -43,7 +43,7 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
         setIsOpen(false);
       }
     };
-    
+
     const handleScroll = () => {
       if (isOpen) setIsOpen(false);
     };
@@ -60,7 +60,7 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%' }}>
-      <div 
+      <div
         onClick={handleToggle}
         style={{
           border: '1px solid var(--border-light)',
@@ -83,7 +83,7 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
         </span>
         <ChevronDown size={16} style={{ color: 'var(--text-muted)' }} />
       </div>
-      
+
       {isOpen && createPortal(
         <div ref={menuRef} style={{
           position: 'absolute',
@@ -111,11 +111,11 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
               transition: 'background-color 0.2s',
               background: 'var(--bg-main, #ffffff)'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted, #f1f5f9)'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-main, #ffffff)'}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-muted, #f1f5f9)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-main, #ffffff)'}
             >
-              <input 
-                type="checkbox" 
+              <input
+                type="checkbox"
                 checked={selectedValues.includes(opt.value)}
                 onChange={() => toggleOption(opt.value)}
                 style={{ marginRight: '0.75rem', cursor: 'pointer', width: '16px', height: '16px' }}
@@ -136,7 +136,7 @@ const FestivalSalePanel = ({ formData, setFormData, handleSave, isUpdating }) =>
   const { data: categories = [] } = useGetCategoriesQuery();
   const { data: allProductsData } = useGetProductsQuery(); // Fetch all to populate dropdown
   const products = Array.isArray(allProductsData) ? allProductsData : (allProductsData?.content || []);
-  
+
   return (
     <div className="glass-panel admin-panel-card" style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       <div className="admin-discount-panel-header">
@@ -147,80 +147,80 @@ const FestivalSalePanel = ({ formData, setFormData, handleSave, isUpdating }) =>
       <div className="admin-form-grid">
         <div className="admin-form-field">
           <label>Sale Name</label>
-          <input 
-            type="text" 
-            value={formData.festivalName} 
-            onChange={(e) => setFormData({...formData, festivalName: e.target.value})} 
-            placeholder="e.g. Diwali Super Sale" 
+          <input
+            type="text"
+            value={formData.festivalName}
+            onChange={(e) => setFormData({ ...formData, festivalName: e.target.value })}
+            placeholder="e.g. Diwali Super Sale"
           />
         </div>
         <div className="admin-form-field">
           <label>Storewide Discount %</label>
-          <input 
-            type="number" 
-            min="0" max="100" 
-            value={formData.festivalDiscountPercentage} 
-            onChange={(e) => setFormData({...formData, festivalDiscountPercentage: e.target.value})} 
-            placeholder="e.g. 20" 
+          <input
+            type="number"
+            min="0" max="100"
+            value={formData.festivalDiscountPercentage}
+            onChange={(e) => setFormData({ ...formData, festivalDiscountPercentage: e.target.value })}
+            placeholder="e.g. 20"
           />
         </div>
         <div className="admin-form-field">
           <label>Start Date</label>
-          <input 
-            type="datetime-local" 
-            value={formData.festivalStartDate} 
-            onChange={(e) => setFormData({...formData, festivalStartDate: e.target.value})} 
+          <input
+            type="datetime-local"
+            value={formData.festivalStartDate}
+            onChange={(e) => setFormData({ ...formData, festivalStartDate: e.target.value })}
           />
         </div>
         <div className="admin-form-field">
           <label>End Date</label>
-          <input 
-            type="datetime-local" 
-            value={formData.festivalEndDate || ''} 
-            onChange={(e) => setFormData({...formData, festivalEndDate: e.target.value})} 
+          <input
+            type="datetime-local"
+            value={formData.festivalEndDate || ''}
+            onChange={(e) => setFormData({ ...formData, festivalEndDate: e.target.value })}
           />
         </div>
         <div className="admin-form-field">
-          <label>Target Category <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>(Optional)</span></label>
-          <MultiSelectDropdown 
+          <label>Target Category <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>(Optional)</span></label>
+          <MultiSelectDropdown
             options={categories.map(cat => ({ label: cat, value: cat }))}
             selectedValuesStr={formData.festivalTargetCategory || ''}
-            onChange={(val) => setFormData({...formData, festivalTargetCategory: val})}
+            onChange={(val) => setFormData({ ...formData, festivalTargetCategory: val })}
             placeholder="-- All Categories --"
           />
         </div>
         <div className="admin-form-field">
-          <label>Target Product <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>(Optional)</span></label>
-          <MultiSelectDropdown 
+          <label>Target Product <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>(Optional)</span></label>
+          <MultiSelectDropdown
             options={products.map(p => ({ label: p.title, value: p.title }))}
             selectedValuesStr={formData.festivalTargetProduct || ''}
-            onChange={(val) => setFormData({...formData, festivalTargetProduct: val})}
+            onChange={(val) => setFormData({ ...formData, festivalTargetProduct: val })}
             placeholder="-- All Products --"
           />
         </div>
         <div className="admin-form-field full" style={{ flexDirection: 'row', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem', padding: '1rem', background: 'rgba(0,0,0,0.02)', borderRadius: 'var(--radius-md)' }}>
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             id="isFestivalActive"
-            style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }} 
-            checked={formData.isFestivalActive || false} 
-            onChange={(e) => setFormData({...formData, isFestivalActive: e.target.checked})} 
+            style={{ width: 'auto', minHeight: 'auto', transform: 'scale(1.2)' }}
+            checked={formData.isFestivalActive || false}
+            onChange={(e) => setFormData({ ...formData, isFestivalActive: e.target.checked })}
           />
           <label htmlFor="isFestivalActive" style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold', position: 'static', transform: 'none' }}>
             Enable Festival Sale (Applies discount based on targets above & shows banner)
           </label>
         </div>
       </div>
-      <Button 
+      <Button
         onClick={() => {
           if (!formData.isFestivalActive) {
             alert("Please select the check box to send a message or please check.");
             return;
           }
           handleSave();
-        }} 
-        disabled={isUpdating} 
-        style={{ alignSelf: 'flex-start' }} 
+        }}
+        disabled={isUpdating}
+        style={{ alignSelf: 'flex-start' }}
         variant="primary"
       >
         {isUpdating ? 'Saving...' : 'Save Configuration'}

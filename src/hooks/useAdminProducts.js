@@ -8,7 +8,7 @@ export const useAdminProducts = () => {
     const { confirm, bulkUploadPrompt } = useAlert();
     const [page, setPage] = useState(0);
     const size = 10;
-    
+
     const { data = {}, isLoading } = useGetProductsQuery({ page, size });
     const products = data.content || [];
     const totalPages = data.totalPages || 0;

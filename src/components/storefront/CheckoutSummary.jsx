@@ -28,61 +28,61 @@ const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode,
 
       <div className="summary-totals">
         <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
-        
+
         <div className="coupon-section">
-            <div className="coupon-input-group">
-                <Ticket size={18} className="coupon-icon" />
-                <input
-                    type="text"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                    placeholder="Enter discount code"
-                    disabled={appliedCouponCode !== null}
-                />
-                <button 
-                    type="button"
-                    onClick={validateCoupon} 
-                    className={`coupon-btn ${appliedCouponCode ? 'coupon-btn-applied' : 'coupon-btn-apply'}`}
-                    disabled={appliedCouponCode !== null || !couponCode.trim()}
-                >
-                    {appliedCouponCode ? (
-                        <><CheckCircle2 size={16} /> Applied</>
-                    ) : (
-                        'Apply'
-                    )}
-                </button>
+          <div className="coupon-input-group">
+            <Ticket size={18} className="coupon-icon" />
+            <input
+              type="text"
+              value={couponCode}
+              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+              placeholder="Enter discount code"
+              disabled={appliedCouponCode !== null}
+            />
+            <button
+              type="button"
+              onClick={validateCoupon}
+              className={`coupon-btn ${appliedCouponCode ? 'coupon-btn-applied' : 'coupon-btn-apply'}`}
+              disabled={appliedCouponCode !== null || !couponCode.trim()}
+            >
+              {appliedCouponCode ? (
+                <><CheckCircle2 size={16} /> Applied</>
+              ) : (
+                'Apply'
+              )}
+            </button>
+          </div>
+
+          {couponError && (
+            <div className="coupon-message error">
+              <AlertCircle size={14} />
+              <span>{couponError}</span>
             </div>
-            
-            {couponError && (
-                <div className="coupon-message error">
-                    <AlertCircle size={14} />
-                    <span>{couponError}</span>
-                </div>
-            )}
-            
-            {appliedCouponCode && !couponError && (
-                <div className="coupon-message success">
-                    <CheckCircle2 size={14} />
-                    <span>Discount code applied successfully!</span>
-                </div>
-            )}
+          )}
+
+          {appliedCouponCode && !couponError && (
+            <div className="coupon-message success">
+              <CheckCircle2 size={14} />
+              <span>Discount code applied successfully!</span>
+            </div>
+          )}
         </div>
 
         {discountAmount > 0 && (
-            <div className="discount-row">
-                <div className="discount-row-label">
-                    <span>Discount</span>
-                    <span className="discount-tag">
-                        <Tag size={12} style={{ marginRight: '4px' }} />
-                        {appliedCouponCode}
-                    </span>
-                </div>
-                <span>-₹{discountAmount.toFixed(2)}</span>
+          <div className="discount-row">
+            <div className="discount-row-label">
+              <span>Discount</span>
+              <span className="discount-tag">
+                <Tag size={12} style={{ marginRight: '4px' }} />
+                {appliedCouponCode}
+              </span>
             </div>
+            <span>-₹{discountAmount.toFixed(2)}</span>
+          </div>
         )}
 
         <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
-        
+
         {storePolicy && (
           <div className="policy-summary" style={{ marginTop: '1rem', marginBottom: '1rem', padding: '1rem', backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
             <h4 style={{ color: 'var(--text-main)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}>

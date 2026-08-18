@@ -1197,7 +1197,10 @@ input:checked+.policy-slider:before {
   white-space: pre-wrap;
   word-break: break-word;
 }
-.policy-row-hover:hover { background-color: var(--surface-hover); }
+
+.policy-row-hover:hover {
+  background-color: var(--surface-hover);
+}
 
 /* Custom Filter Select Dropdown */
 .admin-filter-select {

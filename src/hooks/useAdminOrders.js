@@ -13,11 +13,11 @@ export const useAdminOrders = () => {
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [page, setPage] = useState(0);
   const size = 10;
-  
+
   const { data = {}, isLoading } = useGetSellerOrdersQuery({ page, size, status: activeTab });
   const orders = data.content || [];
   const totalPages = data.totalPages || 0;
-  
+
   const downloadedLabels = orders.filter(o => o.labelDownloaded).map(o => o.id);
 
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
@@ -53,7 +53,7 @@ export const useAdminOrders = () => {
 
   const handleDownloadLabels = async () => {
     generatePdfLabels(selectedOrders, orders, storeSettings);
-    
+
     try {
       await markLabelsDownloaded(selectedOrders).unwrap();
     } catch (err) {
@@ -78,7 +78,7 @@ export const useAdminOrders = () => {
 
     try {
       await Promise.all(selectedOrders.map(id => updateOrderStatus({ id, status: 'READY_TO_SHIP' }).unwrap()));
-      
+
       setSelectedOrders([]);
       pushToast('Selected orders have been accepted.', 'success');
     } catch (err) {
@@ -90,7 +90,7 @@ export const useAdminOrders = () => {
   const handleAcceptSingleOrder = async (orderId) => {
     try {
       await updateOrderStatus({ id: orderId, status: 'READY_TO_SHIP' }).unwrap();
-      
+
       pushToast('Order accepted.', 'success');
     } catch (err) {
       console.error('Failed to accept order: ', err);

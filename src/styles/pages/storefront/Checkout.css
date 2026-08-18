@@ -364,8 +364,13 @@
   animation: fadeIn var(--transition-fast);
 }
 
-.coupon-message.error { color: var(--error); }
-.coupon-message.success { color: var(--success); }
+.coupon-message.error {
+  color: var(--error);
+}
+
+.coupon-message.success {
+  color: var(--success);
+}
 
 .discount-row {
   display: flex;
@@ -557,6 +562,7 @@
     grid-template-columns: 1.2fr 0.8fr;
     gap: 1.75rem;
   }
+
   .form-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -573,12 +579,15 @@
   .coupon-input-group {
     flex-direction: column;
   }
+
   .coupon-btn {
     width: 100%;
   }
+
   .payment-modal-card {
     padding: 1.5rem 1.25rem;
   }
+
   .payment-modal-amount-value {
     font-size: clamp(1.57rem, 0.93rem + 1.85vw, 1.85rem);
   }

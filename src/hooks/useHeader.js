@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { selectCartTotalQuantity } from '../redux/cartSlice';
-import { 
-  selectIsAuthenticated, 
-  selectUserName, 
-  selectUserEmail, 
-  logout 
+import {
+  selectIsAuthenticated,
+  selectUserName,
+  selectUserEmail,
+  logout
 } from '../redux/authSlice';
 import { useGetProductsQuery } from '../api/productApi';
 
@@ -91,11 +91,11 @@ export const useHeader = () => {
     const q = query.toLowerCase();
 
     // Exact substring matches first
-    const exactMatches = products.filter(p => 
-      p.title?.toLowerCase().includes(q) || 
+    const exactMatches = products.filter(p =>
+      p.title?.toLowerCase().includes(q) ||
       p.category?.toLowerCase().includes(q)
     );
-    
+
     if (exactMatches.length > 0) return exactMatches.slice(0, 5);
 
     // Fuzzy match (Levenshtein distance)

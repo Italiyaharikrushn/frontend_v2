@@ -15,7 +15,7 @@ const PhoneModelDropdown = ({ value, onChange }) => {
   const [isSeriesOpen, setIsSeriesOpen] = useState(false);
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const seriesRef = useRef(null);
   const modelRef = useRef(null);
   const inputRef = useRef(null);
@@ -46,7 +46,7 @@ const PhoneModelDropdown = ({ value, onChange }) => {
     if (!selectedSeries) return [];
     const series = PHONE_SERIES.find(s => s.name === selectedSeries);
     if (!series) return [];
-    
+
     if (!searchTerm.trim()) return series.models;
     const lowerSearch = searchTerm.toLowerCase();
     return series.models.filter(model => model.toLowerCase().includes(lowerSearch));
@@ -68,7 +68,7 @@ const PhoneModelDropdown = ({ value, onChange }) => {
   return (
     <div className="phone-model-dropdowns-wrapper">
       <div className="phone-model-dropdown-container" ref={seriesRef}>
-        <div 
+        <div
           className={`dropdown-trigger ${isSeriesOpen ? 'open' : ''}`}
           onClick={() => setIsSeriesOpen(!isSeriesOpen)}
         >
@@ -82,7 +82,7 @@ const PhoneModelDropdown = ({ value, onChange }) => {
           <div className="dropdown-menu fade-in">
             <div className="dropdown-options">
               {PHONE_SERIES.map((series, index) => (
-                <div 
+                <div
                   key={index}
                   className={`option ${selectedSeries === series.name ? 'selected' : ''}`}
                   onClick={() => handleSeriesSelect(series.name)}
@@ -96,7 +96,7 @@ const PhoneModelDropdown = ({ value, onChange }) => {
       </div>
 
       <div className={`phone-model-dropdown-container ${!selectedSeries ? 'disabled' : ''}`} ref={modelRef}>
-        <div 
+        <div
           className={`dropdown-trigger ${isModelOpen ? 'open' : ''}`}
           onClick={() => {
             if (selectedSeries) {
@@ -127,8 +127,8 @@ const PhoneModelDropdown = ({ value, onChange }) => {
                 onClick={(e) => e.stopPropagation()}
               />
               {searchTerm && (
-                <button 
-                  className="clear-search" 
+                <button
+                  className="clear-search"
                   onClick={(e) => { e.stopPropagation(); setSearchTerm(''); inputRef.current?.focus(); }}
                 >
                   <X size={14} />
@@ -138,7 +138,7 @@ const PhoneModelDropdown = ({ value, onChange }) => {
 
             <div className="dropdown-options">
               {availableModels.map(model => (
-                <div 
+                <div
                   key={model}
                   className={`option ${value === model ? 'selected' : ''}`}
                   onClick={() => handleModelSelect(model)}
@@ -146,11 +146,11 @@ const PhoneModelDropdown = ({ value, onChange }) => {
                   {model}
                 </div>
               ))}
-              
+
               {searchTerm.trim().length >= 3 && /[a-zA-Z]/.test(searchTerm) && (
                 <div className="optgroup custom-model-group">
                   <div className="optgroup-label">Custom Model</div>
-                  <div 
+                  <div
                     className="option"
                     onClick={() => handleModelSelect(searchTerm.trim())}
                   >

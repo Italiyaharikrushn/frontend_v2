@@ -23,7 +23,7 @@ export const useHome = () => {
     });
     trendingProducts = relatedProducts.slice(0, 8);
   }
-  
+
   if (trendingProducts.length === 0) {
     trendingProducts = [...products].slice(0, 8);
   }

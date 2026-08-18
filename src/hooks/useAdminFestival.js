@@ -6,7 +6,7 @@ export const useAdminFestival = () => {
   const { pushToast } = useToast();
   const { data: festivalData, isLoading } = useGetFestivalSettingsQuery();
   const [updateFestival, { isLoading: isUpdating }] = useUpdateFestivalSettingsMutation();
-  
+
   const [formData, setFormData] = useState({
     festivalName: '',
     festivalStartDate: '',

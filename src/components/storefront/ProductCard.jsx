@@ -19,14 +19,14 @@ const ProductCard = ({ product }) => {
   const handleFavoriteClick = async (e) => {
     e.preventDefault(); // prevent triggering the link
     if (!isAuthenticated) {
-        pushToast('Please login to save favorites', 'warning');
-        return;
+      pushToast('Please login to save favorites', 'warning');
+      return;
     }
     try {
-        await toggleFavorite(pId).unwrap();
-        pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
+      await toggleFavorite(pId).unwrap();
+      pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
     } catch (err) {
-        pushToast('Failed to update favorites', 'error');
+      pushToast('Failed to update favorites', 'error');
     }
   };
 
@@ -50,16 +50,16 @@ const ProductCard = ({ product }) => {
           ) : (
             <ShoppingBag size={48} className="pulse-element product-card-placeholder" />
           )}
-          
-          <button 
-            className="product-favorite-btn" 
+
+          <button
+            className="product-favorite-btn"
             onClick={handleFavoriteClick}
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
           >
-            <Heart 
-              size={20} 
-              fill={isFavorite ? '#ff4b4b' : 'none'} 
-              color={isFavorite ? '#ff4b4b' : 'var(--text-primary)'} 
+            <Heart
+              size={20}
+              fill={isFavorite ? '#ff4b4b' : 'none'}
+              color={isFavorite ? '#ff4b4b' : 'var(--text-primary)'}
               style={{ transition: 'fill 0.3s ease, color 0.3s ease' }}
             />
           </button>
