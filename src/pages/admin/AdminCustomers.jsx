@@ -21,7 +21,7 @@ const AdminCustomers = () => {
       </div>
 
       <div className="admin-two-column">
-        <div className="glass-panel admin-panel-card">
+        <div className="glass-panel admin-panel-card" style={{ height: 'fit-content' }}>
           <h2 style={{ marginBottom: '1.25rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.65rem', fontWait: '700' }}>
             <span className="admin-section-icon"><Users size={18} /></span> Customer Directory
           </h2>
@@ -29,12 +29,12 @@ const AdminCustomers = () => {
           <AdminCustomerTable realCustomers={realCustomers} isLoadingCustomers={isLoadingCustomers} />
         </div>
 
-        <div className="glass-panel admin-panel-card" style={{ height: 'fit-content' }}>
+        <div className="glass-panel admin-panel-card">
           <h2 style={{ marginBottom: '1.25rem', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.65rem', fontWeight: '700' }}>
             <span className="admin-section-icon"><MessageSquare size={18} /></span> Customer Messages
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', height: '570px', overflowY: 'auto', paddingRight: '0.5rem' }}>
             {isLoadingMessages ? (
               <p style={{ color: 'var(--text-muted)' }}>Loading messages...</p>
             ) : messages.length > 0 ? messages.map(msg => (

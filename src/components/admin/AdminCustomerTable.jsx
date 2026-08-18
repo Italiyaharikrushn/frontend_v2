@@ -16,7 +16,7 @@ const AdminCustomerTable = ({ realCustomers, isLoadingCustomers }) => {
 
   return (
     <>
-      <div className="admin-table-container">
+      <div className="admin-table-container" style={{ overflowY: 'hidden' }}>
       <table className="admin-table">
         <thead>
           <tr>
