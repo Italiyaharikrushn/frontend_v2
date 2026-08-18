@@ -18,13 +18,13 @@ const AdminPromotions = () => {
             </div>
 
             <div className="admin-promotions-tabs">
-                <button 
+                <button
                     onClick={() => setActiveTab('DISCOUNTS')}
                     className={`admin-promotions-tab-btn ${activeTab === 'DISCOUNTS' ? 'active' : ''}`}
                 >
                     <PartyPopper size={20} /> Store Discounts
                 </button>
-                <button 
+                <button
                     onClick={() => setActiveTab('COUPONS')}
                     className={`admin-promotions-tab-btn ${activeTab === 'COUPONS' ? 'active' : ''}`}
                 >

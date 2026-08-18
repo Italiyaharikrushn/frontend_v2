@@ -35,10 +35,10 @@ const AdminOrders = () => {
   return (
     <div className="admin-page fade-in admin-full-height-page">
       <div className="glass-panel admin-panel-card admin-full-height-card">
-        <AdminOrderTabs 
-          activeTab={activeTab} 
-          setActiveTab={setActiveTab} 
-          setSelectedOrders={setSelectedOrders} 
+        <AdminOrderTabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          setSelectedOrders={setSelectedOrders}
         />
 
         <div className="admin-search-toolbar">
@@ -83,10 +83,10 @@ const AdminOrders = () => {
           downloadedLabels={downloadedLabels}
         />
 
-        <Pagination 
-          currentPage={page} 
-          totalPages={totalPages} 
-          onPageChange={setPage} 
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
         />
 
         {selectedOrders.length > 0 && (

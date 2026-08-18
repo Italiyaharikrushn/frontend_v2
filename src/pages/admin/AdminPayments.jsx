@@ -10,9 +10,9 @@ const AdminPayments = () => {
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
   const size = 10;
-  
-  const queryParams = { 
-    page: page - 1, 
+
+  const queryParams = {
+    page: page - 1,
     size,
     ...(selectedYear && { year: parseInt(selectedYear) }),
     ...(selectedMonth && { month: parseInt(selectedMonth) }),
@@ -41,44 +41,44 @@ const AdminPayments = () => {
       <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <h1 className="admin-title">Payments Received</h1>
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <select 
-            className="admin-filter-select" 
-            value={selectedYear} 
+          <select
+            className="admin-filter-select"
+            value={selectedYear}
             onChange={(e) => { setSelectedYear(e.target.value); setPage(1); }}
           >
             <option value="">All Years</option>
-            {Array.from({length: 10}, (_, i) => new Date().getFullYear() - i).map(y => (
+            {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(y => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>
 
-          <select 
-            className="admin-filter-select" 
-            value={selectedMonth} 
+          <select
+            className="admin-filter-select"
+            value={selectedMonth}
             onChange={(e) => { setSelectedMonth(e.target.value); setPage(1); }}
             disabled={!selectedYear}
           >
             <option value="">All Months</option>
-            {Array.from({length: 12}, (_, i) => i + 1).map(m => (
+            {Array.from({ length: 12 }, (_, i) => i + 1).map(m => (
               <option key={m} value={m}>{new Date(2000, m - 1, 1).toLocaleString('default', { month: 'long' })}</option>
             ))}
           </select>
 
-          <select 
-            className="admin-filter-select" 
-            value={selectedDay} 
+          <select
+            className="admin-filter-select"
+            value={selectedDay}
             onChange={(e) => { setSelectedDay(e.target.value); setPage(1); }}
             disabled={!selectedMonth}
           >
             <option value="">All Days</option>
-            {Array.from({length: 31}, (_, i) => i + 1).map(d => (
+            {Array.from({ length: 31 }, (_, i) => i + 1).map(d => (
               <option key={d} value={d}>{d}</option>
             ))}
           </select>
-          
+
           {(selectedYear || selectedMonth || selectedDay) && (
-            <button 
-              className="btn btn-outline" 
+            <button
+              className="btn btn-outline"
               style={{ padding: '0.5rem', fontSize: '0.8rem' }}
               onClick={() => { setSelectedYear(''); setSelectedMonth(''); setSelectedDay(''); setPage(1); }}
             >
@@ -143,10 +143,10 @@ const AdminPayments = () => {
                       <td style={{ fontWeight: '500' }}>{payment.orderId}</td>
                       <td>{payment.customerName}</td>
                       <td>
-                        <span style={{ 
-                          padding: '0.25rem 0.5rem', 
-                          borderRadius: 'var(--radius-sm)', 
-                          backgroundColor: 'var(--surface-alt)', 
+                        <span style={{
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: 'var(--radius-sm)',
+                          backgroundColor: 'var(--surface-alt)',
                           fontSize: '0.8rem',
                           fontWeight: '500'
                         }}>
@@ -160,10 +160,10 @@ const AdminPayments = () => {
                         {payment.orderDate ? new Date(payment.orderDate).toLocaleString() : 'N/A'}
                       </td>
                       <td>
-                         <span style={{ 
-                          padding: '0.25rem 0.5rem', 
-                          borderRadius: 'var(--radius-sm)', 
-                          backgroundColor: payment.status === 'DELIVERED' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)', 
+                        <span style={{
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: 'var(--radius-sm)',
+                          backgroundColor: payment.status === 'DELIVERED' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
                           color: payment.status === 'DELIVERED' ? '#10b981' : '#f59e0b',
                           fontSize: '0.8rem',
                           fontWeight: '500'
@@ -176,11 +176,11 @@ const AdminPayments = () => {
                 </tbody>
               </table>
             </div>
-            
-            <Pagination 
-              currentPage={page} 
-              totalPages={totalPages} 
-              onPageChange={setPage} 
+
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={setPage}
             />
           </>
         ) : (

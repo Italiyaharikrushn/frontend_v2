@@ -38,7 +38,7 @@ const DashboardHome = () => {
           </div>
           <div className="summary-icon summary-icon-primary"><Package size={24} /></div>
         </div>
-        
+
         <div className="summary-card glass-panel hover-lift" onClick={() => navigate('/admin/orders')} style={{ cursor: 'pointer' }}>
           <div className="summary-info">
             <h3>Pending Orders</h3>
@@ -79,8 +79,8 @@ const DashboardHome = () => {
             <AreaChart data={salesData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorPayment" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--success, #10b981)" stopOpacity={0.8}/>
-                  <stop offset="95%" stopColor="var(--success, #10b981)" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="var(--success, #10b981)" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="var(--success, #10b981)" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
