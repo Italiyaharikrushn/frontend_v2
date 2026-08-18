@@ -6,7 +6,21 @@ import { useAdminReports } from '../../hooks/useAdminReports';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminReports = () => {
-  const { salesData, inventoryData, customerGrowthData, targetData, productPerformanceData, days, setDays, isLoading, isError } = useAdminReports();
+  const { 
+    products,
+    salesData, 
+    inventoryData, 
+    customerGrowthData, 
+    targetData, 
+    productPerformanceData, 
+    productSalesReportData,
+    isProductSalesReportLoading,
+    reportMonth, setReportMonth,
+    reportYear, setReportYear,
+    days, setDays, 
+    isLoading, 
+    isError 
+  } = useAdminReports();
 
   return (
     <div className="admin-page fade-in">
@@ -150,6 +164,127 @@ const AdminReports = () => {
                     </ResponsiveContainer>
                 </div>
             </div>
+
+            {/* Product Sales Report */}
+            <div className="glass-panel chart-card" style={{ marginTop: '0px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', gap: '1rem' }}>
+                    <h2 className="chart-title" style={{ margin: 0 }}>Product Sales Comparison</h2>
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <select 
+                            className="admin-form-field" 
+                            style={{ padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)' }}
+                            value={reportMonth} 
+                            onChange={(e) => setReportMonth(Number(e.target.value))}
+                        >
+                            <option value={1}>January</option>
+                            <option value={2}>February</option>
+                            <option value={3}>March</option>
+                            <option value={4}>April</option>
+                            <option value={5}>May</option>
+                            <option value={6}>June</option>
+                            <option value={7}>July</option>
+                            <option value={8}>August</option>
+                            <option value={9}>September</option>
+                            <option value={10}>October</option>
+                            <option value={11}>November</option>
+                            <option value={12}>December</option>
+                        </select>
+                        <select 
+                            className="admin-form-field" 
+                            style={{ padding: '0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)' }}
+                            value={reportYear} 
+                            onChange={(e) => setReportYear(Number(e.target.value))}
+                        >
+                            <option value={2023}>2023</option>
+                            <option value={2024}>2024</option>
+                            <option value={2025}>2025</option>
+                            <option value={2026}>2026</option>
+                        </select>
+                    </div>
+                </div>
+
+                {isProductSalesReportLoading ? (
+                    <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading product sales data...</div>
+                ) : (
+                    <div style={{ width: '100%' }}>
+                        <ResponsiveContainer width="100%" height={400}>
+                            <LineChart data={productSalesReportData || []} margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border, #e5e7eb)" />
+                                <XAxis 
+                                    dataKey="productName" 
+                                    tickLine={false} 
+                                    axisLine={false} 
+                                    tick={{ fontSize: 12, fill: 'var(--text-muted, #6b7280)', fontWeight: 500 }} 
+                                    angle={-25} 
+                                    textAnchor="end"
+                                    dy={10}
+                                />
+                                <YAxis 
+                                    tickLine={false} 
+                                    axisLine={false} 
+                                    allowDecimals={false} 
+                                    tick={{ fontSize: 12, fill: 'var(--text-muted, #6b7280)', fontWeight: 500 }}
+                                    dx={-10}
+                                />
+                                <Tooltip 
+                                    contentStyle={{ 
+                                        borderRadius: 'var(--radius-md, 8px)', 
+                                        border: '1px solid var(--border, #e5e7eb)', 
+                                        backgroundColor: 'var(--surface, #ffffff)',
+                                        color: 'var(--text, #111827)',
+                                        boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                                    }}
+                                />
+                                <Legend 
+                                    verticalAlign="top" 
+                                    height={40} 
+                                    iconType="circle"
+                                    wrapperStyle={{ fontSize: '13px', fontWeight: 600, color: 'var(--text, #374151)' }}
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="currentMonthSales" 
+                                    name="Current Month" 
+                                    stroke="#4f46e5" 
+                                    strokeWidth={3} 
+                                    activeDot={{ r: 6, strokeWidth: 0, fill: '#4f46e5' }} 
+                                    dot={{ r: 4, strokeWidth: 2, fill: 'var(--surface, #fff)' }} 
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="previousMonthSales" 
+                                    name="Previous Month" 
+                                    stroke="#9ca3af" 
+                                    strokeWidth={2} 
+                                    strokeDasharray="5 5" 
+                                    dot={false} 
+                                    activeDot={{ r: 4, fill: '#9ca3af', strokeWidth: 0 }} 
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="currentYearSales" 
+                                    name="Current Year" 
+                                    stroke="#059669" 
+                                    strokeWidth={3} 
+                                    activeDot={{ r: 6, strokeWidth: 0, fill: '#059669' }} 
+                                    dot={{ r: 4, strokeWidth: 2, fill: 'var(--surface, #fff)' }} 
+                                />
+                                <Line 
+                                    type="monotone" 
+                                    dataKey="previousYearSales" 
+                                    name="Previous Year" 
+                                    stroke="#d1d5db" 
+                                    strokeWidth={2} 
+                                    strokeDasharray="5 5" 
+                                    dot={false} 
+                                    activeDot={{ r: 4, fill: '#d1d5db', strokeWidth: 0 }} 
+                                />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+                )}
+            </div>
+
         </div>
       )}
     </div>

@@ -31,6 +31,16 @@ export const orderApi = createApi({
             providesTags: ['Order'],
         }),
 
+        getProductSalesReport: builder.query({
+            query: ({ month, year }) => {
+                const params = new URLSearchParams();
+                if (month) params.append('month', month);
+                if (year) params.append('year', year);
+                return `/api/orders/seller/analytics/product-sales-report?${params.toString()}`;
+            },
+            providesTags: ['Order'],
+        }),
+
         updateOrderStatus: builder.mutation({
             query: ({ id, status }) => ({
                 url: `/api/orders/seller/update-status/${id}?status=${status}`,
@@ -165,6 +175,7 @@ export const orderApi = createApi({
 export const {
     useGetSellerOrdersQuery,
     useGetSellerAnalyticsQuery,
+    useGetProductSalesReportQuery,
     useUpdateOrderStatusMutation,
     useMarkLabelsDownloadedMutation,
     useReturnCustomerOrderMutation,

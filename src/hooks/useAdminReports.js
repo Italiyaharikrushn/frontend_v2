@@ -1,14 +1,22 @@
 import { useState, useMemo } from 'react';
-import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery } from '../api/orderApi';
+import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery, useGetProductSalesReportQuery } from '../api/orderApi';
 import { useGetProductsQuery } from '../api/productApi';
 import { useGetCustomersQuery } from '../api/authApi';
 
 export const useAdminReports = () => {
     const [days, setDays] = useState(30);
+    const [reportMonth, setReportMonth] = useState(new Date().getMonth() + 1);
+    const [reportYear, setReportYear] = useState(new Date().getFullYear());
+
     const { data: analyticsData = [], isLoading: isAnalyticsLoading, isError: isAnalyticsError, refetch } = useGetSellerAnalyticsQuery(days);
     const { data: productsData = [], isLoading: isProductsLoading } = useGetProductsQuery();
     const { data: customersData = [], isLoading: isCustomersLoading } = useGetCustomersQuery();
     const { data: ordersData = [], isLoading: isOrdersLoading } = useGetSellerOrdersQuery();
+
+    const { data: productSalesReportData = [], isLoading: isProductSalesReportLoading } = useGetProductSalesReportQuery(
+        { month: reportMonth, year: reportYear },
+        { skip: !reportYear }
+    );
 
     const products = Array.isArray(productsData) ? productsData : (productsData?.content || []);
     const customers = Array.isArray(customersData) ? customersData : (customersData?.content || []);
@@ -102,11 +110,16 @@ export const useAdminReports = () => {
     }, [products, orders]);
 
     return {
+        products,
         salesData,
         inventoryData,
         customerGrowthData,
         targetData,
         productPerformanceData,
+        productSalesReportData,
+        isProductSalesReportLoading,
+        reportMonth, setReportMonth,
+        reportYear, setReportYear,
         days,
         setDays,
         isLoading,
