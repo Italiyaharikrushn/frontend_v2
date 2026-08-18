@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery } from '../api/orderApi';
+import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery, useGetSellerOrderStatusAnalyticsQuery } from '../api/orderApi';
 import { useGetProductsQuery } from '../api/productApi';
 import { useGetCustomersQuery } from '../api/authApi';
 
@@ -9,13 +9,14 @@ export const useAdminReports = () => {
     const { data: productsData = [], isLoading: isProductsLoading } = useGetProductsQuery();
     const { data: customersData = [], isLoading: isCustomersLoading } = useGetCustomersQuery();
     const { data: ordersData = [], isLoading: isOrdersLoading } = useGetSellerOrdersQuery();
+    const { data: statusCountsData = [], isLoading: isStatusCountsLoading, isError: isStatusCountsError } = useGetSellerOrderStatusAnalyticsQuery();
 
     const products = Array.isArray(productsData) ? productsData : (productsData?.content || []);
     const customers = Array.isArray(customersData) ? customersData : (customersData?.content || []);
     const orders = Array.isArray(ordersData) ? ordersData : (ordersData?.content || []);
 
-    const isLoading = isAnalyticsLoading || isProductsLoading || isCustomersLoading || isOrdersLoading;
-    const isError = isAnalyticsError;
+    const isLoading = isAnalyticsLoading || isProductsLoading || isCustomersLoading || isOrdersLoading || isStatusCountsLoading;
+    const isError = isAnalyticsError || isStatusCountsError;
 
     // 1. Sales Data
     const salesData = analyticsData.map(item => ({
@@ -40,6 +41,28 @@ export const useAdminReports = () => {
             { name: 'Out of Stock', value: outOfStock, fill: '#ef4444' }
         ].filter(item => item.value > 0);
     }, [products]);
+
+    // Order Status Distribution
+    const STATUS_COLORS = {
+        PENDING: '#f59e0b',
+        READY_TO_SHIP: '#3b82f6',
+        SHIPPED: '#8b5cf6',
+        DELIVERED: '#10b981',
+        CANCELLED: '#ef4444',
+        RETURN_REQUESTED: '#f97316',
+        RETURN_REJECTED: '#ef4444',
+        RETURNED: '#64748b',
+        REFUNDED: '#94a3b8'
+    };
+
+    const orderStatusData = useMemo(() => {
+        if (!statusCountsData) return [];
+        return statusCountsData.map(item => ({
+            name: item.status.replace(/_/g, ' '),
+            value: item.count,
+            fill: STATUS_COLORS[item.status] || '#cbd5e1'
+        })).filter(item => item.value > 0);
+    }, [statusCountsData]);
 
     // 3. Customer Registrations (Last 6 Months)
     const customerGrowthData = useMemo(() => {
@@ -104,6 +127,7 @@ export const useAdminReports = () => {
     return {
         salesData,
         inventoryData,
+        orderStatusData,
         customerGrowthData,
         targetData,
         productPerformanceData,

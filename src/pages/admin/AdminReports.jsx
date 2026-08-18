@@ -6,7 +6,7 @@ import { useAdminReports } from '../../hooks/useAdminReports';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminReports = () => {
-  const { salesData, inventoryData, customerGrowthData, targetData, productPerformanceData, days, setDays, isLoading, isError } = useAdminReports();
+  const { salesData, inventoryData, orderStatusData, customerGrowthData, targetData, productPerformanceData, days, setDays, isLoading, isError } = useAdminReports();
 
   return (
     <div className="admin-page fade-in">
@@ -104,6 +104,34 @@ const AdminReports = () => {
                             <Legend />
                             <Bar dataKey="users" name="New Registrations" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
                         </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+            {/* Extra Row - Order Status */}
+            <div className="charts-grid">
+                <div className="glass-panel chart-card">
+                    <h2 className="chart-title">Order Status Distribution</h2>
+                    <ResponsiveContainer width="100%" height={280}>
+                        <PieChart>
+                            <Pie
+                                data={orderStatusData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={90}
+                                paddingAngle={5}
+                                dataKey="value"
+                                nameKey="name"
+                                label={({ name, percent }) => percent > 0 ? `${name} ${(percent * 100).toFixed(0)}%` : ''}
+                            >
+                                {orderStatusData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                            <Legend />
+                        </PieChart>
                     </ResponsiveContainer>
                 </div>
             </div>

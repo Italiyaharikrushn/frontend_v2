@@ -31,6 +31,11 @@ export const orderApi = createApi({
             providesTags: ['Order'],
         }),
 
+        getSellerOrderStatusAnalytics: builder.query({
+            query: () => `/api/orders/seller/analytics/order-status`,
+            providesTags: ['Order'],
+        }),
+
         updateOrderStatus: builder.mutation({
             query: ({ id, status }) => ({
                 url: `/api/orders/seller/update-status/${id}?status=${status}`,
@@ -165,6 +170,7 @@ export const orderApi = createApi({
 export const {
     useGetSellerOrdersQuery,
     useGetSellerAnalyticsQuery,
+    useGetSellerOrderStatusAnalyticsQuery,
     useUpdateOrderStatusMutation,
     useMarkLabelsDownloadedMutation,
     useReturnCustomerOrderMutation,
