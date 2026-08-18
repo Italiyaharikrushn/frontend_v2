@@ -17,6 +17,7 @@ import PolicyPage from '../pages/storefront/PolicyPage';
 import AddressBook from '../pages/storefront/AddressBook';
 import AccountSettings from '../pages/storefront/AccountSettings';
 import Favorites from '../pages/storefront/Favorites';
+import MyMessages from '../pages/storefront/MyMessages';
 
 const CustomerRoutes = () => {
   return (
@@ -34,6 +35,7 @@ const CustomerRoutes = () => {
           <Route path="addresses" element={<AddressBook />} />
           <Route path="profile" element={<AccountSettings />} />
           <Route path="favorites" element={<Favorites />} />
+          <Route path="messages" element={<MyMessages />} />
         </Route>
       </Route>
     </Routes>

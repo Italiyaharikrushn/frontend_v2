@@ -263,6 +263,7 @@ const Header = () => {
                   <Link to="/orders" className={`mobile-nav-link ${isActive('/orders') ? 'active' : ''}`} onClick={closeMenu}>My Orders</Link>
                   <Link to="/favorites" className={`mobile-nav-link ${isActive('/favorites') ? 'active' : ''}`} onClick={closeMenu}>My Favorites</Link>
                   <Link to="/addresses" className={`mobile-nav-link ${isActive('/addresses') ? 'active' : ''}`} onClick={closeMenu}>Saved Addresses</Link>
+                  <Link to="/messages" className={`mobile-nav-link ${isActive('/messages') ? 'active' : ''}`} onClick={closeMenu}>Support Messages</Link>
                   <Link to="/profile" className={`mobile-nav-link ${isActive('/profile') ? 'active' : ''}`} onClick={closeMenu}>Account Settings</Link>
                 </div>
               )}

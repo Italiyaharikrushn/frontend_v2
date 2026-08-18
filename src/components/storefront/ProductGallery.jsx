@@ -56,7 +56,7 @@ const ProductGallery = ({ product, isFavorite, onFavoriteClick }) => {
             >
               {media.type === 'video' ? (
                 <div className="thumbnail-video-wrapper">
-                  <video src={media.url} className="thumbnail-media" />
+                  <video src={media.url} preload="metadata" className="thumbnail-media" />
                   <div className="video-play-overlay">
                     <Play size={16} fill="white" />
                   </div>

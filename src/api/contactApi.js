@@ -18,6 +18,10 @@ export const contactApi = createApi({
             query: () => '/api/contact/all',
             providesTags: ['ContactMessage']
         }),
+        getMyMessages: builder.query({
+            query: () => '/api/contact/my-messages',
+            providesTags: ['ContactMessage']
+        }),
         replyToMessage: builder.mutation({
             query: ({ id, replyText }) => ({
                 url: `/api/contact/reply/${id}`,
@@ -33,5 +37,6 @@ export const contactApi = createApi({
 export const {
     useSubmitMessageMutation,
     useGetAllMessagesQuery,
+    useGetMyMessagesQuery,
     useReplyToMessageMutation
 } = contactApi;
