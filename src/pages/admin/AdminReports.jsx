@@ -158,7 +158,7 @@ const AdminReports = () => {
                                     <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} allowDecimals={false} />
                                     <Tooltip />
                                     <Legend />
-                                    <Bar yAxisId="left" dataKey="views" name="Page Views" barSize={20} fill="#6366f1" radius={[4, 4, 0, 0]} />
+                                    <Bar yAxisId="left" dataKey="views" name="Product Views" barSize={20} fill="#6366f1" radius={[4, 4, 0, 0]} />
                                     <Line yAxisId="right" type="monotone" dataKey="sales" name="Total Sold" stroke="#f59e0b" strokeWidth={3} activeDot={{ r: 8 }} />
                                 </ComposedChart>
                             </ResponsiveContainer>
