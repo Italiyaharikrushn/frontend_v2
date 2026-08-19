@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart, ArrowLeft } from 'lucide-react';
+import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart, ArrowLeft, Star } from 'lucide-react';
 import ProductGallery from '../../components/storefront/ProductGallery';
 import PhoneModelDropdown from '../../components/storefront/PhoneModelDropdown';
 import { useProductDetails } from '../../hooks/useProductDetails';
@@ -10,6 +10,8 @@ import { selectIsAuthenticated } from '../../redux/authSlice';
 import { useToast } from '../../components/ui/ToastProvider';
 import { formatCurrency } from '../../utils/formatters';
 import { useIncrementProductViewMutation } from '../../api/productApi';
+import { useGetReviewsByProductQuery, useAddOrUpdateReviewMutation, useGetCanReviewProductQuery } from '../../api/reviewApi';
+import StarRating from '../../components/storefront/StarRating';
 import '@/styles/pages/storefront/ProductDetails.css';
 
 
@@ -22,6 +24,20 @@ const ProductDetails = ({ productId: propId, onClose }) => {
   const [toggleFavorite] = useToggleFavoriteMutation();
   const { pushToast } = useToast();
   const [incrementView] = useIncrementProductViewMutation();
+
+  const { data: reviews } = useGetReviewsByProductQuery(propId, { skip: !propId });
+  const { data: reviewEligibility } = useGetCanReviewProductQuery(propId, { skip: !propId || !isAuthenticated });
+  const [addOrUpdateReview] = useAddOrUpdateReviewMutation();
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+
+  useEffect(() => {
+    if (reviewEligibility?.existingReview) {
+      setReviewRating(reviewEligibility.existingReview.rating);
+      setReviewComment(reviewEligibility.existingReview.comment || '');
+    }
+  }, [reviewEligibility]);
 
   useEffect(() => {
     if (propId) {
@@ -41,6 +57,25 @@ const ProductDetails = ({ productId: propId, onClose }) => {
       pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
     } catch (err) {
       pushToast('Failed to update favorites', 'error');
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      pushToast('Please login to leave a review', 'warning');
+      return;
+    }
+    setIsSubmittingReview(true);
+    try {
+      await addOrUpdateReview({ productId: propId, data: { rating: reviewRating, comment: reviewComment } }).unwrap();
+      pushToast('Review submitted successfully!', 'success');
+      setReviewComment('');
+      setReviewRating(5);
+    } catch (err) {
+      pushToast(err?.data?.message || 'Failed to submit review', 'error');
+    } finally {
+      setIsSubmittingReview(false);
     }
   };
 
@@ -77,7 +112,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
         {/* Right Column - Details */}
         <div className="product-info-section">
           <div className="title-favorite-row">
-            <h1 className="product-title" style={{ flex: 1, paddingRight: '1rem' }}>{product.title?.toUpperCase()}</h1>
+            <h1 className="product-title" style={{ flex: 1, paddingRight: '1rem', marginBottom: '0.5rem' }}>{product.title?.toUpperCase()}</h1>
             <button
               onClick={handleFavoriteClick}
               aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
@@ -90,6 +125,9 @@ const ProductDetails = ({ productId: propId, onClose }) => {
                 style={{ transition: 'fill 0.3s ease, color 0.3s ease' }}
               />
             </button>
+          </div>
+          <div style={{ marginBottom: '1rem' }}>
+            <StarRating rating={product.averageRating || 0} totalReviews={product.totalReviews || 0} size={18} />
           </div>
 
           <div className="product-description-container">
@@ -215,6 +253,69 @@ const ProductDetails = ({ productId: propId, onClose }) => {
                 <Droplets className="feature-icon" size={28} strokeWidth={1.5} />
                 <span>Water Resistant</span>
               </div>
+            </div>
+          </div>
+
+          <div className="reviews-section" style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
+            <h3 style={{ marginBottom: '1rem', fontSize: '1.2rem', fontWeight: '600' }}>Customer Reviews</h3>
+            
+            {isAuthenticated ? (
+              reviewEligibility?.canReview ? (
+                <form onSubmit={handleReviewSubmit} style={{ marginBottom: '2rem', padding: '1rem', background: 'var(--surface-alt)', borderRadius: 'var(--radius-md)' }}>
+                  <h4 style={{ marginBottom: '0.5rem', fontSize: '1rem' }}>{reviewEligibility?.existingReview ? 'Update Your Review' : 'Write a Review'}</h4>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Rating</label>
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      {[1, 2, 3, 4, 5].map(star => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setReviewRating(star)}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+                        >
+                          <Star size={24} fill={reviewRating >= star ? '#fbbf24' : 'none'} color={reviewRating >= star ? '#fbbf24' : '#ccc'} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Comment</label>
+                    <textarea
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                      rows={3}
+                      placeholder="What did you like or dislike?"
+                      style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-main)', resize: 'vertical' }}
+                    ></textarea>
+                  </div>
+                  <button type="submit" disabled={isSubmittingReview} className="btn-buy-now" style={{ padding: '0.5rem 1rem', width: 'auto' }}>
+                    {isSubmittingReview ? 'Submitting...' : (reviewEligibility?.existingReview ? 'Update Review' : 'Submit Review')}
+                  </button>
+                </form>
+              ) : (
+                <p style={{ marginBottom: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>You can only review this product after purchasing it and having it delivered.</p>
+              )
+            ) : (
+              <p style={{ marginBottom: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>Please log in to write a review.</p>
+            )}
+
+            <div className="reviews-list">
+              {reviews && reviews.length > 0 ? (
+                reviews.map(review => (
+                  <div key={review.id} style={{ marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <span style={{ fontWeight: '600' }}>{review.user?.name || 'Anonymous'}</span>
+                      <StarRating rating={review.rating} showCount={false} size={14} />
+                      <span style={{ marginLeft: 'auto', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '0.95rem', color: 'var(--text-main)' }}>{review.comment}</p>
+                  </div>
+                ))
+              ) : (
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>No reviews yet. Be the first to review this product!</p>
+              )}
             </div>
           </div>
 

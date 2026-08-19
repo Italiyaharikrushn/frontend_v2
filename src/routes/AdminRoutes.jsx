@@ -17,6 +17,7 @@ import AdminChangePassword from '../pages/admin/AdminChangePassword';
 import AdminPolicies from '../pages/admin/AdminPolicies';
 import AdminReturns from '../pages/admin/AdminReturns';
 import AdminPayments from '../pages/admin/AdminPayments';
+import AdminReviews from '../pages/admin/AdminReviews';
 
 const AdminRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const AdminRoutes = () => {
           <Route path="payments" element={<AdminPayments />} />
           <Route path="returns" element={<AdminReturns />} />
           <Route path="policies" element={<AdminPolicies />} />
+          <Route path="reviews" element={<AdminReviews />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="change-password" element={<AdminChangePassword />} />
         </Route>

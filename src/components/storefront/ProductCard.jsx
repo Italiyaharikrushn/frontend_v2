@@ -5,6 +5,7 @@ import { useGetFavoritesQuery, useToggleFavoriteMutation } from '../../api/favor
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../redux/authSlice';
 import { useToast } from '../../components/ui/ToastProvider';
+import StarRating from './StarRating';
 import '@/styles/components/ProductCard.css';
 
 const ProductCard = ({ product }) => {
@@ -68,6 +69,9 @@ const ProductCard = ({ product }) => {
       <h3 className="product-card-title">
         {product.title}
       </h3>
+      <div style={{ padding: '0 1rem 1rem' }}>
+        <StarRating rating={product.averageRating || 0} totalReviews={product.totalReviews || 0} size={14} />
+      </div>
     </div>
   );
 };
