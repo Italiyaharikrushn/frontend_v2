@@ -33,18 +33,24 @@ export const useAdminCoupons = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const formatExpiryDate = (dateString) => {
+                if (!dateString) return dateString;
+                if (dateString.includes('T')) {
+                    return dateString.endsWith('Z') ? dateString : dateString + 'Z';
+                }
+                return dateString + 'T23:59:59Z';
+            };
+
+            const payload = {
+                ...formData,
+                discountValue: parseFloat(formData.discountValue) || 0,
+                expiryDate: formatExpiryDate(formData.expiryDate)
+            };
+
             if (isEditing && formData.id) {
-                const payload = {
-                    ...formData,
-                    expiryDate: formData.expiryDate.includes('T') ? formData.expiryDate : formData.expiryDate + 'T23:59:59'
-                };
                 await updateCoupon(payload).unwrap();
                 pushToast('Coupon updated', 'success');
             } else {
-                const payload = {
-                    ...formData,
-                    expiryDate: formData.expiryDate.includes('T') ? formData.expiryDate : formData.expiryDate + 'T23:59:59'
-                };
                 await createCoupon(payload).unwrap();
                 pushToast('Coupon created', 'success');
             }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Save } from 'lucide-react';
 import Button from '../ui/Button';
 import { useCreateProductMutation, useUpdateProductMutation, useGetCategoriesQuery, useDecodeUrlMutation } from '../../api/productApi';
@@ -177,7 +178,7 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
     }
   };
 
-  return (
+  return createPortal(
     <div
       onClick={onClose}
       className="admin-modal-backdrop"
@@ -343,7 +344,8 @@ const AdminProductForm = ({ editingProduct, onClose }) => {
           </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

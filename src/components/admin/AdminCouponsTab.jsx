@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { useAdminCoupons } from '../../hooks/useAdminCoupons';
 import Button from '../../components/ui/Button';
 import { Ticket, PlusCircle, Edit, Trash2, CheckCircle, XCircle, X } from 'lucide-react';
@@ -76,7 +77,7 @@ const AdminCoupons = () => {
                 </div>
             </div>
 
-            {isEditing && (
+            {isEditing && createPortal(
                 <div className="admin-modal-backdrop" onClick={resetForm}>
                     <div className="admin-modal-content" onClick={e => e.stopPropagation()}>
                         <div className="admin-modal-header">
@@ -121,7 +122,8 @@ const AdminCoupons = () => {
                             </form>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );
