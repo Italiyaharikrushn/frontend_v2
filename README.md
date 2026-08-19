@@ -75,7 +75,7 @@ src/
 Create a `.env` file in the project root:
 
 ```env
-VITE_BASE_URL=http://localhost:8080
+VITE_BASE_URL=http://localhost:8081
 ```
 
 ### Installation & Development

@@ -112,7 +112,7 @@ export const AlertProvider = ({ children }) => {
             {alertState.isBulkUpload && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '2rem', alignItems: 'center', width: '100%' }}>
                 <a 
-                  href={`${import.meta.env.VITE_BASE_URL || 'http://localhost:8080'}/product/bulk-upload-sample`} 
+                  href={`${import.meta.env.VITE_BASE_URL || 'http://localhost:8081'}/product/bulk-upload-sample`} 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="download-sample-btn"
