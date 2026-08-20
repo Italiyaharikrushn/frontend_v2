@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Plus, Upload, Edit, Trash2, Image as ImageIcon, Save } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import AdminProductForm from '../../components/admin/AdminProductForm';
@@ -8,8 +8,8 @@ import '@/styles/pages/admin/AdminStyles.css';
 import '@/styles/pages/admin/AdminProducts.css';
 
 const InlineStockEditor = ({ product, onSave }) => {
-  const [stock, setStock] = React.useState(product.stock);
-  const [isChanged, setIsChanged] = React.useState(false);
+  const [stock, setStock] = useState(product.stock);
+  const [isChanged, setIsChanged] = useState(false);
 
   const handleChange = (e) => {
     setStock(e.target.value);

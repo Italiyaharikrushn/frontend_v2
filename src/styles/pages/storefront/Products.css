@@ -197,7 +197,6 @@
 .filter-group {
   display: flex;
   align-items: center;
-  flex: 1 1 200px;
 }
 
 .filter-input {

@@ -16,7 +16,7 @@ export const useProducts = () => {
   const searchQuery = queryParams.get('search');
   const minPrice = queryParams.get('minPrice') || '';
   const maxPrice = queryParams.get('maxPrice') || '';
-  const inStock = queryParams.get('inStock') === 'true';
+  const inStock = true; // Always true for customers
   const sortBy = queryParams.get('sortBy') || '';
   const sortDir = queryParams.get('sortDir') || '';
 
@@ -145,9 +145,6 @@ export const useProducts = () => {
     if (filters.maxPrice !== undefined) {
       if (filters.maxPrice) params.set('maxPrice', filters.maxPrice); else params.delete('maxPrice');
     }
-    if (filters.inStock !== undefined) {
-      if (filters.inStock) params.set('inStock', 'true'); else params.delete('inStock');
-    }
     if (filters.sortBy !== undefined) {
       if (filters.sortBy) {
         params.set('sortBy', filters.sortBy);
@@ -171,7 +168,7 @@ export const useProducts = () => {
     navigate({ search: '' });
   };
 
-  const hasActiveFilters = Boolean(category || searchQuery || minPrice || maxPrice || inStock || sortBy);
+  const hasActiveFilters = Boolean(category || searchQuery || minPrice || maxPrice || sortBy);
 
   return {
     category,

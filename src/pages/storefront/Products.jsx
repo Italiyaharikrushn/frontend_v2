@@ -46,30 +46,12 @@ const Products = () => {
         <p className="products-subtitle">{subtitle}</p>
       </div>
 
-      <div className="category-tabs">
-        {dynamicCategories.map((cat) => {
-          const isActive = category
-            ? category.toLowerCase() === cat.toLowerCase()
-            : cat === "All";
-
-          return (
-            <button
-              key={cat}
-              className={`category-tab ${isActive ? 'active' : ''}`}
-              onClick={() => handleCategorySelect(cat)}
-            >
-              {cat}
-            </button>
-          );
-        })}
-      </div>
-
       <div className="filters-bar glass-panel">
         <div className="filter-group">
           <label style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Sort By:</label>
           <div className="custom-select-wrapper">
-            <select 
-              value={sortBy ? `${sortBy}-${sortDir}` : ''} 
+            <select
+              value={sortBy ? `${sortBy}-${sortDir}` : ''}
               onChange={(e) => {
                 if (!e.target.value) {
                   applyFilters({ sortBy: '', sortDir: '' });
@@ -92,20 +74,20 @@ const Products = () => {
 
         <div className="price-range">
           <label style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Price Range (₹):</label>
-          <input 
-            type="number" 
-            placeholder="Min" 
-            value={localMinPrice} 
-            onChange={e => setLocalMinPrice(e.target.value)} 
+          <input
+            type="number"
+            placeholder="Min"
+            value={localMinPrice}
+            onChange={e => setLocalMinPrice(e.target.value)}
             className="filter-input"
             style={{ padding: '0.55rem 0.75rem', width: '80px' }}
           />
           <span>-</span>
-          <input 
-            type="number" 
-            placeholder="Max" 
-            value={localMaxPrice} 
-            onChange={e => setLocalMaxPrice(e.target.value)} 
+          <input
+            type="number"
+            placeholder="Max"
+            value={localMaxPrice}
+            onChange={e => setLocalMaxPrice(e.target.value)}
             className="filter-input"
             style={{ padding: '0.55rem 0.75rem', width: '80px' }}
           />
@@ -113,22 +95,31 @@ const Products = () => {
         </div>
 
         <div className="filter-actions">
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 'bold', marginRight: hasActiveFilters ? '1rem' : '0' }}>
-            <input 
-              type="checkbox" 
-              checked={inStock} 
-              onChange={(e) => applyFilters({ inStock: e.target.checked })}
-              style={{ width: '1.2rem', height: '1.2rem', accentColor: 'var(--primary)', cursor: 'pointer' }}
-            />
-            In Stock Only
-          </label>
-          
+
           {hasActiveFilters && (
             <Button variant="secondary" onClick={clearFilters} style={{ padding: '0.55rem 1rem' }}>
               Clear Filters
             </Button>
           )}
         </div>
+      </div>
+
+      <div className="category-tabs">
+        {dynamicCategories.map((cat) => {
+          const isActive = category
+            ? category.toLowerCase() === cat.toLowerCase()
+            : cat === "All";
+
+          return (
+            <button
+              key={cat}
+              className={`category-tab ${isActive ? 'active' : ''}`}
+              onClick={() => handleCategorySelect(cat)}
+            >
+              {cat}
+            </button>
+          );
+        })}
       </div>
 
       <div className="products-grid">
