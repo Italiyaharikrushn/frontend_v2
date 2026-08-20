@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { IndianRupee, Wallet, Calendar, CalendarDays } from 'lucide-react';
 import { useGetSellerPaymentsQuery, useGetSellerPaymentStatsQuery } from '../../api/paymentApi';
 import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminPayments = () => {
-  const [page, setPage] = useState(1);
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedDay, setSelectedDay] = useState('');
-  const size = 10;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
+  const [selectedYear, setSelectedYear] = useState(searchParams.get('year') || '');
+  const [selectedMonth, setSelectedMonth] = useState(searchParams.get('month') || '');
+  const [selectedDay, setSelectedDay] = useState(searchParams.get('day') || '');
+  const size = 20;
+
+  React.useEffect(() => {
+    const params = new URLSearchParams();
+    if (page > 1) params.set('page', page);
+    if (selectedYear) params.set('year', selectedYear);
+    if (selectedMonth) params.set('month', selectedMonth);
+    if (selectedDay) params.set('day', selectedDay);
+    setSearchParams(params, { replace: true });
+  }, [page, selectedYear, selectedMonth, selectedDay, setSearchParams]);
 
   const queryParams = {
     page: page - 1,
@@ -150,7 +162,7 @@ const AdminPayments = () => {
                           fontSize: '0.8rem',
                           fontWeight: '500'
                         }}>
-                          {payment.paymentMethod || 'COD'}
+                          {(payment.paymentMethod).toUpperCase()}
                         </span>
                       </td>
                       <td style={{ fontWeight: 'bold', color: 'var(--text-main)' }}>
@@ -163,12 +175,12 @@ const AdminPayments = () => {
                         <span style={{
                           padding: '0.25rem 0.5rem',
                           borderRadius: 'var(--radius-sm)',
-                          backgroundColor: payment.status === 'DELIVERED' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-                          color: payment.status === 'DELIVERED' ? '#10b981' : '#f59e0b',
+                          backgroundColor: (payment.paymentStatus === 'COMPLETED' || payment.status === 'DELIVERED') ? 'rgba(16, 185, 129, 0.1)' : payment.paymentStatus === 'FAILED' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                          color: (payment.paymentStatus === 'COMPLETED' || payment.status === 'DELIVERED') ? '#10b981' : payment.paymentStatus === 'FAILED' ? '#ef4444' : '#f59e0b',
                           fontSize: '0.8rem',
                           fontWeight: '500'
                         }}>
-                          {payment.status === 'DELIVERED' ? 'Settled' : 'Pending/COD'}
+                          {(payment.paymentStatus === 'COMPLETED' || payment.status === 'DELIVERED') ? 'Settled' : payment.paymentStatus === 'FAILED' ? 'Failed' : 'Pending'}
                         </span>
                       </td>
                     </tr>
