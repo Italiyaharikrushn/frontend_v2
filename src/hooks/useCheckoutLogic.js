@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
-import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useGetUserAddressesQuery } from '../api/orderApi';
+import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useGetUserAddressesQuery, useVerifyRazorpayPaymentMutation, useFailRazorpayPaymentMutation } from '../api/orderApi';
 import { useValidateCouponMutation } from '../api/couponApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
 import { useToast } from '../components/ui/ToastProvider';
@@ -12,7 +12,7 @@ export const useCheckoutLogic = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const rawCartItems = useSelector(selectCartItems);
-  const [paymentMethod, setPaymentMethod] = useState('gpay');
+  const [paymentMethod, setPaymentMethod] = useState('razorpay');
   const [selectedAddressId, setSelectedAddressId] = useState('new');
   const [isProcessing, setIsProcessing] = useState(false);
   const [phone, setPhone] = useState('');
@@ -61,6 +61,8 @@ export const useCheckoutLogic = () => {
   const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
   const [validateCouponApi] = useValidateCouponMutation();
+  const [verifyRazorpayPayment] = useVerifyRazorpayPaymentMutation();
+  const [failRazorpayPayment] = useFailRazorpayPaymentMutation();
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const total = subtotal - discountAmount;
@@ -159,13 +161,6 @@ export const useCheckoutLogic = () => {
         setPendingBillingAddressId(finalBillingAddressId);
       }
 
-      if (['gpay', 'paytm', 'phonepe'].includes(paymentMethod)) {
-        setIsProcessing(false);
-        setShowPaymentModal(true);
-        isSubmittingRef.current = false;
-        return;
-      }
-
       isSubmittingRef.current = false;
       await finalizeOrder(finalAddressId, finalBillingAddressId);
     } catch (error) {
@@ -185,12 +180,70 @@ export const useCheckoutLogic = () => {
       const addrId = addressIdToUse || pendingAddressId;
       const billAddrId = !isBillingSameAsShipping ? (billingAddressIdToUse || pendingBillingAddressId) : null;
       
-      await checkoutOrder({ addressId: addrId, billingAddressId: billAddrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
-      setIsProcessing(false);
-      setShowPaymentModal(false);
-      dispatch(clearCart());
-      pushToast('Order placed successfully. Thank you for shopping with us.', 'success');
-      navigate('/');
+      const res = await checkoutOrder({ addressId: addrId, billingAddressId: billAddrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
+      
+      if (paymentMethod === 'razorpay') {
+        const options = {
+          key: 'rzp_test_TRzL5cngbXo4EC',
+          amount: Math.round(res.totalAmount * 100),
+          currency: "INR",
+          name: "Kiya Ecommerce",
+          description: "Order Payment",
+          order_id: res.razorpayOrderId,
+          handler: async function (response) {
+            try {
+              await verifyRazorpayPayment({
+                orderId: res.id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpaySignature: response.razorpay_signature
+              }).unwrap();
+              dispatch(clearCart());
+              pushToast('Payment successful and order placed.', 'success');
+              navigate('/');
+            } catch (err) {
+              pushToast(err?.data?.message || 'Payment verification failed.', 'error');
+            }
+          },
+          prefill: {
+            name: res.customerName,
+            email: res.customerEmail,
+            contact: res.customerPhone
+          },
+          theme: {
+            color: "var(--primary)"
+          },
+          modal: {
+            ondismiss: async function() {
+              try {
+                await failRazorpayPayment(res.id).unwrap();
+              } catch (e) {
+                console.error("Failed to cancel order on backend", e);
+              }
+              pushToast('Payment window closed. Please try again.', 'error');
+            }
+          }
+        };
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', async function (response){
+           try {
+             await failRazorpayPayment(res.id).unwrap();
+           } catch (e) {
+             console.error("Failed to cancel order on backend", e);
+           }
+           pushToast(response.error.description || 'Payment failed. Please try again.', 'error');
+        });
+        rzp.open();
+        setIsProcessing(false);
+        setShowPaymentModal(false);
+        isSubmittingRef.current = false;
+      } else {
+        setIsProcessing(false);
+        setShowPaymentModal(false);
+        dispatch(clearCart());
+        pushToast('Order placed successfully. Thank you for shopping with us.', 'success');
+        navigate('/');
+      }
     } catch (error) {
       console.error('Checkout failed:', error);
       const msg = error?.data?.message || error?.message || 'Checkout failed. Please try again or check your connection.';

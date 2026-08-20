@@ -114,6 +114,9 @@ const AdminOrderTable = ({ isLoading, filteredOrders, activeTab, selectedOrders,
                   <span className={`status-badge status-${order.paymentMethod ? order.paymentMethod.toLowerCase() : 'prepaid'}`} style={{ display: 'inline-block', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', background: 'var(--surface)', border: '1px solid var(--border)' }}>
                     {order.paymentMethod}
                   </span>
+                  <div style={{ marginTop: '4px', fontSize: '0.75rem', color: order.paymentStatus === 'COMPLETED' ? '#10b981' : order.paymentStatus === 'FAILED' ? '#ef4444' : '#f59e0b', fontWeight: 'bold' }}>
+                    {order.paymentStatus || 'PENDING'}
+                  </div>
                 </td>
                 <td>
                   {activeTab === 'PENDING' && (

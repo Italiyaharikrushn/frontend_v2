@@ -278,23 +278,15 @@ const CheckoutForm = ({
           <div id="payment-method-section" className="form-card glass-panel hover-lift fade-in">
             <h2 className="form-card-title"><CreditCard size={20} /> Payment Method</h2>
             <div className="payment-methods">
-              <button type="button" className={`payment-method-card ${paymentMethod === 'gpay' ? 'active' : ''}`} onClick={() => setPaymentMethod('gpay')}>
-                <Wallet size={18} />
-                <span>GPay</span>
-              </button>
-              <button type="button" className={`payment-method-card ${paymentMethod === 'paytm' ? 'active' : ''}`} onClick={() => setPaymentMethod('paytm')}>
-                <Wallet size={18} />
-                <span>Paytm</span>
-              </button>
-              <button type="button" className={`payment-method-card ${paymentMethod === 'phonepe' ? 'active' : ''}`} onClick={() => setPaymentMethod('phonepe')}>
-                <Wallet size={18} />
-                <span>PhonePe</span>
+              <button type="button" className={`payment-method-card ${paymentMethod === 'razorpay' ? 'active' : ''}`} onClick={() => setPaymentMethod('razorpay')}>
+                <CreditCard size={18} />
+                <span>Online Payment (Razorpay)</span>
               </button>
             </div>
 
-            {(paymentMethod === 'gpay' || paymentMethod === 'paytm' || paymentMethod === 'phonepe') && (
+            {paymentMethod === 'razorpay' && (
               <div className="form-grid full fade-in">
-                <p style={{ color: 'var(--text-muted)' }}>You will be securely redirected to {paymentMethod === 'gpay' ? 'Google Pay' : paymentMethod === 'paytm' ? 'Paytm' : 'PhonePe'} to complete your purchase.</p>
+                <p style={{ color: 'var(--text-muted)' }}>You will be securely redirected to Razorpay to complete your purchase.</p>
               </div>
             )}
           </div>

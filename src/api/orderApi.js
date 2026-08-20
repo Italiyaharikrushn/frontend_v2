@@ -171,6 +171,22 @@ export const orderApi = createApi({
                 return response || [];
             },
             providesTags: ['Order'],
+        }),
+        
+        verifyRazorpayPayment: builder.mutation({
+            query: ({ orderId, razorpayPaymentId, razorpayOrderId, razorpaySignature }) => ({
+                url: `/api/orders/verify-payment?orderId=${orderId}&razorpayPaymentId=${encodeURIComponent(razorpayPaymentId)}&razorpayOrderId=${encodeURIComponent(razorpayOrderId)}&razorpaySignature=${encodeURIComponent(razorpaySignature)}`,
+                method: "POST"
+            }),
+            invalidatesTags: ['Order']
+        }),
+        
+        failRazorpayPayment: builder.mutation({
+            query: (orderId) => ({
+                url: `/api/orders/fail-payment?orderId=${orderId}`,
+                method: "POST"
+            }),
+            invalidatesTags: ['Order']
         })
     }),
 });
@@ -192,6 +208,8 @@ export const {
     useCheckoutOrderMutation,
     useGetCustomerOrdersQuery,
     useGetBackendCartQuery,
-    useSyncBackendCartMutation
+    useSyncBackendCartMutation,
+    useVerifyRazorpayPaymentMutation,
+    useFailRazorpayPaymentMutation
 } = orderApi;
 
