@@ -50,6 +50,12 @@ export const productApi = createApi({
                     queryParams.append("category", params.category);
                 }
                 if (params.search) queryParams.append("search", params.search);
+                if (params.minPrice) queryParams.append("minPrice", params.minPrice);
+                if (params.maxPrice) queryParams.append("maxPrice", params.maxPrice);
+                if (params.inStock) queryParams.append("inStock", params.inStock);
+                if (params.sortBy) queryParams.append("sortBy", params.sortBy);
+                if (params.sortDir) queryParams.append("sortDir", params.sortDir);
+                
                 const queryString = queryParams.toString();
                 return queryString ? `/product/all?${queryString}` : "/product/all";
             },

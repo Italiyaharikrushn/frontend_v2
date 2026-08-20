@@ -83,6 +83,17 @@ export const useCheckoutLogic = () => {
     }
   };
 
+  const [isBillingSameAsShipping, setIsBillingSameAsShipping] = useState(true);
+  const [selectedBillingAddressId, setSelectedBillingAddressId] = useState('new');
+  const [pendingBillingAddressId, setPendingBillingAddressId] = useState(null);
+  const [billingPhone, setBillingPhone] = useState('');
+
+  useEffect(() => {
+    if (addresses.length >= 5 && selectedBillingAddressId === 'new') {
+      setSelectedBillingAddressId(addresses[0]?.id || 'new');
+    }
+  }, [addresses, selectedBillingAddressId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmittingRef.current) return;
@@ -101,6 +112,7 @@ export const useCheckoutLogic = () => {
 
     try {
       let finalAddressId;
+      let finalBillingAddressId = null;
 
       if (selectedAddressId === 'new') {
         const rawPhone = e.target.phone?.value || phone || '';
@@ -116,13 +128,36 @@ export const useCheckoutLogic = () => {
 
         const savedAddress = await addAddress(addressPayload).unwrap();
         if (!savedAddress || !savedAddress.id) {
-          throw new Error('Failed to save address properly.');
+          throw new Error('Failed to save shipping address properly.');
         }
         finalAddressId = savedAddress.id;
       } else {
         finalAddressId = selectedAddressId;
       }
       setPendingAddressId(finalAddressId);
+
+      if (!isBillingSameAsShipping) {
+        if (selectedBillingAddressId === 'new') {
+          const rawBillPhone = e.target.billingPhone?.value || billingPhone || '';
+          const addressPayload = {
+            fullName: `${e.target.billingFirstName?.value || ''} ${e.target.billingLastName?.value || ''}`.trim(),
+            streetAddress: e.target.billingAddress?.value || '',
+            city: e.target.billingCity?.value || '',
+            state: e.target.billingState?.value || '',
+            postalCode: e.target.billingZip?.value || '',
+            country: e.target.billingCountry?.value || 'India',
+            phoneNumber: rawBillPhone.trim(),
+          };
+          const savedBillingAddress = await addAddress(addressPayload).unwrap();
+          if (!savedBillingAddress || !savedBillingAddress.id) {
+            throw new Error('Failed to save billing address properly.');
+          }
+          finalBillingAddressId = savedBillingAddress.id;
+        } else {
+          finalBillingAddressId = selectedBillingAddressId;
+        }
+        setPendingBillingAddressId(finalBillingAddressId);
+      }
 
       if (['gpay', 'paytm', 'phonepe'].includes(paymentMethod)) {
         setIsProcessing(false);
@@ -132,7 +167,7 @@ export const useCheckoutLogic = () => {
       }
 
       isSubmittingRef.current = false;
-      await finalizeOrder(finalAddressId);
+      await finalizeOrder(finalAddressId, finalBillingAddressId);
     } catch (error) {
       console.error('Checkout failed:', error);
       const msg = error?.data?.message || error?.message || 'Checkout failed. Please check your details.';
@@ -142,13 +177,15 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  const finalizeOrder = async (addressIdToUse) => {
+  const finalizeOrder = async (addressIdToUse, billingAddressIdToUse) => {
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
     setIsProcessing(true);
     try {
       const addrId = addressIdToUse || pendingAddressId;
-      await checkoutOrder({ addressId: addrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
+      const billAddrId = !isBillingSameAsShipping ? (billingAddressIdToUse || pendingBillingAddressId) : null;
+      
+      await checkoutOrder({ addressId: addrId, billingAddressId: billAddrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
       setIsProcessing(false);
       setShowPaymentModal(false);
       dispatch(clearCart());
@@ -164,5 +201,13 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return { cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy };
+  return { 
+    cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, 
+    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, 
+    appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, 
+    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, 
+    showPaymentSection, storePolicy, 
+    isBillingSameAsShipping, setIsBillingSameAsShipping, selectedBillingAddressId, setSelectedBillingAddressId,
+    billingPhone, setBillingPhone
+  };
 };

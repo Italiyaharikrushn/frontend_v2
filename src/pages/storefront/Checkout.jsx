@@ -11,7 +11,9 @@ const Checkout = () => {
     cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId,
     isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode,
     appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone,
-    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy
+    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy,
+    isBillingSameAsShipping, setIsBillingSameAsShipping, selectedBillingAddressId, setSelectedBillingAddressId,
+    billingPhone, setBillingPhone
   } = useCheckoutLogic();
 
   if (cartItems.length === 0) {
@@ -42,6 +44,12 @@ const Checkout = () => {
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
           showPaymentSection={showPaymentSection}
+          isBillingSameAsShipping={isBillingSameAsShipping}
+          setIsBillingSameAsShipping={setIsBillingSameAsShipping}
+          selectedBillingAddressId={selectedBillingAddressId}
+          setSelectedBillingAddressId={setSelectedBillingAddressId}
+          billingPhone={billingPhone}
+          setBillingPhone={setBillingPhone}
         />
 
         <CheckoutSummary

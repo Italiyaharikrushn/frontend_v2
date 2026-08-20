@@ -217,6 +217,29 @@
   box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
 }
 
+.custom-select-wrapper {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  flex: 1;
+}
+
+.custom-select-wrapper select.filter-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
+}
+
+.custom-select-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0.75rem;
+  pointer-events: none;
+  color: var(--text-muted);
+}
+
 .price-range {
   display: flex;
   gap: 0.5rem;

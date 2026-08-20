@@ -15,7 +15,13 @@ const CheckoutForm = ({
   setSelectedAddressId,
   paymentMethod,
   setPaymentMethod,
-  showPaymentSection
+  showPaymentSection,
+  isBillingSameAsShipping,
+  setIsBillingSameAsShipping,
+  selectedBillingAddressId,
+  setSelectedBillingAddressId,
+  billingPhone,
+  setBillingPhone
 }) => {
   const [deleteAddress] = useDeleteAddressMutation();
   const { pushToast } = useToast();
@@ -130,36 +136,140 @@ const CheckoutForm = ({
             <div className="form-grid fade-in">
               <div className="input-group">
                 <label htmlFor="firstName">First Name</label>
-                <input type="text" id="firstName" placeholder=" " required />
+                <input type="text" id="firstName" name="firstName" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="lastName">Last Name</label>
-                <input type="text" id="lastName" placeholder=" " required />
+                <input type="text" id="lastName" name="lastName" placeholder=" " required />
               </div>
               <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                 <label htmlFor="address">Street Address</label>
-                <input type="text" id="address" required placeholder="Street address or P.O. Box" />
+                <input type="text" id="address" name="address" required placeholder="Street address or P.O. Box" />
               </div>
               <div className="input-group">
                 <label htmlFor="city">City</label>
-                <input type="text" id="city" placeholder=" " required />
+                <input type="text" id="city" name="city" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="state">State / Province</label>
-                <input type="text" id="state" placeholder=" " required />
+                <input type="text" id="state" name="state" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="zip">ZIP / Postal Code</label>
-                <input type="text" id="zip" placeholder=" " required />
+                <input type="text" id="zip" name="zip" placeholder=" " required />
               </div>
               <div className="input-group">
                 <label htmlFor="country">Country</label>
-                <select id="country" required defaultValue="India">
+                <select id="country" name="country" required defaultValue="India">
                   <option value="India">India</option>
                   <option value="United States">United States</option>
                   <option value="United Kingdom">United Kingdom</option>
                 </select>
               </div>
+            </div>
+          )}
+        </div>
+
+        <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
+          <h2 className="form-card-title" style={{ margin: 0, marginBottom: '1rem' }}><MapPin size={20} /> Billing Address</h2>
+          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '1.5rem', gap: '0.5rem', fontWeight: '500' }}>
+            <input 
+              type="checkbox" 
+              checked={isBillingSameAsShipping} 
+              onChange={(e) => setIsBillingSameAsShipping(e.target.checked)} 
+              style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+            />
+            Billing address is same as shipping address
+          </label>
+
+          {!isBillingSameAsShipping && (
+            <div className="fade-in">
+              {!isLoadingAddresses && addresses.length > 0 && (
+                <div className="address-selector" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  {addresses.map(addr => (
+                    <div key={`billing-${addr.id}`} className={`payment-method-card ${selectedBillingAddressId === addr.id ? 'active' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }} onClick={() => setSelectedBillingAddressId(addr.id)}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                        <input
+                          type="radio"
+                          name="billingAddressSelection"
+                          value={addr.id}
+                          checked={selectedBillingAddressId === addr.id}
+                          onChange={() => setSelectedBillingAddressId(addr.id)}
+                          style={{ marginRight: '1rem', marginTop: '0.25rem' }}
+                        />
+                        <div style={{ lineHeight: '1.4' }}>
+                          <strong>{addr.fullName}</strong><br />
+                          <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+                            {addr.streetAddress}, {addr.city}, {addr.state} {addr.postalCode}<br />
+                            {addr.country} • {addr.phoneNumber}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  {addresses.length < 5 && (
+                    <label className={`payment-method-card ${selectedBillingAddressId === 'new' ? 'active' : ''}`} style={{ justifyContent: 'flex-start', cursor: 'pointer', padding: '1rem' }}>
+                      <input
+                        type="radio"
+                        name="billingAddressSelection"
+                        value="new"
+                        checked={selectedBillingAddressId === 'new'}
+                        onChange={() => setSelectedBillingAddressId('new')}
+                        style={{ marginRight: '1rem' }}
+                      />
+                      <strong>Add a New Address</strong>
+                    </label>
+                  )}
+                </div>
+              )}
+
+              {selectedBillingAddressId === 'new' && (
+                <div className="form-grid fade-in">
+                  <div className="input-group">
+                    <label htmlFor="billingFirstName">First Name</label>
+                    <input type="text" id="billingFirstName" name="billingFirstName" placeholder=" " required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="billingLastName">Last Name</label>
+                    <input type="text" id="billingLastName" name="billingLastName" placeholder=" " required />
+                  </div>
+                  <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                    <label htmlFor="billingAddress">Street Address</label>
+                    <input type="text" id="billingAddress" name="billingAddress" required placeholder="Street address or P.O. Box" />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="billingCity">City</label>
+                    <input type="text" id="billingCity" name="billingCity" placeholder=" " required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="billingState">State / Province</label>
+                    <input type="text" id="billingState" name="billingState" placeholder=" " required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="billingZip">ZIP / Postal Code</label>
+                    <input type="text" id="billingZip" name="billingZip" placeholder=" " required />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="billingPhone">Phone Number</label>
+                    <PhoneInput
+                      id="billingPhone"
+                      name="billingPhone"
+                      value={billingPhone}
+                      onChange={setBillingPhone}
+                      required
+                    />
+                  </div>
+                  <div className="input-group">
+                    <label htmlFor="billingCountry">Country</label>
+                    <select id="billingCountry" name="billingCountry" required defaultValue="India">
+                      <option value="India">India</option>
+                      <option value="United States">United States</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

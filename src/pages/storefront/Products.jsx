@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, ChevronDown } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import SkeletonCard from '../../components/ui/SkeletonCard';
 import { useProducts } from '../../hooks/useProducts';
@@ -27,6 +27,16 @@ const Products = () => {
     handleAddToCart,
     handleCategorySelect,
     handleProductClick,
+    inStock,
+    sortBy,
+    sortDir,
+    localMinPrice,
+    setLocalMinPrice,
+    localMaxPrice,
+    setLocalMaxPrice,
+    applyFilters,
+    clearFilters,
+    hasActiveFilters
   } = useProducts();
 
   return (
@@ -52,6 +62,73 @@ const Products = () => {
             </button>
           );
         })}
+      </div>
+
+      <div className="filters-bar glass-panel">
+        <div className="filter-group">
+          <label style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Sort By:</label>
+          <div className="custom-select-wrapper">
+            <select 
+              value={sortBy ? `${sortBy}-${sortDir}` : ''} 
+              onChange={(e) => {
+                if (!e.target.value) {
+                  applyFilters({ sortBy: '', sortDir: '' });
+                  return;
+                }
+                const [valSortBy, valSortDir] = e.target.value.split('-');
+                applyFilters({ sortBy: valSortBy, sortDir: valSortDir });
+              }}
+              className="filter-input"
+              style={{ width: '100%', cursor: 'pointer', minWidth: '160px' }}
+            >
+              <option value="">Default</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="id-desc">Newest Arrivals</option>
+            </select>
+            <ChevronDown size={16} className="custom-select-icon" />
+          </div>
+        </div>
+
+        <div className="price-range">
+          <label style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Price Range (₹):</label>
+          <input 
+            type="number" 
+            placeholder="Min" 
+            value={localMinPrice} 
+            onChange={e => setLocalMinPrice(e.target.value)} 
+            className="filter-input"
+            style={{ padding: '0.55rem 0.75rem', width: '80px' }}
+          />
+          <span>-</span>
+          <input 
+            type="number" 
+            placeholder="Max" 
+            value={localMaxPrice} 
+            onChange={e => setLocalMaxPrice(e.target.value)} 
+            className="filter-input"
+            style={{ padding: '0.55rem 0.75rem', width: '80px' }}
+          />
+          <Button variant="secondary" onClick={() => applyFilters({ minPrice: localMinPrice, maxPrice: localMaxPrice })} style={{ padding: '0.55rem 1rem' }}>Apply</Button>
+        </div>
+
+        <div className="filter-actions">
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 'bold', marginRight: hasActiveFilters ? '1rem' : '0' }}>
+            <input 
+              type="checkbox" 
+              checked={inStock} 
+              onChange={(e) => applyFilters({ inStock: e.target.checked })}
+              style={{ width: '1.2rem', height: '1.2rem', accentColor: 'var(--primary)', cursor: 'pointer' }}
+            />
+            In Stock Only
+          </label>
+          
+          {hasActiveFilters && (
+            <Button variant="secondary" onClick={clearFilters} style={{ padding: '0.55rem 1rem' }}>
+              Clear Filters
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="products-grid">
