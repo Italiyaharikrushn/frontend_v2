@@ -21,7 +21,7 @@ export const useCartPage = () => {
       if (product) {
         let latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
         if (item.coverType === 'custom_name' && product.customNamePrice) {
-          latestPrice = parseFloat(product.customNamePrice);
+          latestPrice = product.discountCustomNamePrice ? parseFloat(product.discountCustomNamePrice) : parseFloat(product.customNamePrice);
         }
         return { ...item, price: latestPrice };
       }
@@ -36,7 +36,7 @@ export const useCartPage = () => {
         if (product) {
           let latestPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
           if (item.coverType === 'custom_name' && product.customNamePrice) {
-            latestPrice = parseFloat(product.customNamePrice);
+            latestPrice = product.discountCustomNamePrice ? parseFloat(product.discountCustomNamePrice) : parseFloat(product.customNamePrice);
           }
           return item.price !== latestPrice;
         }
