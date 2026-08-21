@@ -9,7 +9,7 @@ import '@/styles/pages/storefront/Checkout.css';
 const Checkout = () => {
   const {
     cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId,
-    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode,
+    isProcessing, subtotal, shippingCharge, taxPercentage, taxAmount, total, handleSubmit, navigate, couponCode, setCouponCode,
     appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone,
     addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, showPaymentSection, storePolicy,
     isBillingSameAsShipping, setIsBillingSameAsShipping, selectedBillingAddressId, setSelectedBillingAddressId,
@@ -55,6 +55,9 @@ const Checkout = () => {
         <CheckoutSummary
           cartItems={cartItems}
           subtotal={subtotal}
+          shippingCharge={shippingCharge}
+          taxPercentage={taxPercentage}
+          taxAmount={taxAmount}
           total={total}
           isProcessing={isProcessing}
           couponCode={couponCode}

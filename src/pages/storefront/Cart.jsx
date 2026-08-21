@@ -6,8 +6,7 @@ import { useCartPage } from '../../hooks/useCartPage';
 import '@/styles/pages/storefront/Cart.css';
 
 const Cart = () => {
-  const { cartItems, isLoading, subtotal, handleQuantity, handleSetQuantity, handleRemove } = useCartPage();
-  const total = subtotal;
+  const { cartItems, isLoading, subtotal, shippingCharge, taxPercentage, taxAmount, total, handleQuantity, handleSetQuantity, handleRemove } = useCartPage();
 
   return (
     <div className="cart-page fade-in">
@@ -74,8 +73,8 @@ const Cart = () => {
           <div className="cart-summary glass-panel">
             <h3 className="summary-title">Order Summary</h3>
             <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
-            <div className="summary-row"><span>Shipping</span><span>₹0.00</span></div>
-            <div className="summary-row"><span>Tax</span><span>₹0.00</span></div>
+            <div className="summary-row"><span>Shipping</span><span>₹{shippingCharge.toFixed(2)}</span></div>
+            <div className="summary-row"><span>Tax ({taxPercentage}%)</span><span>₹{taxAmount.toFixed(2)}</span></div>
             <div className="summary-row total"><span>Total</span><span>₹{total.toFixed(2)}</span></div>
 
             <div className="trust-badges" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', margin: '1rem 0 1.5rem 0', paddingTop: '1.5rem', borderTop: '1px dashed var(--border)' }}>

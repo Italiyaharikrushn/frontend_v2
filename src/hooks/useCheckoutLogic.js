@@ -63,8 +63,13 @@ export const useCheckoutLogic = () => {
   const [validateCouponApi] = useValidateCouponMutation();
   const [createRazorpayOrderApi] = useCreateRazorpayOrderMutation();
 
+  const shippingCharge = storePolicy?.shippingCharge != null ? Number(storePolicy.shippingCharge) : 0;
+  const taxPercentage = storePolicy?.taxPercentage != null ? Number(storePolicy.taxPercentage) : 0;
+
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const total = subtotal - discountAmount;
+  const discountedSubtotal = Math.max(0, subtotal - discountAmount);
+  const taxAmount = (discountedSubtotal * taxPercentage) / 100;
+  const total = discountedSubtotal + shippingCharge + taxAmount;
 
   const validateCoupon = async () => {
     setCouponError('');
@@ -207,7 +212,7 @@ export const useCheckoutLogic = () => {
 
         const options = {
           key: import.meta.env.VITE_RAZORPAY_KEY || 'rzp_test_TSOJdXRvCzwUwJ',
-          amount: Math.round(rzpResponse.totalAmount * 100),
+          amount: Math.round((rzpResponse.totalAmount || total) * 100),
           currency: "INR",
           name: "Kiya Ecommerce",
           description: "Order Payment",
@@ -272,7 +277,7 @@ export const useCheckoutLogic = () => {
 
   return {
     cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId,
-    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode,
+    isProcessing, subtotal, shippingCharge, taxPercentage, taxAmount, total, handleSubmit, navigate, couponCode, setCouponCode,
     appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone,
     addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder,
     showPaymentSection, storePolicy,

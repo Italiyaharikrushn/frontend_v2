@@ -47,19 +47,19 @@ const AdminPolicies = () => {
         </div>
       )}
 
-      {/* Return and cancellation rules Card */}
+      {/* Return, cancellation, shipping & tax rules Card */}
       <div className="policy-card">
         <div className="policy-card-header">
-          <h2 className="policy-card-title">Return and cancellation rules</h2>
-          <p className="policy-card-subtitle">Set conditions and fees for return and cancellation requests</p>
+          <h2 className="policy-card-title">Return, cancellation, shipping & tax rules</h2>
+          <p className="policy-card-subtitle">Set conditions, fees, shipping charge, and tax rate for checkout orders</p>
         </div>
 
         <div className="policy-card-body">
           <div className="policy-row" onClick={() => setActiveModal('rules')}>
-            <span className="policy-row-label">Default rules</span>
+            <span className="policy-row-label">Default rules & Charges</span>
             <div className="policy-row-right">
               <span className="policy-pill">
-                {policyData?.isReturnsAccepted ? (policyData.returnWindow || '7 days') : 'No rules set'}
+                Shipping: ₹{policyData?.shippingCharge ?? 0} | Tax: {policyData?.taxPercentage ?? 0}%
               </span>
               <ChevronRight size={18} color="#9ca3af" />
             </div>

@@ -2,11 +2,13 @@ import { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCartItems, updateQuantity, setQuantity, removeItem, updateItemPrices } from '../redux/cartSlice';
 import { useGetProductsByIdsMutation } from '../api/productApi';
+import { useGetStorePolicyQuery } from '../api/policyApi';
 
 export const useCartPage = () => {
   const dispatch = useDispatch();
   const rawCartItems = useSelector(selectCartItems);
   const [getProductsByIds, { data: allProducts = [], isLoading }] = useGetProductsByIdsMutation();
+  const { data: storePolicy } = useGetStorePolicyQuery();
 
   useEffect(() => {
     if (rawCartItems.length > 0) {
@@ -61,6 +63,10 @@ export const useCartPage = () => {
   };
 
   const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const shippingCharge = storePolicy?.shippingCharge != null ? Number(storePolicy.shippingCharge) : 0;
+  const taxPercentage = storePolicy?.taxPercentage != null ? Number(storePolicy.taxPercentage) : 0;
+  const taxAmount = (subtotal * taxPercentage) / 100;
+  const total = subtotal + shippingCharge + taxAmount;
 
-  return { cartItems, isLoading, subtotal, handleQuantity, handleSetQuantity, handleRemove };
+  return { cartItems, isLoading, subtotal, shippingCharge, taxPercentage, taxAmount, total, handleQuantity, handleSetQuantity, handleRemove };
 };

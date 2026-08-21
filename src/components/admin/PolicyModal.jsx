@@ -144,6 +144,48 @@ const PolicyModal = ({
                   </div>
                 )}
               </div>
+
+              <hr className="rules-divider" />
+
+              {/* Shipping & Tax Rules Section */}
+              <div>
+                <div className="rules-section-header">
+                  <span className="rules-section-title">Shipping Charge & Tax Settings</span>
+                </div>
+                <div className="rules-section-desc">Set shipping charge and tax rate applied to customer checkout orders</div>
+
+                <div className="rules-group-margin">
+                  <div className="rules-input-group">
+                    <div>
+                      <label className="rules-label">Shipping Charge (₹)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        className="input-field"
+                        value={modalData.shippingCharge !== undefined && modalData.shippingCharge !== null ? modalData.shippingCharge : ''}
+                        onChange={(e) => setModalData({ ...modalData, shippingCharge: e.target.value === '' ? '' : parseFloat(e.target.value) })}
+                        placeholder="0.00"
+                        style={{ border: '1px solid #d1d5db', borderRadius: '6px', padding: '0.5rem', width: '100%' }}
+                      />
+                    </div>
+                    <div>
+                      <label className="rules-label">Tax Rate (%)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        className="input-field"
+                        value={modalData.taxPercentage !== undefined && modalData.taxPercentage !== null ? modalData.taxPercentage : ''}
+                        onChange={(e) => setModalData({ ...modalData, taxPercentage: e.target.value === '' ? '' : parseFloat(e.target.value) })}
+                        placeholder="0.00"
+                        style={{ border: '1px solid #d1d5db', borderRadius: '6px', padding: '0.5rem', width: '100%' }}
+                      />
+                    </div>
+                  </div>
+                  <div className="rules-helper-text">Calculated automatically on checkout subtotal</div>
+                </div>
+              </div>
             </div>
           ) : (
             <div>

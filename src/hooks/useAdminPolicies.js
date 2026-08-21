@@ -21,7 +21,9 @@ export const useAdminPolicies = () => {
           returnShipping: policyData.returnShipping || "Free return shipping",
           restockingFee: policyData.restockingFee || false,
           isCancellationAccepted: policyData.isCancellationAccepted !== false,
-          cancellationWindow: policyData.cancellationWindow || "15 minutes"
+          cancellationWindow: policyData.cancellationWindow || "15 minutes",
+          shippingCharge: policyData.shippingCharge !== undefined && policyData.shippingCharge !== null ? policyData.shippingCharge : 0,
+          taxPercentage: policyData.taxPercentage !== undefined && policyData.taxPercentage !== null ? policyData.taxPercentage : 0
         });
       } else {
         setModalData({

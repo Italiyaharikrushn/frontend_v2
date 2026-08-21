@@ -227,16 +227,24 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
         doc.text(totalAmountStr, margin, currentY + 5);
 
         // Tax breakdown (Right)
+        const orderTax = parseFloat(order.taxAmount || 0);
+        const orderShipping = parseFloat(order.shippingCharge || 0);
+        const orderTotal = parseFloat(order.totalAmount || 0);
+        const taxableAmount = Math.max(0, orderTotal - orderTax - orderShipping);
+
         doc.setFont('helvetica', 'normal');
         doc.text('Taxable Amount (Rs):', pageWidth - margin - 35, currentY, { align: 'right' });
-        doc.text(parseFloat(order.totalAmount || 0).toFixed(2), pageWidth - margin, currentY, { align: 'right' });
+        doc.text(taxableAmount.toFixed(2), pageWidth - margin, currentY, { align: 'right' });
 
-        doc.text('Total Tax (Rs):', pageWidth - margin - 35, currentY + 5, { align: 'right' });
-        doc.text('0.00', pageWidth - margin, currentY + 5, { align: 'right' });
+        doc.text('Shipping Charge (Rs):', pageWidth - margin - 35, currentY + 4, { align: 'right' });
+        doc.text(orderShipping.toFixed(2), pageWidth - margin, currentY + 4, { align: 'right' });
+
+        doc.text('Total Tax (Rs):', pageWidth - margin - 35, currentY + 8, { align: 'right' });
+        doc.text(orderTax.toFixed(2), pageWidth - margin, currentY + 8, { align: 'right' });
 
         doc.setFont('helvetica', 'bold');
-        doc.text('Total Amount (Rs):', pageWidth - margin - 35, currentY + 10, { align: 'right' });
-        doc.text(parseFloat(order.totalAmount || 0).toFixed(2), pageWidth - margin, currentY + 10, { align: 'right' });
+        doc.text('Total Amount (Rs):', pageWidth - margin - 35, currentY + 13, { align: 'right' });
+        doc.text(orderTotal.toFixed(2), pageWidth - margin, currentY + 13, { align: 'right' });
 
         currentY += 15;
         doc.setDrawColor(220, 220, 220);
