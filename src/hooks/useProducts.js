@@ -90,7 +90,7 @@ export const useProducts = () => {
   const products = data.content || [];
   const totalPages = data.totalPages || 0;
 
-  const { data: categories = [] } = useGetCategoriesQuery();
+  const { data: categories = [] } = useGetCategoriesQuery(true);
 
   const dynamicCategories = useMemo(() => {
     if (!categories || categories.length === 0) return ["All"];

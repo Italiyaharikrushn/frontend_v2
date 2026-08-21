@@ -71,7 +71,10 @@ export const productApi = createApi({
         }),
 
         getCategories: builder.query({
-            query: () => "/product/categories",
+            query: (inStock) => {
+                if (inStock) return "/product/categories?inStock=true";
+                return "/product/categories";
+            },
             providesTags: ['Product'],
         }),
 
