@@ -28,6 +28,8 @@ const CheckoutSummary = ({ cartItems, subtotal, total, isProcessing, couponCode,
 
       <div className="summary-totals">
         <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
+        <div className="summary-row"><span>Shipping</span><span>₹0.00</span></div>
+        <div className="summary-row"><span>Tax</span><span>₹0.00</span></div>
 
         <div className="coupon-section">
           <div className="coupon-input-group">
