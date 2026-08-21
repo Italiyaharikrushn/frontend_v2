@@ -179,9 +179,9 @@ export const useCheckoutLogic = () => {
     try {
       const addrId = addressIdToUse || pendingAddressId;
       const billAddrId = !isBillingSameAsShipping ? (billingAddressIdToUse || pendingBillingAddressId) : null;
-      
+
       const res = await checkoutOrder({ addressId: addrId, billingAddressId: billAddrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
-      
+
       if (paymentMethod === 'razorpay') {
         const options = {
           key: 'rzp_test_TRzL5cngbXo4EC',
@@ -214,7 +214,7 @@ export const useCheckoutLogic = () => {
             color: "var(--primary)"
           },
           modal: {
-            ondismiss: async function() {
+            ondismiss: async function () {
               try {
                 await failRazorpayPayment(res.id).unwrap();
               } catch (e) {
@@ -225,13 +225,13 @@ export const useCheckoutLogic = () => {
           }
         };
         const rzp = new window.Razorpay(options);
-        rzp.on('payment.failed', async function (response){
-           try {
-             await failRazorpayPayment(res.id).unwrap();
-           } catch (e) {
-             console.error("Failed to cancel order on backend", e);
-           }
-           pushToast(response.error.description || 'Payment failed. Please try again.', 'error');
+        rzp.on('payment.failed', async function (response) {
+          try {
+            await failRazorpayPayment(res.id).unwrap();
+          } catch (e) {
+            console.error("Failed to cancel order on backend", e);
+          }
+          pushToast(response.error.description || 'Payment failed. Please try again.', 'error');
         });
         rzp.open();
         setIsProcessing(false);
@@ -254,12 +254,12 @@ export const useCheckoutLogic = () => {
     }
   };
 
-  return { 
-    cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId, 
-    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode, 
-    appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone, 
-    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder, 
-    showPaymentSection, storePolicy, 
+  return {
+    cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId,
+    isProcessing, subtotal, total, handleSubmit, navigate, couponCode, setCouponCode,
+    appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone,
+    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder,
+    showPaymentSection, storePolicy,
     isBillingSameAsShipping, setIsBillingSameAsShipping, selectedBillingAddressId, setSelectedBillingAddressId,
     billingPhone, setBillingPhone
   };

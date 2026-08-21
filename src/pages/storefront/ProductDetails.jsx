@@ -258,7 +258,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
 
           <div className="reviews-section" style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid var(--border)' }}>
             <h3 style={{ marginBottom: '1rem', fontSize: '1.2rem', fontWeight: '600' }}>Customer Reviews</h3>
-            
+
             {isAuthenticated ? (
               reviewEligibility?.canReview ? (
                 <form onSubmit={handleReviewSubmit} style={{ marginBottom: '2rem', padding: '1rem', background: 'var(--surface-alt)', borderRadius: 'var(--radius-md)' }}>

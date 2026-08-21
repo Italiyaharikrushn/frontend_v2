@@ -173,10 +173,10 @@ const CheckoutForm = ({
         <div className="form-card glass-panel hover-lift" style={{ marginBottom: '1rem' }}>
           <h2 className="form-card-title" style={{ margin: 0, marginBottom: '1rem' }}><MapPin size={20} /> Billing Address</h2>
           <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', marginBottom: '1.5rem', gap: '0.5rem', fontWeight: '500' }}>
-            <input 
-              type="checkbox" 
-              checked={isBillingSameAsShipping} 
-              onChange={(e) => setIsBillingSameAsShipping(e.target.checked)} 
+            <input
+              type="checkbox"
+              checked={isBillingSameAsShipping}
+              onChange={(e) => setIsBillingSameAsShipping(e.target.checked)}
               style={{ width: '18px', height: '18px', cursor: 'pointer' }}
             />
             Billing address is same as shipping address
