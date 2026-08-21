@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
-import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useGetUserAddressesQuery, useVerifyRazorpayPaymentMutation, useFailRazorpayPaymentMutation } from '../api/orderApi';
+import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useGetUserAddressesQuery, useCreateRazorpayOrderMutation } from '../api/orderApi';
 import { useValidateCouponMutation } from '../api/couponApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
 import { useToast } from '../components/ui/ToastProvider';
@@ -61,8 +61,7 @@ export const useCheckoutLogic = () => {
   const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
   const [validateCouponApi] = useValidateCouponMutation();
-  const [verifyRazorpayPayment] = useVerifyRazorpayPaymentMutation();
-  const [failRazorpayPayment] = useFailRazorpayPaymentMutation();
+  const [createRazorpayOrderApi] = useCreateRazorpayOrderMutation();
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const total = subtotal - discountAmount;
@@ -180,20 +179,46 @@ export const useCheckoutLogic = () => {
       const addrId = addressIdToUse || pendingAddressId;
       const billAddrId = !isBillingSameAsShipping ? (billingAddressIdToUse || pendingBillingAddressId) : null;
 
-      const res = await checkoutOrder({ addressId: addrId, billingAddressId: billAddrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
-
       if (paymentMethod === 'razorpay') {
+        const rzpResponse = await createRazorpayOrderApi({ addressId: addrId, couponCode: appliedCouponCode }).unwrap();
+
+        if (rzpResponse.razorpayOrderId && rzpResponse.razorpayOrderId.startsWith('mock_order_')) {
+          try {
+            await checkoutOrder({
+              addressId: addrId,
+              billingAddressId: billAddrId,
+              couponCode: appliedCouponCode,
+              paymentMethod: 'razorpay',
+              razorpayPaymentId: "mock_pay_" + Date.now(),
+              razorpayOrderId: rzpResponse.razorpayOrderId,
+              razorpaySignature: "mock_sig_12345"
+            }).unwrap();
+            dispatch(clearCart());
+            pushToast('Payment successful (Mocked for testing).', 'success');
+            navigate('/');
+          } catch (err) {
+            pushToast(err?.data?.message || 'Mock payment verification failed.', 'error');
+          }
+          setIsProcessing(false);
+          setShowPaymentModal(false);
+          isSubmittingRef.current = false;
+          return;
+        }
+
         const options = {
-          key: 'rzp_test_TRzL5cngbXo4EC',
-          amount: Math.round(res.totalAmount * 100),
+          key: import.meta.env.VITE_RAZORPAY_KEY || 'rzp_test_TSOJdXRvCzwUwJ',
+          amount: Math.round(rzpResponse.totalAmount * 100),
           currency: "INR",
           name: "Kiya Ecommerce",
           description: "Order Payment",
-          order_id: res.razorpayOrderId,
+          order_id: rzpResponse.razorpayOrderId,
           handler: async function (response) {
             try {
-              await verifyRazorpayPayment({
-                orderId: res.id,
+              await checkoutOrder({
+                addressId: addrId,
+                billingAddressId: billAddrId,
+                couponCode: appliedCouponCode,
+                paymentMethod: 'razorpay',
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpayOrderId: response.razorpay_order_id,
                 razorpaySignature: response.razorpay_signature
@@ -206,31 +231,21 @@ export const useCheckoutLogic = () => {
             }
           },
           prefill: {
-            name: res.customerName,
-            email: res.customerEmail,
-            contact: res.customerPhone
+            name: rzpResponse.customerName,
+            email: rzpResponse.customerEmail,
+            contact: rzpResponse.customerPhone
           },
           theme: {
             color: "var(--primary)"
           },
           modal: {
-            ondismiss: async function () {
-              try {
-                await failRazorpayPayment(res.id).unwrap();
-              } catch (e) {
-                console.error("Failed to cancel order on backend", e);
-              }
+            ondismiss: function () {
               pushToast('Payment window closed. Please try again.', 'error');
             }
           }
         };
         const rzp = new window.Razorpay(options);
-        rzp.on('payment.failed', async function (response) {
-          try {
-            await failRazorpayPayment(res.id).unwrap();
-          } catch (e) {
-            console.error("Failed to cancel order on backend", e);
-          }
+        rzp.on('payment.failed', function (response) {
           pushToast(response.error.description || 'Payment failed. Please try again.', 'error');
         });
         rzp.open();
@@ -238,6 +253,7 @@ export const useCheckoutLogic = () => {
         setShowPaymentModal(false);
         isSubmittingRef.current = false;
       } else {
+        await checkoutOrder({ addressId: addrId, billingAddressId: billAddrId, couponCode: appliedCouponCode, paymentMethod }).unwrap();
         setIsProcessing(false);
         setShowPaymentModal(false);
         dispatch(clearCart());

@@ -134,7 +134,7 @@ export const orderApi = createApi({
         }),
 
         checkoutOrder: builder.mutation({
-            query: ({ addressId, billingAddressId, couponCode, paymentMethod }) => {
+            query: ({ addressId, billingAddressId, couponCode, paymentMethod, razorpayPaymentId, razorpayOrderId, razorpaySignature }) => {
                 let url = `/api/orders/checkout?addressId=${addressId}`;
                 if (billingAddressId) {
                     url += `&billingAddressId=${billingAddressId}`;
@@ -144,6 +144,15 @@ export const orderApi = createApi({
                 }
                 if (paymentMethod) {
                     url += `&paymentMethod=${encodeURIComponent(paymentMethod)}`;
+                }
+                if (razorpayPaymentId) {
+                    url += `&razorpayPaymentId=${encodeURIComponent(razorpayPaymentId)}`;
+                }
+                if (razorpayOrderId) {
+                    url += `&razorpayOrderId=${encodeURIComponent(razorpayOrderId)}`;
+                }
+                if (razorpaySignature) {
+                    url += `&razorpaySignature=${encodeURIComponent(razorpaySignature)}`;
                 }
                 return {
                     url: url,
@@ -173,20 +182,16 @@ export const orderApi = createApi({
             providesTags: ['Order'],
         }),
         
-        verifyRazorpayPayment: builder.mutation({
-            query: ({ orderId, razorpayPaymentId, razorpayOrderId, razorpaySignature }) => ({
-                url: `/api/orders/verify-payment?orderId=${orderId}&razorpayPaymentId=${encodeURIComponent(razorpayPaymentId)}&razorpayOrderId=${encodeURIComponent(razorpayOrderId)}&razorpaySignature=${encodeURIComponent(razorpaySignature)}`,
-                method: "POST"
-            }),
-            invalidatesTags: ['Order']
-        }),
-        
-        failRazorpayPayment: builder.mutation({
-            query: (orderId) => ({
-                url: `/api/orders/fail-payment?orderId=${orderId}`,
-                method: "POST"
-            }),
-            invalidatesTags: ['Order']
+        createRazorpayOrder: builder.mutation({
+            query: ({ addressId, couponCode }) => {
+                let url = `/api/orders/create-razorpay-order?`;
+                if (addressId) url += `addressId=${addressId}&`;
+                if (couponCode) url += `couponCode=${encodeURIComponent(couponCode)}&`;
+                return {
+                    url: url,
+                    method: "POST"
+                };
+            }
         })
     }),
 });
@@ -209,7 +214,6 @@ export const {
     useGetCustomerOrdersQuery,
     useGetBackendCartQuery,
     useSyncBackendCartMutation,
-    useVerifyRazorpayPaymentMutation,
-    useFailRazorpayPaymentMutation
+    useCreateRazorpayOrderMutation
 } = orderApi;
 
