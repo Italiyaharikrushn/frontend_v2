@@ -29,7 +29,8 @@ const AdminOrders = () => {
     handleAcceptSingleOrder,
     page,
     setPage,
-    totalPages
+    totalPages,
+    tabCounts
   } = useAdminOrders();
 
   return (
@@ -39,6 +40,7 @@ const AdminOrders = () => {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           setSelectedOrders={setSelectedOrders}
+          tabCounts={tabCounts}
         />
 
         <div className="admin-search-toolbar">
@@ -83,11 +85,13 @@ const AdminOrders = () => {
           downloadedLabels={downloadedLabels}
         />
 
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-        />
+        {activeTab !== 'READY_TO_SHIP' && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        )}
 
         {selectedOrders.length > 0 && (
           <div className="admin-bulk-actions">

@@ -8,7 +8,7 @@ const TABS = [
   { id: 'CANCELLED', label: 'Cancelled' }
 ];
 
-const AdminOrderTabs = ({ activeTab, setActiveTab, setSelectedOrders }) => {
+const AdminOrderTabs = ({ activeTab, setActiveTab, setSelectedOrders, tabCounts }) => {
   return (
     <div className="admin-tabs">
       {TABS.map(tab => (
@@ -17,7 +17,7 @@ const AdminOrderTabs = ({ activeTab, setActiveTab, setSelectedOrders }) => {
           className={`admin-tab ${activeTab === tab.id ? 'active' : ''}`}
           onClick={() => { setActiveTab(tab.id); setSelectedOrders([]); }}
         >
-          {tab.label}
+          {tab.label}  {tabCounts && tabCounts[tab.id] !== undefined ? `(${tabCounts[tab.id]})` : ''}
         </button>
       ))}
     </div>

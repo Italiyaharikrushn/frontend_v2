@@ -12,11 +12,29 @@ export const useAdminOrders = () => {
 
   const [selectedOrders, setSelectedOrders] = useState([]);
   const [page, setPage] = useState(0);
-  const size = 10;
+  const size = activeTab === 'READY_TO_SHIP' ? 10000 : 10;
 
-  const { data = {}, isLoading } = useGetSellerOrdersQuery({ page, size, status: activeTab });
+  const { data = {}, isLoading } = useGetSellerOrdersQuery({
+    page: activeTab === 'READY_TO_SHIP' ? 0 : page,
+    size,
+    status: activeTab
+  });
   const orders = data.content || [];
   const totalPages = data.totalPages || 0;
+
+  const { data: pendingData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'PENDING' });
+  const { data: readyData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'READY_TO_SHIP' });
+  const { data: shippedData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'SHIPPED' });
+  const { data: deliveredData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'DELIVERED' });
+  const { data: cancelledData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'CANCELLED' });
+
+  const tabCounts = {
+    PENDING: pendingData?.totalElements || 0,
+    READY_TO_SHIP: readyData?.totalElements || 0,
+    SHIPPED: shippedData?.totalElements || 0,
+    DELIVERED: deliveredData?.totalElements || 0,
+    CANCELLED: cancelledData?.totalElements || 0,
+  };
 
   const downloadedLabels = orders.filter(o => o.labelDownloaded).map(o => o.id);
 
@@ -124,6 +142,7 @@ export const useAdminOrders = () => {
     handleDownloadLabels,
     handleDownloadSingleLabel,
     handleAcceptOrders,
-    handleAcceptSingleOrder
+    handleAcceptSingleOrder,
+    tabCounts
   };
 };
