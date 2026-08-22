@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IndianRupee, Wallet, Calendar, CalendarDays } from 'lucide-react';
 import { useGetSellerPaymentsQuery, useGetSellerPaymentStatsQuery } from '../../api/paymentApi';
-import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminPayments = () => {
@@ -188,12 +187,6 @@ const AdminPayments = () => {
                 </tbody>
               </table>
             </div>
-
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={setPage}
-            />
           </>
         ) : (
           <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
