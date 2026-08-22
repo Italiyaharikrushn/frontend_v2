@@ -1,51 +1,28 @@
-import React, { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { IndianRupee, Wallet, Calendar, CalendarDays } from 'lucide-react';
-import { useGetSellerPaymentsQuery, useGetSellerPaymentStatsQuery } from '../../api/paymentApi';
+import React from 'react';
+import { Wallet, Calendar, CalendarDays } from 'lucide-react';
+import { useAdminPayments } from '../../hooks/useAdminPayments';
+import AdminPaymentTable from '../../components/admin/AdminPaymentTable';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminPayments = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const [page, setPage] = useState(parseInt(searchParams.get('page')) || 1);
-  const [selectedYear, setSelectedYear] = useState(searchParams.get('year') || '');
-  const [selectedMonth, setSelectedMonth] = useState(searchParams.get('month') || '');
-  const [selectedDay, setSelectedDay] = useState(searchParams.get('day') || '');
-  const size = 20;
-
-  React.useEffect(() => {
-    const params = new URLSearchParams();
-    if (page > 1) params.set('page', page);
-    if (selectedYear) params.set('year', selectedYear);
-    if (selectedMonth) params.set('month', selectedMonth);
-    if (selectedDay) params.set('day', selectedDay);
-    setSearchParams(params, { replace: true });
-  }, [page, selectedYear, selectedMonth, selectedDay, setSearchParams]);
-
-  const queryParams = {
-    page: page - 1,
-    size,
-    ...(selectedYear && { year: parseInt(selectedYear) }),
-    ...(selectedMonth && { month: parseInt(selectedMonth) }),
-    ...(selectedDay && { day: parseInt(selectedDay) })
-  };
-
-  const { data, isLoading, isFetching } = useGetSellerPaymentsQuery(queryParams);
-  const { data: statsData, isLoading: isLoadingStats } = useGetSellerPaymentStatsQuery(queryParams);
-
-  const payments = data?.content || [];
-  const totalPages = data?.totalPages || 1;
-
-  // Dynamic titles based on selection
-  let dayTitle = "Today's Payments";
-  let monthTitle = "This Month";
-  let yearTitle = "This Year";
-
-  if (selectedYear) {
-    yearTitle = `Year ${selectedYear}`;
-    monthTitle = selectedMonth ? new Date(2000, selectedMonth - 1, 1).toLocaleString('default', { month: 'long' }) : 'Selected Year';
-    dayTitle = selectedDay ? `${selectedDay} ${new Date(2000, selectedMonth - 1, 1).toLocaleString('default', { month: 'short' })}` : (selectedMonth ? 'Selected Month' : 'Selected Year');
-  }
+  const {
+    page,
+    setPage,
+    selectedYear,
+    setSelectedYear,
+    selectedMonth,
+    setSelectedMonth,
+    selectedDay,
+    setSelectedDay,
+    payments,
+    isLoading,
+    isFetching,
+    statsData,
+    isLoadingStats,
+    dayTitle,
+    monthTitle,
+    yearTitle
+  } = useAdminPayments();
 
   return (
     <div className="admin-page fade-in admin-full-height-page">
@@ -130,70 +107,7 @@ const AdminPayments = () => {
       </div>
 
       <div className="glass-panel admin-panel-card admin-full-height-card">
-        {isLoading || isFetching ? (
-          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            Loading payments...
-          </div>
-        ) : payments.length > 0 ? (
-          <>
-            <div className="admin-table-container">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer Name</th>
-                    <th>Payment Method</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {payments.map(payment => (
-                    <tr key={payment.id} className="hover-lift">
-                      <td style={{ fontWeight: '500' }}>{payment.orderId}</td>
-                      <td>{payment.customerName}</td>
-                      <td>
-                        <span style={{
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'var(--surface-alt)',
-                          fontSize: '0.8rem',
-                          fontWeight: '500'
-                        }}>
-                          {(payment.paymentMethod).toUpperCase()}
-                        </span>
-                      </td>
-                      <td style={{ fontWeight: 'bold', color: 'var(--text-main)' }}>
-                        ₹{payment.totalAmount?.toFixed(2)}
-                      </td>
-                      <td>
-                        {payment.orderDate ? new Date(payment.orderDate).toLocaleString() : 'N/A'}
-                      </td>
-                      <td>
-                        <span style={{
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: (payment.paymentStatus === 'COMPLETED' || payment.status === 'DELIVERED') ? 'rgba(16, 185, 129, 0.1)' : payment.paymentStatus === 'FAILED' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)',
-                          color: (payment.paymentStatus === 'COMPLETED' || payment.status === 'DELIVERED') ? '#10b981' : payment.paymentStatus === 'FAILED' ? '#ef4444' : '#f59e0b',
-                          fontSize: '0.8rem',
-                          fontWeight: '500'
-                        }}>
-                          {(payment.paymentStatus === 'COMPLETED' || payment.status === 'DELIVERED') ? 'Settled' : payment.paymentStatus === 'FAILED' ? 'Failed' : 'Pending'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : (
-          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            <IndianRupee size={48} style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-            <p>No payments found.</p>
-          </div>
-        )}
+        <AdminPaymentTable payments={payments} isLoading={isLoading} isFetching={isFetching} />
       </div>
     </div>
   );
