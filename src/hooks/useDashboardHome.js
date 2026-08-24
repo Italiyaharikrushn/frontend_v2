@@ -4,8 +4,8 @@ import { useGetProductsQuery } from '../api/productApi';
 import { useGetSellerOrdersQuery } from '../api/orderApi';
 
 export const useDashboardHome = () => {
-    const { data: productsData = {}, isLoading: isLoadingProducts } = useGetProductsQuery();
-    const { data: ordersData = {}, isLoading: isLoadingOrders } = useGetSellerOrdersQuery();
+    const { data: productsData = {}, isLoading: isLoadingProducts } = useGetProductsQuery({ size: 10000 });
+    const { data: ordersData = {}, isLoading: isLoadingOrders } = useGetSellerOrdersQuery({ size: 10000 }, { pollingInterval: 15000 });
 
     const products = Array.isArray(productsData) ? productsData : (productsData.content || []);
     const orders = Array.isArray(ordersData) ? ordersData : (ordersData.content || []);

@@ -22,11 +22,11 @@ export const useAdminOrders = () => {
   const orders = data.content || [];
   const totalPages = data.totalPages || 0;
 
-  const { data: pendingData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'PENDING' });
-  const { data: readyData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'READY_TO_SHIP' });
-  const { data: shippedData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'SHIPPED' });
-  const { data: deliveredData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'DELIVERED' });
-  const { data: cancelledData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'CANCELLED' });
+  const { data: pendingData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'PENDING' }, { pollingInterval: 15000 });
+  const { data: readyData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'READY_TO_SHIP' }, { pollingInterval: 15000 });
+  const { data: shippedData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'SHIPPED' }, { pollingInterval: 15000 });
+  const { data: deliveredData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'DELIVERED' }, { pollingInterval: 15000 });
+  const { data: cancelledData } = useGetSellerOrdersQuery({ page: 0, size: 1, status: 'CANCELLED' }, { pollingInterval: 15000 });
 
   const tabCounts = {
     PENDING: pendingData?.totalElements || 0,
