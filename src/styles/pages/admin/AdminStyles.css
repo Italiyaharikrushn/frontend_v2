@@ -1238,3 +1238,11 @@ input:checked+.policy-slider:before {
   cursor: not-allowed;
   background-color: var(--surface-alt);
 }
+
+/* Fix Recharts Pie click/focus outline */
+.recharts-pie-sector:focus,
+.recharts-sector:focus,
+.recharts-pie:focus,
+.recharts-surface:focus {
+  outline: none;
+}
