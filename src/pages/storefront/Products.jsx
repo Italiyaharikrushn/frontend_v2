@@ -48,7 +48,7 @@ const Products = () => {
 
       <div className="filters-bar glass-panel">
         <div className="filter-group">
-          <label style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Sort By:</label>
+          <label>Sort By:</label>
           <div className="custom-select-wrapper">
             <select
               value={sortBy ? `${sortBy}-${sortDir}` : ''}
@@ -61,7 +61,6 @@ const Products = () => {
                 applyFilters({ sortBy: valSortBy, sortDir: valSortDir });
               }}
               className="filter-input"
-              style={{ width: '100%', cursor: 'pointer', minWidth: '160px' }}
             >
               <option value="">Default</option>
               <option value="price-asc">Price: Low to High</option>
@@ -73,32 +72,32 @@ const Products = () => {
         </div>
 
         <div className="price-range">
-          <label style={{ fontSize: '0.9rem', fontWeight: 'bold', whiteSpace: 'nowrap' }}>Price Range (₹):</label>
-          <input
-            type="number"
-            placeholder="Min"
-            value={localMinPrice}
-            onChange={e => setLocalMinPrice(e.target.value)}
-            className="filter-input"
-            style={{ padding: '0.55rem 0.75rem', width: '80px' }}
-          />
-          <span>-</span>
-          <input
-            type="number"
-            placeholder="Max"
-            value={localMaxPrice}
-            onChange={e => setLocalMaxPrice(e.target.value)}
-            className="filter-input"
-            style={{ padding: '0.55rem 0.75rem', width: '80px' }}
-          />
-          <Button variant="secondary" onClick={() => applyFilters({ minPrice: localMinPrice, maxPrice: localMaxPrice })} style={{ padding: '0.55rem 1rem' }}>Apply</Button>
+          <label>Price Range (₹):</label>
+          <div className="price-range-inputs">
+            <input
+              type="number"
+              placeholder="Min"
+              value={localMinPrice}
+              onChange={e => setLocalMinPrice(e.target.value)}
+              className="filter-input"
+            />
+            <span>-</span>
+            <input
+              type="number"
+              placeholder="Max"
+              value={localMaxPrice}
+              onChange={e => setLocalMaxPrice(e.target.value)}
+              className="filter-input"
+            />
+          </div>
         </div>
 
         <div className="filter-actions">
-
+          <Button variant="primary" onClick={() => applyFilters({ minPrice: localMinPrice, maxPrice: localMaxPrice })} className="apply-btn">Apply</Button>
+          
           {hasActiveFilters && (
-            <Button variant="secondary" onClick={clearFilters} style={{ padding: '0.55rem 1rem' }}>
-              Clear Filters
+            <Button variant="secondary" onClick={clearFilters} className="clear-btn">
+              Clear
             </Button>
           )}
         </div>
@@ -123,7 +122,7 @@ const Products = () => {
       </div>
 
       <div className="products-grid">
-        {isLoading ? (
+          {isLoading ? (
           Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)
         ) : products.length > 0 ? products.map((product) => {
           const isActive = product.isActive ?? product.active ?? true;
