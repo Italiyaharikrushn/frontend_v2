@@ -13,6 +13,7 @@ export const orderApi = createApi({
                 if (params.page !== undefined) queryParams.append("page", params.page);
                 if (params.size !== undefined) queryParams.append("size", params.size);
                 if (params.status) queryParams.append("status", params.status);
+                if (params.search) queryParams.append("search", params.search);
                 const queryString = queryParams.toString();
                 return queryString ? `/api/orders/seller/all?${queryString}` : "/api/orders/seller/all";
             },

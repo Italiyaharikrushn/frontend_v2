@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetSellerOrdersQuery } from '../../api/orderApi';
 import Pagination from '../../components/ui/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminDeliveries = () => {
   const [page, setPage] = useState(0);
+  const [searchInput, setSearchInput] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchInput);
+      setPage(0);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchInput]);
+
   const { data = {}, isLoading } = useGetSellerOrdersQuery({
     page,
     size: 10,
-    status: 'DELIVERED'
+    status: 'DELIVERED',
+    search: debouncedSearch
   });
 
   const orders = data.content || [];
@@ -30,9 +42,28 @@ const AdminDeliveries = () => {
   return (
     <div className="admin-page fade-in admin-full-height-page">
       <div className="glass-panel admin-panel-card admin-full-height-card" style={{ padding: '2rem' }}>
-        <div style={{ marginBottom: '1.5rem' }}>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)' }}>Delivery Tracking</h2>
-          <p style={{ color: 'var(--text-muted)' }}>View delivered orders and their details.</p>
+        <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--text-main)' }}>Delivery Tracking</h2>
+            <p style={{ color: 'var(--text-muted)' }}>View delivered orders and their details.</p>
+          </div>
+          <div>
+            <input 
+              type="text" 
+              placeholder="Search deliveries..." 
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              style={{ 
+                width: '100%', 
+                maxWidth: '300px', 
+                padding: '0.75rem', 
+                borderRadius: '8px', 
+                border: '1px solid var(--border-color, #ccc)',
+                backgroundColor: 'var(--bg-main, #fff)',
+                color: 'var(--text-main, #000)'
+              }}
+            />
+          </div>
         </div>
 
         <div className="admin-table-container">
