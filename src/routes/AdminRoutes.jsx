@@ -10,6 +10,7 @@ import DashboardHome from '../pages/admin/DashboardHome';
 import AdminProducts from '../pages/admin/AdminProducts';
 import AdminPromotions from '../pages/admin/AdminPromotions';
 import AdminOrders from '../pages/admin/AdminOrders';
+import AdminDeliveries from '../pages/admin/AdminDeliveries';
 import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminReports from '../pages/admin/AdminReports';
 import AdminSettings from '../pages/admin/AdminSettings';
@@ -29,6 +30,7 @@ const AdminRoutes = () => {
           <Route path="products" element={<AdminProducts />} />
           <Route path="promotions" element={<AdminPromotions />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="deliveries" element={<AdminDeliveries />} />
           <Route path="customers" element={<AdminCustomers />} />
           <Route path="reports" element={<AdminReports />} />
           <Route path="payments" element={<AdminPayments />} />

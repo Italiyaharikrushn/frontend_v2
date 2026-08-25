@@ -66,8 +66,6 @@ const PolicyModal = ({
                           onChange={(e) => setModalData({ ...modalData, startingFrom: e.target.value })}
                         >
                           <option value="Delivery of item">Delivery of item</option>
-                          <option value="Purchase date">Purchase date</option>
-                          <option value="Shipment date">Shipment date</option>
                         </select>
                       </div>
                     </div>
@@ -95,16 +93,6 @@ const PolicyModal = ({
                       </select>
                     </div>
                     <div className="rules-helper-text">Doesn't apply to POS returns</div>
-
-                    <label className="rules-checkbox-label" style={{ marginTop: '1.25rem' }}>
-                      <input
-                        type="checkbox"
-                        className="rules-checkbox"
-                        checked={modalData.restockingFee || false}
-                        onChange={(e) => setModalData({ ...modalData, restockingFee: e.target.checked })}
-                      />
-                      Charge restocking fee
-                    </label>
                   </div>
                 )}
               </div>

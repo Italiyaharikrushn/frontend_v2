@@ -30,7 +30,8 @@ const OrderHistory = () => {
   const {
     orders, isLoading, page, setPage, totalPages, closeReturnModal, submitReturn,
     isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails,
-    isOrderCancellable, handleCancel, getCancellationDeadline
+    isOrderCancellable, handleCancel, getCancellationDeadline,
+    isOrderReturnable, getReturnDeadline, openReturnModal
   } = useOrderHistory();
 
   return (
@@ -116,12 +117,29 @@ const OrderHistory = () => {
                         <CancellationTimer deadline={getCancellationDeadline(order)} />
                       )}
                     </div>
-                  ) : (order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && order.status !== 'RETURNED') ? (
+                  ) : isOrderReturnable(order) ? (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Button variant="outline" size="sm" onClick={() => openReturnModal(order.id || order.orderId)}>
+                        Return Order
+                      </Button>
+                      {getReturnDeadline(order) && (
+                        <CancellationTimer deadline={getReturnDeadline(order)} />
+                      )}
+                    </div>
+                  ) : (order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && order.status !== 'RETURNED' && order.status !== 'RETURN_REQUESTED' && order.status !== 'RETURN_REJECTED') ? (
                     <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>Orders cannot be cancelled after the window has expired.</p>
                   ) : null}
 
                   {order.status === 'RETURNED' && (
                     <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Processed</p>
+                  )}
+                  
+                  {order.status === 'RETURN_REQUESTED' && (
+                    <p style={{ color: 'var(--text-muted)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Requested</p>
+                  )}
+
+                  {order.status === 'RETURN_REJECTED' && (
+                    <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Rejected</p>
                   )}
 
                   {order.status === 'CANCELLED' && (

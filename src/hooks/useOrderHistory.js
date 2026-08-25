@@ -56,6 +56,37 @@ export const useOrderHistory = () => {
         return new Date(new Date(order.orderDate).getTime() + maxMinutes * 60000);
     };
 
+    const isOrderReturnable = (order) => {
+        if (!storePolicy) return false;
+        if (storePolicy.isReturnsAccepted === false) return false;
+        if (order.status !== 'DELIVERED') return false;
+        if (!order.deliveryDate) return false;
+
+        const window = storePolicy.returnWindow;
+        let maxDays = 7;
+        if (window === '14 days') maxDays = 14;
+        else if (window === '30 days') maxDays = 30;
+
+        const deliveryDate = new Date(order.deliveryDate);
+        const now = new Date();
+        const diffDays = (now - deliveryDate) / (1000 * 60 * 60 * 24);
+
+        return diffDays <= maxDays;
+    };
+
+    const getReturnDeadline = (order) => {
+        if (!storePolicy || storePolicy.isReturnsAccepted === false) return null;
+        if (order.status !== 'DELIVERED') return null;
+        if (!order.deliveryDate) return null;
+
+        const window = storePolicy.returnWindow;
+        let maxDays = 7;
+        if (window === '14 days') maxDays = 14;
+        else if (window === '30 days') maxDays = 30;
+
+        return new Date(new Date(order.deliveryDate).getTime() + maxDays * 24 * 60 * 60 * 1000);
+    };
+
     const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [returnReason, setReturnReason] = useState('Changed my mind');
@@ -110,6 +141,7 @@ export const useOrderHistory = () => {
         orders, isLoading, page, setPage, totalPages,
         handleCancel, openReturnModal, closeReturnModal, submitReturn,
         isReturnModalOpen, returnReason, setReturnReason, returnDetails, setReturnDetails,
-        isOrderCancellable, getCancellationDeadline
+        isOrderCancellable, getCancellationDeadline,
+        isOrderReturnable, getReturnDeadline
     };
 };

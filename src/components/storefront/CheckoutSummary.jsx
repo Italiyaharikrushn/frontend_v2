@@ -93,7 +93,7 @@ const CheckoutSummary = ({ cartItems, subtotal, shippingCharge = 0, taxPercentag
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {storePolicy.isReturnsAccepted ? (
                 <p style={{ margin: 0, lineHeight: 1.4 }}>
-                  <strong>Returns:</strong> Accepted within {storePolicy.returnWindow} of {storePolicy.startingFrom.toLowerCase()}. {storePolicy.returnShipping === 'Free return shipping' ? 'Free return shipping.' : storePolicy.returnShipping === 'Customer provides label' ? 'Customer must pay for return shipping.' : 'Flat rate return shipping applies.'} {storePolicy.restockingFee && 'A restocking fee applies.'} {storePolicy.extendWeekends && 'Extended for weekends/holidays.'}
+                  <strong>Returns:</strong> Accepted within {storePolicy.returnWindow} of {storePolicy.startingFrom.toLowerCase()}. {storePolicy.returnShipping === 'Free return shipping' ? 'Free return shipping.' : storePolicy.returnShipping === 'Customer provides label' ? 'Customer must pay for return shipping.' : 'Flat rate return shipping applies.'} {storePolicy.extendWeekends && 'Extended for weekends/holidays.'}
                 </p>
               ) : (
                 <p style={{ margin: 0 }}><strong>Returns:</strong> Not accepted.</p>
