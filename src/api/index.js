@@ -8,3 +8,4 @@ export * from './settingsApi';
 export * from './favoriteApi';
 export * from './paymentApi';
 export * from './reviewApi';
+export * from './aboutUsApi';

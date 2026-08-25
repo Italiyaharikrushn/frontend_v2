@@ -21,6 +21,7 @@ const StorefrontLayout = () => {
       </main>
       <footer style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+          <Link to="/about-us" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem' }}>About Us</Link>
           <Link to="/policies/return-and-refund" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem' }}>Return & Refund Policy</Link>
           <Link to="/policies/terms-of-service" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem' }}>Terms of Service</Link>
           <Link to="/policies/shipping-policy" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem' }}>Shipping Policy</Link>

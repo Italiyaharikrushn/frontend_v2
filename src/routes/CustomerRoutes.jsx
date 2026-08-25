@@ -11,6 +11,7 @@ import Products from '../pages/storefront/Products';
 import ProductDetails from '../pages/storefront/ProductDetails';
 import Cart from '../pages/storefront/Cart';
 import Contact from '../pages/storefront/Contact';
+import AboutUs from '../pages/storefront/AboutUs';
 import Checkout from '../pages/storefront/Checkout';
 import OrderHistory from '../pages/storefront/OrderHistory';
 import PolicyPage from '../pages/storefront/PolicyPage';
@@ -28,6 +29,7 @@ const CustomerRoutes = () => {
         <Route path="product/:id" element={<ProductDetails />} />
         <Route path="cart" element={<Cart />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="about-us" element={<AboutUs />} />
         <Route path="policies/:type" element={<PolicyPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="checkout" element={<Checkout />} />

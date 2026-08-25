@@ -84,6 +84,7 @@ const Header = () => {
             <nav className="main-nav-links">
               <Link to="/" className={`main-nav-link ${isActive('/') ? 'active' : ''}`}>Home</Link>
               <Link to="/products" className={`main-nav-link ${isActive('/products') ? 'active' : ''}`}>Shop</Link>
+              <Link to="/about-us" className={`main-nav-link ${isActive('/about-us') ? 'active' : ''}`}>About Us</Link>
               <Link to="/contact" className={`main-nav-link ${isActive('/contact') ? 'active' : ''}`}>Contact Us</Link>
             </nav>
           </div>
@@ -256,6 +257,7 @@ const Header = () => {
             <nav className="mobile-nav-links">
               <Link to="/" className={`mobile-nav-link ${isActive('/') ? 'active' : ''}`} onClick={closeMenu}>Home</Link>
               <Link to="/products" className={`mobile-nav-link ${isActive('/products') ? 'active' : ''}`} onClick={closeMenu}>Shop</Link>
+              <Link to="/about-us" className={`mobile-nav-link ${isActive('/about-us') ? 'active' : ''}`} onClick={closeMenu}>About Us</Link>
 
               {isAuthenticated && (
                 <div className="mobile-nav-group">
