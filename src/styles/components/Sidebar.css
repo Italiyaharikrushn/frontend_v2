@@ -12,6 +12,7 @@
   transform: translateX(-100%);
   transition: transform var(--transition-normal);
   box-shadow: var(--shadow-xl);
+  flex-shrink: 0;
 }
 
 [data-theme="dark"] .sidebar {
