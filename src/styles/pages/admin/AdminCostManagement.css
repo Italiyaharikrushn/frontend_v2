@@ -1,0 +1,303 @@
+.admin-cost-management-page {
+    padding: 1.5rem;
+    background: var(--bg-main);
+    color: var(--text-main);
+    height: 100%;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.page-header h1 svg {
+    color: var(--primary);
+}
+
+.page-header p {
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+}
+
+.tabs-container {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabs-header {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+.tab-btn {
+    padding-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+}
+
+.tab-btn.active {
+    border-bottom-color: var(--primary);
+    color: var(--primary);
+}
+
+.tab-content {
+    flex-grow: 1;
+}
+
+/* Cost Type & Entry Modals */
+.cost-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.cost-modal-content {
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.cost-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.cost-modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.cost-form-group {
+    margin-bottom: 1rem;
+}
+
+.cost-form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+.cost-form-input, .cost-form-select, .cost-form-textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface-alt);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.cost-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.cost-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.cost-btn-cancel {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    background: var(--surface-alt);
+    color: var(--text-main);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.cost-btn-submit {
+    padding: 0.5rem 1rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.cost-btn-submit:hover {
+    background: var(--primary-dark, #bd9a5f); /* Fallback dark gold */
+}
+
+/* Dashboard Specifics */
+.cost-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.cost-summary-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.cost-summary-card.highlight {
+    border-left: 4px solid var(--primary);
+}
+
+.cost-summary-card h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.cost-summary-card p {
+    margin: 0.5rem 0 0 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.cost-filters-bar {
+    background: var(--surface);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.cost-filter-item {
+    flex: 1 1 150px;
+}
+
+.cost-chart-container {
+    background: var(--surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+.cost-header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cost-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.cost-action-btn-secondary {
+    background: var(--surface-alt);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.cost-action-btn-secondary:hover {
+    background: var(--border);
+}
+
+/* Accordion Table Header */
+.cost-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.cost-table-header:hover {
+    background: var(--surface-alt);
+    border-color: var(--primary);
+}
+.cost-table-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+.cost-table-header svg {
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+.cost-table-header:hover svg {
+    color: var(--primary);
+}
+
+
+.cost-form-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem;
+}
+

@@ -20,6 +20,7 @@ import AdminReturns from '../pages/admin/AdminReturns';
 import AdminPayments from '../pages/admin/AdminPayments';
 import AdminReviews from '../pages/admin/AdminReviews';
 import AdminAboutUs from '../pages/admin/AdminAboutUs';
+import AdminCostManagement from '../pages/admin/AdminCostManagement';
 
 const AdminRoutes = () => {
   return (
@@ -40,6 +41,7 @@ const AdminRoutes = () => {
           <Route path="reviews" element={<AdminReviews />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="about-us" element={<AdminAboutUs />} />
+          <Route path="cost-management" element={<AdminCostManagement />} />
           <Route path="change-password" element={<AdminChangePassword />} />
         </Route>
       </Route>
