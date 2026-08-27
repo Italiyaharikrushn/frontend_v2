@@ -14,7 +14,9 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
         pricePerSingleUnit: '',
         pricePerPair: '',
         unit: 'Kg',
-        quantity: ''
+        quantity: '',
+        category: '',
+        costType: ''
     });
 
     useEffect(() => {
@@ -26,7 +28,9 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
                 pricePerSingleUnit: entry.pricePerSingleUnit || '',
                 pricePerPair: entry.pricePerPair || '',
                 unit: entry.unit || 'Kg',
-                quantity: entry.quantity || ''
+                quantity: entry.quantity || '',
+                category: entry.category || '',
+                costType: entry.costType || ''
             });
         }
     }, [entry]);
@@ -119,6 +123,17 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
                         <div className="cost-form-group" style={{ flex: 2 }}>
                             <label>Product Name *</label>
                             <input type="text" name="productName" value={formData.productName} onChange={handleChange} required className="cost-form-input" placeholder="e.g. Rice, Gloves" />
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <div className="cost-form-group" style={{ flex: 1 }}>
+                            <label>Category</label>
+                            <input type="text" name="category" value={formData.category} onChange={handleChange} className="cost-form-input" placeholder="e.g. Raw Material, Packaging" />
+                        </div>
+                        <div className="cost-form-group" style={{ flex: 1 }}>
+                            <label>Cost Type</label>
+                            <input type="text" name="costType" value={formData.costType} onChange={handleChange} className="cost-form-input" placeholder="e.g. Material, Labour" />
                         </div>
                     </div>
 

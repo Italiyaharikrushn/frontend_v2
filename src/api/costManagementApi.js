@@ -3,7 +3,7 @@ import { customFetchBaseQuery } from '../utils/apiHelpers';
 
 export const costManagementApi = createApi({
     reducerPath: "costManagementApi",
-    tagTypes: ['MonthlyCostReport', 'YearlyCostReport', 'DailyCost', 'ShippingCost'],
+    tagTypes: ['MonthlyCostReport', 'YearlyCostReport', 'DailyCost', 'ShippingCost', 'CostAnalytics', 'CostFilters'],
     baseQuery: customFetchBaseQuery,
 
     endpoints: (builder) => ({
@@ -30,6 +30,28 @@ export const costManagementApi = createApi({
             providesTags: ['YearlyCostReport', 'DailyCost', 'ShippingCost'],
         }),
 
+        getCostAnalytics: builder.query({
+            query: (params) => {
+                const queryParams = new URLSearchParams();
+                if (params?.view) queryParams.append("view", params.view);
+                if (params?.date) queryParams.append("date", params.date);
+                if (params?.fromYear) queryParams.append("fromYear", params.fromYear);
+                if (params?.toYear) queryParams.append("toYear", params.toYear);
+                if (params?.category && params.category !== 'All') queryParams.append("category", params.category);
+                if (params?.costType && params.costType !== 'All') queryParams.append("costType", params.costType);
+                if (params?.comparison) queryParams.append("comparison", params.comparison);
+                const queryString = queryParams.toString();
+                return queryString ? `/api/admin/costs/analytics?${queryString}` : "/api/admin/costs/analytics";
+            },
+            providesTags: ['CostAnalytics'],
+        }),
+
+        getCostFilters: builder.query({
+            query: () => "/api/admin/costs/analytics/filters",
+            providesTags: ['CostFilters'],
+        }),
+
+
         getDailyCosts: builder.query({
             query: (params) => {
                 const queryParams = new URLSearchParams();
@@ -47,7 +69,7 @@ export const costManagementApi = createApi({
                 method: "POST",
                 body: data,
             }),
-            invalidatesTags: ['DailyCost', 'MonthlyCostReport', 'YearlyCostReport'],
+            invalidatesTags: ['DailyCost', 'MonthlyCostReport', 'YearlyCostReport', 'CostAnalytics', 'CostFilters'],
         }),
         updateDailyCost: builder.mutation({
             query: ({ id, data }) => ({
@@ -55,7 +77,7 @@ export const costManagementApi = createApi({
                 method: "PUT",
                 body: data,
             }),
-            invalidatesTags: ['DailyCost', 'MonthlyCostReport', 'YearlyCostReport'],
+            invalidatesTags: ['DailyCost', 'MonthlyCostReport', 'YearlyCostReport', 'CostAnalytics', 'CostFilters'],
         }),
 
         deleteDailyCost: builder.mutation({
@@ -116,4 +138,6 @@ export const {
     useCreateShippingCostMutation,
     useUpdateShippingCostMutation,
     useDeleteShippingCostMutation,
+    useGetCostAnalyticsQuery,
+    useGetCostFiltersQuery,
 } = costManagementApi;
