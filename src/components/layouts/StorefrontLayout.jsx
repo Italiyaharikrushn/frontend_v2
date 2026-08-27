@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectUserRole } from '../../redux/authSlice';
 import Header from '../common/Header';
 import { useGetPublicStoreSettingsQuery } from '../../api/settingsApi';
+import { getCurrentYear } from '../../utils/dateUtils';
 
 const StorefrontLayout = () => {
   const { data: storeSettings } = useGetPublicStoreSettingsQuery();
@@ -28,7 +29,7 @@ const StorefrontLayout = () => {
           <Link to="/policies/contact-information" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem' }}>Contact Information</Link>
           <Link to="/policies/legal-notice" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem' }}>Legal Notice</Link>
         </div>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>&copy; {new Date().getFullYear()} {storeSettings?.settings?.storeSettings?.storeName || 'Store'}. All rights reserved.</p>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>&copy; {getCurrentYear()} {storeSettings?.settings?.storeSettings?.storeName || 'Store'}. All rights reserved.</p>
       </footer>
     </div>
   );

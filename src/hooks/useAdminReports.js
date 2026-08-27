@@ -2,11 +2,12 @@ import { useState, useMemo } from 'react';
 import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery, useGetProductSalesReportQuery } from '../api/orderApi';
 import { useGetProductsQuery } from '../api/productApi';
 import { useGetCustomersQuery } from '../api/authApi';
+import { getCurrentMonth, getCurrentYear } from '../utils/dateUtils';
 
 export const useAdminReports = () => {
     const [days, setDays] = useState(30);
-    const [reportMonth, setReportMonth] = useState(new Date().getMonth() + 1);
-    const [reportYear, setReportYear] = useState(new Date().getFullYear());
+    const [reportMonth, setReportMonth] = useState(getCurrentMonth());
+    const [reportYear, setReportYear] = useState(getCurrentYear());
 
     const { data: analyticsData = [], isLoading: isAnalyticsLoading, isError: isAnalyticsError, refetch } = useGetSellerAnalyticsQuery(days);
     const { data: productsData = [], isLoading: isProductsLoading } = useGetProductsQuery();

@@ -3,6 +3,7 @@ import { useGetCostAnalyticsQuery, useGetCostFiltersQuery } from '../../../api/c
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { RefreshCw, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import '../../../styles/pages/admin/AdminCostManagement.css'; // Reuse existing styles
+import { getCurrentDate, getCurrentYear, formatToISODate } from '../../../utils/dateUtils';
 
 const CostAnalyticsChart = () => {
     const [view, setView] = useState('month');
@@ -11,9 +12,9 @@ const CostAnalyticsChart = () => {
     const [costType, setCostType] = useState('All');
     
     // For specific date selections
-    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-    const [fromYear, setFromYear] = useState(new Date().getFullYear() - 4);
-    const [toYear, setToYear] = useState(new Date().getFullYear());
+    const [selectedDate, setSelectedDate] = useState(formatToISODate(getCurrentDate()));
+    const [fromYear, setFromYear] = useState(getCurrentYear() - 4);
+    const [toYear, setToYear] = useState(getCurrentYear());
 
     const { data: filtersData } = useGetCostFiltersQuery();
     
@@ -31,9 +32,9 @@ const CostAnalyticsChart = () => {
         setComparison('previous');
         setCategory('All');
         setCostType('All');
-        setSelectedDate(new Date().toISOString().split('T')[0]);
-        setFromYear(new Date().getFullYear() - 4);
-        setToYear(new Date().getFullYear());
+        setSelectedDate(formatToISODate(getCurrentDate()));
+        setFromYear(getCurrentYear() - 4);
+        setToYear(getCurrentYear());
     };
 
     const formatCurrency = (value) => {

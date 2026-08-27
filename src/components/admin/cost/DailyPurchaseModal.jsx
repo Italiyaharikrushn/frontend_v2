@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useCreateDailyCostMutation, useUpdateDailyCostMutation } from '../../../api/costManagementApi';
 import { toast } from 'react-toastify';
+import { getCurrentDate, formatToISODate } from '../../../utils/dateUtils';
 
 const DailyPurchaseModal = ({ entry, onClose }) => {
     const [createEntry] = useCreateDailyCostMutation();
     const [updateEntry] = useUpdateDailyCostMutation();
 
     const [formData, setFormData] = useState({
-        costDate: new Date().toISOString().split('T')[0],
+        costDate: formatToISODate(getCurrentDate()),
         productName: '',
         pricePerKg: '',
         pricePerSingleUnit: '',
@@ -22,7 +23,7 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
     useEffect(() => {
         if (entry) {
             setFormData({
-                costDate: entry.costDate || new Date().toISOString().split('T')[0],
+                costDate: entry.costDate || formatToISODate(getCurrentDate()),
                 productName: entry.productName || '',
                 pricePerKg: entry.pricePerKg || '',
                 pricePerSingleUnit: entry.pricePerSingleUnit || '',

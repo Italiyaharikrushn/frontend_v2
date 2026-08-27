@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useCreateShippingCostMutation, useUpdateShippingCostMutation } from '../../../api/costManagementApi';
 import { toast } from 'react-toastify';
+import { getCurrentDate, formatToISODate } from '../../../utils/dateUtils';
 
 const ShippingCostModal = ({ cost, onClose }) => {
     const isEdit = !!cost;
-    const today = new Date().toISOString().split('T')[0];
+    const today = formatToISODate(getCurrentDate());
 
     const [formData, setFormData] = useState({
         costDate: today,

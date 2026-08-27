@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Download } from 'lucide-react';
 import { useGetMonthlyCostReportQuery } from '../../../api/costManagementApi';
 import { toast } from 'react-toastify';
+import { getCurrentMonth, getCurrentYear } from '../../../utils/dateUtils';
 
 const MonthlyCostDashboard = () => {
-    const today = new Date();
     const [filters, setFilters] = useState({
-        month: today.getMonth() + 1, // 1-12
-        year: today.getFullYear(),
+        month: getCurrentMonth(), // 1-12
+        year: getCurrentYear(),
     });
 
     const { data: report, isLoading } = useGetMonthlyCostReportQuery(filters);

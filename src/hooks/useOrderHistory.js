@@ -4,6 +4,7 @@ import { useCreateReturnRequestMutation } from '../api/returnApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
 import { useToast } from '../components/ui/ToastProvider';
 import { useAlert } from '../components/ui/AlertProvider';
+import { getCurrentDate } from '../utils/dateUtils';
 
 export const useOrderHistory = () => {
     const { pushToast } = useToast();
@@ -33,7 +34,7 @@ export const useOrderHistory = () => {
         else if (window === '24 hours') maxMinutes = 24 * 60;
 
         const orderDate = new Date(order.orderDate);
-        const now = new Date();
+        const now = getCurrentDate();
         const diffMinutes = (now - orderDate) / (1000 * 60);
 
         return diffMinutes <= maxMinutes;
@@ -68,7 +69,7 @@ export const useOrderHistory = () => {
         else if (window === '30 days') maxDays = 30;
 
         const deliveryDate = new Date(order.deliveryDate);
-        const now = new Date();
+        const now = getCurrentDate();
         const diffDays = (now - deliveryDate) / (1000 * 60 * 60 * 24);
 
         return diffDays <= maxDays;

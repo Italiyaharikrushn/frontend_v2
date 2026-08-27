@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetProductsQuery } from '../api/productApi';
 import { useGetSellerOrdersQuery } from '../api/orderApi';
+import { getCurrentDate, getStartOfDay } from '../utils/dateUtils';
 
 export const useDashboardHome = () => {
     const { data: productsData = {}, isLoading: isLoadingProducts } = useGetProductsQuery({ size: 10000 });
@@ -18,8 +19,7 @@ export const useDashboardHome = () => {
         const totalSales = orders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
         const productValue = products.reduce((sum, p) => sum + ((p.price || 0) * (p.stock || 0)), 0);
 
-        const today = new Date();
-        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+        const todayStart = getStartOfDay(getCurrentDate());
         const todaySales = orders.reduce((sum, o) => {
             const orderDate = new Date(o.orderDate || o.createdAt).getTime();
             if (orderDate >= todayStart) {

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Download } from 'lucide-react';
 import { useGetYearlyCostReportQuery } from '../../../api/costManagementApi';
 import { toast } from 'react-toastify';
+import { getCurrentYear } from '../../../utils/dateUtils';
 
 const YearlyCostDashboard = () => {
-    const today = new Date();
     const [filters, setFilters] = useState({
-        year: today.getFullYear(),
+        year: getCurrentYear(),
     });
 
     const { data: report, isLoading } = useGetYearlyCostReportQuery(filters);

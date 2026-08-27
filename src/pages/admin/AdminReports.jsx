@@ -5,6 +5,7 @@ import Button from '../../components/ui/Button';
 import { useAdminReports } from '../../hooks/useAdminReports';
 import CostAnalyticsChart from '../../components/admin/cost/CostAnalyticsChart';
 import '@/styles/pages/admin/AdminStyles.css';
+import { getCurrentYear } from '../../utils/dateUtils';
 
 const AdminReports = () => {
     const {
@@ -117,7 +118,7 @@ const AdminReports = () => {
                                     <YAxis tickLine={false} axisLine={false} allowDecimals={false} />
                                     <Tooltip cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }} />
                                     <Legend />
-                                    <Bar dataKey="users" name="New Registrations" fill="#8b5cf6" radius={[4, 4, 0, 0]} />
+                                    <Bar dataKey="users" name="New Registrations" fill="#8b5cf6" barSize={30} radius={[4, 4, 0, 0]} />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
@@ -198,10 +199,9 @@ const AdminReports = () => {
                                             value={reportYear}
                                             onChange={(e) => setReportYear(Number(e.target.value))}
                                         >
-                                            <option value={2023}>2023</option>
-                                            <option value={2024}>2024</option>
-                                            <option value={2025}>2025</option>
-                                            <option value={2026}>2026</option>
+                                            {Array.from({ length: 10 }, (_, i) => getCurrentYear() - i).map(y => (
+                                                <option key={y} value={y}>{y}</option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>

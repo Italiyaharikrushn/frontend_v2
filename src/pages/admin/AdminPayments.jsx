@@ -3,6 +3,7 @@ import { Wallet, Calendar, CalendarDays } from 'lucide-react';
 import { useAdminPayments } from '../../hooks/useAdminPayments';
 import AdminPaymentTable from '../../components/admin/AdminPaymentTable';
 import '@/styles/pages/admin/AdminStyles.css';
+import { getCurrentYear } from '../../utils/dateUtils';
 
 const AdminPayments = () => {
   const {
@@ -35,7 +36,7 @@ const AdminPayments = () => {
             onChange={(e) => { setSelectedYear(e.target.value); setPage(1); }}
           >
             <option value="">All Years</option>
-            {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map(y => (
+            {Array.from({ length: 10 }, (_, i) => getCurrentYear() - i).map(y => (
               <option key={y} value={y}>{y}</option>
             ))}
           </select>

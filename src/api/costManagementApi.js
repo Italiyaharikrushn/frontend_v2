@@ -63,6 +63,11 @@ export const costManagementApi = createApi({
             providesTags: ['DailyCost'],
         }),
 
+        getYesterdayDailyCosts: builder.query({
+            query: () => "/api/admin/daily-costs/yesterday",
+            providesTags: ['DailyCost'],
+        }),
+
         createDailyCost: builder.mutation({
             query: (data) => ({
                 url: "/api/admin/daily-costs",
@@ -131,6 +136,7 @@ export const {
     useGetMonthlyCostReportQuery,
     useGetYearlyCostReportQuery,
     useGetDailyCostsQuery,
+    useGetYesterdayDailyCostsQuery,
     useCreateDailyCostMutation,
     useUpdateDailyCostMutation,
     useDeleteDailyCostMutation,

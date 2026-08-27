@@ -3,13 +3,14 @@ import { Package, RotateCcw, X } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useOrderHistory } from '../../hooks/useOrderHistory';
 import Pagination from '../../components/ui/Pagination';
+import { getCurrentDate } from '../../utils/dateUtils';
 
 const CancellationTimer = ({ deadline }) => {
-  const [timeLeft, setTimeLeft] = useState(deadline - new Date());
+  const [timeLeft, setTimeLeft] = useState(deadline - getCurrentDate());
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(deadline - new Date());
+      setTimeLeft(deadline - getCurrentDate());
     }, 1000);
     return () => clearInterval(timer);
   }, [deadline]);
