@@ -69,11 +69,18 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
 
     const calculatedTotal = calculateTotal();
 
+    const today = formatToISODate(getCurrentDate());
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (!formData.costDate || !formData.productName || !formData.unit || !formData.quantity) {
             toast.error("Please fill all required fields");
+            return;
+        }
+
+        if (formData.costDate > today) {
+            toast.error("Future dates are not allowed.");
             return;
         }
 
@@ -130,7 +137,7 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <div className="cost-form-group" style={{ flex: 1 }}>
                             <label>Date *</label>
-                            <input type="date" name="costDate" value={formData.costDate} onChange={handleChange} required className="cost-form-input" />
+                            <input type="date" name="costDate" value={formData.costDate} onChange={handleChange} required className="cost-form-input" max={today} />
                         </div>
                         <div className="cost-form-group" style={{ flex: 2 }}>
                             <label>Product Name *</label>

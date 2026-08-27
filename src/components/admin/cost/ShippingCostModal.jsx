@@ -40,6 +40,11 @@ const ShippingCostModal = ({ cost, onClose }) => {
             return;
         }
 
+        if (formData.costDate > today) {
+            toast.error("Future dates are not allowed.");
+            return;
+        }
+
         const payload = {
             ...formData,
             amount: parseFloat(formData.amount)
@@ -60,8 +65,14 @@ const ShippingCostModal = ({ cost, onClose }) => {
         }
     };
 
+    const handleOverlayClick = (e) => {
+        if (e.target === e.currentTarget) {
+            onClose();
+        }
+    };
+
     return (
-        <div className="cost-modal-overlay">
+        <div className="cost-modal-overlay" onClick={handleOverlayClick}>
             <div className="cost-modal-content" style={{ maxWidth: '500px' }}>
                 <div className="cost-modal-header">
                     <h2>{isEdit ? 'Edit Shipping Cost' : 'Add Shipping Cost'}</h2>
@@ -79,6 +90,7 @@ const ShippingCostModal = ({ cost, onClose }) => {
                             value={formData.costDate}
                             onChange={handleChange}
                             className="cost-form-input"
+                            max={today}
                             required
                         />
                     </div>
