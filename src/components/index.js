@@ -1,9 +1,9 @@
 // UI Components
-export { default as Button } from './ui/Button';
-export { default as Card } from './ui/Card';
-export { default as Input } from './ui/Input';
-export { default as SkeletonCard } from './ui/SkeletonCard';
-export { ToastProvider, useToast } from './ui/ToastProvider';
+export { default as Button } from './common/Button';
+export { default as Card } from './common/Card';
+export { default as Input } from './common/Input';
+export { default as SkeletonCard } from './common/SkeletonCard';
+export { ToastProvider, useToast } from './common/ToastProvider';
 
 // Common Components
 export { default as Header } from './common/Header';
@@ -14,5 +14,5 @@ export { default as ProtectedRoute } from './common/ProtectedRoute';
 export { default as Sidebar } from './admin/Sidebar';
 
 // Layout Components
-export { default as StorefrontLayout } from './layouts/StorefrontLayout';
+export { default as CustomerLayout } from './layouts/CustomerLayout';
 export { default as DashboardLayout } from './layouts/DashboardLayout';

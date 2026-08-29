@@ -27,7 +27,7 @@ const AppRoutes = () => {
           {/* Admin Dashboard Routes */}
           <Route path="/admin/*" element={<AdminRoutes />} />
 
-          {/* Customer Storefront Routes */}
+          {/* Customer customer Routes */}
           <Route path="/*" element={<CustomerRoutes />} />
 
           {/* 404 Not Found Fallback */}

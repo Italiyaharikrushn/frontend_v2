@@ -1,6 +1,6 @@
 import React from 'react';
 import { Mail } from 'lucide-react';
-import Button from './../ui/Button';
+import Button from './../common/Button';
 
 const AdminCustomerMessages = ({ messages, isLoadingMessages, handleReply }) => {
   return (

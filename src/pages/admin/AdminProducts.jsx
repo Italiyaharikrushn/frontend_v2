@@ -1,6 +1,6 @@
 import React from 'react';
 import { Plus, Upload } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 import AdminProductForm from '../../components/admin/AdminProductForm';
 import AdminProductTable from '../../components/admin/AdminProductTable';
 import { useAdminProducts } from '../../hooks/useAdminProducts';

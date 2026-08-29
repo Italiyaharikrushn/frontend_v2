@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Lock, User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 import { useLogin } from '../../hooks/useLogin';
 import '@/styles/pages/auth/Login.css';
 

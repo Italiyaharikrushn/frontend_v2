@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useGetCustomerOrdersQuery, useCancelCustomerOrderMutation } from '../api/orderApi';
 import { useCreateReturnRequestMutation } from '../api/returnApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
-import { useToast } from '../components/ui/ToastProvider';
-import { useAlert } from '../components/ui/AlertProvider';
+import { useToast } from '../components/common/ToastProvider';
+import { useAlert } from '../components/common/AlertProvider';
 import { getCurrentDate } from '../utils/dateUtils';
 
 export const useOrderHistory = () => {

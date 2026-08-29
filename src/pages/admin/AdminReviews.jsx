@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAdminReviews } from '../../hooks/useAdminReviews';
 import AdminReviewTable from '../../components/admin/AdminReviewTable';
-import Pagination from '../../components/ui/Pagination';
+import Pagination from '../../components/common/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminReviews = () => {

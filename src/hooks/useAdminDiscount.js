@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useApplyDiscountMutation, useApplyCategoryDiscountMutation } from '../api/productApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useAdminDiscount = (products) => {
   const { pushToast } = useToast();

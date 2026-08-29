@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGetSellerOrdersQuery } from '../../api/orderApi';
-import Pagination from '../../components/ui/Pagination';
+import Pagination from '../../components/common/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminDeliveries = () => {

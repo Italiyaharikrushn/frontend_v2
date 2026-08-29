@@ -3,7 +3,7 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 import DailyPurchaseModal from './DailyPurchaseModal';
 import { useGetDailyCostsQuery, useDeleteDailyCostMutation } from '../../../api/costManagementApi';
 import { toast } from 'react-toastify';
-import Pagination from '../../ui/Pagination';
+import Pagination from '../../common/Pagination';
 import YesterdayPurchasesWidget from './YesterdayPurchasesWidget';
 
 const DailyPurchaseTab = () => {

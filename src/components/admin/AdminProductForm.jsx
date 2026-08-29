@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Save } from 'lucide-react';
-import Button from '../ui/Button';
+import Button from '../common/Button';
 import { useCreateProductMutation, useUpdateProductMutation, useGetCategoriesQuery, useDecodeUrlMutation } from '../../api/productApi';
-import { useToast } from '../ui/ToastProvider';
+import { useToast } from '../common/ToastProvider';
 import '@/styles/pages/admin/AdminStyles.css';
 
 const AdminProductForm = ({ editingProduct, onClose }) => {

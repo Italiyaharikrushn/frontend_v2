@@ -1,6 +1,6 @@
 import React from 'react';
 import { Save, Bell } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 import StoreProfileForm from '../../components/admin/StoreProfileForm';
 import { useAdminSettings } from '../../hooks/useAdminSettings';
 import '@/styles/pages/admin/AdminStyles.css';

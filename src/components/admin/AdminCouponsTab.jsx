@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { useAdminCoupons } from '../../hooks/useAdminCoupons';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 import { Ticket, PlusCircle, Edit, Trash2, CheckCircle, XCircle, X } from 'lucide-react';
 
 const AdminCoupons = () => {

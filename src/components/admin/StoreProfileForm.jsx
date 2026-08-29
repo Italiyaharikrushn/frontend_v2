@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Store, MapPin, Camera, Loader } from 'lucide-react';
-import PhoneInput from '../ui/PhoneInput';
+import PhoneInput from '../common/PhoneInput';
 import { useUploadImageMutation } from '../../api/settingsApi';
 import { getMediaUrl } from '../../utils/apiHelpers';
 

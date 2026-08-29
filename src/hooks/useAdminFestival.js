@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useGetFestivalSettingsQuery, useUpdateFestivalSettingsMutation } from '../api/festivalApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useAdminFestival = () => {
   const { pushToast } = useToast();

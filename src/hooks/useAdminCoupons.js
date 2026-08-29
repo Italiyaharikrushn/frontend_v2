@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGetCouponsQuery, useCreateCouponMutation, useUpdateCouponMutation, useDeleteCouponMutation } from '../api/couponApi';
-import { useToast } from '../components/ui/ToastProvider';
-import { useAlert } from '../components/ui/AlertProvider';
+import { useToast } from '../components/common/ToastProvider';
+import { useAlert } from '../components/common/AlertProvider';
 
 export const useAdminCoupons = () => {
     const { data: coupons = [], isLoading } = useGetCouponsQuery();

@@ -5,7 +5,7 @@ import { selectCartItems, clearCart } from '../redux/cartSlice';
 import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useGetUserAddressesQuery, useCreateRazorpayOrderMutation } from '../api/orderApi';
 import { useValidateCouponMutation } from '../api/couponApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 import { useGetProductsByIdsMutation } from '../api/productApi';
 
 export const useCheckoutLogic = () => {

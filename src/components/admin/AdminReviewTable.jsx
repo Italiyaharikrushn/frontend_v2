@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
-import Button from './../ui/Button';
-import StarRating from './../../components/storefront/StarRating';
+import Button from './../common/Button';
+import StarRating from './../../components/customer/StarRating';
 
 const AdminReviewTable = ({ reviewsPage, isLoading, handleDelete }) => {
   return (

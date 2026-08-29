@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { UserPlus, User, Lock, Mail, Phone, Eye, EyeOff, CheckCircle, XCircle } from 'lucide-react';
-import Button from '../../components/ui/Button';
-import PhoneInput from '../../components/ui/PhoneInput';
+import Button from '../../components/common/Button';
+import PhoneInput from '../../components/common/PhoneInput';
 import { useRegister } from '../../hooks/useRegister';
 import { getPasswordRulesCol1, getPasswordRulesCol2 } from '../../utils/validationRules';
 import '@/styles/pages/auth/Login.css';

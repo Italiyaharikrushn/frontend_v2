@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSubmitMessageMutation } from '../api/contactApi';
 import { useGetPublicStoreSettingsQuery } from '../api/settingsApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useContact = () => {
     const { pushToast } = useToast();

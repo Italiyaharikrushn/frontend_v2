@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useAlert } from '../ui/AlertProvider';
+import { useAlert } from '../common/AlertProvider';
 import { Tag, ChevronDown } from 'lucide-react';
-import Button from '../ui/Button';
+import Button from '../common/Button';
 import { useGetCategoriesQuery, useGetProductsQuery } from '../../api/productApi';
 
 const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder }) => {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Pagination from '../../components/ui/Pagination';
+import Pagination from '../../components/common/Pagination';
 import { useGetProductsQuery } from '../../api/productApi';
 import { useAdminFestival } from '../../hooks/useAdminFestival';
 import { useAdminDiscount } from '../../hooks/useAdminDiscount';

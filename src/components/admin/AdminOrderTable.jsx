@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Download } from 'lucide-react';
-import Button from '../ui/Button';
+import Button from '../common/Button';
 
 const AdminOrderTable = ({ isLoading, filteredOrders, activeTab, selectedOrders, handleSelectAll, handleSelectOrder, handleAcceptSingleOrder, handleDownloadSingleLabel, downloadedLabels }) => {
   return (

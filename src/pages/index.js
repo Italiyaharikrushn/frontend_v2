@@ -1,11 +1,11 @@
-// Storefront Pages
-export { default as Home } from './storefront/Home';
-export { default as Products } from './storefront/Products';
-export { default as ProductDetails } from './storefront/ProductDetails';
-export { default as Cart } from './storefront/Cart';
-export { default as Contact } from './storefront/Contact';
-export { default as Checkout } from './storefront/Checkout';
-export { default as OrderHistory } from './storefront/OrderHistory';
+// customer Pages
+export { default as Home } from './customer/Home';
+export { default as Products } from './customer/Products';
+export { default as ProductDetails } from './customer/ProductDetails';
+export { default as Cart } from './customer/Cart';
+export { default as Contact } from './customer/Contact';
+export { default as Checkout } from './customer/Checkout';
+export { default as OrderHistory } from './customer/OrderHistory';
 
 // Admin Pages
 export { default as DashboardHome } from './admin/DashboardHome';

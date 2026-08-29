@@ -1,7 +1,7 @@
 import React from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadialBarChart, RadialBar, PolarAngleAxis, ComposedChart } from 'recharts';
 import { Download, Calendar } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 import { useAdminReports } from '../../hooks/useAdminReports';
 import CostAnalyticsChart from '../../components/admin/cost/CostAnalyticsChart';
 import '@/styles/pages/admin/AdminStyles.css';

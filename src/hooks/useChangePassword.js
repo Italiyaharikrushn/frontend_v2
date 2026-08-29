@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useChangePasswordMutation } from '../api/authApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 import { isPasswordValid } from '../utils/validationRules';
 
 export const useChangePassword = () => {

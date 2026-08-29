@@ -2,7 +2,7 @@ import React from 'react';
 import AppRoutes from './routes/AppRoutes';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AlertProvider } from './components/ui/AlertProvider';
+import { AlertProvider } from './components/common/AlertProvider';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import useCartSync from './hooks/useCartSync';
 

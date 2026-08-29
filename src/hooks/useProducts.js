@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from '../redux/cartSlice';
 import { selectIsAuthenticated } from '../redux/authSlice';
 import { useGetProductsQuery, useGetCategoriesQuery } from '../api/productApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useProducts = () => {
   const dispatch = useDispatch();

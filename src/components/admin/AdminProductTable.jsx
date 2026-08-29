@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Edit, Trash2, Image as ImageIcon, Save } from 'lucide-react';
-import Pagination from './../ui/Pagination';
+import Pagination from './../common/Pagination';
 
 const InlineStockEditor = ({ product, onSave }) => {
   const [stock, setStock] = useState(product.stock);

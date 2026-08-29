@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetProductByIdQuery } from '../api/productApi';
 import { selectIsAuthenticated } from '../redux/authSlice';
 import { addItem } from '../redux/cartSlice';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useProductDetails = ({ propId, isModal }) => {
   const { id: paramId } = useParams();

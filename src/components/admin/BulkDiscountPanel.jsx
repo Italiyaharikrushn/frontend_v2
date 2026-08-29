@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Tag, CheckSquare, ImageIcon, ChevronDown } from 'lucide-react';
-import Button from '../ui/Button';
+import Button from '../common/Button';
 
 const BulkDiscountPanel = ({
   products,

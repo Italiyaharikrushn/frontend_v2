@@ -4,7 +4,7 @@ import { useGetProductsQuery } from '../api/productApi';
 import { useGetPublicStoreSettingsQuery } from '../api/settingsApi';
 import { addItem } from '../redux/cartSlice';
 import { selectIsAuthenticated } from '../redux/authSlice';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useHome = () => {
   const dispatch = useDispatch();

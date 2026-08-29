@@ -1,10 +1,10 @@
 import React from 'react';
 import { Download, Filter, ChevronDown, ChevronUp } from 'lucide-react';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 import AdminOrderTable from '../../components/admin/AdminOrderTable';
 import AdminOrderTabs from '../../components/admin/AdminOrderTabs';
 import { useAdminOrders } from '../../hooks/useAdminOrders';
-import Pagination from '../../components/ui/Pagination';
+import Pagination from '../../components/common/Pagination';
 import '@/styles/pages/admin/AdminStyles.css';
 import '@/styles/pages/admin/AdminOrders.css';
 

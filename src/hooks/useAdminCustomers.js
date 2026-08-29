@@ -1,8 +1,8 @@
 import { useGetAllMessagesQuery, useReplyToMessageMutation } from '../api/contactApi';
 import { useGetCustomersQuery } from '../api/authApi';
 import { useGetSellerOrdersQuery } from '../api/orderApi';
-import { useToast } from '../components/ui/ToastProvider';
-import { useAlert } from '../components/ui/AlertProvider';
+import { useToast } from '../components/common/ToastProvider';
+import { useAlert } from '../components/common/AlertProvider';
 
 export const useAdminCustomers = () => {
   const { pushToast } = useToast();

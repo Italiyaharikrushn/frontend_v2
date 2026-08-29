@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useGetProductsQuery, useDeleteProductMutation, useBulkUploadProductsMutation, useUpdateProductMutation } from '../api/productApi';
-import { useToast } from '../components/ui/ToastProvider';
-import { useAlert } from '../components/ui/AlertProvider';
+import { useToast } from '../components/common/ToastProvider';
+import { useAlert } from '../components/common/AlertProvider';
 
 export const useAdminProducts = () => {
     const { pushToast } = useToast();

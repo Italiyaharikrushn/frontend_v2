@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useGetStoreSettingsQuery, useUpdateStoreSettingsMutation } from '../api/settingsApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useAdminSettings = () => {
   const { pushToast } = useToast();

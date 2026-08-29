@@ -2,6 +2,7 @@ import React from 'react';
 import { Package, Clock, IndianRupee, RotateCcw, Wallet } from 'lucide-react';
 import { useDashboardHome } from '../../hooks/useDashboardHome';
 import { useGetSellerAnalyticsQuery } from '../../api/orderApi';
+import LoadingState from '../../components/common/LoadingState';
 import { AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import '@/styles/pages/admin/AdminStyles.css';
 
@@ -18,8 +19,8 @@ const DashboardHome = () => {
 
   if (isLoading || isLoadingAnalytics) {
     return (
-      <div className="admin-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Loading dashboard data...</p>
+      <div className="admin-page">
+        <LoadingState message="Loading dashboard data..." />
       </div>
     );
   }

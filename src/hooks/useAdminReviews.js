@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGetAllReviewsAdminQuery, useDeleteReviewAdminMutation } from '../api/reviewApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useAdminReviews = () => {
   const [page, setPage] = useState(0);

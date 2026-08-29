@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, Plus, Edit, Trash2, Loader, Image as ImageIcon } from 'lucide-react';
 import { useGetAllWorksQuery, useCreateWorkMutation, useUpdateWorkMutation, useDeleteWorkMutation } from '../../api/aboutUsApi';
-import Button from '../../components/ui/Button';
+import Button from '../../components/common/Button';
 
 import '@/styles/pages/admin/AdminStyles.css';
 import '@/styles/pages/admin/AdminAboutUs.css';

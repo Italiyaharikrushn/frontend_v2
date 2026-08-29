@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, selectIsAuthenticated, selectUserRole } from '../redux/authSlice';
 import { useLoginMutation } from '../api/authApi';
 import { useGetPublicStoreSettingsQuery } from '../api/settingsApi';
-import { useToast } from '../components/ui/ToastProvider';
+import { useToast } from '../components/common/ToastProvider';
 
 export const useLogin = () => {
   const navigate = useNavigate();
