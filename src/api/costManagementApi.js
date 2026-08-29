@@ -63,6 +63,11 @@ export const costManagementApi = createApi({
             providesTags: ['DailyCost'],
         }),
 
+        getDailyCostsByDate: builder.query({
+            query: (date) => `/api/admin/daily-costs/by-date?date=${date}`,
+            providesTags: ['DailyCost'],
+        }),
+
         getYesterdayDailyCosts: builder.query({
             query: () => "/api/admin/daily-costs/yesterday",
             providesTags: ['DailyCost'],
@@ -104,6 +109,11 @@ export const costManagementApi = createApi({
             providesTags: ['ShippingCost'],
         }),
 
+        getShippingCostsByDate: builder.query({
+            query: (date) => `/api/admin/shipping-costs/by-date?date=${date}`,
+            providesTags: ['ShippingCost'],
+        }),
+
         createShippingCost: builder.mutation({
             query: (data) => ({
                 url: "/api/admin/shipping-costs",
@@ -136,11 +146,13 @@ export const {
     useGetMonthlyCostReportQuery,
     useGetYearlyCostReportQuery,
     useGetDailyCostsQuery,
+    useGetDailyCostsByDateQuery,
     useGetYesterdayDailyCostsQuery,
     useCreateDailyCostMutation,
     useUpdateDailyCostMutation,
     useDeleteDailyCostMutation,
     useGetShippingCostsQuery,
+    useGetShippingCostsByDateQuery,
     useCreateShippingCostMutation,
     useUpdateShippingCostMutation,
     useDeleteShippingCostMutation,
