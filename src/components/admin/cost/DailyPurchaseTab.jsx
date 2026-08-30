@@ -4,7 +4,6 @@ import DailyPurchaseModal from './DailyPurchaseModal';
 import { useGetDailyCostsQuery, useDeleteDailyCostMutation } from '../../../api/costManagementApi';
 import { toast } from 'react-toastify';
 import Pagination from '../../common/Pagination';
-import YesterdayPurchasesWidget from './YesterdayPurchasesWidget';
 
 const DailyPurchaseTab = () => {
     const [page, setPage] = useState(1);
@@ -51,8 +50,6 @@ const DailyPurchaseTab = () => {
 
     return (
         <div>
-            <YesterdayPurchasesWidget />
-
             <div className="cost-header-actions" style={{ justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                 <h2 className="text-xl font-semibold">Daily Product Purchases</h2>
                 <button
