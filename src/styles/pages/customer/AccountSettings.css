@@ -2,7 +2,7 @@
 
 .account-settings-container {
     padding: 2rem;
-    max-width: 800px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -13,9 +13,22 @@
     gap: 0.75rem;
 }
 
+.account-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 992px) {
+    .account-settings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .account-settings-panel {
     padding: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 .account-settings-panel-title {
