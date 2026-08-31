@@ -1,0 +1,259 @@
+.premium-tracking-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: var(--radius-lg, 12px);
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.tracking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tracking-header-left h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main, #111827);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tracking-order-id {
+  font-size: 0.9rem;
+  color: var(--text-muted, #6b7280);
+  margin: 0;
+  font-weight: 500;
+}
+
+.tracking-header-right {
+  text-align: right;
+}
+
+.tracking-current-status {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background-color: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  color: var(--primary, #4f46e5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tracking-current-status.status-error {
+  background-color: rgba(var(--error-rgb, 239, 68, 68), 0.1);
+  color: var(--error, #ef4444);
+}
+
+.tracking-stepper {
+  position: relative;
+  width: 100%;
+  padding-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* Horizontal Line (Default) */
+.tracking-stepper::before {
+  content: '';
+  position: absolute;
+  top: 25px; /* Center of 44px icon (22px) + top padding */
+  left: calc(50% / var(--step-count));
+  width: calc(100% - (100% / var(--step-count)));
+  height: 4px;
+  background-color: var(--border, #e5e7eb);
+  border-radius: 4px;
+  z-index: 0;
+}
+
+.tracking-progress-bar {
+  position: absolute;
+  top: 25px;
+  left: calc(50% / var(--step-count));
+  width: calc(var(--progress-decimal) * calc(100% - (100% / var(--step-count))));
+  height: 4px;
+  background-color: var(--primary, #4f46e5);
+  border-radius: 4px;
+  z-index: 1;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tracking-progress-bar.error-bar {
+  background-color: var(--error, #ef4444);
+}
+
+.tracking-step {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.step-indicator {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--surface, #ffffff);
+  border: 4px solid var(--border, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 0 4px var(--surface, #ffffff);
+}
+
+/* Completed Step */
+.tracking-step.completed .step-indicator {
+  background-color: var(--primary, #4f46e5);
+  border-color: var(--primary, #4f46e5);
+  color: white;
+}
+
+/* Current Step */
+.tracking-step.current .step-indicator {
+  border-color: var(--primary, #4f46e5);
+  color: var(--primary, #4f46e5);
+  background-color: var(--surface, #ffffff);
+  box-shadow: 0 0 0 4px var(--surface, #ffffff), 0 0 0 8px rgba(var(--primary-rgb, 79, 70, 229), 0.15);
+}
+
+/* Error State (Current) */
+.tracking-step.error-state .step-indicator {
+  background-color: var(--error, #ef4444);
+  border-color: var(--error, #ef4444);
+  color: white;
+  box-shadow: 0 0 0 4px var(--surface, #ffffff), 0 0 0 8px rgba(var(--error-rgb, 239, 68, 68), 0.15);
+}
+
+/* Upcoming Step */
+.tracking-step.upcoming .step-indicator {
+  background-color: var(--surface, #ffffff);
+  border-color: var(--border, #e5e7eb);
+  color: var(--text-muted, #9ca3af);
+}
+
+.step-content {
+  padding: 0 0.5rem;
+}
+
+.step-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main, #111827);
+  margin-bottom: 0.35rem;
+  transition: color 0.3s ease;
+}
+
+.tracking-step.upcoming .step-label {
+  color: var(--text-muted, #9ca3af);
+  font-weight: 600;
+}
+
+.tracking-step.error-state .step-label {
+  color: var(--error, #ef4444);
+}
+
+.step-date {
+  font-size: 0.8rem;
+  color: var(--text-muted, #6b7280);
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.step-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted, #9ca3af);
+  margin-top: 0.35rem;
+  line-height: 1.3;
+}
+
+/* Mobile Vertical Stepper */
+@media (max-width: 768px) {
+  .premium-tracking-card {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .tracking-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .tracking-header-right {
+    text-align: left;
+    width: 100%;
+  }
+
+  .tracking-stepper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-top: 0;
+  }
+
+  .tracking-stepper::before {
+    left: 20px; /* (44px / 2) - (4px / 2) = 20px */
+    top: 22px; /* Center of first icon */
+    height: calc(100% - 44px);
+    width: 4px;
+  }
+
+  .tracking-progress-bar {
+    left: 20px !important;
+    top: 22px !important;
+    width: 4px !important;
+    height: calc(var(--progress-decimal) * calc(100% - 44px)) !important;
+    transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .tracking-step {
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+
+  .step-indicator {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0;
+    margin-right: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .step-content {
+    padding: 0;
+    padding-top: 0.25rem;
+  }
+
+  .step-label {
+    font-size: 1.05rem;
+  }
+
+  .step-date {
+    font-size: 0.85rem;
+    margin-top: 0.2rem;
+  }
+  
+  .step-desc {
+    font-size: 0.85rem;
+  }
+}

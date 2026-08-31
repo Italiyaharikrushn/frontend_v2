@@ -4,6 +4,7 @@ import Button from '../../components/common/Button';
 import { useOrderHistory } from '../../hooks/useOrderHistory';
 import Pagination from '../../components/common/Pagination';
 import { getCurrentDate } from '../../utils/dateUtils';
+import OrderTracking from '../../components/customer/OrderTracking';
 
 const CancellationTimer = ({ deadline }) => {
   const [timeLeft, setTimeLeft] = useState(deadline - getCurrentDate());
@@ -102,8 +103,10 @@ const OrderHistory = () => {
                   <p style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total: ₹{order.totalAmount}</p>
                 </div>
               </div>
+              
+              <OrderTracking order={order} />
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
                   Items: {order.totalItems || (order.orderItems ? order.orderItems.length : 0)}
                 </p>
