@@ -27,11 +27,18 @@ export const useCheckoutLogic = () => {
   const isLoadingAddresses = isLoadingShippingAddresses || isLoadingBillingAddresses;
   const { data: storePolicy } = useGetStorePolicyQuery();
 
+  const hasInitializedShippingRef = useRef(false);
+  const hasInitializedBillingRef = useRef(false);
+
   useEffect(() => {
-    if (shippingAddresses.length > 0 && selectedAddressId === 'new' && shippingAddresses.length >= 5) {
-      setSelectedAddressId(shippingAddresses[0]?.id || 'new');
+    if (!hasInitializedShippingRef.current && shippingAddresses.length > 0) {
+      hasInitializedShippingRef.current = true;
+      const defaultAddr = shippingAddresses.find(a => a.isDefault) || shippingAddresses[0];
+      if (defaultAddr?.id) {
+        setSelectedAddressId(defaultAddr.id);
+      }
     }
-  }, [shippingAddresses, selectedAddressId]);
+  }, [shippingAddresses]);
 
   const [couponCode, setCouponCode] = useState('');
   const [appliedCouponCode, setAppliedCouponCode] = useState(null);
@@ -99,10 +106,35 @@ export const useCheckoutLogic = () => {
   const [billingPhone, setBillingPhone] = useState('');
 
   useEffect(() => {
-    if (billingAddresses.length > 0 && selectedBillingAddressId === 'new' && billingAddresses.length >= 5) {
-      setSelectedBillingAddressId(billingAddresses[0]?.id || 'new');
+    if (!hasInitializedBillingRef.current && billingAddresses.length > 0) {
+      hasInitializedBillingRef.current = true;
+      const defaultBillAddr = billingAddresses.find(a => a.isDefault) || billingAddresses[0];
+      if (defaultBillAddr?.id) {
+        setSelectedBillingAddressId(defaultBillAddr.id);
+      }
     }
-  }, [billingAddresses, selectedBillingAddressId]);
+  }, [billingAddresses]);
+
+  const formatPhoneNumber = (str) => {
+    if (!str) return '';
+    let cleaned = str.trim();
+    if (!cleaned.startsWith('+')) {
+      const digits = cleaned.replace(/\D/g, '');
+      return digits ? `+91 ${digits}` : '';
+    }
+    const match = cleaned.match(/^(\+\d{1,4})\s*(.*)$/);
+    if (match) {
+      const code = match[1];
+      const digits = match[2].replace(/\D/g, '');
+      return digits ? `${code} ${digits}` : '';
+    }
+    return cleaned;
+  };
+
+  const isValidPhone = (str) => {
+    if (!str) return false;
+    return /^\+\d{1,4}\s\d{6,14}$/.test(str);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -125,15 +157,48 @@ export const useCheckoutLogic = () => {
       let finalBillingAddressId = null;
 
       if (selectedAddressId === 'new') {
+        if (shippingAddresses.length >= 5) {
+          pushToast('Maximum limit of 5 shipping addresses reached. Please select an existing address.', 'error');
+          setIsProcessing(false);
+          isSubmittingRef.current = false;
+          return;
+        }
+
         const rawPhone = e.target.phone?.value || phone || '';
+        const formattedPhone = formatPhoneNumber(rawPhone);
+
+        const firstName = e.target.firstName?.value?.trim() || '';
+        const lastName = e.target.lastName?.value?.trim() || '';
+        const streetAddress = e.target.address?.value?.trim() || '';
+        const city = e.target.city?.value?.trim() || '';
+        const state = e.target.state?.value?.trim() || '';
+        const postalCode = e.target.zip?.value?.trim() || '';
+        const country = e.target.country?.value || 'India';
+
+        if (!firstName || !lastName || !streetAddress || !city || !state || !postalCode) {
+          pushToast('Please fill out all required shipping address fields.', 'error');
+          setIsProcessing(false);
+          isSubmittingRef.current = false;
+          return;
+        }
+
+        if (!isValidPhone(formattedPhone)) {
+          pushToast('Please enter a valid contact number with country code (e.g. +91 9876543210).', 'error');
+          setIsProcessing(false);
+          isSubmittingRef.current = false;
+          return;
+        }
+
         const addressPayload = {
-          fullName: `${e.target.firstName?.value || ''} ${e.target.lastName?.value || ''}`.trim(),
-          streetAddress: e.target.address?.value || '',
-          city: e.target.city?.value || '',
-          state: e.target.state?.value || '',
-          postalCode: e.target.zip?.value || '',
-          country: e.target.country?.value || 'India',
-          phoneNumber: rawPhone.trim(),
+          fullName: `${firstName} ${lastName}`.trim(),
+          streetAddress,
+          city,
+          state,
+          postalCode,
+          country,
+          phoneNumber: formattedPhone,
+          addressType: 'HOME',
+          isDefault: false,
         };
 
         const savedAddress = await addShippingAddress(addressPayload).unwrap();
@@ -148,15 +213,48 @@ export const useCheckoutLogic = () => {
 
       if (!isBillingSameAsShipping) {
         if (selectedBillingAddressId === 'new') {
+          if (billingAddresses.length >= 5) {
+            pushToast('Maximum limit of 5 billing addresses reached. Please select an existing address.', 'error');
+            setIsProcessing(false);
+            isSubmittingRef.current = false;
+            return;
+          }
+
           const rawBillPhone = e.target.billingPhone?.value || billingPhone || '';
+          const formattedBillPhone = formatPhoneNumber(rawBillPhone);
+
+          const billingFirstName = e.target.billingFirstName?.value?.trim() || '';
+          const billingLastName = e.target.billingLastName?.value?.trim() || '';
+          const billingAddress = e.target.billingAddress?.value?.trim() || '';
+          const billingCity = e.target.billingCity?.value?.trim() || '';
+          const billingState = e.target.billingState?.value?.trim() || '';
+          const billingZip = e.target.billingZip?.value?.trim() || '';
+          const billingCountry = e.target.billingCountry?.value || 'India';
+
+          if (!billingFirstName || !billingLastName || !billingAddress || !billingCity || !billingState || !billingZip) {
+            pushToast('Please fill out all required billing address fields.', 'error');
+            setIsProcessing(false);
+            isSubmittingRef.current = false;
+            return;
+          }
+
+          if (!isValidPhone(formattedBillPhone)) {
+            pushToast('Please enter a valid billing contact number with country code.', 'error');
+            setIsProcessing(false);
+            isSubmittingRef.current = false;
+            return;
+          }
+
           const addressPayload = {
-            fullName: `${e.target.billingFirstName?.value || ''} ${e.target.billingLastName?.value || ''}`.trim(),
-            streetAddress: e.target.billingAddress?.value || '',
-            city: e.target.billingCity?.value || '',
-            state: e.target.billingState?.value || '',
-            postalCode: e.target.billingZip?.value || '',
-            country: e.target.billingCountry?.value || 'India',
-            phoneNumber: rawBillPhone.trim(),
+            fullName: `${billingFirstName} ${billingLastName}`.trim(),
+            streetAddress: billingAddress,
+            city: billingCity,
+            state: billingState,
+            postalCode: billingZip,
+            country: billingCountry,
+            phoneNumber: formattedBillPhone,
+            addressType: 'HOME',
+            isDefault: false,
           };
           const savedBillingAddress = await addBillingAddress(addressPayload).unwrap();
           if (!savedBillingAddress || !savedBillingAddress.id) {
@@ -173,7 +271,7 @@ export const useCheckoutLogic = () => {
       await finalizeOrder(finalAddressId, finalBillingAddressId);
     } catch (error) {
       console.error('Checkout failed:', error);
-      const msg = error?.data?.message || error?.message || 'Checkout failed. Please check your details.';
+      const msg = error?.data?.message || error?.data?.error || error?.message || 'Checkout failed. Please check your details.';
       pushToast(msg, 'error');
       setIsProcessing(false);
       isSubmittingRef.current = false;
