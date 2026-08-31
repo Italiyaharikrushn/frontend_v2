@@ -211,7 +211,7 @@ export const useCheckoutLogic = () => {
         }
 
         const options = {
-          key: import.meta.env.VITE_RAZORPAY_KEY || 'rzp_test_TSOJdXRvCzwUwJ',
+          key: import.meta.env.VITE_RAZORPAY_KEY,
           amount: Math.round((rzpResponse.totalAmount || total) * 100),
           currency: "INR",
           name: "Kiya Ecommerce",
