@@ -15,6 +15,7 @@ import { paymentApi } from '../api/paymentApi';
 import { reviewApi } from '../api/reviewApi';
 import { aboutUsApi } from '../api/aboutUsApi';
 import { costManagementApi } from '../api/costManagementApi';
+import { addressApi } from '../api/addressApi';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
 
@@ -36,6 +37,7 @@ const appReducer = combineReducers({
   [reviewApi.reducerPath]: reviewApi.reducer,
   [aboutUsApi.reducerPath]: aboutUsApi.reducer,
   [costManagementApi.reducerPath]: costManagementApi.reducer,
+  [addressApi.reducerPath]: addressApi.reducer,
 });
 
 const rootReducer = (state, action) => {
@@ -64,7 +66,8 @@ export const store = configureStore({
       paymentApi.middleware,
       reviewApi.middleware,
       aboutUsApi.middleware,
-      costManagementApi.middleware
+      costManagementApi.middleware,
+      addressApi.middleware
     ),
 });
 

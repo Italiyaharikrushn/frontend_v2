@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
-import { useAddAddressMutation, useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useGetUserAddressesQuery, useCreateRazorpayOrderMutation } from '../api/orderApi';
+import { useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useCreateRazorpayOrderMutation } from '../api/orderApi';
+import { useGetShippingAddressesQuery, useGetBillingAddressesQuery, useAddShippingAddressMutation, useAddBillingAddressMutation } from '../api/addressApi';
 import { useValidateCouponMutation } from '../api/couponApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
 import { useToast } from '../components/common/ToastProvider';
@@ -21,14 +22,16 @@ export const useCheckoutLogic = () => {
   const [showPaymentSection, setShowPaymentSection] = useState(false);
   const isSubmittingRef = useRef(false);
 
-  const { data: addresses = [], isLoading: isLoadingAddresses } = useGetUserAddressesQuery();
+  const { data: shippingAddresses = [], isLoading: isLoadingShippingAddresses } = useGetShippingAddressesQuery();
+  const { data: billingAddresses = [], isLoading: isLoadingBillingAddresses } = useGetBillingAddressesQuery();
+  const isLoadingAddresses = isLoadingShippingAddresses || isLoadingBillingAddresses;
   const { data: storePolicy } = useGetStorePolicyQuery();
 
   useEffect(() => {
-    if (addresses.length >= 5 && selectedAddressId === 'new') {
-      setSelectedAddressId(addresses[0]?.id || 'new');
+    if (shippingAddresses.length > 0 && selectedAddressId === 'new' && shippingAddresses.length >= 5) {
+      setSelectedAddressId(shippingAddresses[0]?.id || 'new');
     }
-  }, [addresses, selectedAddressId]);
+  }, [shippingAddresses, selectedAddressId]);
 
   const [couponCode, setCouponCode] = useState('');
   const [appliedCouponCode, setAppliedCouponCode] = useState(null);
@@ -56,7 +59,8 @@ export const useCheckoutLogic = () => {
     });
   }, [rawCartItems, allProducts]);
 
-  const [addAddress] = useAddAddressMutation();
+  const [addShippingAddress] = useAddShippingAddressMutation();
+  const [addBillingAddress] = useAddBillingAddressMutation();
   const [addToBackendCart] = useAddToBackendCartMutation();
   const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
@@ -95,10 +99,10 @@ export const useCheckoutLogic = () => {
   const [billingPhone, setBillingPhone] = useState('');
 
   useEffect(() => {
-    if (addresses.length >= 5 && selectedBillingAddressId === 'new') {
-      setSelectedBillingAddressId(addresses[0]?.id || 'new');
+    if (billingAddresses.length > 0 && selectedBillingAddressId === 'new' && billingAddresses.length >= 5) {
+      setSelectedBillingAddressId(billingAddresses[0]?.id || 'new');
     }
-  }, [addresses, selectedBillingAddressId]);
+  }, [billingAddresses, selectedBillingAddressId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -132,7 +136,7 @@ export const useCheckoutLogic = () => {
           phoneNumber: rawPhone.trim(),
         };
 
-        const savedAddress = await addAddress(addressPayload).unwrap();
+        const savedAddress = await addShippingAddress(addressPayload).unwrap();
         if (!savedAddress || !savedAddress.id) {
           throw new Error('Failed to save shipping address properly.');
         }
@@ -154,7 +158,7 @@ export const useCheckoutLogic = () => {
             country: e.target.billingCountry?.value || 'India',
             phoneNumber: rawBillPhone.trim(),
           };
-          const savedBillingAddress = await addAddress(addressPayload).unwrap();
+          const savedBillingAddress = await addBillingAddress(addressPayload).unwrap();
           if (!savedBillingAddress || !savedBillingAddress.id) {
             throw new Error('Failed to save billing address properly.');
           }
@@ -279,7 +283,7 @@ export const useCheckoutLogic = () => {
     cartItems, paymentMethod, setPaymentMethod, selectedAddressId, setSelectedAddressId,
     isProcessing, subtotal, shippingCharge, taxPercentage, taxAmount, total, handleSubmit, navigate, couponCode, setCouponCode,
     appliedCouponCode, discountAmount, couponError, validateCoupon, phone, setPhone,
-    addresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder,
+    shippingAddresses, billingAddresses, isLoadingAddresses, showPaymentModal, setShowPaymentModal, finalizeOrder,
     showPaymentSection, storePolicy,
     isBillingSameAsShipping, setIsBillingSameAsShipping, selectedBillingAddressId, setSelectedBillingAddressId,
     billingPhone, setBillingPhone

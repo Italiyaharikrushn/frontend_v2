@@ -77,36 +77,6 @@ export const orderApi = createApi({
 
 
         // Checkout flow endpoints
-        addAddress: builder.mutation({
-            query: (addressData) => ({
-                url: "/api/address/add",
-                method: "POST",
-                body: addressData
-            }),
-            invalidatesTags: ['Order']
-        }),
-
-        updateAddress: builder.mutation({
-            query: ({ id, ...addressData }) => ({
-                url: `/api/address/update/${id}`,
-                method: "PUT",
-                body: addressData
-            }),
-            invalidatesTags: ['Order']
-        }),
-
-        deleteAddress: builder.mutation({
-            query: (id) => ({
-                url: `/api/address/delete/${id}`,
-                method: "DELETE"
-            }),
-            invalidatesTags: ['Order']
-        }),
-
-        getUserAddresses: builder.query({
-            query: () => "/api/address/user",
-            providesTags: ['Order'],
-        }),
 
         addToBackendCart: builder.mutation({
             query: ({ productId, quantity, phoneModel }) => ({
@@ -205,10 +175,7 @@ export const {
     useMarkLabelsDownloadedMutation,
     useReturnCustomerOrderMutation,
     useCancelCustomerOrderMutation,
-    useAddAddressMutation,
-    useUpdateAddressMutation,
-    useDeleteAddressMutation,
-    useGetUserAddressesQuery,
+
     useAddToBackendCartMutation,
     useClearBackendCartMutation,
     useCheckoutOrderMutation,

@@ -1,7 +1,7 @@
 import { CreditCard, Wallet, User, MapPin, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PhoneInput from '../common/PhoneInput';
-import { useDeleteAddressMutation } from '../../api/orderApi';
+import { useDeleteShippingAddressMutation, useDeleteBillingAddressMutation } from '../../api/addressApi';
 import { useToast } from '../common/ToastProvider';
 import { useAlert } from '../common/AlertProvider';
 
@@ -10,7 +10,8 @@ const CheckoutForm = ({
   phone,
   setPhone,
   isLoadingAddresses,
-  addresses,
+  shippingAddresses,
+  billingAddresses,
   selectedAddressId,
   setSelectedAddressId,
   paymentMethod,
@@ -23,21 +24,31 @@ const CheckoutForm = ({
   billingPhone,
   setBillingPhone
 }) => {
-  const [deleteAddress] = useDeleteAddressMutation();
+  const [deleteShippingAddress] = useDeleteShippingAddressMutation();
+  const [deleteBillingAddress] = useDeleteBillingAddressMutation();
   const { pushToast } = useToast();
   const { confirm } = useAlert();
 
-  const handleDeleteAddress = async (e, addressId) => {
+  const handleDeleteAddress = async (e, addressId, type) => {
     e.preventDefault();
     e.stopPropagation();
     const shouldDelete = await confirm('Delete this saved address?');
     if (shouldDelete) {
       try {
-        await deleteAddress(addressId).unwrap();
-        pushToast('Address deleted', 'success');
-        if (selectedAddressId === addressId) {
-          const remaining = addresses.filter(a => a.id !== addressId);
-          setSelectedAddressId(remaining.length > 0 ? remaining[0].id : 'new');
+        if (type === 'shipping') {
+            await deleteShippingAddress(addressId).unwrap();
+            pushToast('Shipping address deleted', 'success');
+            if (selectedAddressId === addressId) {
+                const remaining = shippingAddresses.filter(a => a.id !== addressId);
+                setSelectedAddressId(remaining.length > 0 ? remaining[0].id : 'new');
+            }
+        } else {
+            await deleteBillingAddress(addressId).unwrap();
+            pushToast('Billing address deleted', 'success');
+            if (selectedBillingAddressId === addressId) {
+                const remaining = billingAddresses.filter(a => a.id !== addressId);
+                setSelectedBillingAddressId(remaining.length > 0 ? remaining[0].id : 'new');
+            }
         }
       } catch (err) {
         pushToast('Failed to delete address', 'error');
@@ -78,9 +89,9 @@ const CheckoutForm = ({
             </Link>
           </div>
 
-          {!isLoadingAddresses && addresses.length > 0 && (
+          {!isLoadingAddresses && shippingAddresses.length > 0 && (
             <div className="address-selector" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              {addresses.map(addr => (
+              {shippingAddresses.map(addr => (
                 <div key={addr.id} className={`payment-method-card ${selectedAddressId === addr.id ? 'active' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }} onClick={() => setSelectedAddressId(addr.id)}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
                     <input
@@ -102,7 +113,7 @@ const CheckoutForm = ({
 
                   <button
                     type="button"
-                    onClick={(e) => handleDeleteAddress(e, addr.id)}
+                    onClick={(e) => handleDeleteAddress(e, addr.id, 'shipping')}
                     title="Delete address"
                     style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.35rem', borderRadius: '4px' }}
                   >
@@ -111,7 +122,7 @@ const CheckoutForm = ({
                 </div>
               ))}
 
-              {addresses.length < 5 && (
+              {shippingAddresses.length < 5 && (
                 <label className={`payment-method-card ${selectedAddressId === 'new' ? 'active' : ''}`} style={{ justifyContent: 'flex-start', cursor: 'pointer', padding: '1rem' }}>
                   <input
                     type="radio"
@@ -124,7 +135,7 @@ const CheckoutForm = ({
                   <strong>Add a New Address</strong>
                 </label>
               )}
-              {addresses.length >= 5 && (
+              {shippingAddresses.length >= 5 && (
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
                   You have reached the maximum limit of 5 saved addresses. Please select one of the existing addresses.
                 </p>
@@ -184,9 +195,9 @@ const CheckoutForm = ({
 
           {!isBillingSameAsShipping && (
             <div className="fade-in">
-              {!isLoadingAddresses && addresses.length > 0 && (
+              {!isLoadingAddresses && billingAddresses.length > 0 && (
                 <div className="address-selector" style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  {addresses.map(addr => (
+                  {billingAddresses.map(addr => (
                     <div key={`billing-${addr.id}`} className={`payment-method-card ${selectedBillingAddressId === addr.id ? 'active' : ''}`} style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'left', cursor: 'pointer', height: 'auto', padding: '1rem', alignItems: 'flex-start' }} onClick={() => setSelectedBillingAddressId(addr.id)}>
                       <div style={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
                         <input
@@ -205,10 +216,19 @@ const CheckoutForm = ({
                           </span>
                         </div>
                       </div>
+
+                      <button
+                        type="button"
+                        onClick={(e) => handleDeleteAddress(e, addr.id, 'billing')}
+                        title="Delete address"
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '0.35rem', borderRadius: '4px' }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   ))}
 
-                  {addresses.length < 5 && (
+                  {billingAddresses.length < 5 && (
                     <label className={`payment-method-card ${selectedBillingAddressId === 'new' ? 'active' : ''}`} style={{ justifyContent: 'flex-start', cursor: 'pointer', padding: '1rem' }}>
                       <input
                         type="radio"
