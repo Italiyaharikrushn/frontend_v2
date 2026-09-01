@@ -10,7 +10,9 @@ export const useAdminDiscount = (products) => {
 
   const [selectedProductIds, setSelectedProductIds] = useState(new Set());
   const [discountPercentage, setDiscountPercentage] = useState('');
-  const [validForDays, setValidForDays] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isActive, setIsActive] = useState(true);
   const [categoryInputs, setCategoryInputs] = useState({});
   const [selectedCategories, setSelectedCategories] = useState(new Set());
 
@@ -69,13 +71,17 @@ export const useAdminDiscount = (products) => {
             applyCategoryDiscount({
               category: category,
               discountPercentage: percentage,
-              validForDays: validForDays ? parseInt(validForDays) : null
+              startDate: startDate ? new Date(startDate).toISOString() : null,
+              endDate: endDate ? new Date(endDate).toISOString() : null,
+              isActive: isActive
             }).unwrap()
           )
         );
         pushToast(`Discount applied successfully to selected categories`, 'success');
         setDiscountPercentage('');
-        setValidForDays('');
+        setStartDate('');
+        setEndDate('');
+        setIsActive(true);
         setSelectedCategories(new Set());
       } catch (err) {
         console.error('Failed to apply category discounts:', err);
@@ -90,12 +96,16 @@ export const useAdminDiscount = (products) => {
         await applyDiscount({
           productIds: Array.from(selectedProductIds),
           discountPercentage: percentage,
-          validForDays: validForDays ? parseInt(validForDays) : null
+          startDate: startDate ? new Date(startDate).toISOString() : null,
+          endDate: endDate ? new Date(endDate).toISOString() : null,
+          isActive: isActive
         }).unwrap();
         pushToast('Discount applied successfully!', 'success');
         setSelectedProductIds(new Set());
         setDiscountPercentage('');
-        setValidForDays('');
+        setStartDate('');
+        setEndDate('');
+        setIsActive(true);
       } catch (err) {
         console.error('Failed to apply discount:', err);
         pushToast('Failed to apply discount.', 'error');
@@ -115,12 +125,14 @@ export const useAdminDiscount = (products) => {
       await applyCategoryDiscount({
         category: category,
         discountPercentage: percentage,
-        validForDays: inputs.validForDays ? parseInt(inputs.validForDays) : null
+        startDate: inputs.startDate ? new Date(inputs.startDate).toISOString() : null,
+        endDate: inputs.endDate ? new Date(inputs.endDate).toISOString() : null,
+        isActive: inputs.isActive !== undefined ? inputs.isActive : true
       }).unwrap();
       pushToast(`Discount applied successfully to category: ${category}`, 'success');
       setCategoryInputs(prev => ({
         ...prev,
-        [category]: { discountPercentage: '', validForDays: '' }
+        [category]: { discountPercentage: '', startDate: '', endDate: '', isActive: true }
       }));
     } catch (err) {
       console.error('Failed to apply category discount:', err);
@@ -132,8 +144,12 @@ export const useAdminDiscount = (products) => {
     selectedProductIds,
     discountPercentage,
     setDiscountPercentage,
-    validForDays,
-    setValidForDays,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    isActive,
+    setIsActive,
     selectedCategories,
     setSelectedCategories,
     categoryInputs,

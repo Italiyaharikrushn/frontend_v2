@@ -8,8 +8,12 @@ const BulkDiscountPanel = ({
   selectedProductIds,
   discountPercentage,
   setDiscountPercentage,
-  validForDays,
-  setValidForDays,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  isActive,
+  setIsActive,
   categoryStats,
   selectedCategories,
   setSelectedCategories,
@@ -80,22 +84,37 @@ const BulkDiscountPanel = ({
           </div>
           <input
             type="number"
-            placeholder="% Discount"
+            placeholder="% Disc."
             value={discountPercentage}
             onChange={(e) => setDiscountPercentage(e.target.value)}
             className="admin-discount-input"
-            style={{ width: '120px' }}
+            style={{ width: '80px' }}
             min="1" max="100"
           />
-          <input
-            type="number"
-            placeholder="Valid for (Days)"
-            value={validForDays}
-            onChange={(e) => setValidForDays(e.target.value)}
-            className="admin-discount-input"
-            style={{ width: '140px' }}
-            min="1"
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Start</span>
+            <input
+              type="datetime-local"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="admin-discount-input"
+              style={{ width: '130px', padding: '0.4rem' }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem' }}>
+            <span style={{ color: 'var(--text-muted)' }}>End</span>
+            <input
+              type="datetime-local"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="admin-discount-input"
+              style={{ width: '130px', padding: '0.4rem' }}
+            />
+          </div>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', fontSize: '0.85rem' }}>
+            <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
+            Active
+          </label>
           <Button onClick={handleApplyDiscount} variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }} disabled={isApplying}>
             <Tag size={18} /> Apply Discount
           </Button>
@@ -121,7 +140,8 @@ const BulkDiscountPanel = ({
                 <th>Product Details</th>
                 <th>SKU</th>
                 <th>Original Price</th>
-                <th>Discount Price</th>
+                <th>Discount Config</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -152,7 +172,23 @@ const BulkDiscountPanel = ({
                   <td>{product.sku || 'N/A'}</td>
                   <td style={{ fontWeight: '500' }}>₹{product.price}</td>
                   <td style={{ fontWeight: '500', color: 'var(--success)' }}>
-                    {product.discountPrice ? `₹${product.discountPrice}` : 'None'}
+                    {product.configuredDiscountPrice ? `₹${product.configuredDiscountPrice} (${product.discountPercentage || 0}%)` : 'None'}
+                  </td>
+                  <td>
+                    <span style={{ 
+                      padding: '0.25rem 0.5rem', 
+                      borderRadius: 'var(--radius-sm)', 
+                      fontSize: '0.75rem', 
+                      fontWeight: '600',
+                      background: product.discountStatus === 'ACTIVE' ? 'var(--success-light)' : 
+                                  product.discountStatus === 'SCHEDULED' ? 'var(--warning-light)' : 
+                                  product.discountStatus === 'EXPIRED' ? 'var(--danger-light)' : 'var(--surface-hover)',
+                      color: product.discountStatus === 'ACTIVE' ? 'var(--success)' : 
+                             product.discountStatus === 'SCHEDULED' ? 'var(--warning)' : 
+                             product.discountStatus === 'EXPIRED' ? 'var(--danger)' : 'var(--text-muted)'
+                    }}>
+                      {product.discountStatus || 'NONE'}
+                    </span>
                   </td>
                 </tr>
               )) : (

@@ -43,8 +43,12 @@ const AdminDiscount = () => {
             selectedProductIds={discountLogic.selectedProductIds}
             discountPercentage={discountLogic.discountPercentage}
             setDiscountPercentage={discountLogic.setDiscountPercentage}
-            validForDays={discountLogic.validForDays}
-            setValidForDays={discountLogic.setValidForDays}
+            startDate={discountLogic.startDate}
+            setStartDate={discountLogic.setStartDate}
+            endDate={discountLogic.endDate}
+            setEndDate={discountLogic.setEndDate}
+            isActive={discountLogic.isActive}
+            setIsActive={discountLogic.setIsActive}
             categoryStats={discountLogic.categoryStats}
             selectedCategories={discountLogic.selectedCategories}
             setSelectedCategories={discountLogic.setSelectedCategories}
