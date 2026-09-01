@@ -17,6 +17,7 @@ const AdminReports = () => {
         productPerformanceData,
         productSalesReportData,
         isProductSalesReportLoading,
+        topProductsLimit, setTopProductsLimit,
         reportMonth, setReportMonth,
         reportYear, setReportYear,
         days, setDays,
@@ -151,7 +152,21 @@ const AdminReports = () => {
                         </div>
 
                         <div className="glass-panel chart-card">
-                            <h2 className="chart-title">Top Products Performance (Views vs Sales)</h2>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <h2 className="chart-title" style={{ margin: 0 }}>Top Products Performance (Views vs Sales)</h2>
+                                <div className="admin-form-field" style={{ margin: 0, minWidth: '100px' }}>
+                                    <select
+                                        style={{ padding: '0.4rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', backgroundColor: 'var(--surface)' }}
+                                        value={topProductsLimit}
+                                        onChange={(e) => setTopProductsLimit(Number(e.target.value))}
+                                    >
+                                        <option value={5}>Top 5</option>
+                                        <option value={10}>Top 10</option>
+                                        <option value={15}>Top 15</option>
+                                        <option value={20}>Top 20</option>
+                                    </select>
+                                </div>
+                            </div>
                             <ResponsiveContainer width="100%" height={280}>
                                 <ComposedChart data={productPerformanceData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} />

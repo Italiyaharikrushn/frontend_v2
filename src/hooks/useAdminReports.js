@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery, useGetProductSalesReportQuery } from '../api/orderApi';
+import { useGetSellerAnalyticsQuery, useGetSellerOrdersQuery, useGetProductSalesReportQuery, useGetTopProductsPerformanceQuery } from '../api/orderApi';
 import { useGetProductsQuery } from '../api/productApi';
 import { useGetCustomersQuery } from '../api/authApi';
 import { getCurrentMonth, getCurrentYear } from '../utils/dateUtils';
@@ -8,6 +8,7 @@ export const useAdminReports = () => {
     const [days, setDays] = useState(30);
     const [reportMonth, setReportMonth] = useState(getCurrentMonth());
     const [reportYear, setReportYear] = useState(getCurrentYear());
+    const [topProductsLimit, setTopProductsLimit] = useState(5);
 
     const { data: analyticsData = [], isLoading: isAnalyticsLoading, isError: isAnalyticsError, refetch } = useGetSellerAnalyticsQuery(days);
     const { data: productsData = [], isLoading: isProductsLoading } = useGetProductsQuery();
@@ -19,11 +20,13 @@ export const useAdminReports = () => {
         { skip: !reportYear }
     );
 
+    const { data: topProductsPerformanceData = [], isLoading: isTopProductsLoading } = useGetTopProductsPerformanceQuery({ days, limit: topProductsLimit });
+
     const products = Array.isArray(productsData) ? productsData : (productsData?.content || []);
     const customers = Array.isArray(customersData) ? customersData : (customersData?.content || []);
     const orders = Array.isArray(ordersData) ? ordersData : (ordersData?.content || []);
 
-    const isLoading = isAnalyticsLoading || isProductsLoading || isCustomersLoading || isOrdersLoading;
+    const isLoading = isAnalyticsLoading || isProductsLoading || isCustomersLoading || isOrdersLoading || isTopProductsLoading;
     const isError = isAnalyticsError;
 
     // 1. Sales Data
@@ -88,27 +91,7 @@ export const useAdminReports = () => {
     }, [salesData]);
 
     // 5. Product Performance (Views vs Sales)
-    const productPerformanceData = useMemo(() => {
-        const productSales = {};
-        orders.forEach(order => {
-            if (order.orderItems) {
-                order.orderItems.forEach(item => {
-                    if (item.product && item.product.id) {
-                        productSales[item.product.id] = (productSales[item.product.id] || 0) + item.quantity;
-                    }
-                });
-            }
-        });
-
-        const performance = products.map(p => ({
-            name: p.title?.substring(0, 15) + '...',
-            views: p.views || 0,
-            sales: productSales[p.id] || 0
-        }));
-
-        // Sort by sales descending and take top 5
-        return performance.sort((a, b) => b.sales - a.sales).slice(0, 5);
-    }, [products, orders]);
+    // This is now fetched directly from the backend via useGetTopProductsPerformanceQuery
 
     return {
         products,
@@ -116,7 +99,9 @@ export const useAdminReports = () => {
         inventoryData,
         customerGrowthData,
         targetData,
-        productPerformanceData,
+        productPerformanceData: topProductsPerformanceData,
+        topProductsLimit,
+        setTopProductsLimit,
         productSalesReportData,
         isProductSalesReportLoading,
         reportMonth, setReportMonth,
