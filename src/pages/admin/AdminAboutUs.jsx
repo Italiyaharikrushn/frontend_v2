@@ -41,7 +41,7 @@ const AdminAboutUs = () => {
     e.preventDefault();
     try {
       let finalImageUrl = formData.imageUrl;
-      
+
       if (formData.id) {
         await updateWork({ ...formData, imageUrl: finalImageUrl }).unwrap();
       } else {
@@ -90,8 +90,8 @@ const AdminAboutUs = () => {
                 <h3 className="work-title">{work.title}</h3>
                 <p className="work-desc">{work.content}</p>
                 <div className="work-actions">
-                  <button className="btn-icon-edit" onClick={() => handleOpenModal(work)}><Edit size={16}/></button>
-                  <button className="btn-icon-delete" onClick={() => handleDelete(work.id)}><Trash2 size={16}/></button>
+                  <button className="btn-icon-edit" onClick={() => handleOpenModal(work)}><Edit size={16} /></button>
+                  <button className="btn-icon-delete" onClick={() => handleDelete(work.id)}><Trash2 size={16} /></button>
                 </div>
               </div>
             </div>
@@ -109,11 +109,11 @@ const AdminAboutUs = () => {
             <form onSubmit={handleSave} className="modal-body">
               <div className="form-group">
                 <label>Title</label>
-                <input required type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} placeholder="e.g. Started our journey..." />
+                <input required type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="e.g. Started our journey..." />
               </div>
               <div className="form-group">
                 <label>Type / Phase</label>
-                <select value={formData.type} onChange={e => setFormData({...formData, type: e.target.value})}>
+                <select value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })}>
                   <option value="PAST">Past</option>
                   <option value="PRESENT">Present</option>
                   <option value="FUTURE">Future</option>
@@ -122,11 +122,11 @@ const AdminAboutUs = () => {
               </div>
               <div className="form-group">
                 <label>Image URL</label>
-                <input type="text" value={formData.imageUrl} onChange={e => setFormData({...formData, imageUrl: e.target.value})} placeholder="https://example.com/image.jpg" />
+                <input type="text" value={formData.imageUrl} onChange={e => setFormData({ ...formData, imageUrl: e.target.value })} placeholder="https://example.com/image.jpg" />
               </div>
               <div className="form-group">
                 <label>Content (Tip)</label>
-                <textarea required rows={4} value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} placeholder="Describe this milestone..." />
+                <textarea required rows={4} value={formData.content} onChange={e => setFormData({ ...formData, content: e.target.value })} placeholder="Describe this milestone..." />
               </div>
               <div className="modal-footer">
                 <Button variant="outline" type="button" onClick={() => setShowModal(false)}>Cancel</Button>

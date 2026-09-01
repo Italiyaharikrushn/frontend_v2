@@ -108,10 +108,10 @@ const DailyPurchaseTab = () => {
             </div>
 
             {pageData?.totalPages > 1 && (
-                <Pagination 
-                    currentPage={page} 
-                    totalPages={pageData.totalPages} 
-                    onPageChange={setPage} 
+                <Pagination
+                    currentPage={page}
+                    totalPages={pageData.totalPages}
+                    onPageChange={setPage}
                 />
             )}
 

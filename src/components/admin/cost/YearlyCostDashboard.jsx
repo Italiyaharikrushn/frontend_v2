@@ -46,7 +46,7 @@ const YearlyCostDashboard = () => {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        
+
         link.setAttribute("download", `cost-report-${filters.year}.csv`);
         document.body.appendChild(link);
         link.click();
@@ -61,7 +61,7 @@ const YearlyCostDashboard = () => {
         <div>
             <div className="cost-header-actions" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <h2 className="text-xl font-semibold" style={{ margin: 0 }}>Yearly Expense Report</h2>
-                
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <label style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-main)', margin: 0 }}>Year:</label>
@@ -105,33 +105,33 @@ const YearlyCostDashboard = () => {
 
                         <div style={{ marginTop: '1rem', maxHeight: '400px', overflowY: 'auto' }} className="custom-scrollbar">
                             <table className="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>Month</th>
-                                    <th style={{ textAlign: 'right' }}>Purchases</th>
-                                    <th style={{ textAlign: 'right' }}>Shipping</th>
-                                    <th style={{ textAlign: 'right' }}>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {report.monthlyBreakdown && Object.values(report.monthlyBreakdown).map((m) => (
-                                    <tr key={m.monthNumber}>
-                                        <td>{m.monthName}</td>
-                                        <td style={{ textAlign: 'right' }}>{formatCurrency(m.totalPurchases)}</td>
-                                        <td style={{ textAlign: 'right' }}>{formatCurrency(m.totalShipping)}</td>
-                                        <td style={{ textAlign: 'right' }} className="font-semibold text-primary">{formatCurrency(m.total)}</td>
+                                <thead>
+                                    <tr>
+                                        <th>Month</th>
+                                        <th style={{ textAlign: 'right' }}>Purchases</th>
+                                        <th style={{ textAlign: 'right' }}>Shipping</th>
+                                        <th style={{ textAlign: 'right' }}>Total</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                            <tfoot>
-                                <tr style={{ background: 'var(--surface-alt)', fontWeight: 'bold' }}>
-                                    <td>Total Yearly Expense</td>
-                                    <td style={{ textAlign: 'right' }}>{formatCurrency(report.totalPurchaseExpense)}</td>
-                                    <td style={{ textAlign: 'right' }}>{formatCurrency(report.totalShippingExpense)}</td>
-                                    <td style={{ textAlign: 'right' }} className="text-primary">{formatCurrency(report.totalOverallExpense)}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {report.monthlyBreakdown && Object.values(report.monthlyBreakdown).map((m) => (
+                                        <tr key={m.monthNumber}>
+                                            <td>{m.monthName}</td>
+                                            <td style={{ textAlign: 'right' }}>{formatCurrency(m.totalPurchases)}</td>
+                                            <td style={{ textAlign: 'right' }}>{formatCurrency(m.totalShipping)}</td>
+                                            <td style={{ textAlign: 'right' }} className="font-semibold text-primary">{formatCurrency(m.total)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                <tfoot>
+                                    <tr style={{ background: 'var(--surface-alt)', fontWeight: 'bold' }}>
+                                        <td>Total Yearly Expense</td>
+                                        <td style={{ textAlign: 'right' }}>{formatCurrency(report.totalPurchaseExpense)}</td>
+                                        <td style={{ textAlign: 'right' }}>{formatCurrency(report.totalShippingExpense)}</td>
+                                        <td style={{ textAlign: 'right' }} className="text-primary">{formatCurrency(report.totalOverallExpense)}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
                         </div>
                     </div>
                 </>

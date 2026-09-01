@@ -71,7 +71,8 @@
 .tracking-stepper::before {
   content: '';
   position: absolute;
-  top: 25px; /* Center of 44px icon (22px) + top padding */
+  top: 25px;
+  /* Center of 44px icon (22px) + top padding */
   left: calc(50% / var(--step-count));
   width: calc(100% - (100% / var(--step-count)));
   height: 4px;
@@ -196,7 +197,7 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .tracking-header-right {
     text-align: left;
     width: 100%;
@@ -210,8 +211,10 @@
   }
 
   .tracking-stepper::before {
-    left: 20px; /* (44px / 2) - (4px / 2) = 20px */
-    top: 22px; /* Center of first icon */
+    left: 20px;
+    /* (44px / 2) - (4px / 2) = 20px */
+    top: 22px;
+    /* Center of first icon */
     height: calc(100% - 44px);
     width: 4px;
   }
@@ -252,7 +255,7 @@
     font-size: 0.85rem;
     margin-top: 0.2rem;
   }
-  
+
   .step-desc {
     font-size: 0.85rem;
   }

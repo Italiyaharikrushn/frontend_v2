@@ -124,7 +124,9 @@
     color: var(--text-main);
 }
 
-.cost-form-input, .cost-form-select, .cost-form-textarea {
+.cost-form-input,
+.cost-form-select,
+.cost-form-textarea {
     width: 100%;
     padding: 0.5rem 0.75rem;
     border: 1px solid var(--border);
@@ -170,7 +172,8 @@
 }
 
 .cost-btn-submit:hover {
-    background: var(--primary-dark, #bd9a5f); /* Fallback dark gold */
+    background: var(--primary-dark, #bd9a5f);
+    /* Fallback dark gold */
 }
 
 /* Dashboard Specifics */
@@ -272,20 +275,24 @@
     border-radius: 8px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
 .cost-table-header:hover {
     background: var(--surface-alt);
     border-color: var(--primary);
 }
+
 .cost-table-header h3 {
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--text-main);
 }
+
 .cost-table-header svg {
     color: var(--text-muted);
     transition: color 0.2s ease;
 }
+
 .cost-table-header:hover svg {
     color: var(--primary);
 }
@@ -300,4 +307,3 @@
     background-size: 1rem;
     padding-right: 2.5rem;
 }
-

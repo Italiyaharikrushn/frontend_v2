@@ -11,7 +11,7 @@ export const useProducts = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  
+
   const category = queryParams.get('category');
   const searchQuery = queryParams.get('search');
   const minPrice = queryParams.get('minPrice') || '';
@@ -22,7 +22,7 @@ export const useProducts = () => {
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { pushToast } = useToast();
-  
+
   const [quickViewProductId, setQuickViewProductId] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [page, setPage] = useState(0);
@@ -44,8 +44,8 @@ export const useProducts = () => {
     }
   };
 
-  useEffect(() => { 
-    setPage(0); 
+  useEffect(() => {
+    setPage(0);
   }, [category, searchQuery, minPrice, maxPrice, inStock, sortBy, sortDir]);
 
   const handleQuantityChange = (id, delta) => {
@@ -86,7 +86,7 @@ export const useProducts = () => {
     sortBy,
     sortDir
   });
-  
+
   const products = data.content || [];
   const totalPages = data.totalPages || 0;
 
@@ -130,7 +130,7 @@ export const useProducts = () => {
 
   const applyFilters = (filters) => {
     const params = new URLSearchParams(location.search);
-    
+
     if (filters.category !== undefined) {
       if (filters.category === "All") {
         params.delete('category');
@@ -138,7 +138,7 @@ export const useProducts = () => {
         params.set('category', filters.category.toLowerCase());
       }
     }
-    
+
     if (filters.minPrice !== undefined) {
       if (filters.minPrice) params.set('minPrice', filters.minPrice); else params.delete('minPrice');
     }
@@ -190,7 +190,7 @@ export const useProducts = () => {
     handleAddToCart,
     handleCategorySelect,
     handleProductClick,
-    
+
     // New Filter props
     minPrice,
     maxPrice,

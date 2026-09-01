@@ -48,16 +48,16 @@ const AdminDeliveries = () => {
             <p style={{ color: 'var(--text-muted)' }}>View delivered orders and their details.</p>
           </div>
           <div>
-            <input 
-              type="text" 
-              placeholder="Search deliveries..." 
+            <input
+              type="text"
+              placeholder="Search deliveries..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              style={{ 
-                width: '100%', 
-                maxWidth: '300px', 
-                padding: '0.75rem', 
-                borderRadius: '8px', 
+              style={{
+                width: '100%',
+                maxWidth: '300px',
+                padding: '0.75rem',
+                borderRadius: '8px',
                 border: '1px solid var(--border-color, #ccc)',
                 backgroundColor: 'var(--bg-main, #fff)',
                 color: 'var(--text-main, #000)'
@@ -87,7 +87,7 @@ const AdminDeliveries = () => {
                   </td>
                 </tr>
               ) : orders.length > 0 ? (
-                orders.flatMap((order) => 
+                orders.flatMap((order) =>
                   order.orderItems && order.orderItems.length > 0 ? (
                     order.orderItems.map((item, index) => (
                       <tr key={`${order.id}-${index}`}>
@@ -101,8 +101,8 @@ const AdminDeliveries = () => {
                         <td>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             {item.product?.images?.[0] || item.imageUrl ? (
-                              <img 
-                                src={item.product?.images?.[0] || item.imageUrl} 
+                              <img
+                                src={item.product?.images?.[0] || item.imageUrl}
                                 alt={item.productName}
                                 style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
                               />

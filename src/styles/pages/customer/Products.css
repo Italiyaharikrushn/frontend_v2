@@ -201,7 +201,8 @@
   flex: 1 1 200px;
 }
 
-.filter-group label, .price-range label {
+.filter-group label,
+.price-range label {
   font-size: 1.05rem;
   font-weight: 800;
   color: var(--text-main);
@@ -318,12 +319,13 @@
     align-items: stretch;
     gap: 1.5rem;
   }
-  
-  .filter-group, .price-range {
+
+  .filter-group,
+  .price-range {
     flex: none;
     width: 100%;
   }
-  
+
   .filter-actions {
     flex-direction: column;
     align-items: stretch;

@@ -133,7 +133,12 @@ img {
   display: block;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-sans);
   font-weight: 700;
   color: var(--text-main);
@@ -209,9 +214,17 @@ textarea:focus-visible {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeIn {
@@ -219,6 +232,7 @@ textarea:focus-visible {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -248,9 +262,17 @@ textarea:focus-visible {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.toast-info { background: linear-gradient(135deg, var(--info) 0%, #0284c7 100%); }
-.toast-success { background: linear-gradient(135deg, var(--success) 0%, #059669 100%); }
-.toast-error { background: linear-gradient(135deg, var(--error) 0%, #be123c 100%); }
+.toast-info {
+  background: linear-gradient(135deg, var(--info) 0%, #0284c7 100%);
+}
+
+.toast-success {
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+}
+
+.toast-error {
+  background: linear-gradient(135deg, var(--error) 0%, #be123c 100%);
+}
 
 .skeleton-card {
   border-radius: var(--radius-lg);
@@ -266,7 +288,7 @@ textarea:focus-visible {
 .skeleton-media {
   height: 190px;
   border-radius: var(--radius-md);
-  background: linear-gradient(90deg, rgba(var(--primary-rgb),0.06) 25%, rgba(var(--primary-rgb),0.16) 50%, rgba(var(--primary-rgb),0.06) 75%);
+  background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.06) 25%, rgba(var(--primary-rgb), 0.16) 50%, rgba(var(--primary-rgb), 0.06) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -274,23 +296,38 @@ textarea:focus-visible {
 .skeleton-line {
   height: 12px;
   border-radius: 999px;
-  background: linear-gradient(90deg, rgba(var(--primary-rgb),0.06) 25%, rgba(var(--primary-rgb),0.16) 50%, rgba(var(--primary-rgb),0.06) 75%);
+  background: linear-gradient(90deg, rgba(var(--primary-rgb), 0.06) 25%, rgba(var(--primary-rgb), 0.16) 50%, rgba(var(--primary-rgb), 0.06) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
-.skeleton-line.short { width: 40%; }
-.skeleton-line.medium { width: 70%; }
+.skeleton-line.short {
+  width: 40%;
+}
+
+.skeleton-line.medium {
+  width: 70%;
+}
 
 @keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
 }
 
 /* HIDE VISUAL SCROLLBAR WHILE PRESERVING FULL SCROLLING FUNCTIONALITY */
-html, body, *, ::-webkit-scrollbar {
-  -ms-overflow-style: none; /* IE & Edge */
-  scrollbar-width: none; /* Firefox */
+html,
+body,
+*,
+::-webkit-scrollbar {
+  -ms-overflow-style: none;
+  /* IE & Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 ::-webkit-scrollbar {
@@ -311,6 +348,7 @@ html, body, *, ::-webkit-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .no-scrollbar::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
@@ -336,15 +374,29 @@ html, body, *, ::-webkit-scrollbar {
 
 /* Touch Device Target Optimizations */
 @media (pointer: coarse) {
-  button, input, select, a.btn, .sidebar-link, .nav-link {
+
+  button,
+  input,
+  select,
+  a.btn,
+  .sidebar-link,
+  .nav-link {
     min-height: 44px;
   }
 }
 
 /* Responsive Typography Clamping */
-h1 { font-size: clamp(1.75rem, 4.5vw, 3rem); }
-h2 { font-size: clamp(1.4rem, 3.5vw, 2.25rem); }
-h3 { font-size: clamp(1.15rem, 2.5vw, 1.6rem); }
+h1 {
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3.5vw, 2.25rem);
+}
+
+h3 {
+  font-size: clamp(1.15rem, 2.5vw, 1.6rem);
+}
 
 /* Responsive Breakpoints & Device Helpers */
 @media (max-width: 480px) {
@@ -366,6 +418,7 @@ h3 { font-size: clamp(1.15rem, 2.5vw, 1.6rem); }
   -webkit-appearance: none;
   margin: 0;
 }
+
 .no-spin-button[type=number] {
   -moz-appearance: textfield;
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import '@/styles/components/Button.css';
 
-const Button = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'md', 
-  className = '', 
+const Button = ({
+  children,
+  variant = 'primary',
+  size = 'md',
+  className = '',
   fullWidth = false,
   isLoading = false,
-  ...props 
+  ...props
 }) => {
   const classes = `btn btn-${variant} btn-${size} ${fullWidth ? 'btn-full' : ''} ${isLoading ? 'btn-loading' : ''} ${className}`;
 

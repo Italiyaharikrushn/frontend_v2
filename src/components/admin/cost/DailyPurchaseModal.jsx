@@ -38,7 +38,7 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        
+
         setFormData(prev => {
             const nextState = { ...prev, [name]: value };
             // If unit is changing away from Kg, make sure quantity becomes an integer
@@ -63,7 +63,7 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
         if (formData.unit === 'Pair') price = parseInt(formData.pricePerPair, 10);
 
         if (isNaN(price) || price <= 0) return 0.00;
-        
+
         return (price * qty).toFixed(2);
     };
 
@@ -73,7 +73,7 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         if (!formData.costDate || !formData.productName || !formData.unit || !formData.quantity) {
             toast.error("Please fill all required fields");
             return;
@@ -192,21 +192,21 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
                         <div className="cost-form-group" style={{ flex: 1 }}>
                             <label>Quantity Purchased *</label>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <input 
-                                    type="number" 
-                                    name="quantity" 
-                                    value={formData.quantity} 
-                                    onChange={handleChange} 
-                                    min={formData.unit === 'Kg' ? "0.1" : "1"} 
-                                    step={formData.unit === 'Kg' ? "0.1" : "1"} 
-                                    onKeyDown={(e) => { 
+                                <input
+                                    type="number"
+                                    name="quantity"
+                                    value={formData.quantity}
+                                    onChange={handleChange}
+                                    min={formData.unit === 'Kg' ? "0.1" : "1"}
+                                    step={formData.unit === 'Kg' ? "0.1" : "1"}
+                                    onKeyDown={(e) => {
                                         if (formData.unit !== 'Kg' && (e.key === '.' || e.key === 'e')) {
                                             e.preventDefault();
-                                        } 
+                                        }
                                     }}
-                                    required 
-                                    className="cost-form-input" 
-                                    style={{ flexGrow: 1 }} 
+                                    required
+                                    className="cost-form-input"
+                                    style={{ flexGrow: 1 }}
                                 />
                                 <span style={{ minWidth: '80px', color: 'var(--text-muted)', fontWeight: 500 }}>{formData.unit}</span>
                             </div>

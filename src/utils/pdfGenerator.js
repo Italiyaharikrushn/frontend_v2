@@ -53,13 +53,13 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
 
         // --- TOP SECTION ---
         const topSectionY = currentY;
-        
+
         // COMPANY INFO
         let companyX = margin;
         doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
         doc.text(storeName, companyX, currentY + 4);
-        
+
         doc.setFontSize(8);
         doc.setFont('helvetica', 'normal');
         let companyAddr = '';
@@ -67,7 +67,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
         if (contacts?.address?.city) companyAddr += contacts.address.city + ', ';
         if (contacts?.address?.state) companyAddr += contacts.address.state + ' ';
         if (contacts?.address?.pincode) companyAddr += contacts.address.pincode;
-        
+
         const splitCompanyAddr = doc.splitTextToSize(companyAddr || 'Store Address Details', midX - companyX - 5);
         doc.text(splitCompanyAddr, companyX, currentY + 9);
 
@@ -77,7 +77,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
         doc.text('Invoice No', midX + 5, currentY + 4);
         doc.text('Date of Invoice', midX + 35, currentY + 4);
         doc.text('Place of Supply', midX + 65, currentY + 4);
-        
+
         doc.setFont('helvetica', 'normal');
         doc.text(order.orderId || `INV-${order.id}`, midX + 5, currentY + 8);
         doc.text(new Date(order.orderDate).toLocaleDateString('en-GB'), midX + 35, currentY + 8);
@@ -86,16 +86,16 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
         // Vertical Divider line between left and right top sections
         doc.setDrawColor(220, 220, 220);
         doc.setLineWidth(0.2);
-        
+
         // Dynamically compute the height to fit the text exactly, without extra blank space
         const leftSideHeight = splitCompanyAddr.length * 4 + 7;
         const rightSideHeight = 10; // "Invoice No" and "Date" only take up to Y+8
         const topSectionHeight = Math.max(leftSideHeight, rightSideHeight);
-        
+
         doc.line(midX, currentY, midX, currentY + topSectionHeight);
-        
+
         currentY += topSectionHeight + 4;
-        
+
         // Horizontal line separator
         doc.line(margin, currentY, pageWidth - margin, currentY);
 
@@ -125,7 +125,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
 
         const splitBillAddr = doc.splitTextToSize(billAddrStr, (contentWidth / 2) - 10);
         doc.text(splitBillAddr, margin, currentY + 13);
-        
+
         // Ship To (Right Side)
         doc.setFontSize(8);
         doc.setFont('helvetica', 'bold');
@@ -176,7 +176,7 @@ export const generatePdfLabels = (orderIdsToPrint, orders, storeSettings) => {
 
         // Total row in table - using empty string for col 0 to ensure alignment
         tableBody.push([
-            '', 
+            '',
             { content: 'Total (Rs)', styles: { halign: 'left', fontStyle: 'bold' } },
             { content: sumQty.toString(), styles: { halign: 'center', fontStyle: 'bold' } },
             { content: '', styles: { fontStyle: 'bold' } },

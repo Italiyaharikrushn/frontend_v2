@@ -36,19 +36,19 @@ const CheckoutForm = ({
     if (shouldDelete) {
       try {
         if (type === 'shipping') {
-            await deleteShippingAddress(addressId).unwrap();
-            pushToast('Shipping address deleted', 'success');
-            if (selectedAddressId === addressId) {
-                const remaining = shippingAddresses.filter(a => a.id !== addressId);
-                setSelectedAddressId(remaining.length > 0 ? remaining[0].id : 'new');
-            }
+          await deleteShippingAddress(addressId).unwrap();
+          pushToast('Shipping address deleted', 'success');
+          if (selectedAddressId === addressId) {
+            const remaining = shippingAddresses.filter(a => a.id !== addressId);
+            setSelectedAddressId(remaining.length > 0 ? remaining[0].id : 'new');
+          }
         } else {
-            await deleteBillingAddress(addressId).unwrap();
-            pushToast('Billing address deleted', 'success');
-            if (selectedBillingAddressId === addressId) {
-                const remaining = billingAddresses.filter(a => a.id !== addressId);
-                setSelectedBillingAddressId(remaining.length > 0 ? remaining[0].id : 'new');
-            }
+          await deleteBillingAddress(addressId).unwrap();
+          pushToast('Billing address deleted', 'success');
+          if (selectedBillingAddressId === addressId) {
+            const remaining = billingAddresses.filter(a => a.id !== addressId);
+            setSelectedBillingAddressId(remaining.length > 0 ? remaining[0].id : 'new');
+          }
         }
       } catch (err) {
         pushToast('Failed to delete address', 'error');

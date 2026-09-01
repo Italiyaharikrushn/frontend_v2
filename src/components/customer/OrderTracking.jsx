@@ -6,7 +6,7 @@ const OrderTracking = ({ order }) => {
   if (!order) return null;
 
   const status = order.status || 'PENDING';
-  
+
   // Base configuration of all possible steps with icons and labels
   const stepConfig = {
     PENDING: { label: 'Order Placed', desc: 'Your order has been placed successfully', icon: PackageCheck },
@@ -22,7 +22,7 @@ const OrderTracking = ({ order }) => {
 
   // Determine the sequence based on the current status
   let stepsSequence = [];
-  
+
   if (['PENDING', 'READY_TO_SHIP', 'SHIPPED', 'DELIVERED'].includes(status)) {
     stepsSequence = ['PENDING', 'READY_TO_SHIP', 'SHIPPED', 'DELIVERED'];
   } else if (status === 'CANCELLED') {
@@ -39,7 +39,7 @@ const OrderTracking = ({ order }) => {
 
   // If status is somehow not in the sequence, just render something safe
   if (currentIndex === -1) {
-    return null; 
+    return null;
   }
 
   const formatDateTime = (dateString) => {
@@ -57,7 +57,7 @@ const OrderTracking = ({ order }) => {
   // Map to final format for rendering
   const steps = stepsSequence.map((stepKey, index) => {
     let state = 'upcoming'; // upcoming, current, completed, error-state
-    
+
     if (index < currentIndex) {
       state = 'completed';
     } else if (index === currentIndex) {
@@ -92,7 +92,7 @@ const OrderTracking = ({ order }) => {
       <div className="tracking-header">
         <div className="tracking-header-left">
           <h3>
-            <MapPin size={22} style={{ color: 'var(--primary, #4f46e5)' }} /> 
+            <MapPin size={22} style={{ color: 'var(--primary, #4f46e5)' }} />
             Order Tracking
           </h3>
           <p className="tracking-order-id">Order #{order.orderId || order.id}</p>
@@ -103,18 +103,18 @@ const OrderTracking = ({ order }) => {
           </span>
         </div>
       </div>
-      
-      <div 
-        className="tracking-stepper" 
-        style={{ 
+
+      <div
+        className="tracking-stepper"
+        style={{
           '--progress-decimal': progressDecimal,
           '--step-count': steps.length
         }}
       >
-        <div 
-          className={`tracking-progress-bar ${isErrorState ? 'error-bar' : ''}`} 
+        <div
+          className={`tracking-progress-bar ${isErrorState ? 'error-bar' : ''}`}
         />
-        
+
         {steps.map((step) => {
           const Icon = step.icon;
           return (

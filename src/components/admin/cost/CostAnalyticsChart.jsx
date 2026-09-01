@@ -10,14 +10,14 @@ const CostAnalyticsChart = () => {
     const [comparison, setComparison] = useState('previous');
     const [category, setCategory] = useState('All');
     const [costType, setCostType] = useState('All');
-    
+
     // For specific date selections
     const [selectedDate, setSelectedDate] = useState(formatToISODate(getCurrentDate()));
     const [fromYear, setFromYear] = useState(getCurrentYear() - 4);
     const [toYear, setToYear] = useState(getCurrentYear());
 
     const { data: filtersData } = useGetCostFiltersQuery();
-    
+
     const { data: analyticsData, isLoading, isError, refetch } = useGetCostAnalyticsQuery({
         view,
         fromYear: view === 'year' ? fromYear : undefined,
@@ -52,7 +52,7 @@ const CostAnalyticsChart = () => {
         const currentTotal = analyticsData.currentPeriod?.totalCost || 0;
         const previousTotal = analyticsData.comparisonPeriod?.totalCost || 0;
         const difference = currentTotal - previousTotal;
-        
+
         let growth = 0;
         if (previousTotal > 0) {
             growth = (difference / previousTotal) * 100;
@@ -97,7 +97,7 @@ const CostAnalyticsChart = () => {
             {/* Header with Title and Toolbar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '1rem' }}>
                 <h2 className="chart-title" style={{ margin: 0 }}>Cost Trend</h2>
-                
+
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end' }}>
                     <div style={{ display: 'flex', background: 'var(--bg-main)', borderRadius: '8px', padding: '0.25rem', border: '1px solid var(--border)' }}>
                         {['day', 'month', 'year'].map(v => (
@@ -141,7 +141,7 @@ const CostAnalyticsChart = () => {
             </div>
 
             {/* Chart Area */}
-            {isLoading ? 
+            {isLoading ?
                 (
                     <div style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
                         <p style={{ color: 'var(--text-muted)' }}>Loading cost analytics...</p>
@@ -156,24 +156,24 @@ const CostAnalyticsChart = () => {
                         <h3 style={{ color: 'var(--text-main)' }}>No cost data available</h3>
                         <p style={{ color: 'var(--text-muted)' }}>There are no cost records available for the selected filters. Try changing the date, category, or cost type.</p>
                     </div>
-                ) 
-            : (
-                <div style={{ width: '100%', height: '400px' }}>
-                        <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={analyticsData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                                <XAxis dataKey="period" stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)' }} axisLine={{ stroke: 'var(--border)' }} tickLine={false} dy={10} />
-                                <YAxis stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => `₹${val >= 1000 ? (val/1000).toFixed(0) + 'k' : val}`} />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend wrapperStyle={{ paddingTop: '20px' }} />
-                                <Line type="monotone" name={`Current ${view === 'day' ? 'Month' : view === 'month' ? 'Year' : 'Selected Years'}`} dataKey="current" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4, fill: 'var(--primary)', strokeWidth: 0 }} activeDot={{ r: 6 }} />
-                                {view !== 'year' && (
-                                    <Line type="monotone" name={`Previous ${view === 'day' ? 'Month' : 'Year'}`} dataKey="previous" stroke="var(--text-muted)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3, fill: 'var(--text-muted)', strokeWidth: 0 }} activeDot={{ r: 5 }} />
-                                )}
-                            </LineChart>
-                        </ResponsiveContainer>
-                </div>
-            )}
+                )
+                    : (
+                        <div style={{ width: '100%', height: '400px' }}>
+                            <ResponsiveContainer width="100%" height="100%">
+                                <LineChart data={analyticsData.data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                                    <XAxis dataKey="period" stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)' }} axisLine={{ stroke: 'var(--border)' }} tickLine={false} dy={10} />
+                                    <YAxis stroke="var(--text-muted)" tick={{ fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} dx={-10} tickFormatter={(val) => `₹${val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val}`} />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend wrapperStyle={{ paddingTop: '20px' }} />
+                                    <Line type="monotone" name={`Current ${view === 'day' ? 'Month' : view === 'month' ? 'Year' : 'Selected Years'}`} dataKey="current" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4, fill: 'var(--primary)', strokeWidth: 0 }} activeDot={{ r: 6 }} />
+                                    {view !== 'year' && (
+                                        <Line type="monotone" name={`Previous ${view === 'day' ? 'Month' : 'Year'}`} dataKey="previous" stroke="var(--text-muted)" strokeWidth={2} strokeDasharray="5 5" dot={{ r: 3, fill: 'var(--text-muted)', strokeWidth: 0 }} activeDot={{ r: 5 }} />
+                                    )}
+                                </LineChart>
+                            </ResponsiveContainer>
+                        </div>
+                    )}
         </div>
     );
 };

@@ -4,7 +4,6 @@ const TABS = [
   { id: 'PENDING', label: 'Pending Orders' },
   { id: 'READY_TO_SHIP', label: 'Ready to Ship' },
   { id: 'SHIPPED', label: 'Shipped' },
-  { id: 'DELIVERED', label: 'Delivered' },
   { id: 'CANCELLED', label: 'Cancelled' }
 ];
 

@@ -37,8 +37,8 @@ export const useProductDetails = ({ propId, isModal }) => {
   const handleAddToCart = async () => {
     let finalPrice = product.discountPrice ? parseFloat(product.discountPrice) : parseFloat(product.price);
     if (isPhoneCover && coverType === 'custom_name' && product.customNamePrice) {
-      finalPrice = product.discountCustomNamePrice 
-        ? parseFloat(product.discountCustomNamePrice) 
+      finalPrice = product.discountCustomNamePrice
+        ? parseFloat(product.discountCustomNamePrice)
         : parseFloat(product.customNamePrice);
     }
 
@@ -66,8 +66,8 @@ export const useProductDetails = ({ propId, isModal }) => {
   const baseOriginalPrice = product ? parseFloat(product.price) || 0 : 0;
 
   const customNamePriceOriginal = product && product.customNamePrice ? parseFloat(product.customNamePrice) : baseOriginalPrice;
-  const customNamePriceCurrent = product && product.discountCustomNamePrice 
-    ? parseFloat(product.discountCustomNamePrice) 
+  const customNamePriceCurrent = product && product.discountCustomNamePrice
+    ? parseFloat(product.discountCustomNamePrice)
     : (product && product.customNamePrice ? parseFloat(product.customNamePrice) : baseCurrentPrice);
 
   const currentPrice = isPhoneCover && coverType === 'custom_name' ? customNamePriceCurrent : baseCurrentPrice;

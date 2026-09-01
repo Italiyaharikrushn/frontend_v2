@@ -105,19 +105,19 @@ const AddressForm = ({ formData, setFormData, onSubmit, onCancel, isSaving, type
                 <option value="Australia">Australia</option>
               </select>
             </div>
-            
-            <div className="full-width" style={{display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1rem'}}>
-        <input 
-          type="checkbox" 
-          id="isDefault" 
-          checked={formData.isDefault || false}
-          onChange={(e) => setFormData({...formData, isDefault: e.target.checked})}
-          style={{ width: 'auto', minHeight: 'auto', height: '18px', width: '18px', cursor: 'pointer' }}
-        />
-        <label htmlFor="isDefault" style={{marginBottom: 0, cursor: 'pointer', fontWeight: 500, color: 'var(--text-main)', fontSize: '0.95rem'}}>
-          Set as default {type.toLowerCase()} address
-        </label>
-      </div>      </div>
+
+            <div className="full-width" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1rem' }}>
+              <input
+                type="checkbox"
+                id="isDefault"
+                checked={formData.isDefault || false}
+                onChange={(e) => setFormData({ ...formData, isDefault: e.target.checked })}
+                style={{ width: 'auto', minHeight: 'auto', height: '18px', width: '18px', cursor: 'pointer' }}
+              />
+              <label htmlFor="isDefault" style={{ marginBottom: 0, cursor: 'pointer', fontWeight: 500, color: 'var(--text-main)', fontSize: '0.95rem' }}>
+                Set as default {type.toLowerCase()} address
+              </label>
+            </div>      </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
             <Button type="button" variant="outline" onClick={onCancel}>

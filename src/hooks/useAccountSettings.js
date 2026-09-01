@@ -6,7 +6,7 @@ import { useChangePassword } from './useChangePassword';
 export const useAccountSettings = () => {
     const userName = useSelector(selectUserName);
     const userEmail = useSelector(selectUserEmail);
-    
+
     const { passwordData, setPasswordData, handlePasswordChange, isChangingPassword } = useChangePassword();
 
     const [showPasswords, setShowPasswords] = useState({
@@ -14,7 +14,7 @@ export const useAccountSettings = () => {
         new: false,
         confirm: false
     });
-    
+
     const togglePassword = (field) => {
         setShowPasswords(prev => ({ ...prev, [field]: !prev[field] }));
     };

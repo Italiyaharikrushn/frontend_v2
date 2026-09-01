@@ -88,11 +88,11 @@ const DailyCostSummarySection = () => {
                     </h2>
                     <p style={{ color: 'var(--text-muted)', marginTop: '0.25rem', fontSize: '0.95rem' }}>View and analyze product-wise costs for a specific date.</p>
                 </div>
-                
+
                 <div className="cost-filters-bar" style={{ marginBottom: 0, padding: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <label htmlFor="summaryDate" style={{ fontSize: '0.9rem', fontWeight: '500', color: 'var(--text-main)' }}>Selected Date:</label>
-                    <input 
-                        type="date" 
+                    <input
+                        type="date"
                         id="summaryDate"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}

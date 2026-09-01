@@ -94,7 +94,7 @@ const Products = () => {
 
         <div className="filter-actions">
           <Button variant="primary" onClick={() => applyFilters({ minPrice: localMinPrice, maxPrice: localMaxPrice })} className="apply-btn">Apply</Button>
-          
+
           {hasActiveFilters && (
             <Button variant="secondary" onClick={clearFilters} className="clear-btn">
               Clear
@@ -122,7 +122,7 @@ const Products = () => {
       </div>
 
       <div className="products-grid">
-          {isLoading ? (
+        {isLoading ? (
           Array.from({ length: 6 }).map((_, index) => <SkeletonCard key={index} />)
         ) : products.length > 0 ? products.map((product) => {
           const isActive = product.isActive ?? product.active ?? true;

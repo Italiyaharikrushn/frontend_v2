@@ -1,5 +1,4 @@
-.about-us-page
- {
+.about-us-page {
   /* min-height: 80vh; */
   width: 100%;
   background-color: var(--bg-main);
@@ -29,7 +28,7 @@
   .about-hero {
     padding: 3rem 1.5rem;
   }
-  
+
   .about-title {
     font-size: 2rem;
   }

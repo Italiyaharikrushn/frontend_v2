@@ -11,7 +11,7 @@ const AdminReviews = () => {
     <div className="admin-page fade-in admin-full-height-page">
       <div className="glass-panel admin-panel-card admin-full-height-card">
         <h2 style={{ marginBottom: '1.5rem', fontSize: '1.25rem', fontWeight: '600' }}>Customer Reviews</h2>
-        
+
         <AdminReviewTable reviewsPage={reviewsPage} isLoading={isLoading} handleDelete={handleDelete} />
 
         {reviewsPage?.totalPages > 1 && (

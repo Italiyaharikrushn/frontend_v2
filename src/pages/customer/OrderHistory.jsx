@@ -103,7 +103,7 @@ const OrderHistory = () => {
                   <p style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Total: ₹{order.totalAmount}</p>
                 </div>
               </div>
-              
+
               <OrderTracking order={order} />
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
@@ -137,7 +137,7 @@ const OrderHistory = () => {
                   {order.status === 'RETURNED' && (
                     <p style={{ color: 'var(--error)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Processed</p>
                   )}
-                  
+
                   {order.status === 'RETURN_REQUESTED' && (
                     <p style={{ color: 'var(--text-muted)', fontWeight: 'bold', fontSize: '0.875rem' }}>Return Requested</p>
                   )}
