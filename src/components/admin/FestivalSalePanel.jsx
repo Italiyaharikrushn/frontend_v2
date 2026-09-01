@@ -44,7 +44,8 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
       }
     };
 
-    const handleScroll = () => {
+    const handleScroll = (event) => {
+      if (menuRef.current && menuRef.current.contains(event.target)) return;
       if (isOpen) setIsOpen(false);
     };
 
@@ -59,7 +60,7 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
   }, [isOpen]);
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', width: '100%' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100%' }} className={selectedValues.length > 0 ? 'has-value' : ''}>
       <div
         onClick={handleToggle}
         style={{
@@ -85,7 +86,7 @@ const MultiSelectDropdown = ({ options, selectedValuesStr, onChange, placeholder
       </div>
 
       {isOpen && createPortal(
-        <div ref={menuRef} style={{
+        <div ref={menuRef} className="admin-scrollable-menu" style={{
           position: 'absolute',
           top: `${coords.top + 4}px`,
           left: `${coords.left}px`,

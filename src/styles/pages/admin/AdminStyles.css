@@ -393,6 +393,7 @@
 .admin-form-field:focus-within label,
 .admin-form-field:has(input:not(:placeholder-shown)) label,
 .admin-form-field:has(textarea:not(:placeholder-shown)) label,
+.admin-form-field:has(.has-value) label,
 .admin-form-field:has(select) label {
   top: 0;
   transform: translateY(-50%) scale(0.9);
@@ -1245,4 +1246,29 @@ input:checked+.policy-slider:before {
 .recharts-pie:focus,
 .recharts-surface:focus {
   outline: none;
+}
+
+.admin-scrollable-menu {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--border) var(--surface) !important;
+}
+
+.admin-scrollable-menu::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.admin-scrollable-menu::-webkit-scrollbar-track {
+  background: var(--surface) !important;
+  border-radius: 4px;
+}
+
+.admin-scrollable-menu::-webkit-scrollbar-thumb {
+  background: var(--border) !important;
+  border-radius: 4px;
+}
+
+.admin-scrollable-menu::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted) !important;
 }

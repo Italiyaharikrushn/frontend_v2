@@ -51,71 +51,84 @@ const BulkDiscountPanel = ({
         <h2 className="admin-discount-panel-title">
           <CheckSquare size={20} /> Bulk Product Discount
         </h2>
-        <div className="admin-discount-actions">
-          <div className="admin-category-dropdown" ref={dropdownRef} style={{ position: 'relative', width: '220px' }}>
-            <div
-              className="admin-discount-input"
-              style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: 'var(--surface)', padding: '0.65rem 0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {selectedCategories.size === 0 ? 'Specific Products' : `${selectedCategories.size} Categories Selected`}
-              </span>
-              <ChevronDown size={16} />
-            </div>
-            {isDropdownOpen && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', marginTop: '0.25rem', zIndex: 999, maxHeight: '200px', overflowY: 'auto', boxShadow: 'var(--shadow-md)' }}>
-                {categoryStats && categoryStats.map((stat) => (
-                  <label key={stat.category} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', cursor: 'pointer', borderBottom: '1px solid var(--border)', margin: 0 }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedCategories.has(stat.category)}
-                      onChange={() => handleCategoryToggle(stat.category)}
-                      style={{ cursor: 'pointer' }}
-                    />
-                    <span style={{ fontSize: '0.9rem' }}>{stat.category}</span>
-                  </label>
-                ))}
-                {categoryStats.length === 0 && (
-                  <div style={{ padding: '0.5rem 0.75rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>No categories found</div>
-                )}
+        <div className="admin-discount-actions" style={{ alignItems: 'flex-end', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Target Products</span>
+            <div className="admin-category-dropdown" ref={dropdownRef} style={{ position: 'relative', width: '220px' }}>
+              <div
+                className="admin-discount-input"
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: 'var(--surface)' }}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {selectedCategories.size === 0 ? 'Specific Products' : `${selectedCategories.size} Categories Selected`}
+                </span>
+                <ChevronDown size={16} />
               </div>
-            )}
+              {isDropdownOpen && (
+                <div style={{ position: 'absolute', top: '100%', left: 0, width: '100%', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', marginTop: '0.25rem', zIndex: 999, maxHeight: '200px', overflowY: 'auto', boxShadow: 'var(--shadow-md)' }}>
+                  {categoryStats && categoryStats.map((stat) => (
+                    <label key={stat.category} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.75rem', cursor: 'pointer', borderBottom: '1px solid var(--border)', margin: 0 }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedCategories.has(stat.category)}
+                        onChange={() => handleCategoryToggle(stat.category)}
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <span style={{ fontSize: '0.9rem' }}>{stat.category}</span>
+                    </label>
+                  ))}
+                  {categoryStats.length === 0 && (
+                    <div style={{ padding: '0.5rem 0.75rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>No categories found</div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-          <input
-            type="number"
-            placeholder="% Disc."
-            value={discountPercentage}
-            onChange={(e) => setDiscountPercentage(e.target.value)}
-            className="admin-discount-input"
-            style={{ width: '80px' }}
-            min="1" max="100"
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem' }}>
-            <span style={{ color: 'var(--text-muted)' }}>Start</span>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Discount %</span>
+            <input
+              type="number"
+              placeholder="e.g. 15"
+              value={discountPercentage}
+              onChange={(e) => setDiscountPercentage(e.target.value)}
+              className="admin-discount-input"
+              style={{ width: '100px' }}
+              min="1" max="100"
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Start Date</span>
             <input
               type="datetime-local"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
               className="admin-discount-input"
-              style={{ width: '130px', padding: '0.4rem' }}
+              style={{ width: '150px' }}
             />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', fontSize: '0.75rem' }}>
-            <span style={{ color: 'var(--text-muted)' }}>End</span>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em' }}>End Date</span>
             <input
               type="datetime-local"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
               className="admin-discount-input"
-              style={{ width: '130px', padding: '0.4rem' }}
+              style={{ width: '150px' }}
             />
           </div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', fontSize: '0.85rem' }}>
-            <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} />
-            Active
-          </label>
-          <Button onClick={handleApplyDiscount} variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }} disabled={isApplying}>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', justifyContent: 'flex-end', paddingBottom: '0.65rem' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'pointer', fontSize: '0.9rem', fontWeight: '500' }}>
+              <input type="checkbox" checked={isActive} onChange={(e) => setIsActive(e.target.checked)} style={{ width: '1.1rem', height: '1.1rem', cursor: 'pointer' }} />
+              Active
+            </label>
+          </div>
+
+          <Button onClick={handleApplyDiscount} variant="primary" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', height: '42px' }} disabled={isApplying}>
             <Tag size={18} /> Apply Discount
           </Button>
         </div>
@@ -175,17 +188,17 @@ const BulkDiscountPanel = ({
                     {product.configuredDiscountPrice ? `₹${product.configuredDiscountPrice} (${product.discountPercentage || 0}%)` : 'None'}
                   </td>
                   <td>
-                    <span style={{ 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: 'var(--radius-sm)', 
-                      fontSize: '0.75rem', 
+                    <span style={{
+                      padding: '0.25rem 0.5rem',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '0.75rem',
                       fontWeight: '600',
-                      background: product.discountStatus === 'ACTIVE' ? 'var(--success-light)' : 
-                                  product.discountStatus === 'SCHEDULED' ? 'var(--warning-light)' : 
-                                  product.discountStatus === 'EXPIRED' ? 'var(--danger-light)' : 'var(--surface-hover)',
-                      color: product.discountStatus === 'ACTIVE' ? 'var(--success)' : 
-                             product.discountStatus === 'SCHEDULED' ? 'var(--warning)' : 
-                             product.discountStatus === 'EXPIRED' ? 'var(--danger)' : 'var(--text-muted)'
+                      background: product.discountStatus === 'ACTIVE' ? 'var(--success-light)' :
+                        product.discountStatus === 'SCHEDULED' ? 'var(--warning-light)' :
+                          product.discountStatus === 'EXPIRED' ? 'var(--danger-light)' : 'var(--surface-hover)',
+                      color: product.discountStatus === 'ACTIVE' ? 'var(--success)' :
+                        product.discountStatus === 'SCHEDULED' ? 'var(--warning)' :
+                          product.discountStatus === 'EXPIRED' ? 'var(--danger)' : 'var(--text-muted)'
                     }}>
                       {product.discountStatus || 'NONE'}
                     </span>
