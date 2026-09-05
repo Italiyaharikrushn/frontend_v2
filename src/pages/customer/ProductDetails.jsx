@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useParams } from 'react-router-dom';
 import { ChevronDown, Shield, Clock, Activity, Droplets, X, Heart, ArrowLeft, Star } from 'lucide-react';
 import ProductGallery from '../../components/customer/ProductGallery';
 import PhoneModelDropdown from '../../components/customer/PhoneModelDropdown';
@@ -16,8 +17,10 @@ import '@/styles/pages/customer/ProductDetails.css';
 
 
 const ProductDetails = ({ productId: propId, onClose }) => {
+  const { id: paramId } = useParams();
+  const activeProductId = propId || paramId;
   const isModal = !!onClose;
-  const { product, isLoading, isError, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, coverType, setCoverType, customName, setCustomName, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId, isModal });
+  const { product, isLoading, isError, phoneModel, setPhoneModel, quantity, setQuantity, isPhoneCover, currentPrice, originalPrice, coverType, setCoverType, customName, setCustomName, handleAddToCart, handleBuyNow, navigate } = useProductDetails({ propId: activeProductId, isModal });
 
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { data: favorites } = useGetFavoritesQuery(undefined, { skip: !isAuthenticated });
@@ -25,8 +28,8 @@ const ProductDetails = ({ productId: propId, onClose }) => {
   const { pushToast } = useToast();
   const [incrementView] = useIncrementProductViewMutation();
 
-  const { data: reviews } = useGetReviewsByProductQuery(propId, { skip: !propId });
-  const { data: reviewEligibility } = useGetCanReviewProductQuery(propId, { skip: !propId || !isAuthenticated });
+  const { data: reviews } = useGetReviewsByProductQuery(activeProductId, { skip: !activeProductId });
+  const { data: reviewEligibility } = useGetCanReviewProductQuery(activeProductId, { skip: !activeProductId || !isAuthenticated });
   const [addOrUpdateReview] = useAddOrUpdateReviewMutation();
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewComment, setReviewComment] = useState('');
@@ -40,12 +43,12 @@ const ProductDetails = ({ productId: propId, onClose }) => {
   }, [reviewEligibility]);
 
   useEffect(() => {
-    if (propId) {
-      incrementView(propId).catch(console.error);
+    if (activeProductId) {
+      incrementView(activeProductId).catch(console.error);
     }
-  }, [propId, incrementView]);
+  }, [activeProductId, incrementView]);
 
-  const isFavorite = favorites?.some(fav => fav.id === propId || fav._id === propId) || false;
+  const isFavorite = favorites?.some(fav => fav.id === activeProductId || fav._id === activeProductId) || false;
 
   const handleFavoriteClick = async () => {
     if (!isAuthenticated) {
@@ -53,7 +56,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
       return;
     }
     try {
-      await toggleFavorite(propId).unwrap();
+      await toggleFavorite(activeProductId).unwrap();
       pushToast(isFavorite ? 'Removed from favorites' : 'Added to favorites', 'success');
     } catch (err) {
       pushToast('Failed to update favorites', 'error');
@@ -68,7 +71,7 @@ const ProductDetails = ({ productId: propId, onClose }) => {
     }
     setIsSubmittingReview(true);
     try {
-      await addOrUpdateReview({ productId: propId, data: { rating: reviewRating, comment: reviewComment } }).unwrap();
+      await addOrUpdateReview({ productId: activeProductId, data: { rating: reviewRating, comment: reviewComment } }).unwrap();
       pushToast('Review submitted successfully!', 'success');
       setReviewComment('');
       setReviewRating(5);
