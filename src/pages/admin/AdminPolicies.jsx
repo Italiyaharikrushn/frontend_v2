@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, ChevronRight, Loader, CheckCircle2, AlertCircle, PlusCircle, MoreHorizontal } from 'lucide-react';
+import { FileText, ChevronRight, Loader, CheckCircle2, AlertCircle, } from 'lucide-react';
 import { useAdminPolicies } from '../../hooks/useAdminPolicies';
 import { WRITTEN_POLICIES } from '../../utils/policyConstants';
 import PolicyModal from '../../components/admin/PolicyModal';

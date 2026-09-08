@@ -16,8 +16,6 @@ const CostAnalyticsChart = () => {
     const [fromYear, setFromYear] = useState(getCurrentYear() - 4);
     const [toYear, setToYear] = useState(getCurrentYear());
 
-    const { data: filtersData } = useGetCostFiltersQuery();
-
     const { data: analyticsData, isLoading, isError, refetch } = useGetCostAnalyticsQuery({
         view,
         fromYear: view === 'year' ? fromYear : undefined,
@@ -44,21 +42,6 @@ const CostAnalyticsChart = () => {
             currency: 'INR',
             maximumFractionDigits: 0
         }).format(value);
-    };
-
-    const renderSummaryCards = () => {
-        if (!analyticsData) return null;
-
-        const currentTotal = analyticsData.currentPeriod?.totalCost || 0;
-        const previousTotal = analyticsData.comparisonPeriod?.totalCost || 0;
-        const difference = currentTotal - previousTotal;
-
-        let growth = 0;
-        if (previousTotal > 0) {
-            growth = (difference / previousTotal) * 100;
-        } else if (currentTotal > 0 && previousTotal === 0) {
-            growth = 100; // or infinity logically, but cap at 100% for display
-        }
     };
 
     const CustomTooltip = ({ active, payload, label }) => {

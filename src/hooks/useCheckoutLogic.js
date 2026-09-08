@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartItems, clearCart } from '../redux/cartSlice';
-import { useAddToBackendCartMutation, useCheckoutOrderMutation, useClearBackendCartMutation, useCreateRazorpayOrderMutation } from '../api/orderApi';
+import { useCheckoutOrderMutation, useCreateRazorpayOrderMutation } from '../api/orderApi';
 import { useGetShippingAddressesQuery, useGetBillingAddressesQuery, useAddShippingAddressMutation, useAddBillingAddressMutation } from '../api/addressApi';
 import { useValidateCouponMutation } from '../api/couponApi';
 import { useGetStorePolicyQuery } from '../api/policyApi';
@@ -68,8 +68,6 @@ export const useCheckoutLogic = () => {
 
   const [addShippingAddress] = useAddShippingAddressMutation();
   const [addBillingAddress] = useAddBillingAddressMutation();
-  const [addToBackendCart] = useAddToBackendCartMutation();
-  const [clearBackendCart] = useClearBackendCartMutation();
   const [checkoutOrder] = useCheckoutOrderMutation();
   const [validateCouponApi] = useValidateCouponMutation();
   const [createRazorpayOrderApi] = useCreateRazorpayOrderMutation();

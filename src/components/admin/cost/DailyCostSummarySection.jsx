@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calendar, IndianRupee } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { useGetDailyCostsByDateQuery, useGetShippingCostsByDateQuery } from '../../../api/costManagementApi';
 
 const DailyCostSummarySection = () => {
@@ -45,7 +45,6 @@ const DailyCostSummarySection = () => {
 
         const result = Object.values(grouped).map(item => ({
             ...item,
-            // Calculate average unit price based on total cost and total units
             unitPrice: item.totalUnits > 0 ? (item.totalCost / item.totalUnits) : 0,
             isShipping: false
         }));

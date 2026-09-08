@@ -80,9 +80,7 @@ export const orderApi = createApi({
             invalidatesTags: ['Order'],
         }),
 
-
         // Checkout flow endpoints
-
         addToBackendCart: builder.mutation({
             query: ({ productId, quantity, phoneModel }) => ({
                 url: `/api/cart/add?productId=${productId}&quantity=${quantity}${phoneModel ? `&phoneModel=${encodeURIComponent(phoneModel)}` : ''}`,
@@ -181,7 +179,6 @@ export const {
     useMarkLabelsDownloadedMutation,
     useReturnCustomerOrderMutation,
     useCancelCustomerOrderMutation,
-
     useAddToBackendCartMutation,
     useClearBackendCartMutation,
     useCheckoutOrderMutation,
@@ -190,4 +187,3 @@ export const {
     useSyncBackendCartMutation,
     useCreateRazorpayOrderMutation
 } = orderApi;
-

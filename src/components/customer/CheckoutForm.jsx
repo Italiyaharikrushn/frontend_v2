@@ -1,4 +1,4 @@
-import { CreditCard, Wallet, User, MapPin, Trash2 } from 'lucide-react';
+import { CreditCard, User, MapPin, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PhoneInput from '../common/PhoneInput';
 import { useDeleteShippingAddressMutation, useDeleteBillingAddressMutation } from '../../api/addressApi';

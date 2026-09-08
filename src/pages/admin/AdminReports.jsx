@@ -1,6 +1,6 @@
 import React from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ComposedChart } from 'recharts';
-import { Download, Calendar } from 'lucide-react';
+import { Download } from 'lucide-react';
 import Button from '../../components/common/Button';
 import { useAdminReports } from '../../hooks/useAdminReports';
 import CostAnalyticsChart from '../../components/admin/cost/CostAnalyticsChart';
@@ -9,7 +9,6 @@ import { getCurrentYear } from '../../utils/dateUtils';
 
 const AdminReports = () => {
     const {
-        products,
         salesData,
         inventoryData,
         customerGrowthData,

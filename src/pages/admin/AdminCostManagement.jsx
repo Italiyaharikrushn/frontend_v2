@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wallet, Settings, FileText, Calendar, List, Truck } from 'lucide-react';
+import { Wallet, FileText, Calendar, List, Truck } from 'lucide-react';
 import MonthlyCostDashboard from '../../components/admin/cost/MonthlyCostDashboard';
 import YearlyCostDashboard from '../../components/admin/cost/YearlyCostDashboard';
 import DailyPurchaseTab from '../../components/admin/cost/DailyPurchaseTab';

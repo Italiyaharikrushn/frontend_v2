@@ -1,5 +1,4 @@
 import React from 'react';
-import { X } from 'lucide-react';
 import Button from '../common/Button';
 import { WRITTEN_POLICIES } from '../../utils/policyConstants';
 

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Package, User, MapPin, Heart, MessageCircle } from 'lucide-react';
+import { LogOut, Package, User, MapPin, MessageCircle } from 'lucide-react';
 import { logout, selectUserName, selectUserEmail } from '../../redux/authSlice';
 import '@/styles/components/CustomerProfileMenu.css';
 

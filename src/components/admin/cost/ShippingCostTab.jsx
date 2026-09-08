@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Search, Truck, Edit, Trash2 } from 'lucide-react';
+import { Plus, Truck, Edit, Trash2 } from 'lucide-react';
 import { useGetShippingCostsQuery, useDeleteShippingCostMutation } from '../../../api/costManagementApi';
 import ShippingCostModal from './ShippingCostModal';
 import { toast } from 'react-toastify';

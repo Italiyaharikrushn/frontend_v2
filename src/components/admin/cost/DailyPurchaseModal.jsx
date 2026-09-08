@@ -66,11 +66,8 @@ const DailyPurchaseModal = ({ entry, onClose }) => {
 
         return (price * qty).toFixed(2);
     };
-
     const calculatedTotal = calculateTotal();
-
     const today = formatToISODate(getCurrentDate());
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 

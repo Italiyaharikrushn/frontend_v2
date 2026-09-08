@@ -6,7 +6,7 @@ import { getCurrentMonth, getCurrentYear } from '../../../utils/dateUtils';
 
 const MonthlyCostDashboard = () => {
     const [filters, setFilters] = useState({
-        month: getCurrentMonth(), // 1-12
+        month: getCurrentMonth(),
         year: getCurrentYear(),
     });
 

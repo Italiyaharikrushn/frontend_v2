@@ -21,7 +21,6 @@ const initialState = {
   email: hasValidToken ? getStoredItem('userEmail') : null,
 };
 
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,

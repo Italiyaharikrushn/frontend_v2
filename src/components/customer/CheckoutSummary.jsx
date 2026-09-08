@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingBag, Lock, Tag, Ticket, CheckCircle2, AlertCircle, Truck, ShieldCheck } from 'lucide-react';
+import { ShoppingBag, Lock, Tag, Ticket, CheckCircle2, AlertCircle } from 'lucide-react';
 import Button from '../common/Button';
 
 const CheckoutSummary = ({ cartItems, subtotal, shippingCharge = 0, taxPercentage = 0, taxAmount = 0, total, isProcessing, couponCode, setCouponCode, appliedCouponCode, discountAmount, couponError, validateCoupon, showPaymentSection, storePolicy }) => {

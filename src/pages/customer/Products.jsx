@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ShoppingBag, ChevronDown } from 'lucide-react';
 import Button from '../../components/common/Button';
 import SkeletonCard from '../../components/common/SkeletonCard';
@@ -222,4 +222,3 @@ const Products = () => {
 };
 
 export default Products;
-

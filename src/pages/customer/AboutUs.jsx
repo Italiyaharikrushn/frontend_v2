@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useGetAllWorksQuery } from '../../api/aboutUsApi';
 import { Loader } from 'lucide-react';
 import '@/styles/pages/customer/AboutUs.css';

@@ -13,7 +13,7 @@ export default function PhoneInput({ value, onChange, required, id, name, style,
   const [phoneNumber, setPhoneNumber] = useState(initialNumber);
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
-  
+
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -42,11 +42,11 @@ export default function PhoneInput({ value, onChange, required, id, name, style,
   const handlePhoneChange = (e) => {
     let newNumber = e.target.value.replace(/\D/g, '');
     const maxLength = Array.isArray(country.length) ? Math.max(...country.length) : country.length;
-    
+
     if (newNumber.length > maxLength) {
       newNumber = newNumber.slice(0, maxLength);
     }
-    
+
     setPhoneNumber(newNumber);
     if (onChange) {
       onChange(`${country.code} ${newNumber}`);
@@ -62,8 +62,8 @@ export default function PhoneInput({ value, onChange, required, id, name, style,
     }
   };
 
-  const filteredCountries = COUNTRIES.filter(c => 
-    c.name.toLowerCase().includes(search.toLowerCase()) || 
+  const filteredCountries = COUNTRIES.filter(c =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
     c.code.includes(search)
   );
 
@@ -71,22 +71,22 @@ export default function PhoneInput({ value, onChange, required, id, name, style,
     <div className="phone-input-wrapper" style={style}>
       <div className="phone-input-container">
         <div className="country-selector" ref={dropdownRef}>
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="country-btn"
             onClick={() => setIsOpen(!isOpen)}
           >
             <span>{country.code}</span>
             <ChevronDown size={14} />
           </button>
-          
+
           {isOpen && (
             <div className="country-dropdown">
               <div className="country-search">
                 <Search size={14} />
-                <input 
-                  type="text" 
-                  placeholder="Search" 
+                <input
+                  type="text"
+                  placeholder="Search"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   autoFocus
@@ -94,8 +94,8 @@ export default function PhoneInput({ value, onChange, required, id, name, style,
               </div>
               <ul className="country-list">
                 {filteredCountries.map(c => (
-                  <li 
-                    key={c.name} 
+                  <li
+                    key={c.name}
                     className={`country-item ${country.code === c.code ? 'active' : ''}`}
                     onClick={() => handleCountrySelect(c)}
                   >
@@ -110,9 +110,9 @@ export default function PhoneInput({ value, onChange, required, id, name, style,
             </div>
           )}
         </div>
-        
-        <input 
-          type="tel" 
+
+        <input
+          type="tel"
           value={phoneNumber}
           onChange={handlePhoneChange}
           placeholder={placeholder || "Enter your contact number"}

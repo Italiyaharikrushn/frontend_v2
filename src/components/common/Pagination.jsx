@@ -40,7 +40,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       >
         <ChevronLeft size={20} />
       </button>
-      
+
       <div className="pagination-numbers">
         {pages}
       </div>

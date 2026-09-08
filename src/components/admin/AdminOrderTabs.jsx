@@ -24,5 +24,3 @@ const AdminOrderTabs = ({ activeTab, setActiveTab, setSelectedOrders, tabCounts 
 };
 
 export default AdminOrderTabs;
-
-
