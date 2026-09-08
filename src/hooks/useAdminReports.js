@@ -77,20 +77,7 @@ export const useAdminReports = () => {
         return months.map(m => ({ month: m, users: counts[m] }));
     }, [customers]);
 
-    // 4. Sales Target (Radial Progress)
-    const targetData = useMemo(() => {
-        const currentMonthSales = salesData.reduce((sum, item) => sum + item.payment, 0); // Approx based on selected 'days'
-        const target = 100000; // Hardcoded ₹1,00,000 monthly target for demo
-        const percentage = Math.min(100, Math.round((currentMonthSales / target) * 100));
-        return {
-            sales: currentMonthSales,
-            target,
-            percentage,
-            radialData: [{ name: 'Progress', value: percentage, fill: 'var(--primary)' }]
-        };
-    }, [salesData]);
-
-    // 5. Product Performance (Views vs Sales)
+    // 4. Product Performance (Views vs Sales)
     // This is now fetched directly from the backend via useGetTopProductsPerformanceQuery
 
     return {
@@ -98,7 +85,6 @@ export const useAdminReports = () => {
         salesData,
         inventoryData,
         customerGrowthData,
-        targetData,
         productPerformanceData: topProductsPerformanceData,
         topProductsLimit,
         setTopProductsLimit,

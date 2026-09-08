@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadialBarChart, RadialBar, PolarAngleAxis, ComposedChart } from 'recharts';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, ComposedChart } from 'recharts';
 import { Download, Calendar } from 'lucide-react';
 import Button from '../../components/common/Button';
 import { useAdminReports } from '../../hooks/useAdminReports';
@@ -13,7 +13,6 @@ const AdminReports = () => {
         salesData,
         inventoryData,
         customerGrowthData,
-        targetData,
         productPerformanceData,
         productSalesReportData,
         isProductSalesReportLoading,
@@ -127,30 +126,6 @@ const AdminReports = () => {
 
                     {/* Bottom Row - Target Progress and Product Performance */}
                     <div className="charts-grid">
-                        <div className="glass-panel chart-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <h2 className="chart-title" style={{ alignSelf: 'flex-start' }}>Monthly Revenue Target</h2>
-                            <ResponsiveContainer width="100%" height={200}>
-                                <RadialBarChart
-                                    cx="50%"
-                                    cy="50%"
-                                    innerRadius="70%"
-                                    outerRadius="100%"
-                                    barSize={20}
-                                    data={targetData.radialData}
-                                    startAngle={180}
-                                    endAngle={0}
-                                >
-                                    <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-                                    <RadialBar minAngle={15} background clockWise dataKey="value" cornerRadius={10} />
-                                    <Tooltip />
-                                </RadialBarChart>
-                            </ResponsiveContainer>
-                            <div style={{ textAlign: 'center', marginTop: '-3rem' }}>
-                                <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text)' }}>{targetData.percentage}%</div>
-                                <div style={{ color: 'var(--text-muted)' }}>₹{targetData.sales.toLocaleString()} of ₹{targetData.target.toLocaleString()}</div>
-                            </div>
-                        </div>
-
                         <div className="glass-panel chart-card">
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                 <h2 className="chart-title" style={{ margin: 0 }}>Top Products Performance (Views vs Sales)</h2>
