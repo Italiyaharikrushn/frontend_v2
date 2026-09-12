@@ -284,11 +284,16 @@
 .coupon-input-group {
   display: flex;
   gap: 0.6rem;
-  position: relative;
   width: 100%;
 }
 
-.coupon-input-group .coupon-icon {
+.coupon-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+}
+
+.coupon-input-wrapper .coupon-icon {
   position: absolute;
   left: 1rem;
   top: 50%;
@@ -297,7 +302,7 @@
   pointer-events: none;
 }
 
-.coupon-input-group input {
+.coupon-input-wrapper input {
   flex: 1;
   padding: 0.8rem 1rem 0.8rem 2.65rem;
   border-radius: var(--radius-md);
@@ -308,15 +313,17 @@
   font-size: clamp(0.81rem, 0.47rem + 0.95vw, 0.95rem);
   transition: all var(--transition-fast);
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.coupon-input-group input:focus {
+.coupon-input-wrapper input:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.18);
 }
 
-.coupon-input-group input:disabled {
+.coupon-input-wrapper input:disabled {
   background: var(--surface-alt);
   color: var(--text-muted);
   cursor: not-allowed;

@@ -33,14 +33,16 @@ const CheckoutSummary = ({ cartItems, subtotal, shippingCharge = 0, taxPercentag
 
         <div className="coupon-section">
           <div className="coupon-input-group">
-            <Ticket size={18} className="coupon-icon" />
-            <input
-              type="text"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-              placeholder="Enter discount code"
-              disabled={appliedCouponCode !== null}
-            />
+            <div className="coupon-input-wrapper">
+              <Ticket size={18} className="coupon-icon" />
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                placeholder="Enter discount code"
+                disabled={appliedCouponCode !== null}
+              />
+            </div>
             <button
               type="button"
               onClick={validateCoupon}
